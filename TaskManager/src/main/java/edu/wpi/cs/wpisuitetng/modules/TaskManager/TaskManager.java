@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.NewModule;
+package edu.wpi.cs.wpisuitetng.modules.TaskManager;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -12,18 +12,18 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
-public class NewModule implements IJanewayModule {
+public class TaskManager implements IJanewayModule {
 	private List<JanewayTabModel> tabs;
 	
-	public NewModule(){
+	public TaskManager(){
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		JPanel toolbarPanel = new JPanel();
-		toolbarPanel.add(new JLabel("NewModule toolbar placeholder"));
+		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.add(new JLabel("NewModule placeholder"));
+		mainPanel.add(new JLabel("TaskManager placeholder"));
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainPanel);
@@ -32,7 +32,7 @@ public class NewModule implements IJanewayModule {
 	}
 	
 	public String getName(){
-		return "NewModule";
+		return "TaskManager";
 	}
 
 	public List<JanewayTabModel> getTabs(){
