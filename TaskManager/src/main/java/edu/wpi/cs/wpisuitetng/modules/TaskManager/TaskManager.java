@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -21,6 +22,7 @@ public class TaskManager implements IJanewayModule {
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
+		toolbarPanel.add(new JButton("GuillermoIsGreat"));
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(new JLabel("TaskManager placeholder"));
