@@ -20,6 +20,7 @@ public class TaskManager implements IJanewayModule {
 		
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
+		toolbarPanel.add(new JButton("Frick's frickin' button"));
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		JPanel mainPanel = new JPanel();
