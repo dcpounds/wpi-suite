@@ -1,13 +1,12 @@
 package edu.wpi.cs.wpisuitetng.modules.TaskManager.models;
 import java.util.Date;
-
 import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
 public class Task extends AbstractModel {
-	private int id;
+	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator, assignee;
 	private Date creationDate, lastModifiedDate;
@@ -15,10 +14,12 @@ public class Task extends AbstractModel {
 	/** The default constructor for a Task **/
 	public Task(){
 		id = -1;
+		estimatedEffort = 0;
+		actualEffort = 0;
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
-		lastModifiedDate = new Date();
+		lastModifiedDate = new Date();	
 	}
 	
 	/**
@@ -27,8 +28,10 @@ public class Task extends AbstractModel {
 	 * @param description - the description of the task
 	 * @param creator - the creator of the task (User)
 	 */
-	public Task(int id, String title, String description, User creator) {
+	public Task(int id, int estimatedEffort, int actualEffort, String title, String description, User creator) {
 		this.id = id;
+		this.estimatedEffort = estimatedEffort;
+		this.actualEffort = actualEffort;
 		this.title = title;
 		this.description = description;
 		this.creator = creator;
@@ -46,6 +49,35 @@ public class Task extends AbstractModel {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	/**
+	 * @return the estimated effort needed to complete the task
+	 */
+	public int getEstimatedEffort() {
+		return estimatedEffort;
+	}
+	
+	/**
+	 * @param estimatedEffort - sets the estimated effort needed to complete the task
+	 */
+	public void setEstimatedEffort(int estimatedEffort) {
+		this.estimatedEffort = estimatedEffort;
+	}
+	
+	/**
+	 * @return the actual effort needed to complete the task
+	 */
+	public int getActualEffort() {
+		return actualEffort;
+	}
+	
+
+	/**
+	 * @param actualEffort - sets the actual effort needed to complete the task
+	 */
+	public void setActualEffort(int actualEffort) {
+		this.actualEffort = actualEffort;
 	}
 	
 	/**
@@ -68,7 +100,6 @@ public class Task extends AbstractModel {
 	public String getDescription() {
 		return description;
 	}
-	
 
 	/**
 	 * @param description - set the description of this task
@@ -84,7 +115,6 @@ public class Task extends AbstractModel {
 		return creator;
 	}
 	
-	
 	/**
 	 * @param creator - set the user that created this task
 	 */
@@ -92,6 +122,12 @@ public class Task extends AbstractModel {
 		this.creator = creator;
 	}
 	
+	/**
+	 * @return the user that created the task
+	 */
+	public User getAssignee(){
+		return assignee;
+	}
 	
 	/**
 	 * @param assignee - set the user assigned to this task
@@ -100,14 +136,12 @@ public class Task extends AbstractModel {
 		this.assignee = assignee;
 	}
 	
-	
 	/**
 	 * @return the date that the task was created
 	 */
 	public Date getCreationDate() {
 		return creationDate;
 	}
-	
 	
 	/**
 	 * @param creationDate - set the date that this task was created
@@ -130,20 +164,6 @@ public class Task extends AbstractModel {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 
-
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 	/**
 	 * Converts the task to a JSON string
 	 * @return a JSON string representation of the task 
@@ -180,6 +200,19 @@ public class Task extends AbstractModel {
 			returnValue = true;
 		}
 		return returnValue;
+	}
+	
+	//Not yet implemented...
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
