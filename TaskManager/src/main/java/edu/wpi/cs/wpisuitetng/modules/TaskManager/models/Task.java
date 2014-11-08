@@ -9,7 +9,7 @@ public class Task extends AbstractModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator, assignee;
-	private Date creationDate, lastModifiedDate;
+	private Date creationDate, dueDate;
 	
 	/** The default constructor for a Task **/
 	public Task(){
@@ -19,7 +19,7 @@ public class Task extends AbstractModel {
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
-		lastModifiedDate = new Date();	
+		dueDate = new Date();	
 	}
 	
 	/**
@@ -151,17 +151,17 @@ public class Task extends AbstractModel {
 	}
 	
 	/**
-	 * @return the date that this task was last modified
+	 * @return the date that this task is due
 	 */
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
+	public Date getDueDate() {
+		return dueDate;
 	}
 	
 	/**
-	 * @param lastModifiedDate - set the date that this task was last modified
+	 * @param dueDate - set the date that this task is due
 	 */
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	/**
@@ -214,5 +214,4 @@ public class Task extends AbstractModel {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
