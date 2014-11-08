@@ -22,6 +22,19 @@ public class Task extends AbstractModel {
 	}
 	
 	/**
+	 * @param id - the id of the task
+	 * @param title - the title of the task
+	 * @param description - the description of the task
+	 * @param creator - the creator of the task (User)
+	 */
+	public Task(int id, String title, String description, User creator) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.creator = creator;
+	}
+	
+	/**
 	 * @return the ID of this task
 	 */
 	public int getId() {
@@ -81,7 +94,7 @@ public class Task extends AbstractModel {
 	
 	
 	/**
-	 * @param assignee - set the user assigned to this taskl
+	 * @param assignee - set the user assigned to this task
 	 */
 	public void setAssignee(User assignee) {
 		this.assignee = assignee;
