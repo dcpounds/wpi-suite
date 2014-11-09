@@ -12,7 +12,7 @@ public class CardView extends JPanel {
 	public CardView(String title) {
 		JLabel cardTitle = new JLabel(title);
 		this.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
-		this.setPreferredSize(new Dimension(600,400));
+		this.setPreferredSize(new Dimension(300,600));
 		this.add(cardTitle);
 	}
 
