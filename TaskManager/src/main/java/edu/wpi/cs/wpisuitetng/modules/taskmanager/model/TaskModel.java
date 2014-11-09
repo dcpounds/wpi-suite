@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.TaskManager.models;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 import java.util.ArrayList;
 import java.util.Date;
 

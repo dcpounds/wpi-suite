@@ -1,21 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.TaskManager;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.SplitPaneView;
-import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.TaskManagerTabView;
-import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.TaskManagerToolbarView;
-import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.WorkflowView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.SplitPaneView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskManagerToolbarView;
 
 
 /**
@@ -23,17 +18,22 @@ import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.WorkflowView;
  *
  */
 public class TaskManager implements IJanewayModule {
+	
+	WorkflowListModel workflowListModel;
+	MainView mainView;
 	private List<JanewayTabModel> tabs;
 	
+	
 	public TaskManager(){
+		this.workflowListModel = new WorkflowListModel();
+		this.mainView = mainView;
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		//Create both the toolbar and main panel panes
-		SplitPaneView splitPane = new SplitPaneView();
 		TaskManagerToolbarView toolbarPanel = new TaskManagerToolbarView();
 		
-		//Creaate a panel for the toolbar at the top
-		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, splitPane);
+		//Create a panel for the toolbar at the top
+		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainView);
 		tabs.add(tab1);
 	}
 	

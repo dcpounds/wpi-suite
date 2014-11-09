@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.TaskManager.views;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.Color;
 import java.awt.Dimension;

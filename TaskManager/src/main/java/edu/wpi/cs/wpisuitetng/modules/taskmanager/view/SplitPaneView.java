@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.TaskManager.views;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.BorderLayout;
 
@@ -6,6 +6,8 @@ import javafx.scene.control.SplitPane;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 
 
 /**
@@ -15,7 +17,7 @@ import javax.swing.JSplitPane;
  */
 public class SplitPaneView extends JPanel{
 	
-	public SplitPaneView() {
+	public SplitPaneView( WorkflowListModel workflowListModel ) {
 		this.setLayout( new BorderLayout() );
 		
 		//Initialize a new split pane
@@ -23,7 +25,7 @@ public class SplitPaneView extends JPanel{
 		
 		//Initialize the left and right components
 		TaskManagerTabView tabView = new TaskManagerTabView();
-		WorkflowListView workFlowListView = new WorkflowListView();
+		WorkflowListView workFlowListView = new WorkflowListView(workflowListModel);
 		
 		splitPane.setRightComponent(tabView);
 		splitPane.setLeftComponent(workFlowListView);
