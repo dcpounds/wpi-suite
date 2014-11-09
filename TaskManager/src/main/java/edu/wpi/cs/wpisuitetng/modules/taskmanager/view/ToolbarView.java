@@ -33,11 +33,11 @@ public class ToolbarView extends JPanel {
     
     /** A button for submitting new work flows */
     private final JButton btnSubmit;
-    
+    private final JButton newWorkflowButton;
+    private final JButton newTaskButton;
+    private final JButton newCardButton;
     private final MouseAdapter mouseListener;
-    
     private final WorkflowListModel workFlowListModel;
-    
    
     public ToolbarView(WorkflowListModel workFlowModel) {
         
@@ -46,8 +46,12 @@ public class ToolbarView extends JPanel {
         
         // Construct the components to be displayed
         txtNewWorkFlowName = new JTextField("Enter a work flow here.");
+		newWorkflowButton = new JButton("New Workflow");
+		newTaskButton = new JButton("New Task");
+		newCardButton = new JButton("New Card");
         btnSubmit = new JButton("Submit");
         
+        //Empty the text field when a user clicks on it
         mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 txtNewWorkFlowName.setText("");

@@ -9,8 +9,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.SplitPaneView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskManagerToolbarView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 
 
 /**
@@ -30,7 +29,7 @@ public class TaskManager implements IJanewayModule {
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		//Create both the toolbar and main panel panes
-		TaskManagerToolbarView toolbarPanel = new TaskManagerToolbarView();
+		ToolbarView toolbarPanel = new ToolbarView(workflowListModel);
 		
 		//Create a panel for the toolbar at the top
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, this.mainView);

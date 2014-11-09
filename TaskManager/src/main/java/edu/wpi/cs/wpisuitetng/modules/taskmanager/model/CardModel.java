@@ -1,11 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import javax.swing.AbstractListModel;
 
-public class CardModel extends AbstractModel {
+public class CardModel extends AbstractListModel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private ArrayList<TaskModel> taskList;
 
@@ -13,30 +18,39 @@ public class CardModel extends AbstractModel {
 		this.setTitle(title);
 		this.setTaskList(taskList);
 	}
-
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String toJson() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	/**
+     * Removes all tasks from this card
+     * NOTE: One cannot simply construct a new instance of
+     * the model, because other classes in this module have
+     * references to it. Hence, we manually remove each work flow
+     * from the model.
+     */
+    public void emptyModel() {
+        int oldSize = getSize();
+        Iterator<TaskModel> iterator = taskList.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+        this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
+    }
+    
+    /**
+     * @param newTask - the task to add to the list of cards
+     */
+    public void addTask(TaskModel newTask) {
+    	this.taskList.add(newTask);
+    }
+    
+    /**
+     * @param newTasks - the list of tasks to add to the card
+     */
+    public void addTasks(TaskModel[] newTasks) {
+    	for (int i = 0; i < newTasks.length; i++) {
+    		this.taskList.add( newTasks[i] );
+    	}
+    }
 
 	/**
 	 * @return the title of the card
@@ -50,6 +64,13 @@ public class CardModel extends AbstractModel {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	/**
+	 * @return the size of the list of tasks
+	 */
+	public int getSize() {
+		return taskList.size();
 	}
 
 	/**
@@ -71,6 +92,16 @@ public class CardModel extends AbstractModel {
 	 */
 	public void addTaskToCard(TaskModel task) {
 		taskList.add(task);
+	}
+
+	/**
+	 * @param index - the spot in the list of tasks to retrieve
+	 * @return the task at the given index
+	 */
+	@Override
+	public TaskModel getElementAt(int index) {
+		TaskModel task = taskList.get(index);
+		return task;
 	}
 	
 
