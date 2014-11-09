@@ -1,24 +1,29 @@
 package edu.wpi.cs.wpisuitetng.modules.TaskManager.models;
+import java.util.ArrayList;
 import java.util.Date;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
-public class Task extends AbstractModel {
+public class TaskModel extends AbstractModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
-	private User creator, assignee;
+	private User creator;
+	private ArrayList<User> usersAssignedTo;
 	private Date creationDate, dueDate;
 	
 	/** The default constructor for a Task **/
-	public Task(){
+	public TaskModel(){
 		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
+		usersAssignedTo = new ArrayList<User>();
 		dueDate = new Date();	
 	}
 	
@@ -27,14 +32,17 @@ public class Task extends AbstractModel {
 	 * @param title - the title of the task
 	 * @param description - the description of the task
 	 * @param creator - the creator of the task (User)
+	 * @param usersAssignedTo - the List users this task is assigned to
 	 */
-	public Task(int id, int estimatedEffort, int actualEffort, String title, String description, User creator) {
+	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
+			User creator, ArrayList<User> usersAssignedTo) {
 		this.id = id;
 		this.estimatedEffort = estimatedEffort;
 		this.actualEffort = actualEffort;
 		this.title = title;
 		this.description = description;
 		this.creator = creator;
+		this.usersAssignedTo = usersAssignedTo;
 	}
 	
 	/**
@@ -125,15 +133,22 @@ public class Task extends AbstractModel {
 	/**
 	 * @return the user that created the task
 	 */
-	public User getAssignee(){
-		return assignee;
+	public ArrayList<User> getUsersAssignedTo(){
+		return (ArrayList<User>) usersAssignedTo;
+	}
+	
+	/**
+	 * @param usersAssignedTo - set the list of users that this task is assigned to
+	 */
+	public void setUsersAssignedTo(ArrayList<User> usersAssignedTo) {
+		this.usersAssignedTo = usersAssignedTo;
 	}
 	
 	/**
 	 * @param assignee - set the user assigned to this task
 	 */
-	public void setAssignee(User assignee) {
-		this.assignee = assignee;
+	public void assignToUser(User assignee) {
+		usersAssignedTo.add(assignee);
 	}
 	
 	/**
@@ -171,19 +186,19 @@ public class Task extends AbstractModel {
 	public String toJson() {
 		String json;
 		Gson gson = new Gson();
-		json = gson.toJson(this, Task.class);
+		json = gson.toJson(this, TaskModel.class);
 		return json;
 	}
 	
 	/**
-	 * Converts the given list of Defects to a JSON string
-	 * @param dlist a list of Defects
-	 * @return a string in JSON representing the list of Defects
+	 * Converts the given list of tasks to a JSON string
+	 * @param taskList -  a list of tasks
+	 * @return a string in JSON representing the list of tasks
 	 */
-	public static String toJSON(Task[] taskList) {
+	public static String toJSON(TaskModel[] taskList) {
 		String json;
 		Gson gson = new Gson();
-		json = gson.toJson(taskList, Task.class);
+		json = gson.toJson(taskList, TaskModel.class);
 		return json;
 	}
 
@@ -193,7 +208,7 @@ public class Task extends AbstractModel {
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof Task && id == ((Task) o).getId()) {
+		if(o instanceof TaskModel && id == ((TaskModel) o).getId()) {
 			returnValue = true;
 		}
 		if(o instanceof String && Integer.toString(id).equals(o)) {
