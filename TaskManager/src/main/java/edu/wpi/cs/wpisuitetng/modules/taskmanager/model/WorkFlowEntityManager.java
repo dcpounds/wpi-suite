@@ -51,7 +51,16 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	@Override
 	public WorkFlowModel[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		throw new WPISuiteException("Cannot Retrieve Individual WorkFlow Yet");
+		WorkFlowModel[] workFlows = null;
+		try {
+			workFlows = db.retrieve(WorkFlowModel.class, "name", id, s.getProject()).toArray(new WorkFlowModel[0]);
+		} catch (WPISuiteException e) {
+			e.printStackTrace();
+		}
+		if(workFlows.length < 1 || workFlows[0] == null) {
+			throw new NotFoundException();
+		}
+		return workFlows;
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +83,28 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	@Override
 	public WorkFlowModel update(Session s, String content)
 			throws WPISuiteException {
-		throw new WPISuiteException("Cannot update work flows yet");
+		
+		WorkFlowModel updatedWorkFlow = WorkFlowModel.fromJson(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save Requirements.
+		 * We have to get the original work flow from db4o, copy properties from updatedWorkfFlow,
+		 * then save the original work flow again.
+		 */
+		List<Model> oldWorkFlows = db.retrieve(WorkFlowModel.class, "name", updatedWorkFlow.getName(), s.getProject());
+		if(oldWorkFlows.size() < 1 || oldWorkFlows.get(0) == null) {
+			throw new NotFoundException();
+		}
+				
+		WorkFlowModel existingWorkFlow = (WorkFlowModel)oldWorkFlows.get(0);		
+
+		// copy values to old requirement and fill in our changeset appropriately
+		existingWorkFlow.copyFrom(updatedWorkFlow);
+		
+		if(!db.save(existingWorkFlow, s.getProject())) {
+			throw new WPISuiteException();
+		}
+		
+		return existingWorkFlow;
 	}
 
 	/* (non-Javadoc)
@@ -90,7 +120,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete work flows yets");
+		return (db.delete(getEntity(s, id)[0]) != null) ? true : false;
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +138,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete work flows yets");
+		db.deleteAll(new WorkFlowModel(null), s.getProject());
 	}
 
 	/* (non-Javadoc)
