@@ -26,11 +26,11 @@ public class AddWorkFlowRequestObserver implements RequestObserver {
 	    // Get the response to the given request
 	    final ResponseModel response = iReq.getResponse();
 	    
-	    // Parse the message out of the response body
-	    final WorkFlowModel message = WorkFlowModel.fromJson(response.getBody());
+	    // Parse the work flow out of the response body
+	    final WorkFlowModel workFlow = WorkFlowModel.fromJson(response.getBody());
 	    
-	    // Pass the messages back to the controller
-	    controller.addWorkFlowToModel(message);
+	    // Pass the work flows back to the controller
+	    controller.addWorkFlowToModel(workFlow);
 	}
 	
 	@Override

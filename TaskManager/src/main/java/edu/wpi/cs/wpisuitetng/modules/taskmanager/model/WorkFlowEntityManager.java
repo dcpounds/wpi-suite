@@ -32,16 +32,16 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	@Override
 	public WorkFlowModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		// Parse the message from JSON
+		// Parse the work flow from JSON
         final WorkFlowModel newWorkFlow = WorkFlowModel.fromJson(content);
         
-        // Save the message in the database if possible, otherwise throw an exception
-        // We want the message to be associated with the project the user logged in to
+        // Save the work flow in the database if possible, otherwise throw an exception
+        // We want the work flow to be associated with the project the user logged in to
         if (!db.save(newWorkFlow, s.getProject())) {
             throw new WPISuiteException();
         }
         
-        // Return the newly created message (this gets passed back to the client)
+        // Return the newly created work flow (this gets passed back to the client)
         return newWorkFlow;
 	}
 
@@ -59,13 +59,13 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	 */
 	@Override
 	public WorkFlowModel[] getAll(Session s) throws WPISuiteException {
-        // Ask the database to retrieve all objects of the type PostBoardMessage.
-        // Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
-        // Passing the project makes it only get messages from that project
-        List<Model> messages = db.retrieveAll(new WorkFlowModel(null), s.getProject());
+        // Ask the database to retrieve all objects of the type PostBoardWorkFlow.
+        // Passing a dummy PostBoardWorkFlow lets the db know what type of object to retrieve
+        // Passing the project makes it only get work flows from that project
+        List<Model> workFlows = db.retrieveAll(new WorkFlowModel(null), s.getProject());
         
-        // Return the list of messages as an array
-        return messages.toArray(new WorkFlowModel[0]);
+        // Return the list of work flows as an array
+        return workFlows.toArray(new WorkFlowModel[0]);
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +74,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	@Override
 	public WorkFlowModel update(Session s, String content)
 			throws WPISuiteException {
-		throw new WPISuiteException("Cannot Update Layout Yet");
+		throw new WPISuiteException("Cannot update work flows yet");
 	}
 
 	/* (non-Javadoc)
@@ -90,7 +90,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete layouts yets");
+		throw new WPISuiteException("Cannot delete work flows yets");
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +108,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete layouts yets");
+		throw new WPISuiteException("Cannot delete work flows yets");
 	}
 
 	/* (non-Javadoc)

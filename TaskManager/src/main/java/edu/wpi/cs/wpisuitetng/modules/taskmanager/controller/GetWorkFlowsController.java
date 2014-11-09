@@ -26,28 +26,28 @@ public class GetWorkFlowsController implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Send a request to the core to save this message
+        // Send a request to the core to save this workflow
         final Request request = Network.getInstance().makeRequest("taskmanager/workflowmodel", HttpMethod.GET); // GET == read
         request.addObserver(new GetWorkFlowsRequestObserver(this)); // add an observer to process the response
         request.send(); // send the request
     }
     
     /**
-     * Add the given messages to the local model (they were received from the
+     * Add the given work flows to the local model (they were received from the
      * core).
-     * This method is called by the GetMessagesRequestObserver
+     * This method is called by the GetWorkFlowsRequestObserver
      * 
-     * @param layouts an array of messages received from the server
+     * @param workFlows an array of work flows received from the server
      */
-    public void receivedWorkFlows(WorkFlowModel[] layouts) {
+    public void receivedWorkFlows(WorkFlowModel[] workFlows) {
         // Empty the local model to eliminate duplications
         model.emptyModel();
         
         // Make sure the response was not null
-        if (layouts != null) {
+        if (workFlows != null) {
             
-            // add the messages to the local model
-            model.addWorkFlows(layouts);
+            // add the work flows to the local model
+            model.addWorkFlows(workFlows);
         }
     }
 

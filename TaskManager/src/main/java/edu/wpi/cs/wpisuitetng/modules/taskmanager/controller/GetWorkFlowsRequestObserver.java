@@ -25,8 +25,8 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void responseSuccess(IRequest iReq) {
-        WorkFlowModel[] layouts = WorkFlowModel.fromJsonArray(iReq.getResponse().getBody());
-        controller.receivedLayouts(layouts);
+        WorkFlowModel[] workFlows = WorkFlowModel.fromJsonArray(iReq.getResponse().getBody());
+        controller.receivedWorkFlows(workFlows);
     }
     
     /*
@@ -34,7 +34,7 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void responseError(IRequest iReq) {
-	    System.err.println("The request to view layouts failed.");
+	    System.err.println("The request to view work flows failed.");
     }
     
     /*
@@ -42,7 +42,7 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to view layouts failed.");
+	    System.err.println("The request to view work flows failed.");
     }
     
     /**

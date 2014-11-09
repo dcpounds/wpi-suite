@@ -26,10 +26,10 @@ public class WorkFlowListModel extends AbstractListModel {
     }
     
     /**
-     * Removes all messages from this model
+     * Removes all work flows from this model
      * NOTE: One cannot simply construct a new instance of
      * the model, because other classes in this module have
-     * references to it. Hence, we manually remove each message
+     * references to it. Hence, we manually remove each work flow
      * from the model.
      */
     public void emptyModel() {
@@ -43,7 +43,7 @@ public class WorkFlowListModel extends AbstractListModel {
     }
     
     public void addWorkFlow(WorkFlowModel newWorkFlow) {
-        // Add the message
+        // Add the work flow
         this.workFlows.add(newWorkFlow);
         
         // Notify the model that it has changed so the GUI will be udpated
@@ -59,7 +59,7 @@ public class WorkFlowListModel extends AbstractListModel {
     }
     
     /*
-     * Returns the layout at the given index. This method is called
+     * Returns the work flow at the given index. This method is called
      * internally by the JList in BoardPanel.
      * @see javax.swing.ListModel#getElementAt(int)
      */
@@ -70,7 +70,7 @@ public class WorkFlowListModel extends AbstractListModel {
     }
     
     /*
-     * Returns the number of layouts in the model. Also used internally
+     * Returns the number of work flows in the model. Also used internally
      * by the JList in BoardPanel.
      * @see javax.swing.ListModel#getSize()
      */
@@ -82,7 +82,7 @@ public class WorkFlowListModel extends AbstractListModel {
     //For testing
     
     /**
-     * @return the messages
+     * @return the work flows
      */
     List<WorkFlowModel> getWorkFlows() {
         return this.workFlows;

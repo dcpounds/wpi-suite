@@ -25,7 +25,7 @@ public class MainView extends JPanel {
      */
     private static final long serialVersionUID = 6561533712473785570L;
     
-    /** A list box to display all the message on the board */
+    /** A list box to display all the work flow on the board */
     private final JList<WorkFlowListModel> workFlowList;
     
     private final JScrollPane lstScrollPane;
@@ -53,7 +53,7 @@ public class MainView extends JPanel {
         // Change the font of the JList
         workFlowList.setFont(workFlowList.getFont().deriveFont(11));
         
-        // Set the layout manager of this panel that controls the positions of the components
+        // Set the workflow manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
         
         // Put the listbox in a scroll pane

@@ -33,16 +33,16 @@ public class AddWorkFlowController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-		String workFlowName = view.getTxtNewLayoutName().getText();
+		String workFlowName = view.getTxtNewWorkFlowName().getText();
 			
 		// Make sure there is text
 		if (workFlowName.length() > 0) {
 			// Clear the text field
-			view.getTxtNewLayoutName().setText("");
+			view.getTxtNewWorkFlowName().setText("");
 			
-			// Send a request to the core to save this message
-			final Request request = Network.getInstance().makeRequest("taskmanager/layoutmodel", HttpMethod.PUT); // PUT == create
-			request.setBody(new WorkFlowModel(workFlowName).toJson()); // put the new message in the body of the request
+			// Send a request to the core to save this work flow
+			final Request request = Network.getInstance().makeRequest("taskmanager/workflowmodel", HttpMethod.PUT); // PUT == create
+			request.setBody(new WorkFlowModel(workFlowName).toJson()); // put the new work flow in the body of the request
 			request.addObserver(new AddWorkFlowRequestObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}

@@ -28,10 +28,10 @@ public class ToolbarView extends JPanel {
      */
     private static final long serialVersionUID = 6568533963473785570L;
     
-    /** A text field where the user can enter a new message */
+    /** A text field where the user can enter a new work flow */
     private JTextField txtNewWorkFlowName;
     
-    /** A button for submitting new messages */
+    /** A button for submitting new work flows */
     private final JButton btnSubmit;
     
     private final MouseAdapter mouseListener;
@@ -39,13 +39,13 @@ public class ToolbarView extends JPanel {
     private final WorkFlowListModel workFlowListModel;
     
    
-    public ToolbarView(WorkFlowListModel layoutModel) {
+    public ToolbarView(WorkFlowListModel workFlowModel) {
         
         // Construct the list box model
-        workFlowListModel = layoutModel;
+        workFlowListModel = workFlowModel;
         
         // Construct the components to be displayed
-        txtNewWorkFlowName = new JTextField("Enter a message here.");
+        txtNewWorkFlowName = new JTextField("Enter a work flow here.");
         btnSubmit = new JButton("Submit");
         
         mouseListener = new MouseAdapter() {
@@ -54,7 +54,7 @@ public class ToolbarView extends JPanel {
             }
         };
         
-        // Construct the add message controller and add it to the submit button
+        // Construct the add work flow controller and add it to the submit button
         btnSubmit.addActionListener(new AddWorkFlowController(workFlowListModel, this));
         
         // Set the layout manager of this panel that controls the positions of the components
@@ -73,12 +73,12 @@ public class ToolbarView extends JPanel {
         add(btnSubmit);
     }
     
-    public JTextField getTxtNewLayoutName() {
+    public JTextField getTxtNewWorkFlowName() {
         return txtNewWorkFlowName;
     }
     
-    void setTxtNewLayoutName(JTextField txtNewLayoutName) {
-        this.txtNewWorkFlowName = txtNewLayoutName;
+    void setTxtNewWorkFlowName(JTextField txtNewWorkFlowName) {
+        this.txtNewWorkFlowName = txtNewWorkFlowName;
     }
     
     /**
@@ -88,7 +88,7 @@ public class ToolbarView extends JPanel {
         return this.btnSubmit;
     }
     
-    WorkFlowListModel getLayoutListModel() {
+    WorkFlowListModel getWorkFlowListModel() {
         return this.workFlowListModel;
     }
 

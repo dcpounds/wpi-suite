@@ -35,7 +35,7 @@ public class TaskManager implements IJanewayModule {
      */
     public TaskManager() {
         
-        // Initialize the model that holds the messages
+        // Initialize the model that holds the work flows
         this.workFlowListModel = new WorkFlowListModel();
         
         // Initialize the list of tabs (however, this module has only one tab)
