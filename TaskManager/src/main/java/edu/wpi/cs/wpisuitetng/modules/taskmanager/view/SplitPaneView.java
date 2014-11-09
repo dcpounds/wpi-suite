@@ -17,6 +17,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
  */
 public class SplitPaneView extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8741202156200825035L;
+
 	public SplitPaneView( WorkflowListModel workflowListModel ) {
 		this.setLayout( new BorderLayout() );
 		

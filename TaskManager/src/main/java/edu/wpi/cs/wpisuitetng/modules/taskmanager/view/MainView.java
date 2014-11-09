@@ -1,6 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 
 /**
@@ -16,8 +19,11 @@ public class MainView extends JPanel{
 	SplitPaneView splitPane;
 	
 	public MainView(WorkflowListModel workflowListModel ){
+		setLayout(new BorderLayout() );
 		this.workflowListModel = workflowListModel;
-		 this.splitPane = new SplitPaneView(workflowListModel);
+		this.splitPane = new SplitPaneView(workflowListModel);
+		this.add(splitPane, BorderLayout.CENTER);
 	}
+	
 
 }

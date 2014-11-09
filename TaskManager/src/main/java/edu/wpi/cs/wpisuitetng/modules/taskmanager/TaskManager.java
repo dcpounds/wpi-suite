@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.TaskManager;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ public class TaskManager implements IJanewayModule {
 	
 	public TaskManager(){
 		this.workflowListModel = new WorkflowListModel();
-		this.mainView = mainView;
+		this.mainView = new MainView( this.workflowListModel );
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		//Create both the toolbar and main panel panes
 		TaskManagerToolbarView toolbarPanel = new TaskManagerToolbarView();
 		
 		//Create a panel for the toolbar at the top
-		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainView);
+		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, this.mainView);
 		tabs.add(tab1);
 	}
 	
