@@ -3,8 +3,8 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddLayoutController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.LayoutModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkFlowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkFlowModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -13,11 +13,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author dave
  *
  */
-public class AddLayoutRequestObserver implements RequestObserver {
+public class AddWorkFlowRequestObserver implements RequestObserver {
 
-	 private final AddLayoutController controller;
+	 private final AddWorkFlowController controller;
 	    
-	    public AddLayoutRequestObserver(AddLayoutController controller) {
+	    public AddWorkFlowRequestObserver(AddWorkFlowController controller) {
 	        this.controller = controller;
 	    }
 	    
@@ -27,26 +27,26 @@ public class AddLayoutRequestObserver implements RequestObserver {
 	    final ResponseModel response = iReq.getResponse();
 	    
 	    // Parse the message out of the response body
-	    final LayoutModel message = LayoutModel.fromJson(response.getBody());
+	    final WorkFlowModel message = WorkFlowModel.fromJson(response.getBody());
 	    
 	    // Pass the messages back to the controller
-	    controller.addLayoutToModel(message);
+	    controller.addWorkFlowToModel(message);
 	}
 	
 	@Override
 	public void responseError(IRequest iReq) {
-	    System.err.println("The request to add a layout failed.");
+	    System.err.println("The request to add a work flow failed.");
 	}
 	
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to add a layout failed.");
+	    System.err.println("The request to add a work flow failed.");
 	}
 	
 	/**
 	 * @return the controller
 	 */
-	public AddLayoutController getController() {
+	public AddWorkFlowController getController() {
 	    return this.controller;
 	}
 

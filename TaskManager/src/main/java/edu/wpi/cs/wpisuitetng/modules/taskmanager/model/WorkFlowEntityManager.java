@@ -18,11 +18,11 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  * @author dave
  *
  */
-public class LayoutEntityManager implements EntityManager<LayoutModel> {
+public class WorkFlowEntityManager implements EntityManager<WorkFlowModel> {
 
 	private final Data db;
 	
-	public LayoutEntityManager(Data db){
+	public WorkFlowEntityManager(Data db){
 		this.db = db;
 	}
 	
@@ -30,49 +30,49 @@ public class LayoutEntityManager implements EntityManager<LayoutModel> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public LayoutModel makeEntity(Session s, String content)
+	public WorkFlowModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// Parse the message from JSON
-        final LayoutModel newLayout = LayoutModel.fromJson(content);
+        final WorkFlowModel newWorkFlow = WorkFlowModel.fromJson(content);
         
         // Save the message in the database if possible, otherwise throw an exception
         // We want the message to be associated with the project the user logged in to
-        if (!db.save(newLayout, s.getProject())) {
+        if (!db.save(newWorkFlow, s.getProject())) {
             throw new WPISuiteException();
         }
         
         // Return the newly created message (this gets passed back to the client)
-        return newLayout;
+        return newWorkFlow;
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public LayoutModel[] getEntity(Session s, String id)
+	public WorkFlowModel[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		throw new WPISuiteException("Cannot Retrieve Individual Layout Yet");
+		throw new WPISuiteException("Cannot Retrieve Individual WorkFlow Yet");
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public LayoutModel[] getAll(Session s) throws WPISuiteException {
+	public WorkFlowModel[] getAll(Session s) throws WPISuiteException {
         // Ask the database to retrieve all objects of the type PostBoardMessage.
         // Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
         // Passing the project makes it only get messages from that project
-        List<Model> messages = db.retrieveAll(new LayoutModel(null), s.getProject());
+        List<Model> messages = db.retrieveAll(new WorkFlowModel(null), s.getProject());
         
         // Return the list of messages as an array
-        return messages.toArray(new LayoutModel[0]);
+        return messages.toArray(new WorkFlowModel[0]);
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public LayoutModel update(Session s, String content)
+	public WorkFlowModel update(Session s, String content)
 			throws WPISuiteException {
 		throw new WPISuiteException("Cannot Update Layout Yet");
 	}
@@ -81,7 +81,7 @@ public class LayoutEntityManager implements EntityManager<LayoutModel> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, LayoutModel model) throws WPISuiteException {
+	public void save(Session s, WorkFlowModel model) throws WPISuiteException {
 		db.save(model);
 	}
 
@@ -116,7 +116,7 @@ public class LayoutEntityManager implements EntityManager<LayoutModel> {
 	 */
 	@Override
 	public int Count() throws WPISuiteException {
-        return db.retrieveAll(new LayoutModel(null)).size();
+        return db.retrieveAll(new WorkFlowModel(null)).size();
 	}
 
 	/* (non-Javadoc)

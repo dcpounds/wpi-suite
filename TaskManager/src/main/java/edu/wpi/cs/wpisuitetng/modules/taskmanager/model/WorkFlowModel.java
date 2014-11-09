@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
-public class LayoutModel extends AbstractModel {
+public class WorkFlowModel extends AbstractModel {
 	final private String name;
 
-	public LayoutModel(String name){
+	public WorkFlowModel(String name){
 		this.name = name;
 	}
 	
@@ -25,18 +25,18 @@ public class LayoutModel extends AbstractModel {
 
 	@Override
 	public String toJson() {
-        return new Gson().toJson(this, LayoutModel.class);
+        return new Gson().toJson(this, WorkFlowModel.class);
 	}
 	
 
-    public static LayoutModel fromJson(String json) {
+    public static WorkFlowModel fromJson(String json) {
         final Gson parser = new Gson();
-        return parser.fromJson(json, LayoutModel.class);
+        return parser.fromJson(json, WorkFlowModel.class);
     }
 
-    public static LayoutModel[] fromJsonArray(String json) {
+    public static WorkFlowModel[] fromJsonArray(String json) {
         final Gson parser = new Gson();
-        return parser.fromJson(json, LayoutModel[].class);
+        return parser.fromJson(json, WorkFlowModel[].class);
     }
     
 	@Override
@@ -56,7 +56,7 @@ public class LayoutModel extends AbstractModel {
         if (getClass() != obj.getClass())
             return false;
         
-        LayoutModel other = (LayoutModel) obj;
+        WorkFlowModel other = (WorkFlowModel) obj;
         
         return this.name == other.getName();
 	}

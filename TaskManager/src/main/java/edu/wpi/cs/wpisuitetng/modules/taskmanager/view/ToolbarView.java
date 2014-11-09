@@ -14,8 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddLayoutController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.LayoutListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkFlowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkFlowListModel;
 
 /**
  * @author dave
@@ -29,56 +29,56 @@ public class ToolbarView extends JPanel {
     private static final long serialVersionUID = 6568533963473785570L;
     
     /** A text field where the user can enter a new message */
-    private JTextField txtNewLayoutName;
+    private JTextField txtNewWorkFlowName;
     
     /** A button for submitting new messages */
     private final JButton btnSubmit;
     
     private final MouseAdapter mouseListener;
     
-    private final LayoutListModel layoutListModel;
+    private final WorkFlowListModel workFlowListModel;
     
    
-    public ToolbarView(LayoutListModel layoutModel) {
+    public ToolbarView(WorkFlowListModel layoutModel) {
         
         // Construct the list box model
-        layoutListModel = layoutModel;
+        workFlowListModel = layoutModel;
         
         // Construct the components to be displayed
-        txtNewLayoutName = new JTextField("Enter a message here.");
+        txtNewWorkFlowName = new JTextField("Enter a message here.");
         btnSubmit = new JButton("Submit");
         
         mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                txtNewLayoutName.setText("");
+                txtNewWorkFlowName.setText("");
             }
         };
         
         // Construct the add message controller and add it to the submit button
-        btnSubmit.addActionListener(new AddLayoutController(layoutListModel, this));
+        btnSubmit.addActionListener(new AddWorkFlowController(workFlowListModel, this));
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
         
         // Clear the contents of the text field when the user clicks on it
-        txtNewLayoutName.addMouseListener(mouseListener);
+        txtNewWorkFlowName.addMouseListener(mouseListener);
         
         // Adjust sizes and alignments
         btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add the components to the panel
         add(Box.createVerticalStrut(20));
-        add(txtNewLayoutName);
+        add(txtNewWorkFlowName);
         add(Box.createVerticalStrut(20));
         add(btnSubmit);
     }
     
     public JTextField getTxtNewLayoutName() {
-        return txtNewLayoutName;
+        return txtNewWorkFlowName;
     }
     
     void setTxtNewLayoutName(JTextField txtNewLayoutName) {
-        this.txtNewLayoutName = txtNewLayoutName;
+        this.txtNewWorkFlowName = txtNewLayoutName;
     }
     
     /**
@@ -88,8 +88,8 @@ public class ToolbarView extends JPanel {
         return this.btnSubmit;
     }
     
-    LayoutListModel getLayoutListModel() {
-        return this.layoutListModel;
+    WorkFlowListModel getLayoutListModel() {
+        return this.workFlowListModel;
     }
 
     static long getSerialversionuid() {

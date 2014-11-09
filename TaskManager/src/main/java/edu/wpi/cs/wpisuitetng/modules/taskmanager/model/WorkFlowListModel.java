@@ -9,20 +9,20 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.LayoutModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkFlowModel;
 
 /**
  * @author dave
  *
  */
-public class LayoutListModel extends AbstractListModel {
+public class WorkFlowListModel extends AbstractListModel {
 	
     private static final long serialVersionUID = -8385236112393098321L;
     
-    private List<LayoutModel> layouts;
+    private List<WorkFlowModel> workFlows;
     
-    public LayoutListModel() {
-        layouts = new ArrayList<LayoutModel>();
+    public WorkFlowListModel() {
+        workFlows = new ArrayList<WorkFlowModel>();
     }
     
     /**
@@ -34,7 +34,7 @@ public class LayoutListModel extends AbstractListModel {
      */
     public void emptyModel() {
         int oldSize = getSize();
-        Iterator<LayoutModel> iterator = layouts.iterator();
+        Iterator<WorkFlowModel> iterator = workFlows.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
@@ -42,18 +42,18 @@ public class LayoutListModel extends AbstractListModel {
         this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
     }
     
-    public void addLayout(LayoutModel newLayout) {
+    public void addWorkFlow(WorkFlowModel newWorkFlow) {
         // Add the message
-        this.layouts.add(newLayout);
+        this.workFlows.add(newWorkFlow);
         
         // Notify the model that it has changed so the GUI will be udpated
         this.fireIntervalAdded(this, 0, 0);
     }
     
 
-    public void addLayouts(LayoutModel[] newLayouts) {
-        for (int i = 0; i < newLayouts.length; i++) {
-            this.layouts.add(newLayouts[i]);
+    public void addWorkFlows(WorkFlowModel[] newWorkFlows) {
+        for (int i = 0; i < newWorkFlows.length; i++) {
+            this.workFlows.add(newWorkFlows[i]);
         }
         this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
     }
@@ -65,8 +65,8 @@ public class LayoutListModel extends AbstractListModel {
      */
     @Override
     public String getElementAt(int index) {
-    	LayoutModel layout = layouts.get(index);
-        return layout.toString();
+    	WorkFlowModel WorkFlow = workFlows.get(index);
+        return WorkFlow.toString();
     }
     
     /*
@@ -76,7 +76,7 @@ public class LayoutListModel extends AbstractListModel {
      */
     @Override
     public int getSize() {
-        return layouts.size();
+        return workFlows.size();
     }
     
     //For testing
@@ -84,8 +84,8 @@ public class LayoutListModel extends AbstractListModel {
     /**
      * @return the messages
      */
-    List<LayoutModel> getLayouts() {
-        return this.layouts;
+    List<WorkFlowModel> getWorkFlows() {
+        return this.workFlows;
     }
     
     /**

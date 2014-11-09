@@ -4,7 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.LayoutModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkFlowModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -12,11 +12,11 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author dave
  *
  */
-public class GetLayoutsRequestObserver implements RequestObserver {
+public class GetWorkFlowsRequestObserver implements RequestObserver {
     
-    private GetLayoutsController controller;
+    private GetWorkFlowsController controller;
     
-    public GetLayoutsRequestObserver(GetLayoutsController controller) {
+    public GetWorkFlowsRequestObserver(GetWorkFlowsController controller) {
         this.controller = controller;
     }
     
@@ -25,7 +25,7 @@ public class GetLayoutsRequestObserver implements RequestObserver {
      */
     @Override
     public void responseSuccess(IRequest iReq) {
-        LayoutModel[] layouts = LayoutModel.fromJsonArray(iReq.getResponse().getBody());
+        WorkFlowModel[] layouts = WorkFlowModel.fromJsonArray(iReq.getResponse().getBody());
         controller.receivedLayouts(layouts);
     }
     
@@ -48,7 +48,7 @@ public class GetLayoutsRequestObserver implements RequestObserver {
     /**
      * @return the controller
      */
-    public GetLayoutsController getController() {
+    public GetWorkFlowsController getController() {
         return this.controller;
     }
 
