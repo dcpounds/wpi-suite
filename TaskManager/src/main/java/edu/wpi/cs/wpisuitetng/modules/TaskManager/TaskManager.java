@@ -24,11 +24,8 @@ public class TaskManager implements IJanewayModule {
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
-		JPanel mainPanel = new JPanel();
-		mainPanel.add(new JLabel("TaskManager placeholder"));
-		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
-		
-		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainPanel);
+	
+		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, workflowView);
 		
 		tabs.add(tab1);
 	}
