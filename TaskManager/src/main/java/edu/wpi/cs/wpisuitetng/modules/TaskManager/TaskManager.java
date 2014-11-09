@@ -12,12 +12,14 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.WorkflowView;
 
 public class TaskManager implements IJanewayModule {
 	private List<JanewayTabModel> tabs;
 	
 	public TaskManager(){
 		tabs = new ArrayList<JanewayTabModel>();
+		WorkflowView workflowView = new WorkflowView("Workflow");
 		
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
