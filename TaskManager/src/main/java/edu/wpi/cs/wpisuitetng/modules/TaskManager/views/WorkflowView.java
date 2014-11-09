@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 public class WorkflowView extends JPanel {
 	
 	public WorkflowView(String title) {
-		this.setLayout( new FlowLayout() );
+		this.setLayout( new BorderLayout() );
 		JPanel workFlowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workFlowPanel);
 		
@@ -31,7 +31,7 @@ public class WorkflowView extends JPanel {
 		workFlowPanel.add(scheduledCard);
 		workFlowPanel.add(inProgressCard);
 		workFlowPanel.add(completedCard);
-		this.add(scrollBar);
+		this.add(scrollBar, BorderLayout.CENTER);
 		
 	}
 
