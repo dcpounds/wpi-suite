@@ -7,6 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * This view is responsible for rendering a card that can be placed inside a workflow.
+ *
+ */
 public class CardView extends JPanel {
 
 	public CardView(String title) {

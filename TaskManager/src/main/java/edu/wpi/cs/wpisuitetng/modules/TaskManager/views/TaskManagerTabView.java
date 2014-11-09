@@ -7,8 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 /**
- * This class is used to represent a tabbed window with a Workflow view inside of it
- *
+ * This view creates a tabbed window that can contain other views. 
+ * It is also responsible for creating the default workflow tab
  */
 public class TaskManagerTabView extends JTabbedPane{
 	
@@ -17,7 +17,7 @@ public class TaskManagerTabView extends JTabbedPane{
 		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		addTab("Card Overview", new ImageIcon(), new WorkflowView("Workflow"),
+		addTab("Workflow", new ImageIcon(), new WorkflowView("Workflow"),
 		       "An overview of the task workflow");
 	}
 

@@ -7,6 +7,12 @@ import javafx.scene.control.SplitPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+
+/**
+ * @author alec
+ *This view creates a split-pane JPanel with the workflowListView on the left
+ * and a tabbed view on the right
+ */
 public class SplitPaneView extends JPanel{
 	
 	public SplitPaneView() {
