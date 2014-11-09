@@ -1,5 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.TaskManager.views;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,6 +16,7 @@ import javax.swing.JScrollPane;
 public class WorkflowView extends JPanel {
 	
 	public WorkflowView(String title) {
+		this.setLayout( new FlowLayout() );
 		JPanel workFlowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workFlowPanel);
 		

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.SplitPaneView;
 import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.TaskManager.views.WorkflowView;
 
@@ -27,13 +28,13 @@ public class TaskManager implements IJanewayModule {
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		//Create a new tab view to contain the workflow
-		TaskManagerTabView taskManagerTab = new TaskManagerTabView();
+		SplitPaneView splitPane = new SplitPaneView();
 		
 		//Creaate a panel for the toolbar at the top
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("TaskManager toolbar placeholder"));
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
-		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, taskManagerTab);
+		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, splitPane);
 		tabs.add(tab1);
 	}
 	

@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.TaskManager.views;
 
+import java.awt.BorderLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
@@ -12,9 +14,9 @@ public class TaskManagerTabView extends JTabbedPane{
 	
 	//creates a new tab called "Card Overview"
 	public TaskManagerTabView() {
+		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		addTab("Card Overview", new ImageIcon(), new WorkflowView("Workflow"),
 		       "An overview of the task workflow");
 	}
