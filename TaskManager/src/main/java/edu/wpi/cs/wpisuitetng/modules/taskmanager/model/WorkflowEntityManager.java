@@ -18,11 +18,11 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  * @author dave
  *
  */
-public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
+public class WorkflowEntityManager implements EntityManager<WorkflowModel> {
 
 	private final Data db;
 	
-	public WorkFlowEntityManager(Data db){
+	public WorkflowEntityManager(Data db){
 		this.db = db;
 	}
 	
@@ -32,17 +32,17 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	@Override
 	public WorkflowModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		// Parse the work flow from JSON
-        final WorkflowModel newWorkFlow = WorkflowModel.fromJson(content);
+		// Parse the workflow from JSON
+        final WorkflowModel newWorkflow = WorkflowModel.fromJson(content);
         
-        // Save the work flow in the database if possible, otherwise throw an exception
-        // We want the work flow to be associated with the project the user logged in to
-        if (!db.save(newWorkFlow, s.getProject())) {
+        // Save the workflow in the database if possible, otherwise throw an exception
+        // We want the workflow to be associated with the project the user logged in to
+        if (!db.save(newWorkflow, s.getProject())) {
             throw new WPISuiteException();
         }
         
-        // Return the newly created work flow (this gets passed back to the client)
-        return newWorkFlow;
+        // Return the newly created workflow (this gets passed back to the client)
+        return newWorkflow;
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +51,16 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	@Override
 	public WorkflowModel[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		throw new WPISuiteException("Cannot Retrieve Individual WorkFlow Yet");
+		WorkflowModel[] workflows = null;
+		try {
+			workflows = db.retrieve(WorkflowModel.class, "name", id, s.getProject()).toArray(new WorkflowModel[0]);
+		} catch (WPISuiteException e) {
+			e.printStackTrace();
+		}
+		if(workflows.length < 1 || workflows[0] == null) {
+			throw new NotFoundException();
+		}
+		return workflows;
 	}
 
 	/* (non-Javadoc)
@@ -59,13 +68,13 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	 */
 	@Override
 	public WorkflowModel[] getAll(Session s) throws WPISuiteException {
-        // Ask the database to retrieve all objects of the type PostBoardWorkFlow.
-        // Passing a dummy PostBoardWorkFlow lets the db know what type of object to retrieve
-        // Passing the project makes it only get work flows from that project
-        List<Model> workFlows = db.retrieveAll(new WorkflowModel(null), s.getProject());
+        // Ask the database to retrieve all objects of the type WorkflowMode.
+        // Passing a dummy WorkflowModel lets the db know what type of object to retrieve
+        // Passing the project makes it only get workflows from that project
+        List<Model> workflows = db.retrieveAll(new WorkflowModel(null), s.getProject());
         
         // Return the list of work flows as an array
-        return workFlows.toArray(new WorkflowModel[0]);
+        return workflows.toArray(new WorkflowModel[0]);
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +83,28 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	@Override
 	public WorkflowModel update(Session s, String content)
 			throws WPISuiteException {
-		throw new WPISuiteException("Cannot update work flows yet");
+		
+		WorkflowModel updatedWorkflow = WorkflowModel.fromJson(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save Requirements.
+		 * We have to get the original work flow from db4o, copy properties from updatedWorkfflow,
+		 * then save the original work flow again.
+		 */
+		List<Model> oldWorkflows = db.retrieve(WorkflowModel.class, "name", updatedWorkflow.getName(), s.getProject());
+		if(oldWorkflows.size() < 1 || oldWorkflows.get(0) == null) {
+			throw new NotFoundException();
+		}
+				
+		WorkflowModel existingWorkflow = (WorkflowModel)oldWorkflows.get(0);		
+
+		// copy values to old requirement and fill in our changeset appropriately
+		existingWorkflow.copyFrom(updatedWorkflow);
+		
+		if(!db.save(existingWorkflow, s.getProject())) {
+			throw new WPISuiteException();
+		}
+		
+		return existingWorkflow;
 	}
 
 	/* (non-Javadoc)
@@ -90,7 +120,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete work flows yets");
+		return (db.delete(getEntity(s, id)[0]) != null) ? true : false;
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +138,7 @@ public class WorkFlowEntityManager implements EntityManager<WorkflowModel> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		throw new WPISuiteException("Cannot delete work flows yets");
+		db.deleteAll(new WorkflowModel(null), s.getProject());
 	}
 
 	/* (non-Javadoc)

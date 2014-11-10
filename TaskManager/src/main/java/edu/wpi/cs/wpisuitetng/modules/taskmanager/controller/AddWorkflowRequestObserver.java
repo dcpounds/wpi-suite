@@ -3,7 +3,7 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkFlowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -13,11 +13,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author dave
  *
  */
-public class AddWorkFlowRequestObserver implements RequestObserver {
+public class AddWorkflowRequestObserver implements RequestObserver {
 
-	 private final AddWorkFlowController controller;
+	 private final AddWorkflowController controller;
 	    
-	    public AddWorkFlowRequestObserver(AddWorkFlowController controller) {
+	    public AddWorkflowRequestObserver(AddWorkflowController controller) {
 	        this.controller = controller;
 	    }
 	    
@@ -26,27 +26,27 @@ public class AddWorkFlowRequestObserver implements RequestObserver {
 	    // Get the response to the given request
 	    final ResponseModel response = iReq.getResponse();
 	    
-	    // Parse the work flow out of the response body
-	    final WorkflowModel workFlow = WorkflowModel.fromJson(response.getBody());
+	    // Parse the workflow out of the response body
+	    final WorkflowModel workflow = WorkflowModel.fromJson(response.getBody());
 	    
-	    // Pass the work flows back to the controller
-	    controller.addWorkFlowToModel(workFlow);
+	    // Pass the workflows back to the controller
+	    controller.addWorkflowToModel(workflow);
 	}
 	
 	@Override
 	public void responseError(IRequest iReq) {
-	    System.err.println("The request to add a work flow failed.");
+	    System.err.println("The request to add a workflow failed.");
 	}
 	
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to add a work flow failed.");
+	    System.err.println("The request to add a workflow failed.");
 	}
 	
 	/**
 	 * @return the controller
 	 */
-	public AddWorkFlowController getController() {
+	public AddWorkflowController getController() {
 	    return this.controller;
 	}
 

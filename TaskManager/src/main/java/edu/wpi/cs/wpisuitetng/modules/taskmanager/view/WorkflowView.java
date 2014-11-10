@@ -17,8 +17,8 @@ public class WorkflowView extends JPanel {
 	
 	public WorkflowView(String title) {
 		this.setLayout( new BorderLayout() );
-		JPanel workFlowPanel = new JPanel();
-		JScrollPane scrollBar = new JScrollPane(workFlowPanel);
+		JPanel workflowPanel = new JPanel();
+		JScrollPane scrollBar = new JScrollPane(workflowPanel);
 		
 		//Create the four base cards
 		CardView newCard = new CardView("New");
@@ -27,10 +27,10 @@ public class WorkflowView extends JPanel {
 		CardView completedCard = new CardView("Completed");
 		
 		//Add them to the workflow panel
-		workFlowPanel.add(newCard);
-		workFlowPanel.add(scheduledCard);
-		workFlowPanel.add(inProgressCard);
-		workFlowPanel.add(completedCard);
+		workflowPanel.add(newCard);
+		workflowPanel.add(scheduledCard);
+		workflowPanel.add(inProgressCard);
+		workflowPanel.add(completedCard);
 		this.add(scrollBar, BorderLayout.CENTER);
 		
 	}

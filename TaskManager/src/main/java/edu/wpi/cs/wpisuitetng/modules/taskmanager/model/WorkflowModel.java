@@ -107,5 +107,8 @@ public class WorkflowModel extends AbstractModel {
 		return this.name;
 	}
 	
+	public void copyFrom(WorkflowModel other){
+	}
+	
 
 }

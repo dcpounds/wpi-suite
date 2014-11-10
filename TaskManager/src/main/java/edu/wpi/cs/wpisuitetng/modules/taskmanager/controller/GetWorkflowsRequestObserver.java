@@ -12,11 +12,11 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author dave
  *
  */
-public class GetWorkFlowsRequestObserver implements RequestObserver {
+public class GetWorkflowsRequestObserver implements RequestObserver {
     
-    private GetWorkFlowsController controller;
+    private GetWorkflowsController controller;
     
-    public GetWorkFlowsRequestObserver(GetWorkFlowsController controller) {
+    public GetWorkflowsRequestObserver(GetWorkflowsController controller) {
         this.controller = controller;
     }
     
@@ -25,8 +25,8 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void responseSuccess(IRequest iReq) {
-        WorkflowModel[] workFlows = WorkflowModel.fromJsonArray(iReq.getResponse().getBody());
-        controller.receivedWorkFlows(workFlows);
+        WorkflowModel[] workflows = WorkflowModel.fromJsonArray(iReq.getResponse().getBody());
+        controller.receivedWorkflows(workflows);
     }
     
     /*
@@ -34,7 +34,7 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void responseError(IRequest iReq) {
-	    System.err.println("The request to view work flows failed.");
+	    System.err.println("The request to view workflows failed.");
     }
     
     /*
@@ -42,13 +42,13 @@ public class GetWorkFlowsRequestObserver implements RequestObserver {
      */
     @Override
     public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to view work flows failed.");
+	    System.err.println("The request to view workflows failed.");
     }
     
     /**
      * @return the controller
      */
-    public GetWorkFlowsController getController() {
+    public GetWorkflowsController getController() {
         return this.controller;
     }
 

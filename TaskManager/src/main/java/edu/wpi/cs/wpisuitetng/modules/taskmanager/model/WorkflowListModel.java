@@ -19,10 +19,10 @@ public class WorkflowListModel extends AbstractListModel {
 	
     private static final long serialVersionUID = -8385236112393098321L;
     
-    private List<WorkflowModel> workFlows;
+    private List<WorkflowModel> workflows;
     
     public WorkflowListModel() {
-        workFlows = new ArrayList<WorkflowModel>();
+        workflows = new ArrayList<WorkflowModel>();
     }
     
     /**
@@ -34,7 +34,7 @@ public class WorkflowListModel extends AbstractListModel {
      */
     public void emptyModel() {
         int oldSize = getSize();
-        Iterator<WorkflowModel> iterator = workFlows.iterator();
+        Iterator<WorkflowModel> iterator = workflows.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
@@ -42,18 +42,18 @@ public class WorkflowListModel extends AbstractListModel {
         this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
     }
     
-    public void addWorkFlow(WorkflowModel newWorkFlow) {
+    public void addWorkflow(WorkflowModel newWorkflow) {
         // Add the work flow
-        this.workFlows.add(newWorkFlow);
+        this.workflows.add(newWorkflow);
         
         // Notify the model that it has changed so the GUI will be udpated
         this.fireIntervalAdded(this, 0, 0);
     }
     
 
-    public void addWorkFlows(WorkflowModel[] newWorkFlows) {
-        for (int i = 0; i < newWorkFlows.length; i++) {
-            this.workFlows.add(newWorkFlows[i]);
+    public void addWorkflows(WorkflowModel[] newWorkflows) {
+        for (int i = 0; i < newWorkflows.length; i++) {
+            this.workflows.add(newWorkflows[i]);
         }
         this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
     }
@@ -65,8 +65,8 @@ public class WorkflowListModel extends AbstractListModel {
      */
     @Override
     public String getElementAt(int index) {
-    	WorkflowModel WorkFlow = workFlows.get(index);
-        return WorkFlow.toString();
+    	WorkflowModel workflow = workflows.get(index);
+        return workflow.toString();
     }
     
     /*
@@ -76,7 +76,7 @@ public class WorkflowListModel extends AbstractListModel {
      */
     @Override
     public int getSize() {
-        return workFlows.size();
+        return workflows.size();
     }
     
     //For testing
@@ -84,8 +84,8 @@ public class WorkflowListModel extends AbstractListModel {
     /**
      * @return the work flows
      */
-    List<WorkflowModel> getWorkFlows() {
-        return this.workFlows;
+    List<WorkflowModel> getWorkflows() {
+        return this.workflows;
     }
     
     /**

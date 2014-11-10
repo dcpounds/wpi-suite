@@ -16,11 +16,11 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author dave
  *
  */
-public class GetWorkFlowsController implements ActionListener {
+public class GetWorkflowsController implements ActionListener {
     
     private final WorkflowListModel model;
     
-    public GetWorkFlowsController(WorkflowListModel model) {
+    public GetWorkflowsController(WorkflowListModel model) {
         this.model = model;
     }
     
@@ -28,26 +28,26 @@ public class GetWorkFlowsController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Send a request to the core to save this workflow
         final Request request = Network.getInstance().makeRequest("taskmanager/workflowmodel", HttpMethod.GET); // GET == read
-        request.addObserver(new GetWorkFlowsRequestObserver(this)); // add an observer to process the response
+        request.addObserver(new GetWorkflowsRequestObserver(this)); // add an observer to process the response
         request.send(); // send the request
     }
     
     /**
      * Add the given work flows to the local model (they were received from the
      * core).
-     * This method is called by the GetWorkFlowsRequestObserver
+     * This method is called by the GetWorkflowsRequestObserver
      * 
-     * @param workFlows an array of work flows received from the server
+     * @param workflows an array of work flows received from the server
      */
-    public void receivedWorkFlows(WorkflowModel[] workFlows) {
+    public void receivedWorkflows(WorkflowModel[] workflows) {
         // Empty the local model to eliminate duplications
         model.emptyModel();
         
         // Make sure the response was not null
-        if (workFlows != null) {
+        if (workflows != null) {
             
             // add the work flows to the local model
-            model.addWorkFlows(workFlows);
+            model.addWorkflows(workflows);
         }
     }
 

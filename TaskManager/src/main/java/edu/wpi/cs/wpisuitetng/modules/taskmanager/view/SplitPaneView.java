@@ -30,10 +30,10 @@ public class SplitPaneView extends JPanel{
 		
 		//Initialize the left and right components
 		TaskManagerTabView tabView = new TaskManagerTabView();
-		WorkflowListView workFlowListView = new WorkflowListView(workflowListModel);
+		WorkflowListView workflowListView = new WorkflowListView(workflowListModel);
 		
 		splitPane.setRightComponent(tabView);
-		splitPane.setLeftComponent(workFlowListView);
+		splitPane.setLeftComponent(workflowListView);
 		this.add(splitPane, BorderLayout.CENTER);
 	}
 }

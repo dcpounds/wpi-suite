@@ -17,14 +17,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author dave
  *
  */
-public class AddWorkFlowController implements ActionListener {
+public class AddWorkflowController implements ActionListener {
 
 	
 	private final WorkflowListModel model;
 	private final ToolbarView view;
 		
 		
-	public AddWorkFlowController(WorkflowListModel model, ToolbarView view) {
+	public AddWorkflowController(WorkflowListModel model, ToolbarView view) {
 		this.model = model;
 		this.view = view;
 	}
@@ -33,24 +33,24 @@ public class AddWorkFlowController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-		String workFlowName = view.getTxtNewWorkFlowName().getText();
+		String workflowName = view.getTxtNewWorkflowName().getText();
 			
 		// Make sure there is text
-		if (workFlowName.length() > 0) {
+		if (workflowName.length() > 0) {
 			// Clear the text field
-			view.getTxtNewWorkFlowName().setText("");
+			view.getTxtNewWorkflowName().setText("");
 			
 			// Send a request to the core to save this work flow
 			final Request request = Network.getInstance().makeRequest("taskmanager/workflowmodel", HttpMethod.PUT); // PUT == create
-			request.setBody(new WorkflowModel(workFlowName).toJson()); // put the new work flow in the body of the request
-			request.addObserver(new AddWorkFlowRequestObserver(this)); // add an observer to process the response
+			request.setBody(new WorkflowModel(workflowName).toJson()); // put the new work flow in the body of the request
+			request.addObserver(new AddWorkflowRequestObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
 	}
 
 		
-	public void addWorkFlowToModel(WorkflowModel workFlow) {
-		model.addWorkFlow(workFlow);
+	public void addWorkflowToModel(WorkflowModel workflow) {
+		model.addWorkflow(workflow);
 	}
 
 }
