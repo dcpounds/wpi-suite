@@ -13,14 +13,31 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * It is also responsible for creating the default workflow tab
  */
 public class TaskManagerTabView extends JTabbedPane{
+	WorkflowView workflowView;
 	
 	//creates a new tab called "Card Overview"
 	public TaskManagerTabView() {
+		this.workflowView = new WorkflowView("Default Workflow");
+		
 		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		addTab("Workflow", new ImageIcon(), new WorkflowView("Workflow"),
+		addTab("Workflow", new ImageIcon(), workflowView,
 		       "An overview of the task workflow");
+	}
+	
+	/**
+	 * @return the view that contains the workflow
+	 */
+	public WorkflowView getWorkflowView(){
+		return workflowView;
+	}
+	
+	/**
+	 * @param workflowView - set the workflowView
+	 */
+	public void setWorkflowView(WorkflowView workflowView) {
+		this.workflowView = workflowView;
 	}
 
 }

@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ public class NewCardTab extends JPanel implements ITabType{
 	
 	//add a combo box here for task status
 	
-	public NewCardTab() {
+	public NewCardTab(TaskManagerTabView taskManagerTabView) {
 		this.titleLabel = new JLabel("Title: ");
 		this.cardTitleField = new JTextField();
 		this.makeCardButton = new JButton("Create this Card!");

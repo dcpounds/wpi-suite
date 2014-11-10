@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * @author dave
- *
+ * When the button to create a workflow is pressed, store the workflow in the database
  */
 public class AddWorkFlowController implements ActionListener {
 

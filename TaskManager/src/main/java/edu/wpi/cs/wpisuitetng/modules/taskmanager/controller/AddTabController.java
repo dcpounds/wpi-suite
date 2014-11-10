@@ -27,13 +27,13 @@ public class AddTabController implements ActionListener{
 		
 		if(tabType instanceof NewTaskTab){
 			String tabName = new String("New Task");
-	        view.addTab(tabName,new NewTaskTab() );
+	        view.addTab(tabName,new NewTaskTab(view) );
 		} else if(tabType instanceof NewCardTab){
 			String tabName = new String("New Card");
-	        view.addTab(tabName,new NewCardTab() );
+	        view.addTab(tabName,new NewCardTab(view) );
 		} else{
 			String tabName = new String("New Workflow");
-	        view.addTab(tabName,new NewCardTab() );
+	        view.addTab(tabName,new NewCardTab(view) );
 		}
 	}
 

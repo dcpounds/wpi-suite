@@ -27,9 +27,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
  */
 public class ToolbarView extends JPanel {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6568533963473785570L;
     
     /** A text field where the user can enter a new work flow */
@@ -47,7 +44,7 @@ public class ToolbarView extends JPanel {
         
         // Construct the list box model
         workFlowListModel = workFlowModel;
-        
+
         // Construct the components to be displayed
         txtNewWorkFlowName = new JTextField("Enter a work flow here.");
 		newWorkflowButton = new JButton("New Workflow");
@@ -66,12 +63,12 @@ public class ToolbarView extends JPanel {
         btnSubmit.addActionListener(new AddWorkFlowController(workFlowListModel, this));
         
         //adds a tab to the mainPanel
-        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab()) );
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)) );
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
         
-        // Clear the contents of the text field when the user clicks on it
+        // Clear the contents of the text field when the user clicks on i
         txtNewWorkFlowName.addMouseListener(mouseListener);
         
         // Adjust sizes and alignments
@@ -80,7 +77,6 @@ public class ToolbarView extends JPanel {
         // Add the components to the panel
         add(Box.createVerticalStrut(20));
         add(txtNewWorkFlowName);
-        add(Box.createVerticalStrut(20));
         add(btnSubmit);
         add(newTaskButton);
     }

@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ public class NewWorkflowTab extends JPanel implements ITabType{
 	
 	//add a combo box here for task status
 	
-	public NewWorkflowTab() {
+	public NewWorkflowTab(TaskManagerTabView taskManagerTabView) {
 		this.titleLabel = new JLabel("Title: ");
 		this.workflowTitleField = new JTextField();
 		this.makeWorkflowButton = new JButton("Create this Workflow!");
