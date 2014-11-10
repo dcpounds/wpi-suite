@@ -14,8 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkFlowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
  * @author dave
@@ -39,7 +43,7 @@ public class ToolbarView extends JPanel {
     private final MouseAdapter mouseListener;
     private final WorkflowListModel workFlowListModel;
    
-    public ToolbarView(WorkflowListModel workFlowModel) {
+    public ToolbarView(WorkflowListModel workFlowModel, TaskManagerTabView taskManagerTabView) {
         
         // Construct the list box model
         workFlowListModel = workFlowModel;
@@ -61,6 +65,9 @@ public class ToolbarView extends JPanel {
         // Construct the add work flow controller and add it to the submit button
         btnSubmit.addActionListener(new AddWorkFlowController(workFlowListModel, this));
         
+        //adds a tab to the mainPanel
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab()) );
+        
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
         
@@ -75,6 +82,7 @@ public class ToolbarView extends JPanel {
         add(txtNewWorkFlowName);
         add(Box.createVerticalStrut(20));
         add(btnSubmit);
+        add(newTaskButton);
     }
     
     public JTextField getTxtNewWorkFlowName() {
