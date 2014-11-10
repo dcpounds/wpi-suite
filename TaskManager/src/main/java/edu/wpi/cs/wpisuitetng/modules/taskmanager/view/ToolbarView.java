@@ -14,8 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
  * @author dave
@@ -23,9 +27,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
  */
 public class ToolbarView extends JPanel {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6568533963473785570L;
     
     /** A text field where the user can enter a new work flow */
@@ -39,7 +40,7 @@ public class ToolbarView extends JPanel {
     private final MouseAdapter mouseListener;
     private final WorkflowListModel workflowListModel;
    
-    public ToolbarView(WorkflowListModel workflowModel) {
+    public ToolbarView(WorkflowListModel workflowModel, TaskManagerTabView taskManagerTabView) {
         
         // Construct the list box model
         workflowListModel = workflowModel;
@@ -61,20 +62,22 @@ public class ToolbarView extends JPanel {
         // Construct the add work flow controller and add it to the submit button
         btnSubmit.addActionListener(new AddWorkflowController(workflowListModel, this));
         
+        //adds a tab to the mainPanel
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)) );
+        
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
         
         // Clear the contents of the text field when the user clicks on it
         txtNewWorkflowName.addMouseListener(mouseListener);
-        
         // Adjust sizes and alignments
         btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add the components to the panel
         add(Box.createVerticalStrut(20));
         add(txtNewWorkflowName);
-        add(Box.createVerticalStrut(20));
         add(btnSubmit);
+        add(newTaskButton);
     }
     
     public JTextField getTxtNewWorkflowName() {

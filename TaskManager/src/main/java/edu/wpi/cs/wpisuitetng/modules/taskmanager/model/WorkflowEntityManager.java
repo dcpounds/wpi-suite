@@ -88,11 +88,11 @@ public class WorkflowEntityManager implements EntityManager<WorkflowModel> {
 			throws WPISuiteException {
 		
 		WorkflowModel updatedWorkflow = WorkflowModel.fromJson(content);
-		/*
-		 * Because of the disconnected objects problem in db4o, we can't just save Requirements.
-		 * We have to get the original work flow from db4o, copy properties from updatedWorkfflow,
-		 * then save the original work flow again.
-		 */
+		
+		// Because of the disconnected objects problem in db4o, we can't just save Requirements.
+		// We have to get the original work flow from db4o, copy properties from updatedWorkfflow,
+		// then save the original work flow again.
+		//
 		List<Model> oldWorkflows = db.retrieve(WorkflowModel.class, "name", updatedWorkflow.getName(), s.getProject());
 		if(oldWorkflows.size() < 1 || oldWorkflows.get(0) == null) {
 			throw new NotFoundException();

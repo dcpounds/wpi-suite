@@ -27,6 +27,19 @@ public class TaskModel extends AbstractModel {
 		dueDate = new Date();	
 	}
 	
+	/** The default constructor for a Task **/
+	public TaskModel(String title, String description, User creator){
+		id = -1;
+		estimatedEffort = 0;
+		actualEffort = 0;
+		this.title = title;;
+		this.creator = new User("", "", "", -1);
+		this.description = description;
+		creationDate = new Date();
+		usersAssignedTo = new ArrayList<User>();
+		dueDate = new Date();	
+	}
+	
 	/**
 	 * @param id - the id of the task
 	 * @param title - the title of the task
