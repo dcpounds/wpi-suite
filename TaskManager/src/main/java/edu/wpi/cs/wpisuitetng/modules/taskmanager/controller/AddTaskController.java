@@ -40,7 +40,7 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		cardView.add(taskView);
+		cardView.addTaskView(taskView);
 		tabView.remove(componentToClose);
 	}
 

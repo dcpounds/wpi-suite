@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -27,16 +28,16 @@ public class TaskView extends JPanel{
 	public TaskView(String title, String desc, User createdBy){
 		this.setOpaque(true);
 		this.setBackground( Color.GRAY );
-		this.setLayout(new GridLayout() );
-		this.setPreferredSize(new Dimension(280, 200) );
+		this.setLayout(new BorderLayout() );
+		this.setPreferredSize(new Dimension(240, 200) );
 		
 		this.taskTitle = new JLabel(title);
 		this.description = new JLabel(desc);
 		this.createdUsername = new JLabel(createdBy.toString());
 		
-		this.add(taskTitle);
-		this.add(description);
-		this.add(createdUsername);
+		this.add(taskTitle, BorderLayout.NORTH);
+		this.add(description, BorderLayout.CENTER);
+		this.add(createdUsername, BorderLayout.CENTER);
 	}
 	
 	public TaskView( TaskModel taskModel ){
@@ -47,11 +48,11 @@ public class TaskView extends JPanel{
 		
 		this.setOpaque(true);
 		this.setBackground( Color.GRAY );
-		this.setLayout(new GridLayout() );
-		this.setPreferredSize(new Dimension(280, 200) );
+		this.setLayout(new BorderLayout() );
+		this.setPreferredSize(new Dimension(240, 200) );
 		
-		this.add(taskTitle);
-		this.add(description);
-		this.add(createdUsername);
+		this.add(taskTitle, BorderLayout.NORTH);
+		this.add(description, BorderLayout.CENTER);
+		this.add(createdUsername, BorderLayout.CENTER);
 	}
 }
