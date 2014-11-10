@@ -10,9 +10,12 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
  * @author dave
@@ -120,6 +123,7 @@ public class WorkflowEntityManager implements EntityManager<WorkflowModel> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+		ensureRole(s, Role.ADMIN);
 		return (db.delete(getEntity(s, id)[0]) != null) ? true : false;
 	}
 
@@ -138,6 +142,7 @@ public class WorkflowEntityManager implements EntityManager<WorkflowModel> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
+		ensureRole(s, Role.ADMIN);
 		db.deleteAll(new WorkflowModel(null), s.getProject());
 	}
 
@@ -167,6 +172,19 @@ public class WorkflowEntityManager implements EntityManager<WorkflowModel> {
 			throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Ensures that a user is of the specified role
+	 * @param session the session
+	 * @param role the role being verified
+	
+	 * @throws WPISuiteException user isn't authorized for the given role */
+	private void ensureRole(Session session, Role role) throws WPISuiteException {
+		User user = (User) db.retrieve(User.class, "username", session.getUsername()).get(0);
+		if(!user.getRole().equals(role)) {
+			throw new UnauthorizedException();
+		}
 	}
 
 }
