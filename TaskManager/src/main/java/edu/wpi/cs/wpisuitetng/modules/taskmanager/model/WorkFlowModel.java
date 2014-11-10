@@ -69,5 +69,8 @@ public class WorkFlowModel extends AbstractModel {
 		return this.name;
 	}
 	
+	public void copyFrom(WorkFlowModel other){
+	}
+	
 
 }
