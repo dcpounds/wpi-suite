@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ClosableTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 public class NewTaskTab extends JPanel implements ITabType{
@@ -48,9 +49,8 @@ public class NewTaskTab extends JPanel implements ITabType{
         };
 		
 		this.makeTaskButton = new JButton("Create this Task!");
-		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, 
-				new TaskModel("Test","Testing", new User("alec", "alec12094", "blah", 4) ), 0 ) );
-		
+		TaskModel taskModel = new TaskModel("Test","Testing", new User("alec", "alec12094", "blah", 0));
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView,this,taskModel, 0) );
 		add(titleLabel);
 		add(taskTitleField);
 		add(descriptionLabel);
