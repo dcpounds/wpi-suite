@@ -4,16 +4,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ITabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 public class AddTabController implements ActionListener{
 	
 	private final TaskManagerTabView view;
-	private String tabName;
 	private ITabType tabType;
 	
 	public AddTabController(TaskManagerTabView view, ITabType tabType ){
@@ -28,19 +29,22 @@ public class AddTabController implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int index = view.getTabCount();
+		ClosableTabModel tabModel = new ClosableTabModel();
+		tabModel.setTabIndex( view.getTabCount() );
 		
 		if(tabType instanceof NewTaskTab){
-			String tabName = new String("New Task");
-	        view.addTab(tabName,new NewTaskTab(view) );
-	        view.setTabComponentAt(index, new TabView(view, tabName) );
+			tabModel.setTabTitle("New Task");
+	        view.addTab("",new NewTaskTab(view) );
+	        view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 	        
 		} else if(tabType instanceof NewCardTab){
-			String tabName = new String("New Card");
-	        view.addTab(tabName,new NewCardTab(view) );
+			tabModel.setTabTitle("New Card");
+			view.addTab("", new NewCardTab(view) );
+			view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 		} else{
-			String tabName = new String("New Workflow");
-	        view.addTab(tabName,new NewCardTab(view) );
+			tabModel.setTabTitle("New Workflow");
+			view.addTab("", new NewWorkflowTab(view) );
+			view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 		}
 	}
 
@@ -51,10 +55,4 @@ public class AddTabController implements ActionListener{
 	public TaskManagerTabView getMainView() {
 		return view;
 	}
-	
-	public String getTabName(){
-		return tabName;
-	}
-	
-
 }

@@ -3,15 +3,21 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
-public class CloseableTabController implements ActionListener {
+/**
+ * @author alec
+ *  This controller is responsible for performing the action
+ *  that closes a tab
+ */
+public class ClosableTabController implements ActionListener {
 	private TaskManagerTabView view;
 	private int index;
 	
-	public CloseableTabController(TaskManagerTabView view, int index) {
+	public ClosableTabController(TaskManagerTabView view, ClosableTabModel tab) {
 		this.view = view;
-		this.index = index;
+		this.index = tab.getTabIndex();
 	}
 
 	@Override
