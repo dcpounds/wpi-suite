@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -21,12 +22,12 @@ public class AddWorkflowController implements ActionListener {
 
 	
 	private final WorkflowListModel model;
-	private final ToolbarView view;
+	private final NewWorkflowTab view;
 		
 		
-	public AddWorkflowController(WorkflowListModel model, ToolbarView view) {
+	public AddWorkflowController(WorkflowListModel model, NewWorkflowTab newWorkflowTab) {
 		this.model = model;
-		this.view = view;
+		this.view = newWorkflowTab;
 	}
 
 		

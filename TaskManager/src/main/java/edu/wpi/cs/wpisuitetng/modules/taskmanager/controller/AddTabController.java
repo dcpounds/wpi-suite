@@ -1,4 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,11 +16,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 public class AddTabController implements ActionListener{
 	
 	private final TaskManagerTabView view;
-	private ITabType tabType;
+	private Component newTab;
 	
-	public AddTabController(TaskManagerTabView view, ITabType tabType ){
+	public AddTabController(TaskManagerTabView view, Component tab){
 		this.view = view;
-		this.tabType = tabType;
+		this.newTab = tab;
 	}
 	
 	/**
@@ -32,24 +33,24 @@ public class AddTabController implements ActionListener{
 		ClosableTabModel tabModel = new ClosableTabModel();
 		tabModel.setTabIndex( view.getTabCount() );
 		
-		if(tabType instanceof NewTaskTab){
+		if(newTab instanceof NewTaskTab){
 			tabModel.setTabTitle("New Task");
-	        view.addTab("",new NewTaskTab(view) );
+	        view.addTab("", newTab);
 	        view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 	        
-		} else if(tabType instanceof NewCardTab){
+		} else if(newTab instanceof NewCardTab){
 			tabModel.setTabTitle("New Card");
-			view.addTab("", new NewCardTab(view) );
+			view.addTab("", newTab);
 			view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 		} else{
 			tabModel.setTabTitle("New Workflow");
-			view.addTab("", new NewWorkflowTab(view) );
+			view.addTab("", newTab);
 			view.setTabComponentAt(tabModel.getTabIndex(), new ClosableTabView(view, tabModel) );
 		}
 	}
 
-	public ITabType getTabType() {
-		return tabType;
+	public ITabType getNewTab() {
+		return (ITabType) newTab;
 	}
 	
 	public TaskManagerTabView getMainView() {

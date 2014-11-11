@@ -19,6 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowControll
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
@@ -33,11 +34,9 @@ public class ToolbarView extends JPanel {
     private JTextField txtNewWorkflowName;
     
     /** A button for submitting new work flows */
-    private final JButton btnSubmit;
     private final JButton newWorkflowButton;
     private final JButton newTaskButton;
     private final JButton newCardButton;
-    private final MouseAdapter mouseListener;
     private final WorkflowListModel workflowListModel;
    
     public ToolbarView(WorkflowListModel workflowModel, TaskManagerTabView taskManagerTabView) {
@@ -46,67 +45,30 @@ public class ToolbarView extends JPanel {
         workflowListModel = workflowModel;
         
         // Construct the components to be displayed
-        txtNewWorkflowName = new JTextField("Enter a work flow here.");
 		newWorkflowButton = new JButton("New Workflow");
 		newTaskButton = new JButton("New Task");
 		newCardButton = new JButton("New Card");
-        btnSubmit = new JButton("Submit");
-        
-        //Empty the text field when a user clicks on it
-        mouseListener = new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                txtNewWorkflowName.setText("");
-            }
-        };
         
         // Construct the add work flow controller and add it to the submit button
-        btnSubmit.addActionListener(new AddWorkflowController(workflowListModel, this));
+        newWorkflowButton.addActionListener(new AddTabController(taskManagerTabView, new NewWorkflowTab(taskManagerTabView, workflowListModel)));
         
         //adds a tab to the mainPanel
-        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)) );
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)));
         
         // Set the layout manager of this panel that controls the positions of the components
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
+        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS)); // components will  be arranged horizontally
         
-        // Clear the contents of the text field when the user clicks on it
-        txtNewWorkflowName.addMouseListener(mouseListener);
         // Adjust sizes and alignments
-        btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        newWorkflowButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add the components to the panel
-        add(Box.createVerticalStrut(20));
-        add(txtNewWorkflowName);
-        add(btnSubmit);
+        add(Box.createHorizontalStrut(20));
+        add(newWorkflowButton);
+        add(Box.createHorizontalStrut(20));
         add(newTaskButton);
-    }
-    
-    public JTextField getTxtNewWorkflowName() {
-        return txtNewWorkflowName;
-    }
-    
-    void setTxtNewWorkflowName(JTextField txtNewWorkflowName) {
-        this.txtNewWorkflowName = txtNewWorkflowName;
-    }
-    
-    /**
-     * @return the btnSubmit
-     */
-    JButton getBtnSubmit() {
-        return this.btnSubmit;
-    }
-    
-    WorkflowListModel getWorkflowListModel() {
-        return this.workflowListModel;
     }
 
     static long getSerialversionuid() {
         return serialVersionUID;
-    }
-    
-    /**
-     * @return the mouseListener
-     */
-    MouseAdapter getMouseListener() {
-        return this.mouseListener;
     }
 }
