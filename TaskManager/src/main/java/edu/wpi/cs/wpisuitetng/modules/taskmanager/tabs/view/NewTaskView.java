@@ -1,84 +1,75 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 public class NewTaskView extends JPanel{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7394421664708095366L;
-	private JLabel titleLabel;
-	private JLabel statusLabel;
-	private JComboBox<String> statusBox;
+	private static final long serialVersionUID = -8772773694939459349L;
 	private JTextField taskTitleField;
-	
-	private JLabel descriptionLabel;
+	private JComboBox<String> taskStatusBox;
+	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
-	private final MouseAdapter mouseListener;
 	
-	private JButton makeTaskButton;
-	
-	//add a combo box here for task status
 	
 	public NewTaskView(TaskManagerTabView taskManagerTabView) {
-		setLayout( new BoxLayout(this,BoxLayout.Y_AXIS) );
-		this.titleLabel = new JLabel("Task Title:");
-		this.taskTitleField = new JTextField("New Task");
 		
-		this.statusLabel = new JLabel("Task Status");
-		this.statusBox = new JComboBox<String>();
-		this.statusBox.setPrototypeDisplayValue("Status");
 		
-		this.descriptionLabel = new JLabel("Task Description: ");
-		this.taskDescriptionField = new JTextArea("Enter a description for the task");
-		JScrollPane scrollPane = new JScrollPane(taskDescriptionField);
-		scrollPane.setPreferredSize(new Dimension(300,300 ));
+		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][grow]"));
 		
-        //Empty the text field when a user clicks on it
-        mouseListener = new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                taskDescriptionField.setText("");
-            }
-        };
+		JLabel newTaskLabel = new JLabel("Create a New Task");
+		add(newTaskLabel, "cell 1 0 3 1,alignx center");
 		
-		this.makeTaskButton = new JButton("Create this Task!");
+		JLabel taskTitleLabel = new JLabel("Task Title");
+		add(taskTitleLabel, "flowx,cell 1 2");
+		
+		JLabel taskStatusLabel = new JLabel("Task Status");
+		add(taskStatusLabel, "cell 3 2");
+		
+		taskTitleField = new JTextField();
+		taskTitleField.setText("New Task");
+		add(taskTitleField, "flowx,cell 1 3,alignx left");
+		taskTitleField.setColumns(35);
+		
+		taskStatusBox = new JComboBox<String>();
+		taskStatusBox.setToolTipText("Select a status for this task");
+		taskStatusBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Status"} ) );
+		taskStatusBox.setSelectedIndex(0);
+		add(taskStatusBox, "cell 3 3");
+		
+		taskDescriptionLabel = new JLabel("Task Description");
+		add(taskDescriptionLabel, "cell 1 5");
+		
+		taskDescriptionField = new JTextArea();
+		taskDescriptionField.setLineWrap(true);
+		taskDescriptionField.setColumns(50);
+		taskDescriptionField.setRows(10);
+		add(taskDescriptionField, "cell 1 6 3 1,alignx left,aligny top");
+		
+		JButton makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0) );
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
-		add(titleLabel);
-		add(taskTitleField);
-		
-		add(statusBox);
-		add(descriptionLabel);
-		
-		add(scrollPane);
-		add(makeTaskButton);
-		
+		add(makeTaskButton, "cell 1 8");
 	}
 	
 	public String getTitleLabelText(){
-		System.out.println("Got" + taskTitleField.getText());
 		return taskTitleField.getText();
 	};
 	
 	public String getDescriptionText(){
-		System.out.println("Got" + taskDescriptionField.getText());
 		return taskDescriptionField.getText();
 	}
+
 }
