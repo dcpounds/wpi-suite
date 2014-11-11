@@ -18,6 +18,12 @@ public class ClosableTabModel extends AbstractModel {
 		this.index = index;
 	}
 	
+	public ClosableTabModel(String tabTitle, int index) {
+		this.tabTitle = tabTitle;
+		this.icon = new ImageIcon();
+		this.index = index;
+	}
+	
 	public ClosableTabModel(String tabTitle) {
 		this.tabTitle = tabTitle;
 		this.icon = new ImageIcon();

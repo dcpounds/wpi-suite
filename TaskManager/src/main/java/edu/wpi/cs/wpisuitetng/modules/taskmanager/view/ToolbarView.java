@@ -17,8 +17,8 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
@@ -63,7 +63,7 @@ public class ToolbarView extends JPanel {
         btnSubmit.addActionListener(new AddWorkflowController(workflowListModel, this));
         
         //adds a tab to the mainPanel
-        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)) );
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskView(taskManagerTabView)) );
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically

@@ -1,8 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,10 +12,10 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ClosableTabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
-public class NewTaskTab extends JPanel implements ITabType{
+public class NewTaskView extends JPanel{
 	/**
 	 * 
 	 */
@@ -33,7 +31,7 @@ public class NewTaskTab extends JPanel implements ITabType{
 	
 	//add a combo box here for task status
 	
-	public NewTaskTab(TaskManagerTabView taskManagerTabView) {
+	public NewTaskView(TaskManagerTabView taskManagerTabView) {
 		this.titleLabel = new JLabel("Task Title:");
 		titleLabel.setPreferredSize(new Dimension(100,0));
 		this.taskTitleField = new JTextField("New Task");
@@ -51,6 +49,7 @@ public class NewTaskTab extends JPanel implements ITabType{
 		this.makeTaskButton = new JButton("Create this Task!");
 		TaskModel taskModel = new TaskModel("Test","Testing", new User("alec", "alec12094", "blah", 0));
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView,this,taskModel, 0) );
+		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		add(titleLabel);
 		add(taskTitleField);
 		add(descriptionLabel);

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
@@ -41,7 +41,6 @@ public class AddTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		cardView.addTaskView(taskView);
-		tabView.remove(componentToClose);
 	}
 
 }

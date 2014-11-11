@@ -1,10 +1,12 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
+import java.awt.Component;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ClosableTabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 
 /**
@@ -21,12 +23,17 @@ public class ClosableTabView extends JPanel{
 	private final TaskManagerTabView view;
 	private final JButton closeButton;
 	
-	public ClosableTabView(TaskManagerTabView view, ClosableTabModel tabModel) {
+	/**
+	 * @param view - the parent pane that houses all the tabs
+	 * @param tabModel - the tab's model
+	 * @param paneComponent - the child component that this tab is attached to
+	 */
+	public ClosableTabView(TaskManagerTabView view, ClosableTabModel tabModel, Component paneComponent) {
 		this.view = view;
 		tabLabel = new JLabel(tabModel.getTabTitle());
 		
 		this.closeButton = new JButton("X");
-		closeButton.addActionListener( new ClosableTabController(view, tabModel) );
+		closeButton.addActionListener( new RemoveTabController(view, paneComponent) );
 		
 		this.add(tabLabel);
 		this.add(closeButton);

@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class NewWorkflowTab extends JPanel implements ITabType{
+public class NewWorkflowView extends JPanel{
 	/**
 	 * 
 	 */
@@ -19,7 +19,7 @@ public class NewWorkflowTab extends JPanel implements ITabType{
 	
 	//add a combo box here for task status
 	
-	public NewWorkflowTab(TaskManagerTabView taskManagerTabView) {
+	public NewWorkflowView(TaskManagerTabView taskManagerTabView) {
 		this.titleLabel = new JLabel("Title: ");
 		this.workflowTitleField = new JTextField();
 		this.makeWorkflowButton = new JButton("Create this Workflow!");
