@@ -26,26 +26,23 @@ public class TaskView extends JPanel{
 	private TaskModel taskModel;
 	
 	public TaskView(String title, String desc, User createdBy){
-		this.setOpaque(true);
-		this.setBackground( Color.GRAY );
-		this.setLayout(new BorderLayout() );
-		this.setPreferredSize(new Dimension(240, 200) );
-		
 		this.taskTitle = new JLabel(title);
 		this.description = new JLabel(desc);
 		this.createdUsername = new JLabel(createdBy.toString());
 		
-		this.add(taskTitle, BorderLayout.NORTH);
-		this.add(description, BorderLayout.CENTER);
-		this.add(createdUsername, BorderLayout.CENTER);
+		formatTaskView();
 	}
 	
 	public TaskView( TaskModel taskModel ){
 		this.taskModel = taskModel;
 		this.taskTitle = new JLabel( taskModel.getTitle() );
 		this.description = new JLabel( taskModel.getDescription() );
-		this.createdUsername = new JLabel( taskModel.getCreator().toString() );
+		this.createdUsername = new JLabel( taskModel.getCreator().toString());
 		
+		formatTaskView();
+	}
+	
+	private void formatTaskView(){
 		this.setOpaque(true);
 		this.setBackground( Color.GRAY );
 		this.setLayout(new BorderLayout() );
