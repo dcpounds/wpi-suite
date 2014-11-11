@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 public class NewTaskView extends JPanel{
@@ -23,6 +25,8 @@ public class NewTaskView extends JPanel{
 	 */
 	private static final long serialVersionUID = 7394421664708095366L;
 	private JLabel titleLabel;
+	private JLabel statusLabel;
+	private JComboBox<String> statusBox;
 	private JTextField taskTitleField;
 	
 	private JLabel descriptionLabel;
@@ -37,6 +41,11 @@ public class NewTaskView extends JPanel{
 		setLayout( new BoxLayout(this,BoxLayout.Y_AXIS) );
 		this.titleLabel = new JLabel("Task Title:");
 		this.taskTitleField = new JTextField("New Task");
+		
+		this.statusLabel = new JLabel("Task Status");
+		this.statusBox = new JComboBox<String>();
+		this.statusBox.setPrototypeDisplayValue("Status");
+		
 		this.descriptionLabel = new JLabel("Task Description: ");
 		this.taskDescriptionField = new JTextArea("Enter a description for the task");
 		JScrollPane scrollPane = new JScrollPane(taskDescriptionField);
@@ -54,7 +63,10 @@ public class NewTaskView extends JPanel{
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		add(titleLabel);
 		add(taskTitleField);
+		
+		add(statusBox);
 		add(descriptionLabel);
+		
 		add(scrollPane);
 		add(makeTaskButton);
 		

@@ -34,6 +34,8 @@ public class TaskView extends JPanel{
 	
 	public TaskView( TaskModel taskModel ){
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS) );
+		this.setOpaque(true);
+		this.setBackground(Color.LIGHT_GRAY);
 		this.taskModel = taskModel;
 		this.taskTitle = new JTextField( taskModel.getTitle() );
 		this.description = new JTextArea(taskModel.getDescription() );

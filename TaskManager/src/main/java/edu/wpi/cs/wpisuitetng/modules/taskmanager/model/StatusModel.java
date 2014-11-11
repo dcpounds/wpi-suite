@@ -1,13 +1,15 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public class StatusModel extends AbstractModel {
-	private List<String> statusNames;
+	private static List<String> statusNames;
 
 	public StatusModel() {
+		this.statusNames = new ArrayList<String>();
 		statusNames.add("New");
 		statusNames.add("In Progress");
 		statusNames.add("Testing");
@@ -15,8 +17,8 @@ public class StatusModel extends AbstractModel {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<String> getStatusNames() {
-		return statusNames;
+	public String[] getStatusNames() {
+		return (String[]) statusNames.toArray();
 	}
 	
 	public List<String> addStatusName(String statusName) {
