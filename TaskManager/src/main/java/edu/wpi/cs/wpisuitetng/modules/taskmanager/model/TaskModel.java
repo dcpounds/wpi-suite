@@ -28,7 +28,7 @@ public class TaskModel extends AbstractModel {
 	}
 	
 	/** The default constructor for a Task **/
-	public TaskModel(String title, String description, User creator){
+	public TaskModel(String title, String description){
 		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;

@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -32,12 +34,13 @@ public class NewTaskView extends JPanel{
 	//add a combo box here for task status
 	
 	public NewTaskView(TaskManagerTabView taskManagerTabView) {
+		setLayout( new BoxLayout(this,BoxLayout.Y_AXIS) );
 		this.titleLabel = new JLabel("Task Title:");
-		titleLabel.setPreferredSize(new Dimension(100,0));
 		this.taskTitleField = new JTextField("New Task");
-		
 		this.descriptionLabel = new JLabel("Task Description: ");
 		this.taskDescriptionField = new JTextArea("Enter a description for the task");
+		JScrollPane scrollPane = new JScrollPane(taskDescriptionField);
+		scrollPane.setPreferredSize(new Dimension(300,300 ));
 		
         //Empty the text field when a user clicks on it
         mouseListener = new MouseAdapter() {
@@ -47,14 +50,23 @@ public class NewTaskView extends JPanel{
         };
 		
 		this.makeTaskButton = new JButton("Create this Task!");
-		TaskModel taskModel = new TaskModel("Test","Testing", new User("alec", "alec12094", "blah", 0));
-		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView,this,taskModel, 0) );
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0) );
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		add(titleLabel);
 		add(taskTitleField);
 		add(descriptionLabel);
-		add(taskDescriptionField);
+		add(scrollPane);
 		add(makeTaskButton);
 		
+	}
+	
+	public String getTitleLabelText(){
+		System.out.println("Got" + taskTitleField.getText());
+		return taskTitleField.getText();
+	};
+	
+	public String getDescriptionText(){
+		System.out.println("Got" + taskDescriptionField.getText());
+		return taskDescriptionField.getText();
 	}
 }

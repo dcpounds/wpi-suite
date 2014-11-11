@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JTextField;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -18,7 +20,7 @@ public class AddTaskController implements ActionListener {
 	private CardView cardView;
 	private TaskView taskView;
 	private TaskManagerTabView tabView;
-	private Component componentToClose;
+	private NewTaskView taskCreationView;
 	
 
 	/**
@@ -27,11 +29,14 @@ public class AddTaskController implements ActionListener {
 	 * @param taskModel - the taskModel to add to the card
 	 * @param cardIndex - the index of the card to remove
 	 */
-	public AddTaskController(TaskManagerTabView tabView, Component componentToClose, TaskModel taskModel,int cardIndex){
-		this.tabView = tabView; 
-		this.componentToClose = componentToClose;
+	public AddTaskController(TaskManagerTabView tabView, NewTaskView taskCreationView, int cardIndex){
+		//Parent tab pane
+		this.tabView = tabView;
+		//Tab the request was made on
+		this.taskCreationView = taskCreationView;
+		//Get the card with the given cardIndex
 		cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
-		this.taskView = new TaskView(taskModel);
+		
 	}
 
 	/* (non-Javadoc)
@@ -40,6 +45,9 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		TaskModel taskModel = new TaskModel( taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText() );
+		this.taskView = new TaskView(taskModel);
+		
 		cardView.addTaskView(taskView);
 	}
 

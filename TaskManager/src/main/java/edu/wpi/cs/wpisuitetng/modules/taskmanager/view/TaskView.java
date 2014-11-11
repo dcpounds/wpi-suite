@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import com.db4o.User;
 
@@ -20,39 +23,30 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
  */
 public class TaskView extends JPanel{
 	
-	private final JLabel taskTitle;
-	private final JLabel description;
-	private final JLabel createdUsername;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4932681028640603728L;
+	private final JTextField taskTitle;
+	private final JTextArea description;
+	private final JTextField createdUsername;
 	private TaskModel taskModel;
 	
-	public TaskView(String title, String desc, User createdBy){
-		this.setOpaque(true);
-		this.setBackground( Color.GRAY );
-		this.setLayout(new BorderLayout() );
-		this.setPreferredSize(new Dimension(240, 200) );
-		
-		this.taskTitle = new JLabel(title);
-		this.description = new JLabel(desc);
-		this.createdUsername = new JLabel(createdBy.toString());
-		
-		this.add(taskTitle, BorderLayout.NORTH);
-		this.add(description, BorderLayout.CENTER);
-		this.add(createdUsername, BorderLayout.CENTER);
-	}
-	
 	public TaskView( TaskModel taskModel ){
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS) );
 		this.taskModel = taskModel;
-		this.taskTitle = new JLabel( taskModel.getTitle() );
-		this.description = new JLabel( taskModel.getDescription() );
-		this.createdUsername = new JLabel( taskModel.getCreator().toString() );
-		
-		this.setOpaque(true);
-		this.setBackground( Color.GRAY );
-		this.setLayout(new BorderLayout() );
+		this.taskTitle = new JTextField( taskModel.getTitle() );
+		this.description = new JTextArea(taskModel.getDescription() );
+		this.createdUsername = new JTextField( taskModel.getCreator().toString() );
 		this.setPreferredSize(new Dimension(240, 200) );
 		
-		this.add(taskTitle, BorderLayout.NORTH);
-		this.add(description, BorderLayout.CENTER);
-		this.add(createdUsername, BorderLayout.CENTER);
+		this.add(taskTitle);
+		this.add(description);
+		this.add(createdUsername);
+		
+		taskTitle.setEditable(false);
+		description.setEditable(false);
+		description.setLineWrap(true);
+		createdUsername.setEditable(false);
 	}
 }
