@@ -55,7 +55,7 @@ public class AddTabController implements ActionListener{
         return view;
     }
 
-	//public ITabType getNewTab() {
-	//	return (ITabType) newTabPane;
-	//}
+	public Component getNewTab() {
+		return newTabPane;
+	}
 }

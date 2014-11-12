@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 
-public class NewWorkflowTab extends JPanel implements ITabType{
+public class NewWorkflowTab extends JPanel{
 
 	private static final long serialVersionUID = 6568533963473785570L;
     
@@ -88,4 +87,4 @@ public class NewWorkflowTab extends JPanel implements ITabType{
     MouseAdapter getMouseListener() {
         return this.mouseListener;
     }
-    }
+}
