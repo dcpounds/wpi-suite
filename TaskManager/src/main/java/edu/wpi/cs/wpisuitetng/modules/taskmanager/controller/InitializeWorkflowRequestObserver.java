@@ -12,11 +12,11 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author dave
  *
  */
-public class GetWorkflowsRequestObserver implements RequestObserver {
+public class InitializeWorkflowRequestObserver implements RequestObserver {
     
-    private GetWorkflowsController controller;
+    private InitializeWorkflowController controller;
     
-    public GetWorkflowsRequestObserver(GetWorkflowsController controller) {
+    public InitializeWorkflowRequestObserver(InitializeWorkflowController controller) {
         this.controller = controller;
     }
     
@@ -26,7 +26,7 @@ public class GetWorkflowsRequestObserver implements RequestObserver {
     @Override
     public void responseSuccess(IRequest iReq) {
         WorkflowModel[] workflows = WorkflowModel.fromJsonArray(iReq.getResponse().getBody());
-        controller.receivedWorkflows(workflows);
+        controller.receivedWorkflow(workflows[0]);
     }
     
     /*
@@ -48,7 +48,7 @@ public class GetWorkflowsRequestObserver implements RequestObserver {
     /**
      * @return the controller
      */
-    public GetWorkflowsController getController() {
+    public InitializeWorkflowController getController() {
         return this.controller;
     }
 

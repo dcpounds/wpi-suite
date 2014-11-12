@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SaveWorkflowRequestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
