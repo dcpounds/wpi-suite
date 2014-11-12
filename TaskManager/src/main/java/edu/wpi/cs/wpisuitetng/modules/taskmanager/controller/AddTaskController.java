@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
@@ -20,16 +20,15 @@ public class AddTaskController implements ActionListener {
 	private CardView cardView;
 	private TaskView taskView;
 	private TaskManagerTabView tabView;
-	private NewTaskView taskCreationView;
+	private NewTaskTab taskCreationView;
 	
 
 	/**
 	 * @param tabView - the main JTabbedPane that holds the tab
-	 * @param componentToClose - the component to close when the action is called
 	 * @param taskModel - the taskModel to add to the card
 	 * @param cardIndex - the index of the card to remove
 	 */
-	public AddTaskController(TaskManagerTabView tabView, NewTaskView taskCreationView, int cardIndex){
+	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, int cardIndex){
 		//Parent tab pane
 		this.tabView = tabView;
 		//Tab the request was made on
@@ -45,7 +44,7 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		TaskModel taskModel = new TaskModel( taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText() );
+		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText() );
 		this.taskView = new TaskView(taskModel);
 		
 		cardView.addTaskView(taskView);

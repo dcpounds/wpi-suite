@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 
-public class NewTaskView extends JPanel{
+public class NewTaskTab extends JPanel{
 	/**
 	 * 
 	 */
@@ -27,7 +27,7 @@ public class NewTaskView extends JPanel{
 	private JTextArea taskDescriptionField;
 	
 	
-	public NewTaskView(TaskManagerTabView taskManagerTabView) {
+	public NewTaskTab(TaskManagerTabView taskManagerTabView) {
 		
 		
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][grow]"));
@@ -62,7 +62,7 @@ public class NewTaskView extends JPanel{
 		add(taskDescriptionField, "cell 1 6 3 1,alignx left,aligny top");
 		
 		JButton makeTaskButton = new JButton("Create");
-		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0) );
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0));
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		add(makeTaskButton, "cell 1 8");
 	}

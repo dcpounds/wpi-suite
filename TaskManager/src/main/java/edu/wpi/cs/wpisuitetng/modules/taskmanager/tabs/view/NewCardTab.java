@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class NewCardView extends JPanel{
+public class NewCardTab extends JPanel{
 	/**
 	 * 
 	 */
@@ -19,7 +19,7 @@ public class NewCardView extends JPanel{
 	
 	//add a combo box here for task status
 	
-	public NewCardView(TaskManagerTabView taskManagerTabView) {
+	public NewCardTab(TaskManagerTabView taskManagerTabView) {
 		this.titleLabel = new JLabel("Title: ");
 		this.cardTitleField = new JTextField();
 		this.makeCardButton = new JButton("Create this Card!");

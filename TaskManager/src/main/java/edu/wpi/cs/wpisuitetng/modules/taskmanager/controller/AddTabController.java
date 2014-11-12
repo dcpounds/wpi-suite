@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 public class AddTabController implements ActionListener{
@@ -27,13 +27,15 @@ public class AddTabController implements ActionListener{
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(newTabPane instanceof NewTaskView){
-        	addNewTab("New Task", new NewTaskView(view) );
-        } else if(newTabPane instanceof NewCardView){
-        	addNewTab("New Card", new NewCardView(view) );
+    	String tabName;
+        if(newTabPane instanceof NewTaskTab){
+        	tabName = "New Task";
+        } else if(newTabPane instanceof NewCardTab){
+        	tabName = "New Card";
         } else{
-        	addNewTab("New Workflow", new NewWorkflowView(view) );
+        	tabName = "New Workflow";
         }
+    	addNewTab(tabName, newTabPane);
     }
     
     public void addNewTab(String tabTitle, Component pane) {
@@ -42,7 +44,7 @@ public class AddTabController implements ActionListener{
     	//Store the index of this tab
     	int index = view.indexOfComponent(pane); 
     	//Instantiate a new closable tab model
-    	ClosableTabModel tabModel = new ClosableTabModel("New Task", index);
+    	ClosableTabModel tabModel = new ClosableTabModel(tabTitle, index);
     	//Add the closable tab to the correct tab
     	view.setTabComponentAt(index, new ClosableTabView(view, tabModel, pane) );
     	view.setSelectedIndex(index);
@@ -52,5 +54,8 @@ public class AddTabController implements ActionListener{
     public TaskManagerTabView getMainView() {
         return view;
     }
-    
+
+	//public ITabType getNewTab() {
+	//	return (ITabType) newTabPane;
+	//}
 }
