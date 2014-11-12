@@ -13,10 +13,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class WorkflowModel extends AbstractModel {
 	final private String name;
 	public ArrayList<CardModel> cardList;
+	private ArrayList<UserModel> userList;
 
 	public WorkflowModel(String name, ArrayList<CardModel> cardList){
 		this.name = name;
 		this.cardList = cardList;
+		this.userList = new ArrayList<UserModel>();
 	}
 	
 	public WorkflowModel(String name){
@@ -52,6 +54,28 @@ public class WorkflowModel extends AbstractModel {
 		cardList.add(card);
 		return cardList;
 	}
+	
+	/**
+	 * @param user - the user to add to the list
+	 * @return the list of users
+	 */
+	public ArrayList<UserModel> addUserToList(UserModel user) {
+		userList.add(user);
+		return userList;
+	}
+	
+	/**
+	 * @return the list of users that can be assigned to tasks in this workflow
+	 */
+	public ArrayList<UserModel> getUserList() {
+		if( userList == null || userList.size() == 0){
+			System.out.println("Warning: WorkflowModel has no users assigned!");
+			return new ArrayList<UserModel>();
+		}
+		return userList;
+	}
+	
+	
 	
 	@Override
 	public void save() {

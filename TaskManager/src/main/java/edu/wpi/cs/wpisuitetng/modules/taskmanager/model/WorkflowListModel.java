@@ -15,6 +15,18 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
  * @author dave
  *
  */
+/**
+ * @author Alec
+ *
+ */
+/**
+ * @author Alec
+ *
+ */
+/**
+ * @author Alec
+ *
+ */
 public class WorkflowListModel extends AbstractListModel {
 	
     private static final long serialVersionUID = -8385236112393098321L;
@@ -67,6 +79,15 @@ public class WorkflowListModel extends AbstractListModel {
     public String getElementAt(int index) {
     	WorkflowModel workflow = workflows.get(index);
         return workflow.toString();
+    }
+    
+    /**
+     *
+     * @param index
+     * @return - the workflowmodel at the given position in the list of workflows
+     */
+    public WorkflowModel getWorkflowModel(int index) {
+    	return workflows.get(index);
     }
     
     /*

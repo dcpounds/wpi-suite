@@ -9,6 +9,13 @@ public class UserModel extends AbstractModel {
 	private char iconText;
 	private String userName;
 	private User user;
+	
+	public UserModel() {
+		this.user = new User("NoName", "NoPass");
+		this.userName = this.user.name;
+		this.iconText = userName.charAt(0);
+	}
+	
 	public UserModel(User user) {
 		this.user = user;
 		this.userName = user.name;

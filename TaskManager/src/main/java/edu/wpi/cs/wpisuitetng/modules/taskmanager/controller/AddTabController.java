@@ -26,8 +26,6 @@ public class AddTabController implements ActionListener{
    
     /**
      * This is usually run on a button press.
-     * TODO: move this functionality into different methods in this class and call them accordingly
-     * TODO: add functionality to get the right index
      */
     @Override
     public void actionPerformed(ActionEvent e) {

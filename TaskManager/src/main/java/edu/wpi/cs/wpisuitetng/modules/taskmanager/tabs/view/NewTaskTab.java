@@ -13,7 +13,9 @@ import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 
@@ -26,14 +28,18 @@ public class NewTaskTab extends JPanel{
 	private JComboBox<String> taskStatusBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
-    private final WorkflowListModel workflowListModel;
+    private final WorkflowListModel workflowList;
 	
 	
-	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowListModel workflowModel) {
-    	workflowListModel = workflowModel;
+	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowListModel workflowList) {
+		this.workflowList = workflowList;
+		
+    	//TODO: FIX THIS SO THAT USERS ARE LOADED FROM THE ACTIVE WORKFLOW
+		//FOR NOW I AM USING 0 TO SPECIFY THE DEFAULT WORKFLOW
+		WorkflowModel workflowModel = workflowList.getWorkflowModel(0); 
 		
 		
-		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][grow]"));
+		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][grow][][][grow]"));
 		
 		JLabel newTaskLabel = new JLabel("Create a New Task");
 		add(newTaskLabel, "cell 1 0 3 1,alignx center");
@@ -62,11 +68,14 @@ public class NewTaskTab extends JPanel{
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(50);
 		taskDescriptionField.setRows(10);
-		add(taskDescriptionField, "cell 1 6 3 1,alignx left,aligny top");
+		add(taskDescriptionField, "cell 1 6,alignx left,aligny top");
 		
 		JButton makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0));
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
+		
+		JPanel assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
+		add(assignUsersView, "cell 3 6,grow");
 		add(makeTaskButton, "cell 1 8");
 	}
 	
@@ -81,9 +90,5 @@ public class NewTaskTab extends JPanel{
 	public String getStatusText() {
 		return (String)taskStatusBox.getSelectedItem();
 	}
-	
-	WorkflowListModel getWorkflowListModel() {
-        return this.workflowListModel;
-    }
 
 }
