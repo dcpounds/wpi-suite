@@ -30,7 +30,7 @@ public class SplitPaneView extends JPanel{
 		JSplitPane splitPane = new JSplitPane();
 		
 		//Initialize the left and right components
-		WorkflowListView workFlowlistView = new WorkflowListView(workflowListModel);
+		WorkflowListView workFlowlistView = new WorkflowListView(workflowListModel, mainTabView);
 		
 		splitPane.setRightComponent(mainTabView);
 		splitPane.setLeftComponent(workFlowlistView);

@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
@@ -31,6 +33,7 @@ public class NewWorkflowTab extends JPanel{
     	
         // Construct the components to be displayed
         txtNewWorkflowName = new JTextField("Enter a work flow name here.");
+        txtNewWorkflowName.setMaximumSize(new Dimension(400, 20));
         btnSubmit = new JButton("Submit");
         
         //Empty the text field when a user clicks on it

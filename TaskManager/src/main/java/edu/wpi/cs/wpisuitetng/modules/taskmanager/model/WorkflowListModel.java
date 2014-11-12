@@ -110,6 +110,30 @@ public class WorkflowListModel extends AbstractListModel {
     }
     
     /**
+     * @return get a specific workflow by its name
+     */
+    public WorkflowModel getWorkflowByName(String name) {
+    	for(WorkflowModel workflow : getWorkflows()){
+    		if(name == workflow.getName()){
+    			return workflow;
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
+     * get the names of all the workflows
+     * @return the work flows
+     */
+    public List<String> getWorkflowNames() {
+    	List<String> names = new ArrayList<String>();
+    	for(WorkflowModel workflow : getWorkflows()){
+    		names.add(workflow.getName());
+    	}
+        return names;
+    }
+    
+    /**
      * @return the serialversionuid
      */
     static long getSerialversionuid() {

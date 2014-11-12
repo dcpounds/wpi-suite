@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.CardModel;
+
 import java.awt.Font;
 
 /**
@@ -20,25 +22,21 @@ public class CardView extends JPanel {
 	private JPanel cardPane;
 	private String title;
 
-	/**
-	 * Constructs a new Card
-	 * @param title - the title of this card
-	 */
-	public CardView(String title) {
+	public CardView(CardModel cardModel) {
 
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
 		this.cardPane = new JPanel();
 		this.scrollPane = new JScrollPane(cardPane);
 		
-		JLabel cardTitle = new JLabel(title);
+		JLabel cardTitle = new JLabel(cardModel.getTitle());
 		cardTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cardPane.setBorder(new LineBorder(Color.GRAY, 2, true));
 		cardPane.setPreferredSize(new Dimension(250,500));
 		this.add(cardTitle, BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}

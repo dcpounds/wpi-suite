@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
+import java.util.List;
+
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -26,6 +28,7 @@ public class NewTaskTab extends JPanel{
 	private static final long serialVersionUID = -8772773694939459349L;
 	private JTextField taskTitleField;
 	private JComboBox<String> taskStatusBox;
+	private JComboBox<String> workFlowBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
     private final WorkflowListModel workflowList;
@@ -53,6 +56,9 @@ public class NewTaskTab extends JPanel{
 		
 		JLabel taskStatusLabel = new JLabel("Task Status");
 		add(taskStatusLabel, "cell 3 2");
+		
+		JLabel workflowLabel = new JLabel("Workflow");
+		add(workflowLabel, "cell 2 8");
 		
 		taskTitleField = new JTextField();
 		taskTitleField.setText("New Task");
@@ -82,6 +88,13 @@ public class NewTaskTab extends JPanel{
 		
 		add(assignUsersView, "cell 3 6,grow");
 		add(makeTaskButton, "cell 1 8");
+		
+		workFlowBox = new JComboBox<String>();
+		workFlowBox.setToolTipText("Select a status for this task");
+		List<String> workflowNames = workflowList.getWorkflowNames();
+		workFlowBox.setModel(new DefaultComboBoxModel<String>(workflowNames.toArray(new String[workflowNames.size()])));
+		workFlowBox.setSelectedIndex(0);
+		add(workFlowBox, "cell 3 8");
 	}
 	
 	public String getTitleLabelText(){
