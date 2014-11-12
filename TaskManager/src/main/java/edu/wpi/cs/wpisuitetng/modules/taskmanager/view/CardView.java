@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+
+import java.awt.Font;
 
 /**
  * This view is responsible for rendering a card that can be placed inside a workflow.
@@ -23,12 +25,15 @@ public class CardView extends JPanel {
 	 * @param title - the title of this card
 	 */
 	public CardView(String title) {
-		this.setLayout(new BorderLayout() );
+
+		BorderLayout borderLayout = new BorderLayout();
+		this.setLayout(borderLayout);
 		this.cardPane = new JPanel();
 		this.scrollPane = new JScrollPane(cardPane);
 		
 		JLabel cardTitle = new JLabel(title);
-		cardPane.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
+		cardTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cardPane.setBorder(new LineBorder(Color.GRAY, 2, true));
 		cardPane.setPreferredSize(new Dimension(250,500));
 		this.add(cardTitle, BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
