@@ -10,10 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -27,7 +25,6 @@ public class NewTaskTab extends JPanel{
 	 */
 	private static final long serialVersionUID = -8772773694939459349L;
 	private JTextField taskTitleField;
-	private JComboBox<String> taskStatusBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
     private final WorkflowListModel workflowList;
@@ -84,10 +81,6 @@ public class NewTaskTab extends JPanel{
 	
 	public String getDescriptionText(){
 		return taskDescriptionField.getText();
-	}
-	
-	public String getStatusText() {
-		return (String)taskStatusBox.getSelectedItem();
 	}
 
 }

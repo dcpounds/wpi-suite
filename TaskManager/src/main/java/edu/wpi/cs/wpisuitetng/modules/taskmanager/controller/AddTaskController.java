@@ -52,7 +52,7 @@ public class AddTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
-		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText());
+		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskView(cardView, taskModel);
 		

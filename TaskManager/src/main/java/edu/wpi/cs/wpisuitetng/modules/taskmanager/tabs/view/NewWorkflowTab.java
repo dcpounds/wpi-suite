@@ -9,8 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 
 public class NewWorkflowTab extends JPanel{
@@ -42,6 +44,7 @@ public class NewWorkflowTab extends JPanel{
         
         // Construct the add work flow controller and add it to the submit button
         btnSubmit.addActionListener(new AddWorkflowController(workflowListModel, this));
+        btnSubmit.addActionListener( new RemoveTabController(taskManagerTabView, this));
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // components will  be arranged vertically
