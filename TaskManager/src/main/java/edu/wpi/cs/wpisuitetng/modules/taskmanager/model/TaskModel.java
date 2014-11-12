@@ -14,6 +14,7 @@ public class TaskModel extends AbstractModel {
 	private User creator;
 	private ArrayList<User> usersAssignedTo;
 	private Date creationDate, dueDate;
+	private String status;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -25,10 +26,11 @@ public class TaskModel extends AbstractModel {
 		creationDate = new Date();
 		usersAssignedTo = new ArrayList<User>();
 		dueDate = new Date();	
+		status = "";
 	}
 	
 	/** The default constructor for a Task **/
-	public TaskModel(String title, String description){
+	public TaskModel(String title, String description, String status){
 		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
@@ -38,6 +40,7 @@ public class TaskModel extends AbstractModel {
 		creationDate = new Date();
 		usersAssignedTo = new ArrayList<User>();
 		dueDate = new Date();	
+		this.status = status;
 	}
 	
 	/**
@@ -141,6 +144,20 @@ public class TaskModel extends AbstractModel {
 	 */
 	public void setCreator(User creator) {
 		this.creator = creator;
+	}
+	
+	/**
+	 * @return the status of this task
+	 */
+	public String getStatus(){
+		return status;
+	}
+	
+	/**
+	 * @param status - set the status of this task
+	 */
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	/**

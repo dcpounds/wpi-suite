@@ -45,7 +45,7 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		TaskModel taskModel = new TaskModel( taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText() );
+		TaskModel taskModel = new TaskModel( taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText() );
 		this.taskView = new TaskView(taskModel);
 		
 		cardView.addTaskView(taskView);

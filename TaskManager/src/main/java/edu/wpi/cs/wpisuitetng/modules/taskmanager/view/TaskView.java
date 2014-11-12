@@ -78,7 +78,7 @@ public class TaskView extends JPanel{
 		txtrDescription.setText(taskModel.getDescription());
 		add(txtrDescription);
 		
-		lblStatus = new JLabel("Status:");
+		lblStatus = new JLabel("Status: " + taskModel.getStatus() );
 		lblStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(lblStatus);

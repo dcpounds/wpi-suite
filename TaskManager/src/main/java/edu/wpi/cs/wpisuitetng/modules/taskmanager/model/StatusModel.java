@@ -1,28 +1,24 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
+/**
+ * @author Alec
+ * Used to store the various statuses that a task can have
+ * We use a static array so that statuses are kept constant wherever they are used
+ */
 public class StatusModel extends AbstractModel {
-	private static List<String> statusNames;
+	private static String[] statusNames;
 
 	public StatusModel() {
-		this.statusNames = new ArrayList<String>();
-		statusNames.add("New");
-		statusNames.add("In Progress");
-		statusNames.add("Testing");
-		statusNames.add("Completed");
-		// TODO Auto-generated constructor stub
+		StatusModel.statusNames = new String[]{"New","In Progress","Testing","Complete"};
 	}
 	
 	public String[] getStatusNames() {
-		return (String[]) statusNames.toArray();
+		return statusNames;
 	}
 	
-	public List<String> addStatusName(String statusName) {
-		statusNames.add(statusName);
+	public String[] addStatusName(String statusName) {
+		statusNames[statusNames.length] = statusName;
 		return statusNames;
 	}
 
