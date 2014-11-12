@@ -3,12 +3,16 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
@@ -19,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 public class AddTaskController implements ActionListener {
 	private CardView cardView;
 	private TaskView taskView;
+	private AssignUsersView assignUsersView;
 	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
 	
@@ -28,13 +33,15 @@ public class AddTaskController implements ActionListener {
 	 * @param taskModel - the taskModel to add to the card
 	 * @param cardIndex - the index of the card to remove
 	 */
-	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, int cardIndex){
+	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, AssignUsersView assignUsersView, int cardIndex){
 		//Parent tab pane
 		this.tabView = tabView;
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
 		//Get the card with the given cardIndex
 		cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
+		//the pane that is used for adding users
+		this.assignUsersView = assignUsersView;
 		
 	}
 
@@ -44,10 +51,24 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText() );
+		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText());
+		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskView(taskModel);
 		
 		cardView.addTaskView(taskView);
+	}
+	
+	//returns the final list of assigned 
+	public ArrayList<UserModel> getAssignedUsers() {
+		ArrayList<UserModel> assignedUsers = new ArrayList<UserModel>();
+		DefaultListModel<String> assignedListModel = assignUsersView.getAssignedListModel();
+		
+		int size = assignedListModel.getSize();
+		for(int index = 0; index < size; index++) {
+			UserModel userModel = new UserModel( assignedListModel.getElementAt(index) );
+			assignedUsers.add( userModel );
+		}
+		return assignedUsers;
 	}
 
 }
