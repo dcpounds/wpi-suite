@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
@@ -10,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import java.awt.Font;
+import java.util.ArrayList;
 
 /**
  * This view is responsible for rendering a card that can be placed inside a workflow.
@@ -49,6 +51,13 @@ public class CardView extends JPanel {
 	
 	public void addTaskView(TaskView taskView) {
 		cardPane.add(taskView);
+	}
+	
+	public void removeTaskView(TaskView taskView) {
+		cardPane.remove(taskView);
+		cardPane.validate();
+		cardPane.repaint();
+		
 	}
 
 }

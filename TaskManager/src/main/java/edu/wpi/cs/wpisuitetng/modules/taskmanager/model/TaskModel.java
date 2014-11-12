@@ -164,6 +164,10 @@ public class TaskModel extends AbstractModel {
 	 * @return the user that created the task
 	 */
 	public ArrayList<UserModel> getUsersAssignedTo(){
+		if(usersAssignedTo == null){
+			System.out.println("WARNING: NO USERS ASSIGNED, COUNT " + usersAssignedTo.size() );
+		}
+		System.out.println("WARNING: COUNT " + usersAssignedTo.size() );
 		return usersAssignedTo;
 	}
 	

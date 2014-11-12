@@ -26,6 +26,7 @@ public class AddTaskController implements ActionListener {
 	private AssignUsersView assignUsersView;
 	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
+	private int cardIndex;
 	
 
 	/**
@@ -38,10 +39,9 @@ public class AddTaskController implements ActionListener {
 		this.tabView = tabView;
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
-		//Get the card with the given cardIndex
-		cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
+		this.cardIndex = cardIndex;
 		
 	}
 
@@ -51,9 +51,10 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getStatusText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
-		this.taskView = new TaskView(taskModel);
+		this.taskView = new TaskView(cardView, taskModel);
 		
 		cardView.addTaskView(taskView);
 	}

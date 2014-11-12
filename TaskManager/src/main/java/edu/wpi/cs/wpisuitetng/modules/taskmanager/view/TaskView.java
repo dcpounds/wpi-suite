@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import com.db4o.User;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import net.miginfocom.swing.MigLayout;
@@ -28,6 +29,7 @@ import java.awt.Component;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 
 
@@ -42,75 +44,59 @@ public class TaskView extends JPanel{
 	 */
 	private static final long serialVersionUID = -4932681028640603728L;
 	private TaskModel taskModel;
-	private JLabel lblTaskTitle;
 	private JTextArea txtrDescription;
-	private JLabel lblStatus;
-	private JLabel lblDescription;
 	private JScrollPane scrollPane;
-	private JSeparator separator;
-	private JSeparator separator_1;
-	private JButton removeTaskButton;
-	private JSeparator separator_2;
-	private JButton editTaskButton;
 	private JTextPane textPane;
+	private JLabel lblTaskTitle;
+	private JTextField textField;
+	private JPanel assignedToPane;
+	private JScrollPane assignedToScrollPane;
 	
-	public TaskView( TaskModel taskModel ){
-		this.setOpaque(true);
-		this.setBackground(Color.LIGHT_GRAY);
+	public TaskView(CardView cardView, TaskModel taskModel ){
 		this.taskModel = taskModel;
-		this.setPreferredSize(new Dimension(240, 250) );
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new MigLayout("", "[grow][grow][]", "[][][grow][][][grow][]"));
+		setBorder(new LineBorder(Color.BLUE, 1, true));
+		setPreferredSize(new Dimension(240, 250));
 		
-		lblTaskTitle = new JLabel(taskModel.getTitle());
-		lblTaskTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTaskTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(lblTaskTitle);
+		lblTaskTitle = new JLabel( taskModel.getTitle() );
+		lblTaskTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblTaskTitle.setVerticalAlignment(SwingConstants.TOP);
+		lblTaskTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblTaskTitle, "cell 1 0,alignx center");
 		
-		separator_1 = new JSeparator();
-		add(separator_1);
+		JButton btnClose = new JButton("X");
+		btnClose.addActionListener(new RemoveTaskController(cardView, this));
+		add(btnClose, "cell 2 0");
 		
-		separator = new JSeparator();
-		add(separator);
+		JSeparator separator = new JSeparator();
+		add(separator, "cell 0 1 3 1,growx");
 		
-		lblDescription = new JLabel("Description");
-		lblDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(lblDescription);
+		JScrollPane descriptionScrollPane = new JScrollPane();
+		add(descriptionScrollPane, "cell 0 2 3 2,grow");
 		
-		scrollPane = new JScrollPane();
-		add(scrollPane);
+		JTextField descriptionPane = new JTextField( taskModel.getDescription() );
+		descriptionPane.setEditable(false);
+		descriptionScrollPane.setViewportView(descriptionPane);
 		
-		txtrDescription = new JTextArea();
-		txtrDescription.setTabSize(6);
-		txtrDescription.setEditable(false);
-		txtrDescription.setRows(1);
-		txtrDescription.setColumns(4);
-		txtrDescription.setLineWrap(true);
-		txtrDescription.setText(taskModel.getDescription());
-		add(txtrDescription);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setViewportBorder(null);
+		add(scrollPane_1, "cell 0 5 3 1,grow");
+		this.assignedToPane = new JPanel();
+		scrollPane_1.setViewportView(assignedToPane);
 		
-		lblStatus = new JLabel("Assigned To");
-		lblStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		add(lblStatus);
+		JLabel lblAssignedTo = new JLabel("Assigned To:");
+		lblAssignedTo.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblAssignedTo, "cell 1 4,alignx center");
 		addAssignedUserViews();
 		
-		separator_2 = new JSeparator();
-		add(separator_2);
-		
-		editTaskButton = new JButton("Edit Task");
-		editTaskButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(editTaskButton);
-		
-		removeTaskButton = new JButton("Remove Task");
-		removeTaskButton.setAlignmentY(0.0f);
-		removeTaskButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(removeTaskButton);
+		JButton btnEdit = new JButton("Edit");
+		add(btnEdit, "cell 2 6");
 	}
 	
 	public void addAssignedUserViews(){
 		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
 			UserIconView iconView = new UserIconView(userModel);
-			add(iconView);
+			this.assignedToPane.add(iconView);
 		}
 	}
 }
