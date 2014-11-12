@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -25,6 +27,7 @@ public class MainView extends JPanel{
 		setLayout(new BorderLayout() );
 		this.workflowListModel = workflowListModel;
 		defaultWorkflowModel = new WorkflowModel("Default Workflow");
+		defaultWorkflowModel.addUserToList( new UserModel() );
 		workflowListModel.addWorkflow(defaultWorkflowModel);
 		
 		this.splitPane = new SplitPaneView(workflowListModel, mainTabView);

@@ -60,8 +60,12 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the list of users
 	 */
 	public ArrayList<UserModel> addUserToList(UserModel user) {
-		userList.add(user);
-		return userList;
+		if(this.userList == null){
+			System.out.println("Warning: WorkflowModel had a null userList!");
+			this.userList = new ArrayList<UserModel>();
+		}
+		this.userList.add(user);
+		return this.userList;
 	}
 	
 	/**
@@ -74,8 +78,6 @@ public class WorkflowModel extends AbstractModel {
 		}
 		return userList;
 	}
-	
-	
 	
 	@Override
 	public void save() {

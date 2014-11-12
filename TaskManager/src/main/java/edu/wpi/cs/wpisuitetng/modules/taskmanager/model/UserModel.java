@@ -11,7 +11,7 @@ public class UserModel extends AbstractModel {
 	private User user;
 	
 	public UserModel() {
-		this.user = new User("NoName", "NoPass");
+		this.user = new User("Default User", "NoPass");
 		this.userName = this.user.name;
 		this.iconText = userName.charAt(0);
 	}

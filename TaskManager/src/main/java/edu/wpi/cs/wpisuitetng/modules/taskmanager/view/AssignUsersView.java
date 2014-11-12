@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,23 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AssignUnassignUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
+/**
+ * @author Alec
+ * A view that is used to assign viewers between two lists
+ */
 public class AssignUsersView extends JPanel{
-	ArrayList<UserModel> userList;
-	WorkflowModel workflowModel;
+	private ArrayList<UserModel> userList;
+	private WorkflowModel workflowModel;
+	
+	private JList<String> unassignedListComponent;
+	private JList<String> assignedListComponent;
+	private DefaultListModel<String> unassignedListModel;
+	private DefaultListModel<String> assignedListModel;
 	
 	public AssignUsersView(TaskManagerTabView tabView, WorkflowModel workflowModel) {
 		this.workflowModel = workflowModel;
@@ -46,22 +57,27 @@ public class AssignUsersView extends JPanel{
 		//List<UserModel> = tabView.getWorkflowView()
 		
 		//List of unassigned users
-		JList unassignedListComponent = new JList<String>( this.getUsernameList() );
+		unassignedListModel = new DefaultListModel<String>();
+		this.addElementsToList(unassignedListModel, this.getUsernameList() );
+		unassignedListComponent = new JList<String>( unassignedListModel );
 		scrollPane.setViewportView(unassignedListComponent);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		add(scrollPane_1, "cell 5 2,grow");
 		
 		//List of assigned users
-		DefaultListModel assignedList = new DefaultListModel();
-		JList assignedListComponent = new JList();
+		assignedListModel = new DefaultListModel<String>();
+		assignedListComponent = new JList<String>( assignedListModel );
 		scrollPane_1.setViewportView(assignedListComponent);
 		
 		JButton btnAssign = new JButton("Assign >>");
+		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
 		add(btnAssign, "cell 1 3,alignx center");
 		
 		JButton buttonUnassign = new JButton("<< Unassign");
+		buttonUnassign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.UNASSIGN) );
 		add(buttonUnassign, "cell 5 3,alignx center");
+	
 	}
 	
 	/**
@@ -69,7 +85,6 @@ public class AssignUsersView extends JPanel{
 	 */
 	private String[] getUsernameList() {
 		String[] userNameList = new String[]{""};
-		
 		if(userList.size() == 0){
 			return userNameList;
 		} else{
@@ -77,6 +92,79 @@ public class AssignUsersView extends JPanel{
 				userNameList[index] = userList.get(index).getUsername();	
 		}
 		return userNameList;
+	}
+	
+	/**
+	 * 
+	 * @return the name of the user that is selected in the unassigned list
+	 */
+	public String getUnassignedListSelectedName() {
+		return this.unassignedListComponent.getSelectedValue();
+	}
+	
+	/**
+	 * 
+	 * @return the name of the user that is selected in the unassigned list
+	 */
+	public String getAssignedListSelectedName() {
+		return this.assignedListComponent.getSelectedValue();
+	}
+	
+	/**
+	 * 
+	 * @return the index of the selected element in the unassigned list
+	 */
+	public int getUnassignedListSelectedIndex() {
+		int index = this.unassignedListComponent.getSelectedIndex();
+		return index;
+	}
+	
+	/**
+	 * 
+	 * @return the index of the selected element in the assigned list
+	 */
+	public int getAssignedListSelectedIndex() {
+		int index = this.assignedListComponent.getSelectedIndex();
+		return index;
+	}
+	
+	/**
+	 * moves a user from the unassigned list to the assigned list 
+	 */
+	public void moveUserToAssigned(){
+		int selectedIndex = this.getUnassignedListSelectedIndex();
+		if( selectedIndex < 0 ){
+			return;
+		}
+		unassignedListComponent.remove(selectedIndex);
+	}
+	
+	/**
+	 * 
+	 * @param list - the list to add elements to
+	 * @param usernameList - the list to add elements from
+	 */
+	public void addElementsToList(DefaultListModel<String> list, String[] usernameList ){
+		for( String username : usernameList ){
+			System.out.println("Added " + username + " to the model");
+			list.addElement(username);
+		}
+	}
+	
+	public JList<String> getAssignedListComponent() {
+		return assignedListComponent;
+	}
+	
+	public JList<String> getUnssignedListComponent() {
+		return unassignedListComponent;
+	}
+	
+	public DefaultListModel<String> getAssignedListModel() {
+		return assignedListModel;
+	}
+	
+	public DefaultListModel<String> getUnassignedListModel() {
+		return unassignedListModel;
 	}
 	
 

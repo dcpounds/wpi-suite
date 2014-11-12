@@ -31,6 +31,10 @@ public class NewTaskTab extends JPanel{
     private final WorkflowListModel workflowList;
 	
 	
+	/**
+	 * @param taskManagerTabView - the main view that holds tabs
+	 * @param workflowList - the list of current workflows
+	 */
 	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowListModel workflowList) {
 		this.workflowList = workflowList;
 		
