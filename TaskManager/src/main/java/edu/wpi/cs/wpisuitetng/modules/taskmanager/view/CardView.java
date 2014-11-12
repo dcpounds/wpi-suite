@@ -36,7 +36,7 @@ public class CardView extends JPanel {
 		JLabel cardTitle = new JLabel(title);
 		cardTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cardPane.setBorder(new LineBorder(Color.GRAY, 2, true));
-		cardPane.setPreferredSize(new Dimension(250,500));
+		cardPane.setPreferredSize(new Dimension(250,700));
 		this.add(cardTitle, BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
 	}

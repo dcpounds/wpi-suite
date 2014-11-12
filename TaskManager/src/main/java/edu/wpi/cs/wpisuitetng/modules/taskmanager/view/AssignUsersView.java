@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,6 @@ public class AssignUsersView extends JPanel{
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 1 2,grow");
-		
-		//List<UserModel> = tabView.getWorkflowView()
 		
 		//List of unassigned users
 		unassignedListModel = new DefaultListModel<String>();

@@ -74,7 +74,8 @@ public class TaskView extends JPanel{
 		JScrollPane descriptionScrollPane = new JScrollPane();
 		add(descriptionScrollPane, "cell 0 2 3 2,grow");
 		
-		JTextField descriptionPane = new JTextField( taskModel.getDescription() );
+		JTextArea descriptionPane = new JTextArea( taskModel.getDescription() );
+		descriptionPane.setLineWrap(true);
 		descriptionPane.setEditable(false);
 		descriptionScrollPane.setViewportView(descriptionPane);
 		
