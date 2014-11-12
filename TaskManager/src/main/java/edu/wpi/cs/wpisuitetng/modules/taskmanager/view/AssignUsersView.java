@@ -81,7 +81,7 @@ public class AssignUsersView extends JPanel{
 	}
 	
 	/**
-	 * @return an array of userName strings from a list of userModels
+	 * @return an array of userName strings from the provided list of userModels
 	 */
 	private String[] getUsernameList() {
 		String[] userNameList = new String[]{""};
@@ -126,17 +126,6 @@ public class AssignUsersView extends JPanel{
 	public int getAssignedListSelectedIndex() {
 		int index = this.assignedListComponent.getSelectedIndex();
 		return index;
-	}
-	
-	/**
-	 * moves a user from the unassigned list to the assigned list 
-	 */
-	public void moveUserToAssigned(){
-		int selectedIndex = this.getUnassignedListSelectedIndex();
-		if( selectedIndex < 0 ){
-			return;
-		}
-		unassignedListComponent.remove(selectedIndex);
 	}
 	
 	/**

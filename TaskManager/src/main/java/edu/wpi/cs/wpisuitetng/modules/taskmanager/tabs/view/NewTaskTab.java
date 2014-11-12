@@ -74,11 +74,12 @@ public class NewTaskTab extends JPanel{
 		taskDescriptionField.setRows(10);
 		add(taskDescriptionField, "cell 1 6,alignx left,aligny top");
 		
+		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
+		
 		JButton makeTaskButton = new JButton("Create");
-		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, 0));
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		
-		JPanel assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		add(assignUsersView, "cell 3 6,grow");
 		add(makeTaskButton, "cell 1 8");
 	}

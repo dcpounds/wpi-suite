@@ -12,7 +12,7 @@ public class TaskModel extends AbstractModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator;
-	private ArrayList<User> usersAssignedTo;
+	private ArrayList<UserModel> usersAssignedTo;
 	private Date creationDate, dueDate;
 	private String status;
 	
@@ -24,7 +24,7 @@ public class TaskModel extends AbstractModel {
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<User>();
+		usersAssignedTo = new ArrayList<UserModel>();
 		dueDate = new Date();	
 		status = "";
 	}
@@ -38,7 +38,7 @@ public class TaskModel extends AbstractModel {
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<User>();
+		usersAssignedTo = new ArrayList<UserModel>();
 		dueDate = new Date();	
 		this.status = status;
 	}
@@ -51,7 +51,7 @@ public class TaskModel extends AbstractModel {
 	 * @param usersAssignedTo - the List users this task is assigned to
 	 */
 	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
-			User creator, ArrayList<User> usersAssignedTo) {
+			User creator, ArrayList<UserModel> usersAssignedTo) {
 		this.id = id;
 		this.estimatedEffort = estimatedEffort;
 		this.actualEffort = actualEffort;
@@ -163,21 +163,21 @@ public class TaskModel extends AbstractModel {
 	/**
 	 * @return the user that created the task
 	 */
-	public ArrayList<User> getUsersAssignedTo(){
-		return (ArrayList<User>) usersAssignedTo;
+	public ArrayList<UserModel> getUsersAssignedTo(){
+		return usersAssignedTo;
 	}
 	
 	/**
-	 * @param usersAssignedTo - set the list of users that this task is assigned to
+	 * @param arrayList - set the list of users that this task is assigned to
 	 */
-	public void setUsersAssignedTo(ArrayList<User> usersAssignedTo) {
-		this.usersAssignedTo = usersAssignedTo;
+	public void setUsersAssignedTo(ArrayList<UserModel> arrayList) {
+		this.usersAssignedTo = arrayList;
 	}
 	
 	/**
 	 * @param assignee - set the user assigned to this task
 	 */
-	public void assignToUser(User assignee) {
+	public void assignToUser(UserModel assignee) {
 		usersAssignedTo.add(assignee);
 	}
 	

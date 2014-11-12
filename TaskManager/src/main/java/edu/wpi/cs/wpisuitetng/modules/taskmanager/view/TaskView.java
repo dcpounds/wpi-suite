@@ -14,14 +14,18 @@ import javax.swing.JTextField;
 import com.db4o.User;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JTextPane;
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+
 import java.awt.Font;
 import java.awt.Component;
+
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
@@ -88,9 +92,7 @@ public class TaskView extends JPanel{
 		lblStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(lblStatus);
-		
-		textPane = new JTextPane();
-		add(textPane);
+		addAssignedUserViews();
 		
 		separator_2 = new JSeparator();
 		add(separator_2);
@@ -103,5 +105,12 @@ public class TaskView extends JPanel{
 		removeTaskButton.setAlignmentY(0.0f);
 		removeTaskButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(removeTaskButton);
+	}
+	
+	public void addAssignedUserViews(){
+		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
+			UserIconView iconView = new UserIconView(userModel);
+			add(iconView);
+		}
 	}
 }
