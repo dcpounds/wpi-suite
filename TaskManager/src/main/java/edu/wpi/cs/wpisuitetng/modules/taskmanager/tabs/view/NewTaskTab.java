@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
@@ -25,9 +26,11 @@ public class NewTaskTab extends JPanel{
 	private JComboBox<String> taskStatusBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
+    private final WorkflowListModel workflowListModel;
 	
 	
-	public NewTaskTab(TaskManagerTabView taskManagerTabView) {
+	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowListModel workflowModel) {
+    	workflowListModel = workflowModel;
 		
 		
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][grow]"));
@@ -78,5 +81,9 @@ public class NewTaskTab extends JPanel{
 	public String getStatusText() {
 		return (String)taskStatusBox.getSelectedItem();
 	}
+	
+	WorkflowListModel getWorkflowListModel() {
+        return this.workflowListModel;
+    }
 
 }

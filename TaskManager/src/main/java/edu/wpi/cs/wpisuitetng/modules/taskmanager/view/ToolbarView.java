@@ -20,6 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
@@ -35,8 +36,8 @@ public class ToolbarView extends JPanel {
     
     /** A button for submitting new work flows */
     private final JButton newWorkflowButton;
-    private final JButton newTaskButton;
     private final JButton newCardButton;
+    private final JButton newTaskButton;
     private final WorkflowListModel workflowListModel;
    
     public ToolbarView(WorkflowListModel workflowModel, TaskManagerTabView taskManagerTabView) {
@@ -46,14 +47,17 @@ public class ToolbarView extends JPanel {
         
         // Construct the components to be displayed
 		newWorkflowButton = new JButton("New Workflow");
-		newTaskButton = new JButton("New Task");
 		newCardButton = new JButton("New Card");
+		newTaskButton = new JButton("New Task");
         
         // Construct the add work flow controller and add it to the submit button
-        newWorkflowButton.addActionListener(new AddTabController(taskManagerTabView, new NewWorkflowTab(taskManagerTabView, workflowListModel)));
+        newWorkflowButton.addActionListener(new AddTabController(taskManagerTabView, TabType.WORKFLOW, workflowListModel));
+        
+        //adds a card to the mainPanel
+        newCardButton.addActionListener( new AddTabController(taskManagerTabView, TabType.CARD, workflowListModel));
         
         //adds a tab to the mainPanel
-        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, new NewTaskTab(taskManagerTabView)));
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowListModel));
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS)); // components will  be arranged horizontally
@@ -64,6 +68,8 @@ public class ToolbarView extends JPanel {
         // Add the components to the panel
         add(Box.createHorizontalStrut(20));
         add(newWorkflowButton);
+        //add(Box.createHorizontalStrut(20));
+        //add(newCardButton);
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }

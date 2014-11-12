@@ -13,6 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * It is also responsible for creating the default workflow tab
  */
 public class TaskManagerTabView extends JTabbedPane{
+	private static final long serialVersionUID = -8772129104939459349L;
 	WorkflowView workflowView;
 	
 	//creates a new tab called "Card Overview"

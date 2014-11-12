@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+
 public class NewCardTab extends JPanel{
 	/**
 	 * 
@@ -14,12 +16,13 @@ public class NewCardTab extends JPanel{
 	
 	private JLabel titleLabel;
 	private JTextField cardTitleField;
-	
 	private JButton makeCardButton;
+    private final WorkflowListModel workflowListModel;
 	
 	//add a combo box here for task status
-	
-	public NewCardTab(TaskManagerTabView taskManagerTabView) {
+    
+	public NewCardTab(TaskManagerTabView taskManagerTabView, WorkflowListModel workflowModel) {
+    	workflowListModel = workflowModel;
 		this.titleLabel = new JLabel("Title: ");
 		this.cardTitleField = new JTextField();
 		this.makeCardButton = new JButton("Create this Card!");
@@ -31,4 +34,8 @@ public class NewCardTab extends JPanel{
 		setLayout(new FlowLayout() );
 		
 	}
+	
+	WorkflowListModel getWorkflowListModel() {
+        return this.workflowListModel;
+    }
 }
