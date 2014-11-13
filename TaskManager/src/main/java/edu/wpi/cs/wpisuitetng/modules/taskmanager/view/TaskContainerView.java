@@ -29,6 +29,7 @@ public class TaskContainerView extends JPanel{
 	JPanel titlePanel;
 	TaskView taskView;
 	JScrollPane taskContentPane;
+	CardView cardView;
 	private static Dimension openSize = new Dimension(250, 240);
 	private static Dimension closedSize = new Dimension(250, 40);
 	
@@ -37,6 +38,7 @@ public class TaskContainerView extends JPanel{
 		setForeground(Color.LIGHT_GRAY);
 		setMaximumSize(closedSize);
 		setBorder(BorderFactory.createLineBorder(Color.black));
+		this.cardView = cardView;
 		this.taskModel = taskModel;
 		this.taskView = new TaskView(cardView, taskModel);
 		
@@ -61,7 +63,6 @@ public class TaskContainerView extends JPanel{
 		taskContents.add( taskView );
 		add(taskContentPane, "cell 0 1 3 1,grow");
 		setMaximumSize(openSize);
-		updateParentContainerSize();
 		revalidate();
 		repaint();
 	}
@@ -70,17 +71,19 @@ public class TaskContainerView extends JPanel{
 		taskContents.remove( taskView );
 		this.remove(taskContentPane);
 		setMaximumSize( closedSize );
-		updateParentContainerSize();
 		revalidate();
 		repaint();
 	}
 	
-	public void updateParentContainerSize() {
-		revalidate();
-		int height = this.getHeight();
-		Component parent = this.getParent();
-		Dimension parentPreferredSize = parent.getPreferredSize();
-		parent.setPreferredSize( new Dimension( parentPreferredSize.width , parentPreferredSize.height + height));
+	public CardView getCardView(){
+		return cardView;
+	}
+	
+	public int getVerticalSpaceNeeded() {
+		boolean isExpanded = taskModel.getIsExpanded();
+		if( isExpanded )
+			return openSize.height;
+		else return closedSize.height;
 	}
 	
 	

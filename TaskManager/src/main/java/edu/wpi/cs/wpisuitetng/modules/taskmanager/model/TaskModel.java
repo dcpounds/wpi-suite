@@ -42,7 +42,6 @@ public class TaskModel extends AbstractModel {
 		creationDate = new Date();
 		usersAssignedTo = new ArrayList<UserModel>();
 		dueDate = new Date();	
-		this.status = status;
 		this.isExpanded = false;
 	}
 	

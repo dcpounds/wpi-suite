@@ -11,11 +11,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 public class ExpandTaskController implements MouseListener{
 	TaskModel taskModel;
 	TaskContainerView taskContainerView;
+	CardView cardView;
+	
 	public ExpandTaskController(TaskContainerView taskContainerView, TaskModel taskModel){
 		this.taskModel = taskModel;
-		this.taskContainerView = taskContainerView;
-		TaskView taskView = new TaskView(new CardView(null), taskModel);
-		
+		this.taskContainerView = taskContainerView;	
+		this.cardView = taskContainerView.getCardView();
 	}
 
 	@Override
@@ -27,6 +28,8 @@ public class ExpandTaskController implements MouseListener{
 			taskContainerView.showDetails();
 		
 		taskModel.setIsExpanded(!isExpanded);
+		cardView.updatePreferredDimensions();
+		
 	}
 
 	@Override

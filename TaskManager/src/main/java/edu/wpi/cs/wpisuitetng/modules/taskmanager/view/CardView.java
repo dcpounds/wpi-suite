@@ -44,6 +44,26 @@ public class CardView extends JPanel {
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
+	
+	public void updatePreferredDimensions() {
+		revalidate();
+		int heightNeeded = 0;
+		
+		//Go through each component in the cardView
+		for( Component childComponent : cardPane.getComponents() ){
+			if( childComponent instanceof TaskContainerView ){
+				System.out.println("Vertical space this component needs: " + ((TaskContainerView) childComponent).getVerticalSpaceNeeded() );
+				heightNeeded += ((TaskContainerView) childComponent).getVerticalSpaceNeeded();
+			} else{
+				System.out.println("The component is a " + childComponent);
+			}
+			
+			//Set the new preferred height if the box is too small
+			if(heightNeeded > defaultHeight)
+				cardPane.setPreferredSize(new Dimension(defaultHeight - 20, heightNeeded));
+			System.out.println("Total height of all panes: " + heightNeeded);
+		}
+	}
 
 	public String getTitle() {
 		return title;
