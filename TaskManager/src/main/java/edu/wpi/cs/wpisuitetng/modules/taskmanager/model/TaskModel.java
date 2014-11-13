@@ -15,6 +15,7 @@ public class TaskModel extends AbstractModel {
 	private ArrayList<UserModel> usersAssignedTo;
 	private Date creationDate, dueDate;
 	private String status;
+	private boolean isExpanded;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -27,6 +28,7 @@ public class TaskModel extends AbstractModel {
 		usersAssignedTo = new ArrayList<UserModel>();
 		dueDate = new Date();	
 		status = "";
+		this.isExpanded = false;
 	}
 	
 	/** The default constructor for a Task **/
@@ -41,6 +43,7 @@ public class TaskModel extends AbstractModel {
 		usersAssignedTo = new ArrayList<UserModel>();
 		dueDate = new Date();	
 		this.status = status;
+		this.isExpanded = false;
 	}
 	
 	/**
@@ -59,6 +62,7 @@ public class TaskModel extends AbstractModel {
 		this.description = description;
 		this.creator = creator;
 		this.usersAssignedTo = usersAssignedTo;
+		this.isExpanded = false;
 	}
 	
 	/**
@@ -204,6 +208,14 @@ public class TaskModel extends AbstractModel {
 	 */
 	public Date getDueDate() {
 		return dueDate;
+	}
+	
+	public boolean getIsExpanded(){
+		return isExpanded;
+	}
+	
+	public void setIsExpanded(boolean status){
+		this.isExpanded = status;
 	}
 	
 	/**

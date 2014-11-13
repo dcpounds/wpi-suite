@@ -30,6 +30,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.JList;
 
 
 
@@ -44,54 +45,38 @@ public class TaskView extends JPanel{
 	 */
 	private static final long serialVersionUID = -4932681028640603728L;
 	private TaskModel taskModel;
-	private JTextArea txtrDescription;
-	private JScrollPane scrollPane;
-	private JTextPane textPane;
-	private JLabel lblTaskTitle;
-	private JTextField textField;
 	private JPanel assignedToPane;
-	private JScrollPane assignedToScrollPane;
 	
 	public TaskView(CardView cardView, TaskModel taskModel ){
-		this.taskModel = taskModel;
-		setLayout(new MigLayout("", "[grow][grow][]", "[][][grow][][][grow][]"));
-		setBorder(new LineBorder(Color.BLUE, 1, true));
-		setPreferredSize(new Dimension(240, 250));
+		setLayout(new MigLayout("", "[grow][grow][]", "[][][][][][grow][][][grow]"));
 		
-		lblTaskTitle = new JLabel( taskModel.getTitle() );
-		lblTaskTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblTaskTitle.setVerticalAlignment(SwingConstants.TOP);
-		lblTaskTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblTaskTitle, "cell 1 0,alignx center");
+		JLabel lblDue = new JLabel("Due:");
+		add(lblDue, "cell 0 0,alignx left");
 		
-		JButton btnClose = new JButton("X");
-		btnClose.addActionListener(new RemoveTaskController(cardView, this));
-		add(btnClose, "cell 2 0");
+		JLabel lblEstimatedEffort = new JLabel("Estimated Effort:");
+		add(lblEstimatedEffort, "cell 0 1");
+		
+		JLabel lblActualEffort = new JLabel("Actual Effort:");
+		add(lblActualEffort, "cell 0 2");
 		
 		JSeparator separator = new JSeparator();
-		add(separator, "cell 0 1 3 1,growx");
+		add(separator, "cell 0 3");
 		
-		JScrollPane descriptionScrollPane = new JScrollPane();
-		add(descriptionScrollPane, "cell 0 2 3 2,grow");
+		JLabel lblDescription = new JLabel("Description");
+		add(lblDescription, "cell 0 4,alignx left");
 		
-		JTextArea descriptionPane = new JTextArea( taskModel.getDescription() );
-		descriptionPane.setLineWrap(true);
-		descriptionPane.setEditable(false);
-		descriptionScrollPane.setViewportView(descriptionPane);
+		JTextPane textPane = new JTextPane();
+		add(textPane, "cell 0 5 3 1,grow");
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(null);
-		add(scrollPane_1, "cell 0 5 3 1,grow");
-		this.assignedToPane = new JPanel();
-		scrollPane_1.setViewportView(assignedToPane);
+		JSeparator separator_1 = new JSeparator();
+		add(separator_1, "cell 0 6");
 		
 		JLabel lblAssignedTo = new JLabel("Assigned To:");
-		lblAssignedTo.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblAssignedTo, "cell 1 4,alignx center");
-		addAssignedUserViews();
+		add(lblAssignedTo, "cell 0 7");
 		
-		JButton btnEdit = new JButton("Edit");
-		add(btnEdit, "cell 2 6");
+		JList list = new JList();
+		add(list, "cell 0 8,grow");
+
 	}
 	
 	public void addAssignedUserViews(){

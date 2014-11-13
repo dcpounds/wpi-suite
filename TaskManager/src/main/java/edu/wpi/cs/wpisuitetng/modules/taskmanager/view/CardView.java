@@ -13,32 +13,36 @@ import javax.swing.border.LineBorder;
 import java.awt.Font;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
+
+import java.awt.CardLayout;
+
+import net.miginfocom.swing.MigLayout;
+
 /**
  * This view is responsible for rendering a card that can be placed inside a workflow.
  *
  */
 public class CardView extends JPanel {
-	private JScrollPane scrollPane;
-	private JPanel cardPane;
 	private String title;
+	private JPanel cardPane;
+	private JScrollPane scrollPane;
+	private static int defaultHeight = 250;
+	private static int defaultWidth = 600;
 
 	/**
 	 * Constructs a new Card
 	 * @param title - the title of this card
 	 */
 	public CardView(String title) {
-
-		BorderLayout borderLayout = new BorderLayout();
-		this.setLayout(borderLayout);
 		this.cardPane = new JPanel();
-		this.scrollPane = new JScrollPane(cardPane);
-		
-		JLabel cardTitle = new JLabel(title);
-		cardTitle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		cardPane.setBorder(new LineBorder(Color.GRAY, 2, true));
-		cardPane.setPreferredSize(new Dimension(250,700));
-		this.add(cardTitle, BorderLayout.NORTH);
-		this.add(scrollPane, BorderLayout.CENTER);
+		setPreferredSize(new Dimension( defaultHeight, defaultWidth) );
+		cardPane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 20) );
+		scrollPane = new JScrollPane(cardPane);
+		cardPane.setLayout(new BoxLayout(cardPane, BoxLayout.Y_AXIS));
+		add(scrollPane);
+		setBackground(Color.LIGHT_GRAY);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 
 	public String getTitle() {
@@ -49,15 +53,16 @@ public class CardView extends JPanel {
 		this.title = title;
 	}
 	
-	public void addTaskView(TaskView taskView) {
+	public void addTaskView(TaskContainerView taskView) {
 		cardPane.add(taskView);
+		revalidate();
+		repaint();
 	}
 	
-	public void removeTaskView(TaskView taskView) {
+	public void removeTaskView(TaskContainerView taskView) {
 		cardPane.remove(taskView);
-		cardPane.validate();
-		cardPane.repaint();
-		
+		revalidate();
+		repaint();	
 	}
 
 }

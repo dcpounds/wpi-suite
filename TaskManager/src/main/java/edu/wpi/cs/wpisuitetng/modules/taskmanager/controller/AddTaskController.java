@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
@@ -22,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
  */
 public class AddTaskController implements ActionListener {
 	private CardView cardView;
-	private TaskView taskView;
+	private TaskContainerView taskView;
 	private AssignUsersView assignUsersView;
 	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
@@ -54,8 +55,7 @@ public class AddTaskController implements ActionListener {
 		this.cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
-		this.taskView = new TaskView(cardView, taskModel);
-		
+		this.taskView = new TaskContainerView(taskModel, cardView);
 		cardView.addTaskView(taskView);
 	}
 	
