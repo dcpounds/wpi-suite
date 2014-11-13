@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
 
 /**
  * @author alec
@@ -19,10 +20,16 @@ public class WorkflowModel extends AbstractModel {
 		this.name = name;
 		this.cardList = cardList;
 		this.userList = new ArrayList<UserModel>();
+		
+		addBaseCards();
 	}
 	
 	public WorkflowModel(String name){
 		this.name = name;
+		this.cardList = new ArrayList<CardModel>();
+		this.userList = new ArrayList<UserModel>();
+		
+		addBaseCards();
 	}
 	
 	/**
@@ -134,7 +141,14 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	public void copyFrom(WorkflowModel other){
+		this.cardList = other.cardList;
 	}
 	
+	private void addBaseCards(){
+		cardList.add(new CardModel("New", new ArrayList<TaskModel>()));
+		cardList.add(new CardModel("In Progress", new ArrayList<TaskModel>()));
+		cardList.add(new CardModel("Scheduled", new ArrayList<TaskModel>()));
+		cardList.add(new CardModel("Completed", new ArrayList<TaskModel>()));
+	}
 
 }

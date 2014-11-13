@@ -1,29 +1,24 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.LineBorder;
-
-import java.awt.Font;
-import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 
-import java.awt.CardLayout;
-
-import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.CardModel;
 
 /**
  * This view is responsible for rendering a card that can be placed inside a workflow.
  *
  */
 public class CardView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7765491802045400161L;
 	private String title;
 	private JPanel cardPane;
 	private JScrollPane scrollPane;
@@ -32,9 +27,9 @@ public class CardView extends JPanel {
 
 	/**
 	 * Constructs a new Card
-	 * @param title - the title of this card
+	 * @param cardModel - the title of this card
 	 */
-	public CardView(String title) {
+	public CardView(CardModel cardModel) {
 		this.cardPane = new JPanel();
 		setPreferredSize(new Dimension( defaultHeight, defaultWidth) );
 		cardPane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 20) );

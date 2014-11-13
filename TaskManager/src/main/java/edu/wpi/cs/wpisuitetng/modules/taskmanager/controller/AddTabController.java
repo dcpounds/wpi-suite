@@ -4,11 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
@@ -16,10 +15,10 @@ public class AddTabController implements ActionListener{
    
     private final TaskManagerTabView view;
     private TabType tabType;
-    private final WorkflowListModel workflowListModel;
+    private final WorkflowModel workflowModel;
    
-    public AddTabController(TaskManagerTabView view, TabType tabType, WorkflowListModel workflowModel){
-    	workflowListModel = workflowModel;
+    public AddTabController(TaskManagerTabView view, TabType tabType, WorkflowModel workflowModel){
+    	this.workflowModel = workflowModel;
         this.view = view;
         this.tabType = tabType;
     }
@@ -35,15 +34,11 @@ public class AddTabController implements ActionListener{
     	switch(tabType){
     	case TASK:
         	tabName = "New Task";
-        	newTab = new NewTaskTab(view, workflowListModel);
+        	newTab = new NewTaskTab(view, workflowModel);
         	break;
     	case CARD:
         	tabName = "New Card";
-        	newTab = new NewCardTab(view, workflowListModel);
-        	break;
-    	case WORKFLOW:
-        	tabName = "New Workflow";
-        	newTab = new NewWorkflowTab(view, workflowListModel);
+        	newTab = new NewCardTab(view, workflowModel);
         	break;
         }
     	addNewTab(tabName, newTab);
@@ -66,7 +61,7 @@ public class AddTabController implements ActionListener{
         return view;
     }
 
-    WorkflowListModel getWorkflowListModel() {
-        return this.workflowListModel;
+    WorkflowModel getWorkflowModel() {
+        return this.workflowModel;
     }
 }

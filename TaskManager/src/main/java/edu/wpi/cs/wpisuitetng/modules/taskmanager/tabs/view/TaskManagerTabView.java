@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
 /**
@@ -18,7 +19,7 @@ public class TaskManagerTabView extends JTabbedPane{
 	
 	//creates a new tab called "Card Overview"
 	public TaskManagerTabView() {
-		this.workflowView = new WorkflowView("Default Workflow");
+		this.workflowView = new WorkflowView(new WorkflowModel("Blank"));
 		
 		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);
@@ -37,8 +38,8 @@ public class TaskManagerTabView extends JTabbedPane{
 	/**
 	 * @param workflowView - set the workflowView
 	 */
-	public void setWorkflowView(WorkflowView workflowView) {
-		this.workflowView = workflowView;
+	public void setWorkflowTab(WorkflowView workflowView) {
+		//this.setTabComponentAt(0, workflowView);
 	}
 
 }

@@ -4,9 +4,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,7 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SaveWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
@@ -31,41 +29,41 @@ public class ToolbarView extends JPanel {
     private JTextField txtNewWorkflowName;
     
     /** A button for submitting new work flows */
-    private final JButton newWorkflowButton;
+    private final JButton saveWorkflowButton;
     private final JButton newCardButton;
     private final JButton newTaskButton;
-    private final WorkflowListModel workflowListModel;
+    private final WorkflowModel workflowModel;
    
-    public ToolbarView(WorkflowListModel workflowModel, TaskManagerTabView taskManagerTabView) {
+    public ToolbarView(WorkflowModel model, TaskManagerTabView taskManagerTabView) {
         
         // Construct the list box model
-        workflowListModel = workflowModel;
+        this.workflowModel = model;
         
         // Construct the components to be displayed
-		newWorkflowButton = new JButton("New Workflow");
+		saveWorkflowButton = new JButton("Save Workflow");
 		newCardButton = new JButton("New Card");
 		newTaskButton = new JButton("New Task");
         
         // Construct the add work flow controller and add it to the submit button
-        newWorkflowButton.addActionListener(new AddTabController(taskManagerTabView, TabType.WORKFLOW, workflowListModel));
+        saveWorkflowButton.addActionListener(new SaveWorkflowController(workflowModel));
         
         //adds a card to the mainPanel
-        newCardButton.addActionListener( new AddTabController(taskManagerTabView, TabType.CARD, workflowListModel));
+        newCardButton.addActionListener( new AddTabController(taskManagerTabView, TabType.CARD, workflowModel));
         
         //adds a tab to the mainPanel
-        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowListModel));
+        newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
         
         // Set the layout manager of this panel that controls the positions of the components
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS)); // components will  be arranged horizontally
         
         // Adjust sizes and alignments
-        newWorkflowButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveWorkflowButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Add the components to the panel
         add(Box.createHorizontalStrut(20));
-        add(newWorkflowButton);
-        //add(Box.createHorizontalStrut(20));
-        //add(newCardButton);
+        add(saveWorkflowButton);
+        add(Box.createHorizontalStrut(20));
+        add(newCardButton);
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }

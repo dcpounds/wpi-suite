@@ -8,6 +8,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.CardModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+
 
 /**
  * This class is used to display a workflow in the GUI. Right now the cards are hard-coded in,
@@ -15,30 +18,23 @@ import javax.swing.JScrollPane;
  *
  */
 public class WorkflowView extends JPanel {
-	private ArrayList<CardView> cardViewList;
+	private ArrayList<CardModel> cardModelList;
+	private ArrayList<CardView> cardViewList = new ArrayList<CardView>();
 	
-	public WorkflowView(String title) {
+	public WorkflowView(WorkflowModel workflowModel) {
 		this.setLayout( new BorderLayout() );
 		JPanel workflowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workflowPanel);
 		
-		//Create the four base cards
-		CardView newCard = new CardView("New");
-		CardView scheduledCard  = new CardView("Scheduled");
-		CardView inProgressCard = new CardView("In Progress");
-		CardView completedCard = new CardView("Completed");
 		
-		this.cardViewList = new ArrayList<CardView>();
-		cardViewList.add(newCard);
-		cardViewList.add(scheduledCard);
-		cardViewList.add(inProgressCard);
-		cardViewList.add(completedCard);
 		
-		//Add them to the workflow panel
-		workflowPanel.add(newCard);
-		workflowPanel.add(scheduledCard);
-		workflowPanel.add(inProgressCard);
-		workflowPanel.add(completedCard);
+		this.cardModelList = workflowModel.getCardList();
+		for(CardModel cardModel: cardModelList){
+			CardView cardView = new CardView(cardModel);
+			cardViewList.add(cardView);
+			workflowPanel.add(cardView);
+		}
+		
 		this.add(scrollBar, BorderLayout.CENTER);
 		
 	}

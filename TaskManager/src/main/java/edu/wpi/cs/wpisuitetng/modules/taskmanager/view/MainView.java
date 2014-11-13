@@ -2,11 +2,12 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.BorderLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.InitializeWorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
@@ -19,19 +20,20 @@ public class MainView extends JPanel{
 
 	private static final long serialVersionUID = -2682288714623307153L;
 	
-	WorkflowListModel workflowListModel;
+	WorkflowModel workflowModel;
 	WorkflowModel defaultWorkflowModel;
-	SplitPaneView splitPane;
 	
-	public MainView(WorkflowListModel workflowListModel, TaskManagerTabView mainTabView){
-		setLayout(new BorderLayout() );
-		this.workflowListModel = workflowListModel;
-		defaultWorkflowModel = new WorkflowModel("Default Workflow");
-		defaultWorkflowModel.addUserToList( new UserModel() );
-		workflowListModel.addWorkflow(defaultWorkflowModel);
+	public MainView(WorkflowModel model, TaskManagerTabView mainTabView){
+		setLayout(new BorderLayout());
+		workflowModel = model;
+		workflowModel.addUserToList(new UserModel());
 		
-		this.splitPane = new SplitPaneView(workflowListModel, mainTabView);
-		this.add(splitPane, BorderLayout.CENTER);
+		//InitializeWorkflowController initializeController = new InitializeWorkflowController(workflowModel);
+		//initializeController.waitForResponse();
+
+		WorkflowView view = new WorkflowView(workflowModel);
+		mainTabView.setWorkflowTab(view);
+		add(mainTabView, BorderLayout.CENTER);
 	}
 
 }
