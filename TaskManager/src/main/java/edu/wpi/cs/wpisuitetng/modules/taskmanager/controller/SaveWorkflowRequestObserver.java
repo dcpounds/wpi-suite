@@ -24,18 +24,17 @@ public class SaveWorkflowRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 	    // Get the response to the given request
-	    final ResponseModel response = iReq.getResponse(); 
 	    System.out.println("Saved Model Successfully");
 	}
 	
 	@Override
 	public void responseError(IRequest iReq) {
-	    System.err.println("The request to add a workflow failed.");
+	    System.err.println("The request to save workflow failed.");
 	}
 	
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to add a workflow failed.");
+	    System.err.println("The request to save workflow failed.");
 	}
 	
 	/**

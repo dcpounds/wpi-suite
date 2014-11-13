@@ -8,7 +8,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewWorkflowTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
@@ -62,7 +61,7 @@ public class AddTabController implements ActionListener{
         return view;
     }
 
-    WorkflowListModel getWorkflowListModel() {
-        return this.workflowListModel;
+    WorkflowModel getWorkflowModel() {
+        return this.workflowModel;
     }
 }

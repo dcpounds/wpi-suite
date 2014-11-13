@@ -23,16 +23,17 @@ public class MainView extends JPanel{
 	WorkflowModel workflowModel;
 	WorkflowModel defaultWorkflowModel;
 	
-	public MainView(TaskManagerTabView mainTabView){
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		workflowModel = new WorkflowModel("main");
+	public MainView(WorkflowModel model, TaskManagerTabView mainTabView){
+		setLayout(new BorderLayout());
+		workflowModel = model;
 		workflowModel.addUserToList(new UserModel());
 		
-		InitializeWorkflowController initializeController = new InitializeWorkflowController(workflowModel);
-		initializeController.waitForResponse();
+		//InitializeWorkflowController initializeController = new InitializeWorkflowController(workflowModel);
+		//initializeController.waitForResponse();
 
 		WorkflowView view = new WorkflowView(workflowModel);
-		add(view);
+		mainTabView.setWorkflowTab(view);
+		add(mainTabView, BorderLayout.CENTER);
 	}
 
 }
