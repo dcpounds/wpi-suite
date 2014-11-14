@@ -20,10 +20,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 
+/**
+ * This is a tab for creating new tasks
+ *
+ */
 public class NewTaskTab extends JPanel{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private JTextField taskTitleField;
 	private JComboBox<String> stageBox;
@@ -34,8 +36,10 @@ public class NewTaskTab extends JPanel{
 	
 	
 	/**
+	 * contructs a tab for creating tasks
+	 * 
 	 * @param taskManagerTabView - the main view that holds tabs
-	 * @param workflowModel - the list of current workflows
+	 * @param workflowModel - the main workflow model
 	 */
 	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowModel workflowModel) {
 		this.workflowModel = workflowModel;
@@ -84,14 +88,29 @@ public class NewTaskTab extends JPanel{
 		
 	}
 	
+	/**
+	 * get the current string in the title field
+	 * 
+	 * @return
+	 */
 	public String getTitleLabelText(){
 		return taskTitleField.getText();
 	};
 	
+	/**
+	 * get the current string in the description field
+	 * 
+	 * @return
+	 */
 	public String getDescriptionText(){
 		return taskDescriptionField.getText();
 	}
 	
+	/**
+	 * get the string representing the name of the current selected stage
+	 * 
+	 * @return
+	 */
 	public String getStatusText() {
 		return (String)stageBox.getSelectedItem();
 	}

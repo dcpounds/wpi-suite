@@ -12,7 +12,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 
 /**
- * @author alec
  * MainView is a wrapper class that holds all of the JPanels in the main section of the interface
  */
 public class MainView extends JPanel{
@@ -21,8 +20,13 @@ public class MainView extends JPanel{
 	private static final long serialVersionUID = -2682288714623307153L;
 	
 	WorkflowModel workflowModel;
-	WorkflowModel defaultWorkflowModel;
 	
+	/**
+	 * Constructs the main view
+	 * 
+	 * @param model -the main workflow model
+	 * @param mainTabView -the panel containing all the tabs
+	 */
 	public MainView(WorkflowModel model, TaskManagerTabView mainTabView){
 		setLayout(new BorderLayout());
 		workflowModel = model;

@@ -12,8 +12,9 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * @author dave
- *
+ * Controller for initializing the workflow model from the database at the start of the program
+ * Note: this class should not need to be modified unless doing stuff with the database
+ * 
  */
 public class InitializeWorkflowController  {
     

@@ -23,11 +23,18 @@ public class WorkflowView extends JPanel {
 	private ArrayList<StageView> stageViewList = new ArrayList<StageView>();
 	private JPanel workflowPanel;
 	
-	public WorkflowView(WorkflowModel workflowModel) {
-		this.setLayout( new BorderLayout() );
+	/**
+	 * constructs a view for the main workflow based off the given workflow model
+	 *
+	 * @param workflowModel -model the view is based off of
+	 */
+	public WorkflowView(WorkflowModel workflowModel){
+		this.stageModelList = workflowModel.getStageList();
+		
 		this.workflowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workflowPanel);
-		this.stageModelList = workflowModel.getStageList();
+		
+		this.setLayout( new BorderLayout() );
 		
 		for(StageModel stageModel : stageModelList){
 			StageView stageView = new StageView(stageModel);
@@ -36,11 +43,12 @@ public class WorkflowView extends JPanel {
 		}
 		
 		this.add(scrollBar, BorderLayout.CENTER);
-		
+	
 	}
 	
-	
 	/**
+	 * get the list of stage views in the workflow 
+	 *
 	 * @return the list of StageViews in the workflow view
 	 */
 	public ArrayList<StageView> getStageViewList() {
@@ -53,7 +61,9 @@ public class WorkflowView extends JPanel {
 	}
 	
 	/**
+	 * Adds a stage view to the work flow view based off of the given stage model
 	 * 
+	 * @param stageModel - model for which
 	 */
 	public void addStageToWorkflow(StageModel stageModel){
 		
@@ -65,6 +75,9 @@ public class WorkflowView extends JPanel {
 	
 	
 	/**
+	 * 
+	 * sets the current stage views for the given workflow view
+	 * 
 	 * @param stageViewList - a list of stageViews to put in the list of stage views
 	 */
 	public void setStageViewList( ArrayList<StageView> stageViewList ) {

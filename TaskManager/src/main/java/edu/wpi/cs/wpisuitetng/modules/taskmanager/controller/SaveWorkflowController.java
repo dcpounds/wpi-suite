@@ -13,8 +13,9 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * @author dave
- * When the button to create a workflow is pressed, store the workflow in the database
+ * When the button to save a workflow is pressed, save the workflow to the datbase.
+ * Note: this class should not need to be modified unless doing stuff with the database
+ * 
  */
 public class SaveWorkflowController implements ActionListener {
 	private final WorkflowModel model;

@@ -15,8 +15,9 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
 
 /**
- * @author alec
  * A contoller that is used to add a task to the workflow
+ * TODO: update the main workflow model
+ * 
  */
 public class AddTaskController implements ActionListener {
 	private StageView stageView;
@@ -28,6 +29,8 @@ public class AddTaskController implements ActionListener {
 	
 
 	/**
+	 * construct the controller
+	 * 
 	 * @param tabView - the main JTabbedPane that holds the tab
 	 * @param taskModel - the taskModel to add to the stage
 	 * @param stageIndex - the index of the stage to remove
@@ -43,7 +46,10 @@ public class AddTaskController implements ActionListener {
 		
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * action performed when submit button is hit
+	 * 
+	 * (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 * 
 	 */

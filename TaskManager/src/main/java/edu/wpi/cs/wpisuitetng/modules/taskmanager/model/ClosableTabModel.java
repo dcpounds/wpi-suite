@@ -3,6 +3,10 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 import javax.swing.ImageIcon;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
+/**
+ * model for a tab that can be closed
+ *
+ */
 public class ClosableTabModel extends AbstractModel {
 	private String tabTitle;
 	private ImageIcon icon;

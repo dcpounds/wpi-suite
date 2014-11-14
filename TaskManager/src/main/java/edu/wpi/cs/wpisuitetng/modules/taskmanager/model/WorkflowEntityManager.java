@@ -18,7 +18,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
- * @author dave
+ * entity manager for a workflow to interact with the database
+ * the contents of this class should not need to be modified unless messing with the database
  *
  */
 public class WorkflowEntityManager implements EntityManager<WorkflowModel> {

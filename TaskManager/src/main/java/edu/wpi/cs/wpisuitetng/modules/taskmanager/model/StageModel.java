@@ -5,15 +5,22 @@ import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
+/**
+ * Model for respresenting a stage that holds individual tasks
+ *
+ */
 public class StageModel extends AbstractListModel {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private ArrayList<TaskModel> taskList;
 
+	/**
+	 * constructs a new stage
+	 * 
+	 * @param title - title of the stage
+	 * @param taskList - list of tasks to be added
+	 */
 	public StageModel(String title, ArrayList<TaskModel> taskList) {
 		this.setTitle(title);
 		this.setTaskList(taskList);

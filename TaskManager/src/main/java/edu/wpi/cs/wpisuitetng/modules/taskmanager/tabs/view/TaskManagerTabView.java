@@ -17,9 +17,15 @@ public class TaskManagerTabView extends JTabbedPane{
 	private static final long serialVersionUID = -8772129104939459349L;
 	WorkflowView workflowView;
 	
-	//creates a new tab called "Card Overview"
-	public TaskManagerTabView() {
-		this.workflowView = new WorkflowView(new WorkflowModel("Blank"));
+	
+	/**
+	 * constructs the tabbed pane for viewing all the tabs.
+	 * creates a workflow tab at index 0
+	 * 
+	 * @param workflowModel
+	 */
+	public TaskManagerTabView(WorkflowModel workflowModel) {
+		this.workflowView = new WorkflowView(workflowModel);
 		
 		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);

@@ -35,18 +35,20 @@ import javax.swing.JList;
 
 
 /**
- * @author alec
- *This view is responsible for visually representing a task
+ *  This view is responsible for visually representing a task model
  */
 public class TaskView extends JPanel{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -4932681028640603728L;
 	private TaskModel taskModel;
 	private JPanel assignedToPane;
 	
+	/**
+	 * creates a new task view based off the given task model
+	 * 
+	 * @param stageView -stage view for the task to be added to
+	 * @param taskModel -model which the view is based off of
+	 */
 	public TaskView(StageView stageView, TaskModel taskModel ){
 		setLayout(new MigLayout("", "[grow][grow][]", "[][][][][][grow][][][grow]"));
 		

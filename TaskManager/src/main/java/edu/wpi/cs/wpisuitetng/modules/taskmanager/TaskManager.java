@@ -14,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 
 
 /**
- * This is the file to edit when you want to add base components.
+ * Main class for the view. Sets up the toolbar and main view with the tabs
  *
  */
 public class TaskManager implements IJanewayModule {
@@ -25,9 +25,12 @@ public class TaskManager implements IJanewayModule {
 	private List<JanewayTabModel> tabs;
 	
 	
+	/**
+	 * Construct the main taskmanager view
+	 */
 	public TaskManager(){
-		mainTabView = new TaskManagerTabView(); 
 		workflowModel = new WorkflowModel("main");
+		mainTabView = new TaskManagerTabView(workflowModel); 
 		mainView = new MainView(workflowModel, mainTabView);
 		tabs = new ArrayList<JanewayTabModel>();
 		
@@ -39,10 +42,18 @@ public class TaskManager implements IJanewayModule {
 		tabs.add(tab1);
 	}
 	
+	/**
+	 * (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
+	 */
 	public String getName(){
 		return "Task Manager";
 	}
 
+	/**
+	 * (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
+	 */
 	public List<JanewayTabModel> getTabs(){
 		return tabs;
 	}

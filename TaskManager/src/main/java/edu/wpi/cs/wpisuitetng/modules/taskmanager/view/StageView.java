@@ -26,8 +26,8 @@ public class StageView extends JPanel {
 	private static int defaultWidth = 600;
 
 	/**
-	 * Constructs a new Stage
-	 * @param stageModel - the title of this stage
+	 * Constructs a new Stage based off the given model
+	 * @param stageModel - the model the view is based off of
 	 */
 	public StageView(StageModel stageModel) {
 		this.stagePane = new JPanel();
@@ -60,20 +60,40 @@ public class StageView extends JPanel {
 		}
 	}
 
+	/**
+	 * gets the title of the stage
+	 * 
+	 * @return
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * sets the title of the stage
+	 * 
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	
+	/**
+	 * adds a task to the stage
+	 * 
+	 * @param taskView
+	 */
 	public void addTaskView(TaskContainerView taskView) {
 		stagePane.add(taskView);
 		revalidate();
 		repaint();
 	}
 	
+	/**
+	 * removes a task from the stage
+	 * 
+	 * @param taskView
+	 */
 	public void removeTaskView(TaskContainerView taskView) {
 		stagePane.remove(taskView);
 		revalidate();

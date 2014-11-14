@@ -8,6 +8,10 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
+/**
+ * this is a tab for creating stages
+ *
+ */
 public class NewStageTab extends JPanel{
 	/**
 	 * 
@@ -21,6 +25,12 @@ public class NewStageTab extends JPanel{
 	
 	//add a combo box here for task status
     
+	/**
+	 * create a new tab for making a new stage
+	 * 
+	 * @param taskManagerTabView - the main view that holds tabs
+	 * @param workflowModel - the main workflow model
+	 */
 	public NewStageTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel) {
     	this.workflowModel = workflowModel;
 		this.titleLabel = new JLabel("Title: ");
@@ -35,7 +45,7 @@ public class NewStageTab extends JPanel{
 		
 	}
 	
-	public WorkflowModel getWorkflowListModel() {
+	public WorkflowModel getWorkflowModel() {
         return this.workflowModel;
     }
 }

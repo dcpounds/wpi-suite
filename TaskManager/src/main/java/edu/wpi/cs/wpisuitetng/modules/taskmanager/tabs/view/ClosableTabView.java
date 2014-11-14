@@ -27,6 +27,8 @@ public class ClosableTabView extends JPanel{
 	private final JButton closeButton;
 	
 	/**
+	 * construct the panel to make a tab closable
+	 * 
 	 * @param view - the parent pane that houses all the tabs
 	 * @param tabModel - the tab's model
 	 * @param paneComponent - the child component that this tab is attached to
@@ -47,10 +49,20 @@ public class ClosableTabView extends JPanel{
 		this.add(closeButton);
 	}
 
+	/**
+	 * get the model of the tab that can be closed
+	 * 
+	 * @return
+	 */
 	public ClosableTabModel getTabModel() {
 		return tabModel;
 	}
 
+	/**
+	 * get the view that contains all the tabs
+	 * 
+	 * @return
+	 */
 	public TaskManagerTabView getView() {
 		return view;
 	}

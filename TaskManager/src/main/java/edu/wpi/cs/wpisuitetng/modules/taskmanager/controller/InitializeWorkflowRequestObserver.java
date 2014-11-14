@@ -9,8 +9,9 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * @author dave
- *
+ * 
+ * request observer for the initialize workflow controller
+ * Note: this class should not need to be modified unless doing stuff with the database
  */
 public class InitializeWorkflowRequestObserver implements RequestObserver {
     

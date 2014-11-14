@@ -10,8 +10,9 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * @author dave
- *
+ * 
+ * request observer for the save workflow controller
+ * Note: this class should not need to be modified unless doing stuff with the database
  */
 public class SaveWorkflowRequestObserver implements RequestObserver {
 

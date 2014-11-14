@@ -8,7 +8,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 
 /**
- * @author alec
+ * the main model representing the workflow. 
+ * contains all the stages where tasks are moved around in
  *
  */
 public class WorkflowModel extends AbstractModel {
@@ -16,6 +17,12 @@ public class WorkflowModel extends AbstractModel {
 	public ArrayList<StageModel> stageList;
 	private ArrayList<UserModel> userList;
 
+	/**
+	 * construct the main workflow based off a given list of stages
+	 * 
+	 * @param name - the name of the workflow (usually "main")
+	 * @param stageList
+	 */
 	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
 		this.stageList = stageList;
@@ -24,6 +31,12 @@ public class WorkflowModel extends AbstractModel {
 		addBaseStages();
 	}
 	
+	/**
+	 * 
+	 * Construct the main workflow
+	 * 
+	 * @param name - the name of the workflow (usually "main")
+	 */
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageList = new ArrayList<StageModel>();
@@ -86,6 +99,22 @@ public class WorkflowModel extends AbstractModel {
 		return userList;
 	}
 	
+	
+	/**
+	 * adds the default list of stages to the main workflow
+	 */
+	private void addBaseStages(){
+		stageList.add(new StageModel("New", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>()));
+	}
+	
+	
+	/********************Database Helpers**************************
+	 * The rest are functions for the main model to interact with the database,
+	 * They should generally be left untouched unless messing with the database stuff
+	 */
 	@Override
 	public void save() {
 	}
@@ -142,13 +171,6 @@ public class WorkflowModel extends AbstractModel {
 	
 	public void copyFrom(WorkflowModel other){
 		this.stageList = other.stageList;
-	}
-	
-	private void addBaseStages(){
-		stageList.add(new StageModel("New", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>()));
 	}
 
 }
