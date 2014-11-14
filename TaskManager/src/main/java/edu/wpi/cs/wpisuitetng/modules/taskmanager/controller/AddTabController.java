@@ -33,11 +33,11 @@ public class AddTabController implements ActionListener{
     	
     	switch(tabType){
     	case TASK:
-        	tabName = "New Task";
+        	tabName = "New Task ";
         	newTab = new NewTaskTab(view, workflowModel);
         	break;
     	case CARD:
-        	tabName = "New Card";
+        	tabName = "New Stage ";
         	newTab = new NewCardTab(view, workflowModel);
         	break;
         }
