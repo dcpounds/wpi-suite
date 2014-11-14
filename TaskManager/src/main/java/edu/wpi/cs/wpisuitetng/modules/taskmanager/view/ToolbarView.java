@@ -30,7 +30,7 @@ public class ToolbarView extends JPanel {
     
     /** A button for submitting new work flows */
     private final JButton saveWorkflowButton;
-    private final JButton newCardButton;
+    private final JButton newStageButton;
     private final JButton newTaskButton;
     private final WorkflowModel workflowModel;
    
@@ -41,14 +41,14 @@ public class ToolbarView extends JPanel {
         
         // Construct the components to be displayed
 		saveWorkflowButton = new JButton("Save Workflow");
-		newCardButton = new JButton("New Card");
+		newStageButton = new JButton("New Stage");
 		newTaskButton = new JButton("New Task");
         
         // Construct the add work flow controller and add it to the submit button
         saveWorkflowButton.addActionListener(new SaveWorkflowController(workflowModel));
         
-        //adds a card to the mainPanel
-        newCardButton.addActionListener( new AddTabController(taskManagerTabView, TabType.CARD, workflowModel));
+        //adds a stage to the mainPanel
+        newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel));
         
         //adds a tab to the mainPanel
         newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
@@ -63,7 +63,7 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(saveWorkflowButton);
         add(Box.createHorizontalStrut(20));
-        add(newCardButton);
+        add(newStageButton);
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }

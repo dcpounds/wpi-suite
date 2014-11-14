@@ -8,28 +8,28 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
-public class NewCardTab extends JPanel{
+public class NewStageTab extends JPanel{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7394421664708095366L;
 	
 	private JLabel titleLabel;
-	private JTextField cardTitleField;
-	private JButton makeCardButton;
+	private JTextField stageTitleField;
+	private JButton makeStageButton;
     private final WorkflowModel workflowModel;
 	
 	//add a combo box here for task status
     
-	public NewCardTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel) {
+	public NewStageTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel) {
     	this.workflowModel = workflowModel;
 		this.titleLabel = new JLabel("Title: ");
-		this.cardTitleField = new JTextField();
-		this.makeCardButton = new JButton("Create this Card!");
+		this.stageTitleField = new JTextField();
+		this.makeStageButton = new JButton("Create this Stage!");
 		
 		add(titleLabel);
-		add(cardTitleField);
-		add(makeCardButton);
+		add(stageTitleField);
+		add(makeStageButton);
 		
 		setLayout(new FlowLayout() );
 		
