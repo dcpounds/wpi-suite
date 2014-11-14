@@ -23,8 +23,7 @@ public class StageView extends JPanel {
 	private String title;
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
-	private static int defaultHeight = 250;
-	private static int defaultWidth = 620;
+	private static Dimension defaultSize = new Dimension(300, 620);
 
 	/**
 	 * Constructs a new Stage based off the given model
@@ -32,19 +31,33 @@ public class StageView extends JPanel {
 	 */
 	public StageView(StageModel stageModel) {
 		this.stagePane = new JPanel();
-		setPreferredSize(new Dimension( defaultHeight, defaultWidth) );
+		setPreferredSize(new Dimension( defaultSize.width, defaultSize.height) );
 		
 		JLabel lblStageTitle = new JLabel( stageModel.getTitle() );
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(lblStageTitle);
-		stagePane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 40) );
+		stagePane.setPreferredSize( new Dimension( defaultSize.width - 20, defaultSize.height - 40) );
 		scrollPane = new JScrollPane(stagePane);
 		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
 		add(scrollPane);
 		setBackground(new Color(135, 206, 250));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	}
+	
+	
+	/**
+	 * Overrides the getPreferredSize method to make task boxes scale dynamically
+	 */
+	public Dimension getPreferredSize() {
+		Component parent = this.getParent();
+		Dimension parentSize = parent.getSize();
+		final int parentWidth = parentSize.width;
+		
+		if( parent == null ){
+			return new Dimension(300, 600);
+		} else return new Dimension( (int) (parentWidth/4.1), (int)(parentSize.height * 0.95) );
 	}
 	
 	/**
@@ -61,8 +74,8 @@ public class StageView extends JPanel {
 			}
 			
 			//Set the new preferred height if the box is too small
-			if(heightNeeded > defaultHeight)
-				stagePane.setPreferredSize(new Dimension(defaultHeight - 40, heightNeeded));
+			if(heightNeeded > defaultSize.height)
+				stagePane.setPreferredSize(new Dimension(defaultSize.width - 40, heightNeeded));
 		}
 	}
 
@@ -104,6 +117,12 @@ public class StageView extends JPanel {
 		stagePane.remove(taskView);
 		revalidate();
 		repaint();	
+	}
+	
+	
+	
+	public Dimension getStageSize(){
+		return defaultSize;
 	}
 
 }

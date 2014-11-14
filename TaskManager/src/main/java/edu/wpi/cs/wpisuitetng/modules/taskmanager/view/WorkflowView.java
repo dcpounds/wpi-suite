@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import javax.swing.BoxLayout;
 
 
 /**
@@ -33,17 +34,13 @@ public class WorkflowView extends JPanel {
 		
 		this.workflowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workflowPanel);
-		
-		this.setLayout( new BorderLayout() );
+		this.add(scrollBar);
 		
 		for(StageModel stageModel : stageModelList){
-			StageView stageView = new StageView(stageModel);
-			stageViewList.add(stageView);
-			workflowPanel.add(stageView);
+			addStageToWorkflow( stageModel );
 		}
 		
-		this.add(scrollBar, BorderLayout.CENTER);
-	
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));	
 	}
 	
 	/**
@@ -66,9 +63,9 @@ public class WorkflowView extends JPanel {
 	 * @param stageModel - model for which
 	 */
 	public void addStageToWorkflow(StageModel stageModel){
-		
 		StageView stageView = new StageView(stageModel);
 		workflowPanel.add(stageView);
+		stageViewList.add(stageView);
 		revalidate();
 		repaint();
 	}

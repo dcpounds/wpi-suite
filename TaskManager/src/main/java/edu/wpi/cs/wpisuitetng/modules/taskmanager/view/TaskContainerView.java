@@ -21,19 +21,19 @@ public class TaskContainerView extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 6517799529927334536L;
-	TaskModel taskModel;
-	JPanel taskContents;
-	JPanel titlePanel;
-	TaskView taskView;
-	JScrollPane taskContentPane;
-	StageView stageView;
-	private static Dimension openSize = new Dimension(250, 240);
-	private static Dimension closedSize = new Dimension(250, 40);
+	private TaskModel taskModel;
+	private JPanel taskContents;
+	private JPanel titlePanel;
+	private TaskView taskView;
+	private JScrollPane taskContentPane;
+	private StageView stageView;
+	private Dimension stageSize; 
 	
 	public TaskContainerView(TaskModel taskModel, StageView stageView) {
+		this.stageSize = stageView.getStageSize();
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
-		setMaximumSize(closedSize);
+		setMaximumSize( new Dimension( stageSize.width, 40 ));
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		this.stageView = stageView;
 		this.taskModel = taskModel;
@@ -62,7 +62,7 @@ public class TaskContainerView extends JPanel{
 	public void showDetails(){
 		taskContents.add( taskView );
 		add(taskContentPane, "cell 0 1 3 1,grow");
-		setMaximumSize(openSize);
+		setMaximumSize( new Dimension(stageSize.width, 250));
 		taskModel.setIsExpanded(true);
 		revalidate();
 		repaint();
@@ -75,7 +75,7 @@ public class TaskContainerView extends JPanel{
 	public void hideDetails(){
 		taskContents.remove( taskView );
 		this.remove(taskContentPane);
-		setMaximumSize( closedSize );
+		setMaximumSize( new Dimension(stageSize.width, 40 ) );
 		taskModel.setIsExpanded(false);
 		revalidate();
 		repaint();
@@ -93,8 +93,8 @@ public class TaskContainerView extends JPanel{
 	public int getVerticalSpaceNeeded() {
 		boolean isExpanded = taskModel.getIsExpanded();
 		if( isExpanded )
-			return openSize.height;
-		else return closedSize.height;
+			return 250;
+		else return 40;
 	}
 	
 	
