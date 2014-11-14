@@ -9,21 +9,22 @@ import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 /**
  * This view is responsible for rendering a stage that can be placed inside a workflow.
  *
  */
 public class StageView extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7765491802045400161L;
 	private String title;
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
 	private static int defaultHeight = 250;
-	private static int defaultWidth = 600;
+	private static int defaultWidth = 620;
 
 	/**
 	 * Constructs a new Stage based off the given model
@@ -32,11 +33,17 @@ public class StageView extends JPanel {
 	public StageView(StageModel stageModel) {
 		this.stagePane = new JPanel();
 		setPreferredSize(new Dimension( defaultHeight, defaultWidth) );
-		stagePane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 20) );
+		
+		JLabel lblStageTitle = new JLabel( stageModel.getTitle() );
+		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(lblStageTitle);
+		stagePane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 40) );
 		scrollPane = new JScrollPane(stagePane);
 		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
 		add(scrollPane);
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(new Color(135, 206, 250));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
@@ -55,7 +62,7 @@ public class StageView extends JPanel {
 			
 			//Set the new preferred height if the box is too small
 			if(heightNeeded > defaultHeight)
-				stagePane.setPreferredSize(new Dimension(defaultHeight - 20, heightNeeded));
+				stagePane.setPreferredSize(new Dimension(defaultHeight - 40, heightNeeded));
 		}
 	}
 
