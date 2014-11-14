@@ -25,8 +25,8 @@ public class WorkflowView extends JPanel {
 	
 	public WorkflowView(WorkflowModel workflowModel) {
 		this.setLayout( new BorderLayout() );
-		JScrollPane scrollBar = new JScrollPane(workflowPanel);
 		this.workflowPanel = new JPanel();
+		JScrollPane scrollBar = new JScrollPane(workflowPanel);
 		this.stageModelList = workflowModel.getStageList();
 		
 		for(StageModel stageModel : stageModelList){
