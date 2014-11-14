@@ -18,18 +18,18 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
  *
  */
 public class WorkflowView extends JPanel {
+	
 	private ArrayList<StageModel> stageModelList;
 	private ArrayList<StageView> stageViewList = new ArrayList<StageView>();
+	private JPanel workflowPanel;
 	
 	public WorkflowView(WorkflowModel workflowModel) {
 		this.setLayout( new BorderLayout() );
-		JPanel workflowPanel = new JPanel();
 		JScrollPane scrollBar = new JScrollPane(workflowPanel);
 		
-		
-		
 		this.stageModelList = workflowModel.getStageList();
-		for(StageModel stageModel: stageModelList){
+		
+		for(StageModel stageModel : stageModelList){
 			StageView stageView = new StageView(stageModel);
 			stageViewList.add(stageView);
 			workflowPanel.add(stageView);
@@ -51,6 +51,18 @@ public class WorkflowView extends JPanel {
 		
 		return this.stageViewList;
 	}
+	
+	/**
+	 * 
+	 */
+	public void addStageToWorkflow(StageModel stageModel){
+		
+		StageView stageView = new StageView(stageModel);
+		workflowPanel.add(stageView);
+		revalidate();
+		repaint();
+	}
+	
 	
 	/**
 	 * @param stageViewList - a list of stageViews to put in the list of stage views
