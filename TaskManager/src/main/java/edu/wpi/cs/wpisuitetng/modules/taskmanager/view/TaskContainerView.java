@@ -29,18 +29,18 @@ public class TaskContainerView extends JPanel{
 	JPanel titlePanel;
 	TaskView taskView;
 	JScrollPane taskContentPane;
-	CardView cardView;
+	StageView stageView;
 	private static Dimension openSize = new Dimension(250, 240);
 	private static Dimension closedSize = new Dimension(250, 40);
 	
-	public TaskContainerView(TaskModel taskModel, CardView cardView) {
+	public TaskContainerView(TaskModel taskModel, StageView stageView) {
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setMaximumSize(closedSize);
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		this.cardView = cardView;
+		this.stageView = stageView;
 		this.taskModel = taskModel;
-		this.taskView = new TaskView(cardView, taskModel);
+		this.taskView = new TaskView(stageView, taskModel);
 		
 		setLayout(new MigLayout("", "[grow]", "[][grow]"));
 		
@@ -75,8 +75,8 @@ public class TaskContainerView extends JPanel{
 		repaint();
 	}
 	
-	public CardView getCardView(){
-		return cardView;
+	public StageView getStageView(){
+		return stageView;
 	}
 	
 	public int getVerticalSpaceNeeded() {

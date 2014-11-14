@@ -8,18 +8,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.CardModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
 
 /**
- * This class is used to display a workflow in the GUI. Right now the cards are hard-coded in,
+ * This class is used to display a workflow in the GUI. Right now the stages are hard-coded in,
  *  but in the future we will be able to dynamically add and remove them through
  *
  */
 public class WorkflowView extends JPanel {
-	private ArrayList<CardModel> cardModelList;
-	private ArrayList<CardView> cardViewList = new ArrayList<CardView>();
+	private ArrayList<StageModel> stageModelList;
+	private ArrayList<StageView> stageViewList = new ArrayList<StageView>();
 	
 	public WorkflowView(WorkflowModel workflowModel) {
 		this.setLayout( new BorderLayout() );
@@ -28,11 +28,11 @@ public class WorkflowView extends JPanel {
 		
 		
 		
-		this.cardModelList = workflowModel.getCardList();
-		for(CardModel cardModel: cardModelList){
-			CardView cardView = new CardView(cardModel);
-			cardViewList.add(cardView);
-			workflowPanel.add(cardView);
+		this.stageModelList = workflowModel.getStageList();
+		for(StageModel stageModel: stageModelList){
+			StageView stageView = new StageView(stageModel);
+			stageViewList.add(stageView);
+			workflowPanel.add(stageView);
 		}
 		
 		this.add(scrollBar, BorderLayout.CENTER);
@@ -41,22 +41,22 @@ public class WorkflowView extends JPanel {
 	
 	
 	/**
-	 * @return the list of CardViews in the workflow view
+	 * @return the list of StageViews in the workflow view
 	 */
-	public ArrayList<CardView> getCardViewList() {
+	public ArrayList<StageView> getStageViewList() {
 		
-		if(cardViewList.size() == 0){
-			return new ArrayList<CardView>();
+		if(stageViewList.size() == 0){
+			return new ArrayList<StageView>();
 		}
 		
-		return this.cardViewList;
+		return this.stageViewList;
 	}
 	
 	/**
-	 * @param cardViewList - a list of cardViews to put in the list of card views
+	 * @param stageViewList - a list of stageViews to put in the list of stage views
 	 */
-	public void setCardViewList( ArrayList<CardView> cardViewList ) {
-		this.cardViewList = cardViewList;
+	public void setStageViewList( ArrayList<StageView> stageViewList ) {
+		this.stageViewList = stageViewList;
 	}
 
 }

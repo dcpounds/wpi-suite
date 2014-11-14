@@ -47,7 +47,7 @@ public class TaskView extends JPanel{
 	private TaskModel taskModel;
 	private JPanel assignedToPane;
 	
-	public TaskView(CardView cardView, TaskModel taskModel ){
+	public TaskView(StageView stageView, TaskModel taskModel ){
 		setLayout(new MigLayout("", "[grow][grow][]", "[][][][][][grow][][][grow]"));
 		
 		JLabel lblDue = new JLabel("Due:");

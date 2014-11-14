@@ -4,19 +4,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 public class ExpandTaskController implements MouseListener{
 	TaskModel taskModel;
 	TaskContainerView taskContainerView;
-	CardView cardView;
+	StageView stageView;
 	
 	public ExpandTaskController(TaskContainerView taskContainerView, TaskModel taskModel){
 		this.taskModel = taskModel;
 		this.taskContainerView = taskContainerView;	
-		this.cardView = taskContainerView.getCardView();
+		this.stageView = taskContainerView.getStageView();
 	}
 
 	@Override
@@ -28,7 +27,7 @@ public class ExpandTaskController implements MouseListener{
 			taskContainerView.showDetails();
 		
 		taskModel.setIsExpanded(!isExpanded);
-		cardView.updatePreferredDimensions();
+		stageView.updatePreferredDimensions();
 		
 	}
 

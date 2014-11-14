@@ -1,48 +1,45 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
  * @author alec
  * A contoller that is used to add a task to the workflow
  */
 public class AddTaskController implements ActionListener {
-	private CardView cardView;
+	private StageView stageView;
 	private TaskContainerView taskView;
 	private AssignUsersView assignUsersView;
 	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
-	private int cardIndex;
+	private int stageIndex;
 	
 
 	/**
 	 * @param tabView - the main JTabbedPane that holds the tab
-	 * @param taskModel - the taskModel to add to the card
-	 * @param cardIndex - the index of the card to remove
+	 * @param taskModel - the taskModel to add to the stage
+	 * @param stageIndex - the index of the stage to remove
 	 */
-	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, AssignUsersView assignUsersView, int cardIndex){
+	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
 		//Parent tab pane
 		this.tabView = tabView;
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
-		this.cardIndex = cardIndex;
+		this.stageIndex = stageIndex;
 		
 	}
 
@@ -52,12 +49,12 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.cardView = tabView.getWorkflowView().getCardViewList().get(cardIndex);
+		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
-		this.taskView = new TaskContainerView(taskModel, cardView);
-		cardView.updatePreferredDimensions();
-		cardView.addTaskView(taskView);
+		this.taskView = new TaskContainerView(taskModel, stageView);
+		stageView.updatePreferredDimensions();
+		stageView.addTaskView(taskView);
 		
 	}
 	

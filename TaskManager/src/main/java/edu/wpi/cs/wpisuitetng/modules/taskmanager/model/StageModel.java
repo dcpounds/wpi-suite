@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
-public class CardModel extends AbstractListModel {
+public class StageModel extends AbstractListModel {
 	
 	/**
 	 * 
@@ -14,7 +14,7 @@ public class CardModel extends AbstractListModel {
 	private String title;
 	private ArrayList<TaskModel> taskList;
 
-	public CardModel(String title, ArrayList<TaskModel> taskList) {
+	public StageModel(String title, ArrayList<TaskModel> taskList) {
 		this.setTitle(title);
 		this.setTaskList(taskList);
 	}

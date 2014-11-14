@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 
 /**
  * @author alec
@@ -13,23 +13,23 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.CardView;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	public ArrayList<CardModel> cardList;
+	public ArrayList<StageModel> stageList;
 	private ArrayList<UserModel> userList;
 
-	public WorkflowModel(String name, ArrayList<CardModel> cardList){
+	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
-		this.cardList = cardList;
+		this.stageList = stageList;
 		this.userList = new ArrayList<UserModel>();
 		
-		addBaseCards();
+		addBaseStages();
 	}
 	
 	public WorkflowModel(String name){
 		this.name = name;
-		this.cardList = new ArrayList<CardModel>();
+		this.stageList = new ArrayList<StageModel>();
 		this.userList = new ArrayList<UserModel>();
 		
-		addBaseCards();
+		addBaseStages();
 	}
 	
 	/**
@@ -40,26 +40,26 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	/**
-	 * @return a list of cards in the workflow
+	 * @return a list of stages in the workflow
 	 */
-	public ArrayList<CardModel> getCardList() {
-		return cardList;
+	public ArrayList<StageModel> getStageList() {
+		return stageList;
 	}
 	
 	/**
-	 * @param cardList - set the list of cards to add to the workflow
+	 * @param stageList - set the list of stages to add to the workflow
 	 */
-	public void setCardList(ArrayList<CardModel> cardList) {
-		this.cardList = cardList;
+	public void setStageList(ArrayList<StageModel> stageList) {
+		this.stageList = stageList;
 	}
 	
 	/**
-	 * @param card - a CardModel to add to the workflow
-	 * @return the updated list of cards in the workflow
+	 * @param stage - a StageModel to add to the workflow
+	 * @return the updated list of stages in the workflow
 	 */
-	public ArrayList<CardModel> addCard(CardModel card) {
-		cardList.add(card);
-		return cardList;
+	public ArrayList<StageModel> addStage(StageModel stage) {
+		stageList.add(stage);
+		return stageList;
 	}
 	
 	/**
@@ -141,14 +141,14 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	public void copyFrom(WorkflowModel other){
-		this.cardList = other.cardList;
+		this.stageList = other.stageList;
 	}
 	
-	private void addBaseCards(){
-		cardList.add(new CardModel("New", new ArrayList<TaskModel>()));
-		cardList.add(new CardModel("In Progress", new ArrayList<TaskModel>()));
-		cardList.add(new CardModel("Scheduled", new ArrayList<TaskModel>()));
-		cardList.add(new CardModel("Completed", new ArrayList<TaskModel>()));
+	private void addBaseStages(){
+		stageList.add(new StageModel("New", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>()));
 	}
 
 }

@@ -8,33 +8,33 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.CardModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /**
- * This view is responsible for rendering a card that can be placed inside a workflow.
+ * This view is responsible for rendering a stage that can be placed inside a workflow.
  *
  */
-public class CardView extends JPanel {
+public class StageView extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7765491802045400161L;
 	private String title;
-	private JPanel cardPane;
+	private JPanel stagePane;
 	private JScrollPane scrollPane;
 	private static int defaultHeight = 250;
 	private static int defaultWidth = 600;
 
 	/**
-	 * Constructs a new Card
-	 * @param cardModel - the title of this card
+	 * Constructs a new Stage
+	 * @param stageModel - the title of this stage
 	 */
-	public CardView(CardModel cardModel) {
-		this.cardPane = new JPanel();
+	public StageView(StageModel stageModel) {
+		this.stagePane = new JPanel();
 		setPreferredSize(new Dimension( defaultHeight, defaultWidth) );
-		cardPane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 20) );
-		scrollPane = new JScrollPane(cardPane);
-		cardPane.setLayout(new BoxLayout(cardPane, BoxLayout.Y_AXIS));
+		stagePane.setPreferredSize( new Dimension( defaultHeight - 20, defaultWidth - 20) );
+		scrollPane = new JScrollPane(stagePane);
+		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
 		add(scrollPane);
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -44,8 +44,8 @@ public class CardView extends JPanel {
 		revalidate();
 		int heightNeeded = 0;
 		
-		//Go through each component in the cardView
-		for( Component childComponent : cardPane.getComponents() ){
+		//Go through each component in the stageView
+		for( Component childComponent : stagePane.getComponents() ){
 			if( childComponent instanceof TaskContainerView ){
 				System.out.println("Vertical space this component needs: " + ((TaskContainerView) childComponent).getVerticalSpaceNeeded() );
 				heightNeeded += ((TaskContainerView) childComponent).getVerticalSpaceNeeded();
@@ -55,7 +55,7 @@ public class CardView extends JPanel {
 			
 			//Set the new preferred height if the box is too small
 			if(heightNeeded > defaultHeight)
-				cardPane.setPreferredSize(new Dimension(defaultHeight - 20, heightNeeded));
+				stagePane.setPreferredSize(new Dimension(defaultHeight - 20, heightNeeded));
 			System.out.println("Total height of all panes: " + heightNeeded);
 		}
 	}
@@ -69,13 +69,13 @@ public class CardView extends JPanel {
 	}
 	
 	public void addTaskView(TaskContainerView taskView) {
-		cardPane.add(taskView);
+		stagePane.add(taskView);
 		revalidate();
 		repaint();
 	}
 	
 	public void removeTaskView(TaskContainerView taskView) {
-		cardPane.remove(taskView);
+		stagePane.remove(taskView);
 		revalidate();
 		repaint();	
 	}
