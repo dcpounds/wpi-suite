@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewCardTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
@@ -36,9 +36,9 @@ public class AddTabController implements ActionListener{
         	tabName = "New Task";
         	newTab = new NewTaskTab(view, workflowModel);
         	break;
-    	case CARD:
+    	case STAGE:
         	tabName = "New Card";
-        	newTab = new NewCardTab(view, workflowModel);
+        	newTab = new NewStageTab(view, workflowModel);
         	break;
         }
     	addNewTab(tabName, newTab);

@@ -48,7 +48,7 @@ public class ToolbarView extends JPanel {
         saveWorkflowButton.addActionListener(new SaveWorkflowController(workflowModel));
         
         //adds a stage to the mainPanel
-        newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.CARD, workflowModel));
+        newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel));
         
         //adds a tab to the mainPanel
         newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
