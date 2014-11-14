@@ -26,7 +26,7 @@ public class NewTaskTab extends JPanel{
 	 */
 	private static final long serialVersionUID = -8772773694939459349L;
 	private JTextField taskTitleField;
-	private JComboBox<String> taskStatusBox;
+	private JComboBox<String> stageBox;
 	private JComboBox<String> workFlowBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
@@ -45,30 +45,24 @@ public class NewTaskTab extends JPanel{
 		//WorkflowModel workflowModel = workflowModel.getWorkflowModel(0); 
 		
 		
-		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][grow][][][grow]"));
-		
-		JLabel newTaskLabel = new JLabel("Create a New Task");
-		add(newTaskLabel, "cell 1 0 3 1,alignx center");
+		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 		
 		JLabel taskTitleLabel = new JLabel("Task Title");
 		add(taskTitleLabel, "flowx,cell 1 2");
 		
-		JLabel taskStatusLabel = new JLabel("Task Status");
-		add(taskStatusLabel, "cell 3 2");
-		
-		JLabel workflowLabel = new JLabel("Workflow");
-		add(workflowLabel, "cell 2 8");
+		JLabel stageLabel = new JLabel("Stage");
+		add(stageLabel, "cell 3 2");
 		
 		taskTitleField = new JTextField();
 		taskTitleField.setText("New Task");
 		add(taskTitleField, "flowx,cell 1 3,alignx left");
 		taskTitleField.setColumns(35);
 		
-		taskStatusBox = new JComboBox<String>();
-		taskStatusBox.setToolTipText("Select a status for this task");
-		taskStatusBox.setModel(new DefaultComboBoxModel<String>(new StatusModel().getStatusNames() ) );
-		taskStatusBox.setSelectedIndex(0);
-		add(taskStatusBox, "cell 3 3");
+		stageBox = new JComboBox<String>();
+		stageBox.setToolTipText("Select a status for this task");
+		stageBox.setModel(new DefaultComboBoxModel<String>(new StatusModel().getStatusNames() ) );
+		stageBox.setSelectedIndex(0);
+		add(stageBox, "cell 3 3");
 		
 		taskDescriptionLabel = new JLabel("Task Description");
 		add(taskDescriptionLabel, "cell 1 5");
@@ -77,7 +71,7 @@ public class NewTaskTab extends JPanel{
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(50);
 		taskDescriptionField.setRows(10);
-		add(taskDescriptionField, "cell 1 6,alignx left,aligny top");
+		add(taskDescriptionField, "cell 1 6,alignx left,growy");
 		
 		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		
@@ -99,7 +93,7 @@ public class NewTaskTab extends JPanel{
 	}
 	
 	public String getStatusText() {
-		return (String)taskStatusBox.getSelectedItem();
+		return (String)stageBox.getSelectedItem();
 	}
 
 }

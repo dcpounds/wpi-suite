@@ -39,7 +39,7 @@ public class AssignUsersView extends JPanel{
 	public AssignUsersView(TaskManagerTabView tabView, WorkflowModel workflowModel) {
 		this.workflowModel = workflowModel;
 		userList = workflowModel.getUserList();
-		setLayout(new MigLayout("", "[61px][grow][][][][grow][]", "[14px][][grow][]"));
+		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
 		
 		JLabel lblAssignUsers = new JLabel("Assign Users To This Task");
 		add(lblAssignUsers, "cell 1 0 5 1,alignx center,aligny top");
@@ -52,22 +52,24 @@ public class AssignUsersView extends JPanel{
 		lblUsersAssigned.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblUsersAssigned, "cell 5 1");
 		
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 1 2,grow");
+		JScrollPane unassignedScrollPane = new JScrollPane();
+		add(unassignedScrollPane, "cell 1 2,growy");
 		
 		//List of unassigned users
 		unassignedListModel = new DefaultListModel<String>();
 		this.addElementsToList(unassignedListModel, this.getUsernameList() );
 		unassignedListComponent = new JList<String>( unassignedListModel );
-		scrollPane.setViewportView(unassignedListComponent);
+		unassignedListComponent.setFixedCellWidth(150);
+		unassignedScrollPane.setViewportView(unassignedListComponent);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		add(scrollPane_1, "cell 5 2,grow");
+		JScrollPane assignedScrollPane = new JScrollPane();
+		add(assignedScrollPane, "cell 5 2,growy");
 		
 		//List of assigned users
 		assignedListModel = new DefaultListModel<String>();
 		assignedListComponent = new JList<String>( assignedListModel );
-		scrollPane_1.setViewportView(assignedListComponent);
+		assignedListComponent.setFixedCellWidth(150);
+		assignedScrollPane.setViewportView(assignedListComponent);
 		
 		JButton btnAssign = new JButton("Assign >>");
 		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
