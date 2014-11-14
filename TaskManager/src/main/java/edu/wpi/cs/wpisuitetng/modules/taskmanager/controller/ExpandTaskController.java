@@ -25,10 +25,7 @@ public class ExpandTaskController implements MouseListener{
 			taskContainerView.hideDetails();
 		else
 			taskContainerView.showDetails();
-		
-		taskModel.setIsExpanded(!isExpanded);
 		stageView.updatePreferredDimensions();
-		
 	}
 
 	@Override

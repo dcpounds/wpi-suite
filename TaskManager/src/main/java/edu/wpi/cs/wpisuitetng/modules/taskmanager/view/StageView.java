@@ -40,6 +40,9 @@ public class StageView extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
+	/**
+	 * Updates the preferred size of the stagePanel so that  scrollbars will appear if necessary
+	 */
 	public void updatePreferredDimensions() {
 		revalidate();
 		int heightNeeded = 0;
@@ -47,16 +50,12 @@ public class StageView extends JPanel {
 		//Go through each component in the stageView
 		for( Component childComponent : stagePane.getComponents() ){
 			if( childComponent instanceof TaskContainerView ){
-				System.out.println("Vertical space this component needs: " + ((TaskContainerView) childComponent).getVerticalSpaceNeeded() );
 				heightNeeded += ((TaskContainerView) childComponent).getVerticalSpaceNeeded();
-			} else{
-				System.out.println("The component is a " + childComponent);
 			}
 			
 			//Set the new preferred height if the box is too small
 			if(heightNeeded > defaultHeight)
 				stagePane.setPreferredSize(new Dimension(defaultHeight - 20, heightNeeded));
-			System.out.println("Total height of all panes: " + heightNeeded);
 		}
 	}
 

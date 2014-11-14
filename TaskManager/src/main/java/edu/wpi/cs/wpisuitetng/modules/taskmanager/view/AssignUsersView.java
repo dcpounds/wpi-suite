@@ -83,17 +83,16 @@ public class AssignUsersView extends JPanel{
 	
 	/**
 	 * @return an array of userName strings from the provided list of userModels
-	 */
+	 */	
 	private String[] getUsernameList() {
-		String[] userNameList = new String[]{""};
-		if(userList.size() == 0){
-			return userNameList;
-		} else{
-			for(int index = 0; index < userList.size(); index++ )
-				userNameList[index] = userList.get(index).getUsername();	
+		ArrayList<String> usernameList = new ArrayList<String>();
+		for( UserModel user : userList ){
+			String name = user.getUsername();
+			usernameList.add(name);
 		}
-		return userNameList;
+		return (String[]) usernameList.toArray(new String[userList.size()]);
 	}
+	
 	
 	/**
 	 * 
@@ -155,7 +154,5 @@ public class AssignUsersView extends JPanel{
 	
 	public DefaultListModel<String> getUnassignedListModel() {
 		return unassignedListModel;
-	}
-	
-
+	}	
 }

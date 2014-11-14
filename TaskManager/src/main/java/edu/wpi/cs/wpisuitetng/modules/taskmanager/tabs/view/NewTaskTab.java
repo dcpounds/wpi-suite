@@ -43,12 +43,7 @@ public class NewTaskTab extends JPanel{
 	 */
 	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowModel workflowModel) {
 		this.workflowModel = workflowModel;
-		
-    	//TODO: FIX THIS SO THAT USERS ARE LOADED FROM THE ACTIVE WORKFLOW
-		//FOR NOW I AM USING 0 TO SPECIFY THE DEFAULT WORKFLOW
-		//WorkflowModel workflowModel = workflowModel.getWorkflowModel(0); 
-		
-		
+	
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 		
 		JLabel taskTitleLabel = new JLabel("Task Title");

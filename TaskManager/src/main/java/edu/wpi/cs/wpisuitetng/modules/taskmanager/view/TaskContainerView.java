@@ -2,18 +2,11 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.JLabel;
-
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.JScrollPane;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
@@ -24,6 +17,10 @@ import java.awt.Color;
  * An accordian style expandable task view that can be inserted into the stages
  */
 public class TaskContainerView extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6517799529927334536L;
 	TaskModel taskModel;
 	JPanel taskContents;
 	JPanel titlePanel;
@@ -59,18 +56,27 @@ public class TaskContainerView extends JPanel{
 		taskContentPane.setViewportView(taskContents);
 	}
 	
+	/**
+	 * Expand the task container to show details about the task
+	 */
 	public void showDetails(){
 		taskContents.add( taskView );
 		add(taskContentPane, "cell 0 1 3 1,grow");
 		setMaximumSize(openSize);
+		taskModel.setIsExpanded(true);
 		revalidate();
 		repaint();
 	}
 	
+	
+	/**
+	 * Collapse the task container and hide details about the task
+	 */
 	public void hideDetails(){
 		taskContents.remove( taskView );
 		this.remove(taskContentPane);
 		setMaximumSize( closedSize );
+		taskModel.setIsExpanded(false);
 		revalidate();
 		repaint();
 	}
@@ -79,6 +85,11 @@ public class TaskContainerView extends JPanel{
 		return stageView;
 	}
 	
+	
+	/**
+	 * @return the amount of space that the entire container takes up. 
+	 * This is used so that the preferred size of the stage can be set (so scrollbars will appear when necessary)
+	 */
 	public int getVerticalSpaceNeeded() {
 		boolean isExpanded = taskModel.getIsExpanded();
 		if( isExpanded )

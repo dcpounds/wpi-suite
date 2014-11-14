@@ -1,35 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import com.db4o.User;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JTextPane;
-import javax.swing.JTable;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-
-import java.awt.Font;
-import java.awt.Component;
-
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.JList;
 
 
@@ -81,6 +59,10 @@ public class TaskView extends JPanel{
 
 	}
 	
+	
+	/**
+	 *  Populates the task with the list of assigned users
+	 */
 	public void addAssignedUserViews(){
 		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
 			UserIconView iconView = new UserIconView(userModel);
