@@ -59,7 +59,6 @@ public class AddTaskController implements ActionListener {
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskContainerView(taskModel, stageView);
-		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 		
 	}

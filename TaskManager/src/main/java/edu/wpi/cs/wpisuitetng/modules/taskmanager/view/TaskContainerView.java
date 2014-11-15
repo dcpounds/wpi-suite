@@ -2,11 +2,17 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
+
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+
 import javax.swing.JScrollPane;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
@@ -27,13 +33,12 @@ public class TaskContainerView extends JPanel{
 	private TaskView taskView;
 	private JScrollPane taskContentPane;
 	private StageView stageView;
-	private Dimension stageSize; 
+	private static final int openSize = 250;
+	private static final int closeSize = 40;
 	
 	public TaskContainerView(TaskModel taskModel, StageView stageView) {
-		this.stageSize = stageView.getStageSize();
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
-		setMaximumSize( new Dimension( stageSize.width, 40 ));
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		this.stageView = stageView;
 		this.taskModel = taskModel;
@@ -57,13 +62,43 @@ public class TaskContainerView extends JPanel{
 	}
 	
 	/**
+	 * This method will override the default getPreferredSize and resize the task based on the size of its parent
+	 * THIS METHOD IS ALSO RESPONSIBLE FOR RESIZING THE TASK WHEN YOU CLICK ON IT
+	 */
+	public Dimension getPreferredSize() {
+		boolean isExpanded = taskModel.getIsExpanded();
+		Component parent = this.getParent();
+		Dimension parentSize = parent.getSize();
+		final int parentWidth = parentSize.width;
+		
+		if( parent == null ){
+			return new Dimension(300, 600);
+		} else{
+			if(isExpanded){
+				this.setMaximumSize(new Dimension(parentWidth,openSize));
+				return new Dimension(parentWidth,openSize);
+			} else{
+				this.setMaximumSize(new Dimension(parentWidth,closeSize));
+				return new Dimension(parentWidth,closeSize);
+			}
+		}
+	}
+	
+	public int getHeight() {
+		if( taskModel.getIsExpanded() )
+			return openSize;
+		else
+			return closeSize;
+	}
+	
+	/**
 	 * Expand the task container to show details about the task
 	 */
 	public void showDetails(){
 		taskContents.add( taskView );
 		add(taskContentPane, "cell 0 1 3 1,grow");
-		setMaximumSize( new Dimension(stageSize.width, 250));
 		taskModel.setIsExpanded(true);
+		stageView.updatePreferredDimensions();
 		revalidate();
 		repaint();
 	}
@@ -75,8 +110,8 @@ public class TaskContainerView extends JPanel{
 	public void hideDetails(){
 		taskContents.remove( taskView );
 		this.remove(taskContentPane);
-		setMaximumSize( new Dimension(stageSize.width, 40 ) );
 		taskModel.setIsExpanded(false);
+		stageView.updatePreferredDimensions();
 		revalidate();
 		repaint();
 	}
@@ -84,19 +119,4 @@ public class TaskContainerView extends JPanel{
 	public StageView getStageView(){
 		return stageView;
 	}
-	
-	
-	/**
-	 * @return the amount of space that the entire container takes up. 
-	 * This is used so that the preferred size of the stage can be set (so scrollbars will appear when necessary)
-	 */
-	public int getVerticalSpaceNeeded() {
-		boolean isExpanded = taskModel.getIsExpanded();
-		if( isExpanded )
-			return 250;
-		else return 40;
-	}
-	
-	
-
 }
