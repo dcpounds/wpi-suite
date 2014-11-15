@@ -69,17 +69,20 @@ public class TaskContainerView extends JPanel{
 		boolean isExpanded = taskModel.getIsExpanded();
 		Component parent = this.getParent();
 		Dimension parentSize = parent.getSize();
-		final int parentWidth = parentSize.width;
 		
 		if( parent == null ){
 			return new Dimension(300, 600);
 		} else{
+			
+			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			if(isExpanded){
-				this.setMaximumSize(new Dimension(parentWidth,openSize));
-				return new Dimension(parentWidth,openSize);
+				this.setMaximumSize(new Dimension(parentSize.width,openSize));
+				return new Dimension(parentSize.width,openSize);
+				
+			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
 			} else{
-				this.setMaximumSize(new Dimension(parentWidth,closeSize));
-				return new Dimension(parentWidth,closeSize);
+				this.setMaximumSize(new Dimension(parentSize.width,closeSize));
+				return new Dimension(parentSize.width,closeSize);
 			}
 		}
 	}

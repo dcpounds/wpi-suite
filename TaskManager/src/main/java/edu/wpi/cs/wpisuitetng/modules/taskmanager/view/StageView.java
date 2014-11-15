@@ -40,6 +40,7 @@ public class StageView extends JPanel {
 		add(lblStageTitle);
 		stagePane.setPreferredSize( new Dimension( defaultSize.width - 20, defaultSize.height - 40) );
 		scrollPane = new JScrollPane(stagePane);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
 		add(scrollPane);
 		setBackground(new Color(135, 206, 250));
@@ -58,7 +59,11 @@ public class StageView extends JPanel {
 		
 		if( parent == null ){
 			return new Dimension(300, 600);
-		} else return new Dimension( (int) (parentWidth/4.1), (int)(parentSize.height * 0.95) );
+		} else {
+			int stagePreferredHeight = stagePane.getPreferredSize().height;
+			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
+			return new Dimension( (int) (parentWidth/4.1), (int)(parentSize.height * 0.95) );
+		}
 	}
 	
 	
@@ -76,9 +81,7 @@ public class StageView extends JPanel {
 				System.out.println("Height needed " + heightNeeded);
 			}
 			
-			//Set the new preferred height if the box is too small
-			if(heightNeeded > currentStageHeight)
-				stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
+			stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
 		}
 	}
 

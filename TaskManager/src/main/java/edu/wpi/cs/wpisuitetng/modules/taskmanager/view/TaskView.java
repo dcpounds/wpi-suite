@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
@@ -13,6 +14,7 @@ import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JTextArea;
+
 import java.awt.Font;
 
 
