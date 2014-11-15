@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.text.Position;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignRemoveEnum;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 

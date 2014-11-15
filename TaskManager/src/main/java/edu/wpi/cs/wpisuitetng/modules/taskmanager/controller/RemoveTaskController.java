@@ -1,11 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 
 /**

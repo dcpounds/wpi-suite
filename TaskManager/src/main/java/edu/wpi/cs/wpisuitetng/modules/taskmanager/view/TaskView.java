@@ -35,7 +35,7 @@ public class TaskView extends JPanel{
 	 * @param taskModel -model which the view is based off of
 	 */
 	public TaskView(StageView stageView, TaskModel taskModel ){
-		setLayout(new MigLayout("", "[grow][grow][]", "[][][][][][grow][][][grow]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][][grow]"));
 		
 		JLabel lblDue = new JLabel("Due:");
 		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -43,11 +43,11 @@ public class TaskView extends JPanel{
 		
 		JLabel lblEstimatedEffort = new JLabel("Estimated Effort:");
 		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblEstimatedEffort, "cell 0 1");
+		add(lblEstimatedEffort, "cell 0 1,alignx left");
 		
 		JLabel lblActualEffort = new JLabel("Actual Effort:");
 		lblActualEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblActualEffort, "cell 0 2");
+		add(lblActualEffort, "cell 0 2,alignx left");
 		
 		JSeparator separator = new JSeparator();
 		add(separator, "cell 0 3");

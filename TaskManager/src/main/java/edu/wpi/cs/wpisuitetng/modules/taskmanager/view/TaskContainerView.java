@@ -10,13 +10,20 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Alec
@@ -44,20 +51,32 @@ public class TaskContainerView extends JPanel{
 		this.taskModel = taskModel;
 		this.taskView = new TaskView(stageView, taskModel);
 		
-		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		setLayout(new MigLayout("", "[grow][][]", "[][][grow]"));
 		
 		titlePanel = new JPanel();
+		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		titlePanel.addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 0 3 1,alignx center,aligny top");
 		
-		JLabel lblNewTask = new JLabel("New Task");
+		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
+		
+		JLabel lblNewTask = new JLabel( taskModel.getTitle() );
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask);
+		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
 		
 		this.taskContentPane = new JScrollPane();
 		
 		this.taskContents = new JPanel();
+		
+		JButton closeButton = new JButton("\u2716");
+		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+		
+		
+		closeButton.addActionListener(new RemoveTaskController(stageView, this));
+		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		add(closeButton, "cell 1 0");
 		taskContentPane.setViewportView(taskContents);
 	}
 	
