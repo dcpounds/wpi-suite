@@ -7,6 +7,7 @@ import java.awt.Component;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -38,6 +39,8 @@ public class ToolbarView extends JPanel {
     public ToolbarView(WorkflowModel model, TaskManagerTabView taskManagerTabView) {
         this.workflowModel = model;
         
+        ImageIcon testIcon = new ImageIcon("C:/Users/Will/Pictures/testIcon.png");
+        
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
   		saveWorkflowButton = new JButton("Save Workflow");
@@ -50,7 +53,7 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
 		
-		newTaskButton = new JButton("New Task");
+		newTaskButton = new JButton("New Task",testIcon);
         newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
