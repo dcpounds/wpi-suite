@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
 /**
@@ -29,10 +30,9 @@ public class NewStageTab extends JPanel{
 	 * create a new tab for making a new stage
 	 * 
 	 * @param taskManagerTabView - the main view that holds tabs
-	 * @param workflowModel - the main workflow model
 	 */
-	public NewStageTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel) {
-    	this.workflowModel = workflowModel;
+	public NewStageTab(TaskManagerTabView taskManagerTabView) {
+    	this.workflowModel = WorkflowController.getWorkflowModel();
 		this.titleLabel = new JLabel("Title: ");
 		this.stageTitleField = new JTextField();
 		this.makeStageButton = new JButton("Create this Stage!");

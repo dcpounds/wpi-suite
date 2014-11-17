@@ -19,6 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 /**
  * This is a tab for creating new tasks
@@ -39,10 +40,9 @@ public class NewTaskTab extends JPanel{
 	 * contructs a tab for creating tasks
 	 * 
 	 * @param taskManagerTabView - the main view that holds tabs
-	 * @param workflowModel - the main workflow model
 	 */
-	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowModel workflowModel) {
-		this.workflowModel = workflowModel;
+	public NewTaskTab(TaskManagerTabView taskManagerTabView) {
+		this.workflowModel = WorkflowController.getWorkflowModel();
 	
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 		
@@ -72,7 +72,7 @@ public class NewTaskTab extends JPanel{
 		taskDescriptionField.setRows(10);
 		add(taskDescriptionField, "cell 1 6,alignx left,growy");
 		
-		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
+		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView);
 		
 		JButton makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));

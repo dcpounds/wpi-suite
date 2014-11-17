@@ -6,7 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.InitializeWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -22,18 +22,15 @@ public class MainView extends JPanel{
 	WorkflowModel workflowModel;
 	
 	/**
-	 * Constructs the main view
+	 * Constructs the main view based off the main workflow model
 	 * 
-	 * @param model -the main workflow model
 	 * @param mainTabView -the panel containing all the tabs
 	 */
-	public MainView(WorkflowModel model, TaskManagerTabView mainTabView){
-		setLayout(new BorderLayout());
-		workflowModel = model;
-		workflowModel.addUserToList(new UserModel());
+	public MainView(TaskManagerTabView mainTabView){
+		workflowModel = WorkflowController.getWorkflowModel();
 		
-		//InitializeWorkflowController initializeController = new InitializeWorkflowController(workflowModel);
-		//initializeController.waitForResponse();
+		setLayout(new BorderLayout());
+		workflowModel.addUserToList(new UserModel());
 
 		WorkflowView view = new WorkflowView(workflowModel);
 		mainTabView.setWorkflowTab(view);

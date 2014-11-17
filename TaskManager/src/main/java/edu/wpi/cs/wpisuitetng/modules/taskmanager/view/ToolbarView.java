@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SaveWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -24,26 +24,19 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 public class ToolbarView extends JPanel {
     
     private static final long serialVersionUID = 6568533963473785570L;
-    private final JButton saveWorkflowButton;
     private final JButton newStageButton;
     private final JButton newTaskButton;
     private final WorkflowModel workflowModel;
    
     /**
-     * Creates a new tool bar
+     * Creates a new tool bar based off the main workflow model
      * 
-     * @param model - main work flow
      * @param taskManagerTabView - tab panel containing all the tabs
      */
-    public ToolbarView(WorkflowModel model, TaskManagerTabView taskManagerTabView) {
-        this.workflowModel = model;
+    public ToolbarView(TaskManagerTabView taskManagerTabView) {
+        this.workflowModel = WorkflowController.getWorkflowModel();
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        
-  		saveWorkflowButton = new JButton("Save Workflow");
-		saveWorkflowButton.addActionListener(new SaveWorkflowController(workflowModel));
-        add(Box.createHorizontalStrut(20));
-        add(saveWorkflowButton);
 		
 		newStageButton = new JButton("New Stage");
         newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel));
