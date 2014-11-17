@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -7,6 +9,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -43,12 +46,7 @@ public class NewTaskTab extends JPanel{
 	 */
 	public NewTaskTab(TaskManagerTabView taskManagerTabView,  WorkflowModel workflowModel) {
 		this.workflowModel = workflowModel;
-		
-    	//TODO: FIX THIS SO THAT USERS ARE LOADED FROM THE ACTIVE WORKFLOW
-		//FOR NOW I AM USING 0 TO SPECIFY THE DEFAULT WORKFLOW
-		//WorkflowModel workflowModel = workflowModel.getWorkflowModel(0); 
-		
-		
+	
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 		
 		JLabel taskTitleLabel = new JLabel("Task Title");
@@ -65,8 +63,13 @@ public class NewTaskTab extends JPanel{
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>(new StatusModel().getStatusNames() ) );
-		stageBox.setSelectedIndex(0);
+		//stageBox.setSelectedIndex(0);
 		add(stageBox, "cell 3 3");
+		stageBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
+		      }
+		});
 		
 		taskDescriptionLabel = new JLabel("Task Description");
 		add(taskDescriptionLabel, "cell 1 5");
@@ -80,7 +83,7 @@ public class NewTaskTab extends JPanel{
 		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		
 		JButton makeTaskButton = new JButton("Create");
-		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView));
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		
 		add(assignUsersView, "cell 3 6,grow");
@@ -96,6 +99,10 @@ public class NewTaskTab extends JPanel{
 	public String getTitleLabelText(){
 		return taskTitleField.getText();
 	};
+	
+	public int getStageSelectionIndex() {
+		return this.stageBox.getSelectedIndex();
+	}
 	
 	/**
 	 * get the current string in the description field

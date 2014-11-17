@@ -35,15 +35,13 @@ public class AddTaskController implements ActionListener {
 	 * @param taskModel - the taskModel to add to the stage
 	 * @param stageIndex - the index of the stage to remove
 	 */
-	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
+	public AddTaskController(TaskManagerTabView tabView, NewTaskTab taskCreationView, AssignUsersView assignUsersView){
 		//Parent tab pane
 		this.tabView = tabView;
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
-		this.stageIndex = stageIndex;
-		
 	}
 
 	/**
@@ -55,11 +53,11 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.stageIndex = taskCreationView.getStageSelectionIndex();
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskContainerView(taskModel, stageView);
-		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 		
 	}
