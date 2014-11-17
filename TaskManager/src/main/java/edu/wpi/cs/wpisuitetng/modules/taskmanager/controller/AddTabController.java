@@ -35,7 +35,12 @@ public class AddTabController implements ActionListener{
     }
    
     /**
-     * This is run on a button press for the creation of a tab.
+     * Runs on a button press in the tool-bar section
+     * Creates a new tab based on the type of button pressed
+     * Type of buttons:
+     * 		- Task (prompts user to create a new task)
+     * 		- Stage (prompts user to create a new stage)
+     * 
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -57,10 +62,10 @@ public class AddTabController implements ActionListener{
     }
     
     /**
-     * helper function for adding tab
+     * Helper function for adding tab
      * 
-     * @param tabTitle -name of tab
-     * @param pane -
+     * @param tabTitle - Name of tab
+     * @param pane - Area of the tab designated to show the name and "exit" button
      */
     private void addNewTab(String tabTitle, Component pane) {
     	//add a tab containing the newTabPane as a view
@@ -76,7 +81,8 @@ public class AddTabController implements ActionListener{
     }
    
     /**
-     * get main view of tabs
+     * Get main view of tabs
+     * 
      * 
      * @return
      */
@@ -85,7 +91,7 @@ public class AddTabController implements ActionListener{
     }
 
     /**
-     * get main workflow model
+     * Get main workflow model
      * 
      * @return
      */

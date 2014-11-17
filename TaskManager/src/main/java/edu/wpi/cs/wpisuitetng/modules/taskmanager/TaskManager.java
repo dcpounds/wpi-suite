@@ -14,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 
 
 /**
- * Main class for the view. Sets up the toolbar and main view with the tabs
+ * Main class for the view. Sets up the tool-bar and main view with the tabs
  *
  */
 public class TaskManager implements IJanewayModule {
@@ -26,7 +26,19 @@ public class TaskManager implements IJanewayModule {
 	
 	
 	/**
-	 * Construct the main taskmanager view
+	 * Construct the main TaskManager view
+	 * TaskManager is divided into two sections, a top tool-bar and working bottom.
+	 * 
+	 * The working bottom contains the workflow, which shows:
+	 * 		- Stages in column view
+	 * 		- Tasks within the stages
+	 * 		- 
+	 * 
+	 * The top tool-bar section is a column of tabs that are used for interacting with the workflow:
+	 * 		- Creating new stages
+	 * 		- Creating new tasks
+	 * 		- 
+	 * 
 	 */
 	public TaskManager(){
 		workflowModel = new WorkflowModel("main");
