@@ -53,6 +53,7 @@ public class ToolbarView extends JPanel {
 		newTaskButton = new JButton("New Task");
         newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
         add(Box.createHorizontalStrut(20));
+        
         add(newTaskButton);
     }
 

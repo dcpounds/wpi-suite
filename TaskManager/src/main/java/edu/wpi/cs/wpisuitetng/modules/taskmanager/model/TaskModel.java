@@ -180,6 +180,7 @@ public class TaskModel extends AbstractModel {
 	public void setUsersAssignedTo(ArrayList<UserModel> arrayList) {
 		this.usersAssignedTo = arrayList;
 	}
+
 	
 	/**
 	 * @param assignee - set the user assigned to this task
