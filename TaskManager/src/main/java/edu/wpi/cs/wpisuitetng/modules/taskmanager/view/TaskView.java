@@ -13,10 +13,14 @@ import javax.swing.JTextField;
 
 import com.db4o.User;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import net.miginfocom.swing.MigLayout;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.TaskManager;
 
 import javax.swing.JTextPane;
 import javax.swing.JTable;
@@ -31,6 +35,9 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JList;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -77,7 +84,7 @@ public class TaskView extends JPanel{
 		add(lblAssignedTo, "cell 0 7");
 		
 		JList list = new JList();
-		add(list, "cell 0 8,grow");
+		add(list, "flowy,cell 0 8,grow");
 
 	}
 	

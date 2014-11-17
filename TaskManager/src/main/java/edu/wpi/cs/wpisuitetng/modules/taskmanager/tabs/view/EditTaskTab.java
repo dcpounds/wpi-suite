@@ -42,8 +42,8 @@ public class EditTaskTab extends JPanel{
 	 * @param taskManagerTabView - the main view that holds tabs
 	 * @param workflowModel - the main workflow model
 	 */
-	public EditTaskTab(TaskManagerTabView taskManagerTabView, TaskModel TaskModel) {
-		
+	public EditTaskTab(TaskManagerTabView taskManagerTabView, TaskModel TaskModel,WorkflowModel workflowModel) {
+		this.workflowModel = workflowModel;
 	
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 		
@@ -77,7 +77,7 @@ public class EditTaskTab extends JPanel{
 		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		
 		JButton makeTaskButton = new JButton("Edit");
-		makeTaskButton.addActionListener( new EditTaskController(taskManagerTabView, this, assignUsersView, 0));
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		
 		add(assignUsersView, "cell 3 6,grow");

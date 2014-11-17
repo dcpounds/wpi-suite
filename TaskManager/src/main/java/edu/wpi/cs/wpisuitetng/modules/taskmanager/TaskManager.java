@@ -21,7 +21,7 @@ public class TaskManager implements IJanewayModule {
 	
 	WorkflowModel workflowModel;
 	MainView mainView;
-	private TaskManagerTabView mainTabView;
+	private  TaskManagerTabView mainTabView;
 	private List<JanewayTabModel> tabs;
 	
 	
@@ -57,4 +57,6 @@ public class TaskManager implements IJanewayModule {
 	public List<JanewayTabModel> getTabs(){
 		return tabs;
 	}
+	
+
 }

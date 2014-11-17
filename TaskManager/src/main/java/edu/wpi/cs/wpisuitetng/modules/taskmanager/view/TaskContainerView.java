@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -11,11 +12,19 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+
 
 import java.awt.Color;
 
@@ -30,6 +39,7 @@ public class TaskContainerView extends JPanel{
 	TaskView taskView;
 	JScrollPane taskContentPane;
 	StageView stageView;
+
 	private static Dimension openSize = new Dimension(250, 240);
 	private static Dimension closedSize = new Dimension(250, 40);
 	
@@ -42,7 +52,7 @@ public class TaskContainerView extends JPanel{
 		this.taskModel = taskModel;
 		this.taskView = new TaskView(stageView, taskModel);
 		
-		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		setLayout(new MigLayout("", "[grow][]", "[][grow][]"));
 		
 		titlePanel = new JPanel();
 		titlePanel.setBackground(Color.LIGHT_GRAY);
@@ -56,6 +66,22 @@ public class TaskContainerView extends JPanel{
 		this.taskContentPane = new JScrollPane();
 		
 		this.taskContents = new JPanel();
+		
+		JButton closeButton = new JButton("\u2716");
+		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+		
+		
+		closeButton.addActionListener(new RemoveTaskController(stageView, this));
+		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		add(closeButton, "cell 1 0");
+		
+		JButton btnEdit = new JButton("Edit");
+
+		btnEdit.addActionListener( new NewTaskTab(TabType.EDITTASK, taskManagerTabView, workflowModel,taskModel )
+		add(btnEdit, "cell 0 2");
+		
+		
 		taskContentPane.setViewportView(taskContents);
 	}
 	

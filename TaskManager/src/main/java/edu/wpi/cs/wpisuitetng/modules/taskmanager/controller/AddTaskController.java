@@ -8,6 +8,7 @@ import javax.swing.DefaultListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.EditTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
@@ -25,6 +26,7 @@ public class AddTaskController implements ActionListener {
 	private AssignUsersView assignUsersView;
 	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
+	private EditTaskTab taskEditView;
 	private int stageIndex;
 	
 
@@ -40,6 +42,16 @@ public class AddTaskController implements ActionListener {
 		this.tabView = tabView;
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
+		//the pane that is used for adding users
+		this.assignUsersView = assignUsersView;
+		this.stageIndex = stageIndex;
+		
+	}
+	public AddTaskController(TaskManagerTabView tabView, EditTaskTab taskEditView, AssignUsersView assignUsersView, int stageIndex){
+		//Parent tab pane
+		this.tabView = tabView;
+		//Tab the request was made on
+		this.taskEditView = taskEditView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
 		this.stageIndex = stageIndex;
