@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 public class ExampleTest {
 	
-	
 	/*Add all setup functionality here, which will generally be a few
 	 * variable declarations, and a constructor. Remember, no magic numbers!
 	 */
