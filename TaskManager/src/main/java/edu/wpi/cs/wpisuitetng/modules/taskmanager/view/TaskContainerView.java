@@ -43,7 +43,7 @@ public class TaskContainerView extends JPanel{
 	private static Dimension openSize = new Dimension(250, 240);
 	private static Dimension closedSize = new Dimension(250, 40);
 	
-	public TaskContainerView(TaskModel taskModel, StageView stageView) {
+	public TaskContainerView(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel, TaskModel taskModel, StageView stageView) {
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setMaximumSize(closedSize);
@@ -78,7 +78,7 @@ public class TaskContainerView extends JPanel{
 		
 		JButton btnEdit = new JButton("Edit");
 
-		btnEdit.addActionListener( new NewTaskTab(TabType.EDITTASK, taskManagerTabView, workflowModel,taskModel )
+		btnEdit.addActionListener(new AddTabController(taskManagerTabView, TabType.TASK, workflowModel, taskModel));
 		add(btnEdit, "cell 0 2");
 		
 		

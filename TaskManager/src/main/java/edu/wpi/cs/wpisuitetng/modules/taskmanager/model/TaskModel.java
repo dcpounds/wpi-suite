@@ -36,7 +36,7 @@ public class TaskModel extends AbstractModel {
 		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
-		this.title = title;;
+		this.title = title;
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
@@ -274,5 +274,9 @@ public class TaskModel extends AbstractModel {
 	public void delete() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setExpanded(boolean isExpanded) {
+		this.isExpanded = isExpanded;
 	}
 }

@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
 /**
@@ -31,7 +32,7 @@ public class NewStageTab extends JPanel{
 	 * @param taskManagerTabView - the main view that holds tabs
 	 * @param workflowModel - the main workflow model
 	 */
-	public NewStageTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel) {
+	public NewStageTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel, StageModel stageModel) {
     	this.workflowModel = workflowModel;
 		this.titleLabel = new JLabel("Title: ");
 		this.stageTitleField = new JTextField();

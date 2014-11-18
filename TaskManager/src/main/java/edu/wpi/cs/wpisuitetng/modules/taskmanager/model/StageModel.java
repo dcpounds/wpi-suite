@@ -27,6 +27,16 @@ public class StageModel extends AbstractListModel {
 	}
 	
 	/**
+	 * constructs a new empty stage
+	 * 
+	 * @param title - title of the stage
+	 */
+	public StageModel(String title) {
+		this.setTitle(title);
+		taskList = new ArrayList<TaskModel>();
+	}
+	
+	/**
      * Removes all tasks from this card
      * NOTE: One cannot simply construct a new instance of
      * the model, because other classes in this module have

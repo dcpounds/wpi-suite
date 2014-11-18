@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SaveWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
@@ -46,7 +47,7 @@ public class ToolbarView extends JPanel {
         add(saveWorkflowButton);
 		
 		newStageButton = new JButton("New Stage");
-        newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel));
+        newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel, new StageModel("")));
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
 		

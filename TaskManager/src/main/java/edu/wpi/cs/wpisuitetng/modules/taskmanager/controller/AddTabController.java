@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewStageTab;
@@ -28,7 +29,7 @@ public class AddTabController implements ActionListener{
      * @param tabType -type of tab
      * @param workflowModel -main workflow model
      */
-    public AddTabController(TaskManagerTabView view, TabType tabType, WorkflowModel workflowModel){
+    public AddTabController(TaskManagerTabView view, TabType tabType, WorkflowModel workflowModel, String id){
     	this.workflowModel = workflowModel;
         this.view = view;
         this.tabType = tabType;
@@ -45,20 +46,11 @@ public class AddTabController implements ActionListener{
     	switch(tabType){
     	case TASK:
         	tabName = "New Task ";
-        	newTab = new NewTaskTab(tabType,view, workflowModel,null);
+        	newTab = new NewTaskTab(view, workflowModel, (TaskModel) model);
         	break;
-    	case EDITTASK:
-    		tabName = "Edit Task";
-    		newTab = new NewTaskTab(tabType,view, workflowModel,null);
-    		break;
-    	case EDITSTAGE:
-    		tabName = "Edit Stage";
-    		newTab = new NewTaskTab(tabType,view, workflowModel,null);
-    		
-    		break;
     	case STAGE:
         	tabName = "New Stage ";
-        	newTab = new NewTaskTab(tabType,view, workflowModel,null);
+        	newTab = new NewStageTab(view, workflowModel, (StageModel) model);
         	break;
         }
     	addNewTab(tabName, newTab);
