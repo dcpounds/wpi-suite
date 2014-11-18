@@ -2,21 +2,18 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-
+import java.util.ArrayList;
 import javax.swing.JPanel;
-
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
@@ -62,8 +59,7 @@ public class NewTaskTab extends JPanel{
 		
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
-		stageBox.setModel(new DefaultComboBoxModel<String>(new StatusModel().getStatusNames() ) );
-		//stageBox.setSelectedIndex(0);
+		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
 		add(stageBox, "cell 3 3");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -120,6 +116,14 @@ public class NewTaskTab extends JPanel{
 	 */
 	public String getStatusText() {
 		return (String)stageBox.getSelectedItem();
+	}
+	
+	public String[] getStatusOptions(){
+		ArrayList<String> statusOptions = new ArrayList<String>();
+		for( StageModel stage : workflowModel.getStageList() ){
+			statusOptions.add( stage.getTitle() );
+		}
+		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
 
 }
