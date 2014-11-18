@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddStageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
 /**
@@ -36,6 +38,8 @@ public class NewStageTab extends JPanel{
 		this.titleLabel = new JLabel("Title: ");
 		this.stageTitleField = new JTextField();
 		this.makeStageButton = new JButton("Create this Stage!");
+		makeStageButton.addActionListener(new AddStageController(taskManagerTabView, this));
+		makeStageButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		
 		add(titleLabel);
 		add(stageTitleField);
@@ -48,4 +52,8 @@ public class NewStageTab extends JPanel{
 	public WorkflowModel getWorkflowModel() {
         return this.workflowModel;
     }
+	
+	public String getStageTitle(){
+		return stageTitleField.getText();
+	}
 }

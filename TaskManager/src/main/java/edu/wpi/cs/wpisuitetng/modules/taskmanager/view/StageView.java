@@ -21,13 +21,16 @@ public class StageView extends JPanel {
 	private String title;
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
+	private WorkflowView workflowView;
+
 
 	/**
 	 * Constructs a new Stage based off the given model
 	 * @param stageModel - the model the view is based off of
 	 */
-	public StageView(StageModel stageModel) {
+	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		this.stagePane = new JPanel();
+		this.workflowView = workflowView;
 		
 		JLabel lblStageTitle = new JLabel( stageModel.getTitle() );
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -52,14 +55,16 @@ public class StageView extends JPanel {
 	public Dimension getPreferredSize() {
 		Component parent = this.getParent();
 		Dimension parentSize = parent.getSize();
-		final int parentWidth = parentSize.width;
+		final int parentWidth = workflowView.getScrollPane().getViewport().getSize().width;
 		
 		if( parent == null ){
 			return new Dimension(300, 600);
 		} else {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
+			int stageCount = workflowView.getStageViewList().size();
+			int stageWidth = (int) parentWidth/( stageCount < 5 ? stageCount : 5);
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
-			return new Dimension( (int) (parentWidth/4.1), (int)(parentSize.height * 0.95) );
+			return new Dimension( stageWidth, (int)(parentSize.height * 0.95) );
 		}
 	}
 	
