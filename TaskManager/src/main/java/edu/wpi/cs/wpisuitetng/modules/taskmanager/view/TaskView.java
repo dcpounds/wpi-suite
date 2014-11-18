@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
@@ -37,7 +36,7 @@ public class TaskView extends JPanel{
 	private JPanel assignedToPane;
 	
 	/**
-	 * creates a new task view based off the given task model
+	 * creates a new task view based off the given model
 	 * 
 	 * @param stageView -stage view for the task to be added to
 	 * @param taskModel -model which the view is based off of

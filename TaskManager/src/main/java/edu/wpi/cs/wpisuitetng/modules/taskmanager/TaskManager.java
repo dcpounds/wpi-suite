@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 
@@ -19,9 +23,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
  */
 public class TaskManager implements IJanewayModule {
 	
-	WorkflowModel workflowModel;
 	MainView mainView;
-	private  TaskManagerTabView mainTabView;
+	private  TabView mainTabView;
 	private List<JanewayTabModel> tabs;
 	
 	
@@ -29,16 +32,15 @@ public class TaskManager implements IJanewayModule {
 	 * Construct the main taskmanager view
 	 */
 	public TaskManager(){
-		workflowModel = new WorkflowModel("main");
-		mainTabView = new TaskManagerTabView(workflowModel); 
-		mainView = new MainView(workflowModel, mainTabView);
+		mainView = new MainView();
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		//Create both the toolbar and main panel panes
-		ToolbarView toolbarPanel = new ToolbarView(workflowModel, mainTabView);
+		ToolbarView toolbarPanel = new ToolbarView();
 		
 		//Create a panel for the toolbar at the top
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarPanel, mainView);
+		
 		tabs.add(tab1);
 	}
 	

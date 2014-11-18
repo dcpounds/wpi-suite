@@ -5,5 +5,5 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
  *
  */
 public enum TabType {
-	TASK, STAGE, EDITTASK, EDITSTAGE, WORKFLOW
+	TASK, STAGE, WORKFLOW
 }

@@ -73,6 +73,53 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	/**
+	 * @param stage - a StageModel to add to the workflow
+	 * @return the updated list of stages in the workflow
+	 */
+	public ArrayList<StageModel> removeStage(StageModel stage) {
+		stageList.remove(stage);
+		return stageList;
+	}
+	
+	/**
+	 * @param stage - a TaskModel to add to the workflow
+	 */
+	public void addTask(StageModel stage, TaskModel task) {
+		for(StageModel stageModel : stageList){
+			if(stageModel == stage){
+				task.setId(getNextTaskId());
+				stageModel.addTask(task);
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * @param stage - a TaskModel to add to the workflow
+	 */
+	public void removeTask(TaskModel task) {
+		for(StageModel stageModel : stageList){
+			for(TaskModel taskModel : stageModel.getTaskList()){
+				if(taskModel == task){
+					stageModel.removeTask(task);
+				}
+			}
+		}
+	}
+	
+	private int getNextTaskId() {
+		int highestId = 0;
+		for(StageModel stageModel : stageList){
+			for(TaskModel taskModel : stageModel.getTaskList()){
+				if(taskModel.getId() > highestId){
+					highestId = taskModel.getId();
+				}
+			}
+		}
+		return highestId + 1;
+	}
+	
+	/**
 	 * @param user - the user to add to the list
 	 * @return the list of users
 	 */

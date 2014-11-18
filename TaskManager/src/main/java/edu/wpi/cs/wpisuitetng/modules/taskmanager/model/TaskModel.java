@@ -279,4 +279,21 @@ public class TaskModel extends AbstractModel {
 	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        
+        TaskModel other = (TaskModel) obj;
+        
+        return this.id == other.getId();
+	}
 }

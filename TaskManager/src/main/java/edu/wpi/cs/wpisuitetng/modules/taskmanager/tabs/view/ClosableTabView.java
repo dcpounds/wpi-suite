@@ -3,14 +3,18 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /**
  * @author alec
@@ -23,7 +27,7 @@ public class ClosableTabView extends JPanel{
 	private static final long serialVersionUID = 8561782795446219647L;
 	private final JLabel tabLabel;
 	private ClosableTabModel tabModel;
-	private final TaskManagerTabView view;
+	private final TabView view;
 	private final JButton closeButton;
 	
 	/**
@@ -33,9 +37,9 @@ public class ClosableTabView extends JPanel{
 	 * @param tabModel - the tab's model
 	 * @param paneComponent - the child component that this tab is attached to
 	 */
-	public ClosableTabView(TaskManagerTabView view, ClosableTabModel tabModel, Component paneComponent){
+	public ClosableTabView(ClosableTabModel tabModel, Component paneComponent){
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		this.view = view;
+		this.view = TabController.getTabView();
 		tabLabel = new JLabel(tabModel.getTabTitle());
 		setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
 		setOpaque(false);
@@ -43,8 +47,12 @@ public class ClosableTabView extends JPanel{
 		this.closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
-		closeButton.addActionListener( new RemoveTabController(view, paneComponent) );
-		
+		closeButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().removeTab(paneComponent);
+			}
+		});
 		this.add(tabLabel);
 		this.add(closeButton);
 	}
@@ -63,7 +71,7 @@ public class ClosableTabView extends JPanel{
 	 * 
 	 * @return
 	 */
-	public TaskManagerTabView getView() {
+	public TabView getView() {
 		return view;
 	}
 

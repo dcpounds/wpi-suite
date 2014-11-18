@@ -19,9 +19,10 @@ import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AssignUnassignUserController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 
 /**
  * @author Alec
@@ -36,8 +37,8 @@ public class AssignUsersView extends JPanel{
 	private DefaultListModel<String> unassignedListModel;
 	private DefaultListModel<String> assignedListModel;
 	
-	public AssignUsersView(TaskManagerTabView tabView, WorkflowModel workflowModel) {
-		this.workflowModel = workflowModel;
+	public AssignUsersView() {
+		this.workflowModel = WorkflowController.getWorkflowModel();
 		userList = workflowModel.getUserList();
 		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
 		

@@ -3,7 +3,7 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SaveWorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -14,10 +14,10 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class SaveWorkflowRequestObserver implements RequestObserver {
 
-	 private final SaveWorkflowController controller;
+	 private final WorkflowController controller;
 	    
-	 public SaveWorkflowRequestObserver(SaveWorkflowController controller) {
-		 this.controller = controller;
+	 public SaveWorkflowRequestObserver() {
+		 controller = WorkflowController.getInstance();
 	 }
 	    
 	@Override
@@ -34,13 +34,6 @@ public class SaveWorkflowRequestObserver implements RequestObserver {
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 	    System.err.println("The request to save workflow failed.");
-	}
-	
-	/**
-	 * @return the controller
-	 */
-	public SaveWorkflowController getController() {
-	    return this.controller;
 	}
 
 }

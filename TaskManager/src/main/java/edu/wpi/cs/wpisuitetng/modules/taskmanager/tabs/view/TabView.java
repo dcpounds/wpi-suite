@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
@@ -13,19 +14,20 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * This view creates a tabbed window that can contain other views. 
  * It is also responsible for creating the default workflow tab
  */
-public class TaskManagerTabView extends JTabbedPane{
+public class TabView extends JTabbedPane{
 	private static final long serialVersionUID = -8772129104939459349L;
+	WorkflowModel workflowModel;
 	WorkflowView workflowView;
 	
 	
 	/**
 	 * constructs the tabbed pane for viewing all the tabs.
-	 * creates a workflow tab at index 0
+	 * creates tab for the main workflow at index 0
 	 * 
-	 * @param workflowModel
 	 */
-	public TaskManagerTabView(WorkflowModel workflowModel) {
-		this.workflowView = new WorkflowView(workflowModel);
+	public TabView() {
+		workflowModel = WorkflowController.getWorkflowModel();
+		workflowView = new WorkflowView(workflowModel);
 		
 		this.setLayout( new BorderLayout() );
 		setTabPlacement(TOP);

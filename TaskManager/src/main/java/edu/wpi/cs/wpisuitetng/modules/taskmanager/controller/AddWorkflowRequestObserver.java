@@ -9,12 +9,12 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * request observer for the initialize workflow controller
  * Note: this class should not need to be modified unless doing stuff with the database
  */
-public class InitializeWorkflowRequestObserver implements RequestObserver {
+public class AddWorkflowRequestObserver implements RequestObserver {
     
-    private InitializeWorkflowController controller;
-    
-    public InitializeWorkflowRequestObserver(InitializeWorkflowController controller) {
-        this.controller = controller;
+	WorkflowController controller;
+	
+    public AddWorkflowRequestObserver(){
+        controller = WorkflowController.getInstance();
     }
     
     /*
@@ -32,6 +32,7 @@ public class InitializeWorkflowRequestObserver implements RequestObserver {
     @Override
     public void responseError(IRequest iReq) {
 	    System.err.println("The request to view workflows failed.");
+        controller.receivedWorkflow(null);
     }
     
     /*
@@ -39,14 +40,8 @@ public class InitializeWorkflowRequestObserver implements RequestObserver {
      */
     @Override
     public void fail(IRequest iReq, Exception exception) {
-	    System.err.println("The request to view workflows failed.");
-    }
-    
-    /**
-     * @return the controller
-     */
-    public InitializeWorkflowController getController() {
-        return this.controller;
+	    System.err.println("The request to view workflows failed:" + exception.getMessage());
+        controller.receivedWorkflow(null);
     }
 
 }

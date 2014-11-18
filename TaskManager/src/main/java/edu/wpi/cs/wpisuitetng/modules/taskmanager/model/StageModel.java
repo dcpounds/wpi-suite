@@ -68,6 +68,22 @@ public class StageModel extends AbstractListModel {
     		this.taskList.add( newTasks[i] );
     	}
     }
+    
+    /**
+     * @param newTask - the task to add to the list of cards
+     */
+    public void removeTask(TaskModel task) {
+    	this.taskList.remove(task);
+    }
+    
+    /**
+     * @param newTasks - the list of tasks to add to the card
+     */
+    public void removeTasks(TaskModel[] tasks) {
+    	for (int i = 0; i < tasks.length; i++) {
+    		this.taskList.remove( tasks[i] );
+    	}
+    }
 
 	/**
 	 * @return the title of the card
@@ -103,13 +119,6 @@ public class StageModel extends AbstractListModel {
 	public void setTaskList(ArrayList<TaskModel> taskList) {
 		this.taskList = taskList;
 	}
-	
-	/**
-	 * @param task - adds a task to the card
-	 */
-	public void addTaskToCard(TaskModel task) {
-		taskList.add(task);
-	}
 
 	/**
 	 * @param index - the spot in the list of tasks to retrieve
@@ -119,6 +128,23 @@ public class StageModel extends AbstractListModel {
 	public TaskModel getElementAt(int index) {
 		TaskModel task = taskList.get(index);
 		return task;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        
+        StageModel other = (StageModel) obj;
+        
+        return this.title == other.getTitle();
 	}
 	
 

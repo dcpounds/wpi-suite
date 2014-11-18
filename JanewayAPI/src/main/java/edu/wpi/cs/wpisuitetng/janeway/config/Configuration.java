@@ -83,7 +83,7 @@ public class Configuration implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
 	/**
 	 * @return the projectName
 	 */

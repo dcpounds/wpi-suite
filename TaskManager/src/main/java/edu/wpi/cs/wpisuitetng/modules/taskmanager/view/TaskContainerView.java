@@ -15,20 +15,21 @@ import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
-
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 
 import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -50,7 +51,7 @@ public class TaskContainerView extends JPanel{
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
 	
-	public TaskContainerView(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel, TaskModel taskModel, StageView stageView) {
+	public TaskContainerView(TaskModel taskModel, StageView stageView) {
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
@@ -86,7 +87,12 @@ public class TaskContainerView extends JPanel{
 		add(closeButton, "cell 1 0");
 		
 		JButton btnEdit = new JButton("Edit");
-		btnEdit.addActionListener(new AddTabController(taskManagerTabView, TabType.TASK, workflowModel, taskModel));
+		btnEdit.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().addTab(TabType.TASK, new StageModel(""));
+			}
+		});
 		add(btnEdit, "cell 0 2");
 		
 		

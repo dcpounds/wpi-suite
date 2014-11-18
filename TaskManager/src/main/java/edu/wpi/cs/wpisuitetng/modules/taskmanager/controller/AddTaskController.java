@@ -9,9 +9,8 @@ import javax.swing.DefaultListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.EditTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
@@ -22,24 +21,18 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
  * 
  */
 public class AddTaskController implements ActionListener {
+	private TabView tabView;
+	private WorkflowModel workflowModel;
 	private StageView stageView;
 	private TaskContainerView taskView;
 	private AssignUsersView assignUsersView;
-	private TaskManagerTabView tabView;
 	private NewTaskTab taskCreationView;
 	private int stageIndex;
 	
 
-	/**
-	 * construct the controller
-	 * 
-	 * @param tabView - the main JTabbedPane that holds the tab
-	 * @param taskModel - the taskModel to add to the stage
-	 * @param stageIndex - the index of the stage to remove
-	 */
-	public AddTaskController(TaskManagerTabView tabView, WorkflowModel workflowModel, NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
-		//Parent tab pane
-		this.tabView = tabView;
+	public AddTaskController(NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
+		tabView = TabController.getTabView();
+		workflowModel = WorkflowController.getWorkflowModel();
 		//Tab the request was made on
 		this.taskCreationView = taskCreationView;
 		//the pane that is used for adding users
@@ -60,7 +53,7 @@ public class AddTaskController implements ActionListener {
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
-		this.taskView = new TaskContainerView(tabView, workflowModel, taskModel, stageView);
+		this.taskView = new TaskContainerView(taskModel, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 		

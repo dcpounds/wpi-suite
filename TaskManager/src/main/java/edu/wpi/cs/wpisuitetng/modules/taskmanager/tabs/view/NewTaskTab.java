@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -16,10 +18,11 @@ import javax.swing.JButton;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 /**
  * This is a tab for creating new tasks
@@ -43,17 +46,18 @@ public class NewTaskTab extends JPanel{
 	 * contructs a tab for creating tasks
 	 * 
 	 * @param taskManagerTabView - the main view that holds tabs
-	 * @param workflowModel - the main workflow model
 	 */
-	public NewTaskTab(TaskManagerTabView taskManagerTabView, WorkflowModel workflowModel, TaskModel taskmodel) {
-		this.workflowModel = workflowModel;
+
+	public NewTaskTab(TaskModel taskmodel) {
+		this.workflowModel = WorkflowController.getWorkflowModel();
+		
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
 			
-		JLabel taskTitleLabel2 = new JLabel("Task Title");
-		add(taskTitleLabel2, "flowx,cell 1 2");
+		JLabel taskTitleLabel = new JLabel("Task Title");
+		add(taskTitleLabel, "flowx,cell 1 2");
 			
-		JLabel stageLabel2 = new JLabel("Stage");
-		add(stageLabel2, "cell 3 2");
+		JLabel stageLabel = new JLabel("Stage");
+		add(stageLabel, "cell 3 2");
 			
 		taskTitleField = new JTextField(taskmodel.getTitle());
 		add(taskTitleField, "flowx,cell 1 3,alignx left");
@@ -74,15 +78,20 @@ public class NewTaskTab extends JPanel{
 		taskDescriptionField.setRows(10);
 		add(taskDescriptionField, "cell 1 6,alignx left,growy");
 			
-		AssignUsersView assignUsersView2 = new AssignUsersView(taskManagerTabView, workflowModel);
+		AssignUsersView assignUsersView = new AssignUsersView();
 			
-		JButton makeTaskButton2 = new JButton("Create");
-		makeTaskButton2.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView2, 0));
-		makeTaskButton2.addActionListener( new RemoveTabController(taskManagerTabView, this));
+		JButton makeTaskButton = new JButton("Create");
+		makeTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
+		NewTaskTab thisTab = this;
+		makeTaskButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().removeTab(thisTab);
+			}
+		});
 			
-		add(assignUsersView2, "cell 3 6,grow");
-		add(makeTaskButton2, "cell 1 8");
-		
+		add(assignUsersView, "cell 3 6,grow");
+		add(makeTaskButton, "cell 1 8");
 		
 		
 	}
