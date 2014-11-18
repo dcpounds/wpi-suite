@@ -5,16 +5,24 @@ import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
+import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+
 /**
  * Model for respresenting a stage that holds individual tasks
  *
  */
-public class StageModel extends AbstractListModel {
+public class StageModel extends AbstractModel {
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private ArrayList<TaskModel> taskList;
 
+	public StageModel(StageModel updatedStage) {
+		this(updatedStage.getTitle(), updatedStage.getTaskList());
+	}
+	
 	/**
 	 * constructs a new stage
 	 * 
@@ -35,23 +43,6 @@ public class StageModel extends AbstractListModel {
 		this.title = title;
 		taskList = new ArrayList<TaskModel>();
 	}
-	
-	/**
-     * Removes all tasks from this card
-     * NOTE: One cannot simply construct a new instance of
-     * the model, because other classes in this module have
-     * references to it. Hence, we manually remove each work flow
-     * from the model.
-     */
-    public void emptyModel() {
-        int oldSize = getSize();
-        Iterator<TaskModel> iterator = taskList.iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
-            iterator.remove();
-        }
-        this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
-    }
     
     /**
      * @param newTask - the task to add to the list of cards
@@ -119,16 +110,6 @@ public class StageModel extends AbstractListModel {
 	public void setTaskList(ArrayList<TaskModel> taskList) {
 		this.taskList = taskList;
 	}
-
-	/**
-	 * @param index - the spot in the list of tasks to retrieve
-	 * @return the task at the given index
-	 */
-	@Override
-	public TaskModel getElementAt(int index) {
-		TaskModel task = taskList.get(index);
-		return task;
-	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -145,6 +126,35 @@ public class StageModel extends AbstractListModel {
         StageModel other = (StageModel) obj;
         
         return this.title == other.getTitle();
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean identify(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static StageModel fromJson(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, StageModel.class);
 	}
 	
 
