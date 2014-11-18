@@ -1,17 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import com.db4o.User;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
@@ -23,18 +16,11 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.TaskManager;
 
 import javax.swing.JTextPane;
-import javax.swing.JTable;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JList;
+import javax.swing.JTextArea;
 
 import java.awt.Font;
-import java.awt.Component;
-
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
-import javax.swing.JList;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -57,37 +43,49 @@ public class TaskView extends JPanel{
 	 * @param taskModel -model which the view is based off of
 	 */
 	public TaskView(StageView stageView, TaskModel taskModel ){
-		setLayout(new MigLayout("", "[grow][grow][]", "[][][][][][grow][][][grow]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][][grow]"));
 		
 		JLabel lblDue = new JLabel("Due:");
+		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblDue, "cell 0 0,alignx left");
 		
 		JLabel lblEstimatedEffort = new JLabel("Estimated Effort:");
-		add(lblEstimatedEffort, "cell 0 1");
+		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
+		add(lblEstimatedEffort, "cell 0 1,alignx left");
 		
 		JLabel lblActualEffort = new JLabel("Actual Effort:");
-		add(lblActualEffort, "cell 0 2");
+		lblActualEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
+		add(lblActualEffort, "cell 0 2,alignx left");
 		
 		JSeparator separator = new JSeparator();
 		add(separator, "cell 0 3");
 		
 		JLabel lblDescription = new JLabel("Description");
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblDescription, "cell 0 4,alignx left");
 		
-		JTextPane textPane = new JTextPane();
-		add(textPane, "cell 0 5 3 1,grow");
+		JTextArea textArea = new JTextArea( taskModel.getDescription() );
+		textArea.setLineWrap(true);
+		textArea.setEditable(false);
+		add(textArea, "cell 0 5,grow");
 		
 		JSeparator separator_1 = new JSeparator();
 		add(separator_1, "cell 0 6");
 		
 		JLabel lblAssignedTo = new JLabel("Assigned To:");
+		lblAssignedTo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblAssignedTo, "cell 0 7");
 		
-		JList list = new JList();
-		add(list, "flowy,cell 0 8,grow");
+
+		JList assignedToList = new JList();
+		add(assignedToList, "flowy, cell 0 8,grow");
 
 	}
 	
+	
+	/**
+	 *  Populates the task with the list of assigned users
+	 */
 	public void addAssignedUserViews(){
 		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
 			UserIconView iconView = new UserIconView(userModel);

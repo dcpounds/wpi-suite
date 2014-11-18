@@ -1,11 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
-
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 
 /**
  * the main model representing the workflow. 

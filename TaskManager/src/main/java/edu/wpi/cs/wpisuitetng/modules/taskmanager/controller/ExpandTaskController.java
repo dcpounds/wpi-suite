@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
@@ -25,10 +24,6 @@ public class ExpandTaskController implements MouseListener{
 			taskContainerView.hideDetails();
 		else
 			taskContainerView.showDetails();
-		
-		taskModel.setIsExpanded(!isExpanded);
-		stageView.updatePreferredDimensions();
-		
 	}
 
 	@Override
