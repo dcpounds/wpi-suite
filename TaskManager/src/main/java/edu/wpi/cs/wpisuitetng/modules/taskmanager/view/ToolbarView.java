@@ -4,6 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.Component;
+import java.awt.Insets;
 
 import javafx.scene.image.Image;
 
@@ -41,22 +42,28 @@ public class ToolbarView extends JPanel {
     public ToolbarView(WorkflowModel model, TaskManagerTabView taskManagerTabView) {
         this.workflowModel = model;
         
-        ImageIcon testIcon = new ImageIcon("../TaskManager/src/main/resources/bar_chart.png");
+        ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
+        ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        ImageIcon saveIcon = new ImageIcon("../TaskManager/src/main/resources/save.png");
+        
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
-  		saveWorkflowButton = new JButton("Save Workflow", testIcon);
+  		saveWorkflowButton = new JButton("Save Workflow", saveIcon);
 		saveWorkflowButton.addActionListener(new SaveWorkflowController(workflowModel));
+		saveWorkflowButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(saveWorkflowButton);
 		
-		newStageButton = new JButton("New Stage", testIcon);
+		newStageButton = new JButton("New Stage", stageIcon);
         newStageButton.addActionListener( new AddTabController(taskManagerTabView, TabType.STAGE, workflowModel));
+        newStageButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
 		
-		newTaskButton = new JButton("New Task", testIcon);
+		newTaskButton = new JButton("New Task", taskIcon);
         newTaskButton.addActionListener( new AddTabController(taskManagerTabView, TabType.TASK, workflowModel));
+        newTaskButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }
