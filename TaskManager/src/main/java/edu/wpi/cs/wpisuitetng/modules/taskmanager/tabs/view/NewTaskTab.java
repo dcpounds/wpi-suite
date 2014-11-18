@@ -3,36 +3,21 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
-
 import javax.swing.JPanel;
-
 import net.miginfocom.swing.MigLayout;
-
-import javax.swing.AbstractButton;
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -223,13 +208,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		}
 		if(!taskDescriptionField.getText().isEmpty()){
 			descriptionTextFull=true;
-		}
-		if(!this.getDateText().isEmpty()){
-			dateAdded = true;
-		}
-		// empty = false, ! = true
-		boolean[] flags = {titleTextFull, descriptionTextFull, dateAdded};
-		return flags;
 		}
 		if(!this.getDateText().isEmpty()){
 			dateAdded = true;
