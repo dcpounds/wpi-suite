@@ -29,10 +29,11 @@ public class StageView extends JPanel {
 	 * @param stageModel - the model the view is based off of
 	 */
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
-		this.stagePane = new JPanel();
+		title = stageModel.getTitle();
+		stagePane = new JPanel();
 		this.workflowView = workflowView;
 		
-		JLabel lblStageTitle = new JLabel( stageModel.getTitle() );
+		JLabel lblStageTitle = new JLabel(title);
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -78,8 +79,8 @@ public class StageView extends JPanel {
 		
 		//Go through each component in the stageView
 		for( Component childComponent : stagePane.getComponents() ){
-			if( childComponent instanceof TaskContainerView ){
-				heightNeeded += ((TaskContainerView) childComponent).getHeight();
+			if( childComponent instanceof TaskView ){
+				heightNeeded += ((TaskView) childComponent).getHeight();
 			}
 			
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
@@ -109,7 +110,7 @@ public class StageView extends JPanel {
 	 * 
 	 * @param taskView
 	 */
-	public void addTaskView(TaskContainerView taskView) {
+	public void addTaskView(TaskView taskView) {
 		stagePane.add(taskView);
 		updatePreferredDimensions();
 		revalidate();
@@ -121,11 +122,23 @@ public class StageView extends JPanel {
 	 * 
 	 * @param taskView
 	 */
-	public void removeTaskView(TaskContainerView taskView) {
+	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
 		updatePreferredDimensions();
 		revalidate();
 		repaint();	
+	}
+	
+	
+	public TaskView getTaskViewById(int taskId){
+		for(Component component: stagePane.getComponents()){
+			TaskView taskView = (TaskView) component;
+			if(taskView.getId() == taskId){
+				return taskView;
+			}
+			
+		}
+		return null;
 	}
 
 }

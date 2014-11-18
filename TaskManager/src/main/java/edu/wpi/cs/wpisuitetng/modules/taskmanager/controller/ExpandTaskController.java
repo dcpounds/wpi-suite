@@ -4,14 +4,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 public class ExpandTaskController implements MouseListener{
 	TaskModel taskModel;
-	TaskContainerView taskContainerView;
+	TaskView taskContainerView;
 	StageView stageView;
 	
-	public ExpandTaskController(TaskContainerView taskContainerView, TaskModel taskModel){
+	public ExpandTaskController(TaskView taskContainerView, TaskModel taskModel){
 		this.taskModel = taskModel;
 		this.taskContainerView = taskContainerView;	
 		this.stageView = taskContainerView.getStageView();

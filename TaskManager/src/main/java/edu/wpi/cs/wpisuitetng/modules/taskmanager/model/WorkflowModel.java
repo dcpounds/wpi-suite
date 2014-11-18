@@ -81,9 +81,29 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	/**
-	 * @param stage - a TaskModel to add to the workflow
+	 * get a stage model by its name
+	 * 
+	 * @param name
+	 * @return
 	 */
-	public void addTask(StageModel stage, TaskModel task) {
+	public StageModel getStageByName(String name){
+		for(StageModel stageModel : stageList){
+			if(stageModel.getTitle() == name){
+				return stageModel;
+			}
+		}
+		return null;
+		
+	}
+	
+	/**
+	 * add a task to a specific stage
+	 * 
+	 * @param stageName - name of the stage
+	 * @param task - model of task to be added
+	 */
+	public void addTask(String stageName, TaskModel task) {
+		StageModel stage = getStageByName(stageName);
 		for(StageModel stageModel : stageList){
 			if(stageModel == stage){
 				task.setId(getNextTaskId());
@@ -97,12 +117,18 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a TaskModel to add to the workflow
 	 */
 	public void removeTask(TaskModel task) {
+		StageModel stageToBeUpdated = null;
+		TaskModel taskToBeRemoved = null;
 		for(StageModel stageModel : stageList){
 			for(TaskModel taskModel : stageModel.getTaskList()){
 				if(taskModel == task){
-					stageModel.removeTask(task);
+					stageToBeUpdated = stageModel;
+					taskToBeRemoved = taskModel;
 				}
 			}
+		}
+		if(stageToBeUpdated != null){
+			stageToBeUpdated.removeTask(taskToBeRemoved);
 		}
 	}
 	

@@ -65,7 +65,7 @@ public class ToolbarView extends JPanel {
         newTaskButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.TASK, new TaskModel());
+				TabController.getInstance().addTab(TabType.TASK, null);
 			}
 		});
         newTaskButton.setMargin(new Insets(0,0,0,0));

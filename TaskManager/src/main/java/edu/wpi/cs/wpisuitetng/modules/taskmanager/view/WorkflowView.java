@@ -25,7 +25,7 @@ import javax.swing.BoxLayout;
 public class WorkflowView extends JPanel {
 	
 	private ArrayList<StageModel> stageModelList;
-	private ArrayList<StageView> stageViewList = new ArrayList<StageView>();
+	private ArrayList<StageView> stageViewList;
 	private WorkflowModel workflowModel;
 	private JPanel workflowPanel;
 	private JScrollPane scrollBar;
@@ -49,6 +49,7 @@ public class WorkflowView extends JPanel {
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
+		stageViewList = new ArrayList<StageView>();
 		for(StageModel stageModel : stageModelList){
 			addStageView( stageModel );
 		}
@@ -95,6 +96,14 @@ public class WorkflowView extends JPanel {
 		repaint();
 	}
 	
+	public StageView getStageViewByName(String name){
+		for(StageView stageView: stageViewList){
+			if(stageView.getTitle() == name){
+				return stageView;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * 

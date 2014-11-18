@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -15,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
  * A contoller that is used to add a task to the workflow
@@ -26,18 +29,18 @@ public class AddTaskController implements ActionListener {
 	private TabView tabView;
 	private WorkflowModel workflowModel;
 	private StageView stageView;
-	private TaskContainerView taskView;
+	private TaskView taskView;
 	private AssignUsersView assignUsersView;
-	private NewTaskTab taskCreationView;
+	private NewTaskTab newTaskTabView;
 	private int stageIndex;
 	
 
 
-	public AddTaskController(NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
+	public AddTaskController(NewTaskTab newTaskTabView, AssignUsersView assignUsersView, int stageIndex){
 		tabView = TabController.getTabView();
 		workflowModel = WorkflowController.getWorkflowModel();
 		//Tab the request was made on
-		this.taskCreationView = taskCreationView;
+		this.newTaskTabView = newTaskTabView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
 	}
@@ -51,14 +54,23 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.stageIndex = taskCreationView.getStageSelectionIndex();
+		this.stageIndex = newTaskTabView.getStageSelectionIndex();
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
-		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getDateText());
-		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
-		this.taskView = new TaskContainerView(taskModel, stageView);
+		Configuration config = ConfigManager.getConfig();
+		
+		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
+		taskModel.setUsersAssignedTo( this.getAssignedUsers());
+		taskModel.setCreator(new User(config.getUserName(), config.getUserName(), "password", -1));
+		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
+		taskModel.setActualEffort(newTaskTabView.getActualEffort());
+		taskModel.setDueDate(newTaskTabView.getDateText());
+		taskModel.setStatus(newTaskTabView.getStatusText());
+		
+		//IMPORTANT: workflow model must be updated before creating task so that proper id can be set
+		workflowModel.addTask(newTaskTabView.getStatusText(), taskModel);
+		this.taskView = new TaskView(taskModel, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
-		
 	}
 
 	

@@ -24,6 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -33,7 +34,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
@@ -45,10 +49,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
  * 		Authors  Guillermo, Ashton;
  *		
  */
-public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
+public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
+	private TabView tabView;
 	private JTextField taskTitleField;
+	private JTextField estEffortField;
+	private JTextField actEffortField;
 	private JComboBox<String> stageBox;
 	private JComboBox<String> workFlowBox;
 	private JLabel taskDescriptionLabel;
@@ -58,8 +65,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
     private UtilDateModel model;
     private JDatePanelImpl datePanel; 
     private JDatePickerImpl datePicker;  
-    private JButton makeTaskButton;
+    private JButton sbmtTaskButton;
 	private JLabel titleEmptyError;
+	private JLabel estEffortError;
+	private JLabel actEffortError;
 	private JLabel descriptionEmptyError;
 	private JLabel dateNotAddedError;
 	private JLabel starredFieldsRequired;
@@ -70,32 +79,45 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
 
-	public NewTaskTab(TaskModel taskmodel) {
-		this.workflowModel = WorkflowController.getWorkflowModel();
+	public NewTaskTab(TaskModel taskModel) {
+		boolean shouldRemove = false;
+		String oldStage = null;
+		int oldId = -1;
 		
-		setLayout(new MigLayout("", "[][][][grow]", "[][][][][]"));
+		if(taskModel != null){
+			shouldRemove = true;
+			oldStage = taskModel.getStatus();
+			oldId = taskModel.getId();
+		} else {
+			taskModel = new TaskModel();
+		}
+		
+		this.workflowModel = WorkflowController.getWorkflowModel();
+		this.tabView = TabController.getTabView();
+		
+		setLayout(new MigLayout("", "[][][grow]", "[][][][grow][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
-		add(taskTitleLabel, "flowx,cell 1 2");
+		add(taskTitleLabel, "flowx,cell 1 1");
 		
 		titleEmptyError = new JLabel("Task Needs A Title");
 		titleEmptyError.setForeground(Color.red);
-		add(titleEmptyError, "flowx, cell 1 2");
+		add(titleEmptyError, "flowx, cell 1 1");
 		titleEmptyError.setVisible(false);
 		
 		taskTitleField = new JTextField();
-		taskTitleField.setText("");
-		add(taskTitleField, "flowx,cell 1 3,alignx left");
+		taskTitleField.setText(taskModel.getTitle());
+		add(taskTitleField, "flowx,cell 1 2,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
 		
-		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "cell 3 2");
 		
+		JLabel stageLabel = new JLabel("Stage");
+		add(stageLabel, "cell 2 1");
 
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
-		add(stageBox, "cell 3 3");
+		add(stageBox, "cell 2 2");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
@@ -103,38 +125,73 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		});
 		
 		taskDescriptionLabel = new JLabel("Task Description(*)");
-		add(taskDescriptionLabel, "cell 1 5");
+		add(taskDescriptionLabel, "cell 1 3");
 		
 		descriptionEmptyError = new JLabel("Task Needs A Description");
 		descriptionEmptyError.setForeground(Color.red);
-		add(descriptionEmptyError, "cell 1 5");
+		add(descriptionEmptyError, "cell 1 3");
 		descriptionEmptyError.setVisible(false);
 		
 
-		taskDescriptionField = new JTextArea();
+		taskDescriptionField = new JTextArea(taskModel.getDescription());
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(50);
 		taskDescriptionField.setRows(10);
-		add(taskDescriptionField, "cell 1 6,alignx left,growy");
+		add(taskDescriptionField, "cell 1 4,alignx left,growy");
 		taskDescriptionField.addKeyListener(this);
 		
 		AssignUsersView assignUsersView = new AssignUsersView();
-		add(assignUsersView, "cell 3 6,grow");
+		add(assignUsersView, "cell 2 4,grow");
 		
-		makeTaskButton = new JButton("Create");
-		makeTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
+		JLabel estEffortLabel = new JLabel("Estimated Effort");
+		add(estEffortLabel, "flowx,cell 2 5");
+		
+		estEffortError = new JLabel("Must specify nonnegative effort");
+		estEffortError.setForeground(Color.red);
+		add(estEffortError, "flowx, cell 2 5");
+		estEffortError.setVisible(false);
+		
+		estEffortField = new JTextField();
+		estEffortField.setText(Integer.toString(taskModel.getEstimatedEffort()));
+		add(estEffortField, "flowx,cell 2 6,alignx left");
+		estEffortField.setColumns(10);
+		estEffortField.addKeyListener(this);
+		
+		JLabel actEffortLabel = new JLabel("Actual Effort");
+		add(actEffortLabel, "flowx,cell 2 7");
+		
+		actEffortError = new JLabel("Must specify nonnegative effort");
+		actEffortError.setForeground(Color.red);
+		add(actEffortError, "flowx, cell 2 7");
+		actEffortError.setVisible(false);
+		
+		actEffortField = new JTextField();
+		actEffortField.setText(Integer.toString(taskModel.getActualEffort()));
+		add(actEffortField, "flowx,cell 2 8,alignx left");
+		actEffortField.setColumns(10);
+		actEffortField.addKeyListener(this);
+		
+		sbmtTaskButton = new JButton("Submit");
+		sbmtTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
 		NewTaskTab thisTab = this;
-		makeTaskButton.addActionListener( new ActionListener(){
+		sbmtTaskButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TabController.getInstance().removeTab(thisTab);
 			}
 		});
-		add(makeTaskButton, "cell 1 10");		
-		makeTaskButton.setEnabled(false);
+		if(shouldRemove){
+			StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
+			TaskView tView = sView.getTaskViewById(oldId);
+			sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
+		}
+		
+		
+		add(sbmtTaskButton, "cell 1 8");		
+		sbmtTaskButton.setEnabled(false);
 		starredFieldsRequired = new JLabel("Starred Fields Are Required");
 		starredFieldsRequired.setForeground(Color.red);
-		add(starredFieldsRequired, "cell 1 10");
+		add(starredFieldsRequired, "cell 1 8");
 		
 		/*
 		 * Creates a model of the calendar. properties sets the date to todays
@@ -143,11 +200,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		 * in MM-dd-YYYY
 		 */
 		dateDue = new JLabel("Due Date:(*)");
-		add(dateDue, "cell 1 8");
+		add(dateDue, "cell 1 5");
 		
 		dateNotAddedError = new JLabel("Task Needs A Due Date");
 		dateNotAddedError.setForeground(Color.red);
-		add(dateNotAddedError, "cell 1 8");
+		add(dateNotAddedError, "cell 1 5");
 		dateNotAddedError.setVisible(false);
 		
 		model = new UtilDateModel();
@@ -157,81 +214,86 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		p.put("text.year", "Year");
 	    datePanel = new JDatePanelImpl(model, p);
 	    datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		add(datePicker, "cell 1 9");
+		add(datePicker, "cell 1 6");
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
+		datePicker.addActionListener(this);
+		
+		checkAndUpdateFields();
 		
 	}
+	
+	/**
+	 * Checks that all the requirements for creating a new task are met and updates the correct fields
+	 * indicating what if anything still needs to be done.
+	 */
+	public void checkAndUpdateFields(){
+		boolean isTitleTextFull = taskTitleField.getText().isEmpty()? false: true;	
+		titleEmptyError.setVisible(!isTitleTextFull);
+		
+		boolean isDescriptionTextFull = taskDescriptionField.getText().isEmpty()? false: true;
+		descriptionEmptyError.setVisible(!isDescriptionTextFull);
+		
+		boolean isDateAdded = this.getDateText().isEmpty()? false: true;
+		dateNotAddedError.setVisible(!isDateAdded);
+		
+		boolean isEstEffortPosInt = this.getEstimatedEffort() < 0? false: true;
+		estEffortError.setVisible(!isEstEffortPosInt);
+		
+		boolean isActEffortPosInt = this.getActualEffort() < 0? false: true;
+		actEffortError.setVisible(!isActEffortPosInt);
+		
+		boolean shouldSubmitBeEnabled = 
+					isTitleTextFull && 
+					isDescriptionTextFull && 
+					isDateAdded &&
+					isEstEffortPosInt &&
+					isActEffortPosInt? true: false;
+		sbmtTaskButton.setEnabled(shouldSubmitBeEnabled);	
+		starredFieldsRequired.setVisible(!shouldSubmitBeEnabled);
+	}
+	
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		boolean myFields[] = checkFields();
-		if(myFields[0] && myFields[1] && myFields[2]){
-			makeTaskButton.setEnabled(true);	
-			starredFieldsRequired.setVisible(false);
-		}
-		else{
-			makeTaskButton.setEnabled(false);
-			starredFieldsRequired.setVisible(true);
-		}
-		if(!myFields[0]){
-			titleEmptyError.setVisible(true);
-		}
-		if(!myFields[1]){
-			descriptionEmptyError.setVisible(true);
-		}
-		if(!myFields[2]){
-			dateNotAddedError.setVisible(true);
-		}
-		if(myFields[0]){
-			titleEmptyError.setVisible(false);
-		}
-		if(myFields[1]){
-			descriptionEmptyError.setVisible(false);
-		}
-		if(myFields[2]){
-			dateNotAddedError.setVisible(false);
-		}
+		checkAndUpdateFields();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		checkAndUpdateFields();
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		checkAndUpdateFields();
 	}
 	
-	public boolean[] checkFields(){
-		boolean titleTextFull = false;
-		boolean descriptionTextFull = false;
-		boolean dateAdded = false;
-		if(taskTitleField.getText().isEmpty()){		
-			titleTextFull = false;
-		}
-		if(taskDescriptionField.getText().isEmpty()){
-			descriptionTextFull=false;
-		}
-		if(this.getDateText().isEmpty()){
-			dateAdded = false;
-		}
-		if(!taskTitleField.getText().isEmpty()){		
-			titleTextFull = true;
-		}
-		if(!taskDescriptionField.getText().isEmpty()){
-			descriptionTextFull=true;
-		}
-		if(!this.getDateText().isEmpty()){
-			dateAdded = true;
-		}
-		// empty = false, ! = true
-		boolean[] flags = {titleTextFull, descriptionTextFull, dateAdded};
-		return flags;
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		checkAndUpdateFields();
 	}
 	  
-	  
+	public int getEstimatedEffort(){
+		int effort;
+		try {
+			effort = Integer.parseInt(estEffortField.getText());
+		} catch (NumberFormatException e){
+			effort = -1;
+		}
+		return effort;
+	}
+	
+	public int getActualEffort(){
+		int effort;
+		try {
+			effort = Integer.parseInt(actEffortField.getText());
+		} catch (NumberFormatException e){
+			effort = -1;
+		}
+		return effort;
+	}
 	
 	/**
 	 * get the current string in the title field
@@ -277,83 +339,36 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 	 */
 	public String getDateText(){
 		Format formatter = new SimpleDateFormat("MM/dd/yyyy");
-		return formatter.format(datePicker.getModel().getValue());
+		if(datePicker.getModel().getValue() == null){
+			return "";
+		} else {
+			return formatter.format(datePicker.getModel().getValue());
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		boolean myFields[] = checkFields();
-		if(myFields[0] && myFields[1] && myFields[2]){
-			makeTaskButton.setEnabled(true);	
-			starredFieldsRequired.setVisible(false);
-		}
-		else{
-			makeTaskButton.setEnabled(false);
-			starredFieldsRequired.setVisible(true);
-		}
-		if(!myFields[0]){
-			titleEmptyError.setVisible(true);
-		}
-		if(!myFields[1]){
-			descriptionEmptyError.setVisible(true);
-		}
-		if(!myFields[2]){
-			dateNotAddedError.setVisible(true);
-		}
-		if(myFields[0]){
-			titleEmptyError.setVisible(false);
-		}
-		if(myFields[1]){
-			descriptionEmptyError.setVisible(false);
-		}
-		if(myFields[2]){
-			dateNotAddedError.setVisible(false);
-		}	
+		checkAndUpdateFields();
 	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		checkAndUpdateFields();
 		
 	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		checkAndUpdateFields();
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		checkAndUpdateFields();
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		boolean myFields[] = checkFields();
-		if(myFields[0] && myFields[1] && myFields[2]){
-			makeTaskButton.setEnabled(true);	
-			starredFieldsRequired.setVisible(false);
-		}
-		else{
-			makeTaskButton.setEnabled(false);
-			starredFieldsRequired.setVisible(true);
-		}
-		if(!myFields[0]){
-			titleEmptyError.setVisible(true);
-		}
-		if(!myFields[1]){
-			descriptionEmptyError.setVisible(true);
-		}
-		if(!myFields[2]){
-			dateNotAddedError.setVisible(true);
-		}
-		if(myFields[0]){
-			titleEmptyError.setVisible(false);
-		}
-		if(myFields[1]){
-			descriptionEmptyError.setVisible(false);
-		}
-		if(myFields[2]){
-			dateNotAddedError.setVisible(false);
-		}	
+		checkAndUpdateFields();
 	}
 	
 }

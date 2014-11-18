@@ -1,101 +1,169 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import net.miginfocom.swing.MigLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.TaskManager;
+import javax.swing.JLabel;
 
-import javax.swing.JTextPane;
-import javax.swing.JSeparator;
-import javax.swing.JList;
-import javax.swing.JTextArea;
-
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.JScrollPane;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+
+import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-
-
 /**
- *  This view is responsible for visually representing a task model
+ * @author Alec
+ * An accordian style expandable task view that can be inserted into the stages
  */
 public class TaskView extends JPanel{
-
-	private static final long serialVersionUID = -4932681028640603728L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6517799529927334536L;
+	private int id;
 	private TaskModel taskModel;
-	private JPanel assignedToPane;
+	private JPanel taskContents;
+	private JPanel titlePanel;
+	private TaskViewExpanded taskView;
+	private JScrollPane taskContentPane;
+	private StageView stageView;
+	private static final int openSize = 250;
+	private static final int closeSize = 40;
+	
+	public TaskView(TaskModel taskModel, StageView stageView) {
+		id = taskModel.getId();
+		setBackground(Color.LIGHT_GRAY);
+		setForeground(Color.LIGHT_GRAY);
+		setBorder(BorderFactory.createLineBorder(Color.black));
+		this.stageView = stageView;
+		this.taskModel = taskModel;
+		this.taskView = new TaskViewExpanded(stageView, taskModel);
+		
+		setLayout(new MigLayout("", "[grow][][]", "[][][grow]"));
+		
+		titlePanel = new JPanel();
+		titlePanel.setOpaque(false);
+		titlePanel.setBackground(Color.LIGHT_GRAY);
+		titlePanel.addMouseListener(  new ExpandTaskController(this, taskModel) );
+		
+		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
+		
+		JLabel lblNewTask = new JLabel( taskModel.getTitle() );
+		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
+		
+		this.taskContentPane = new JScrollPane();
+		
+		this.taskContents = new JPanel();
+		
+		JButton closeButton = new JButton("\u2716");
+		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+		
+		
+		closeButton.addActionListener(new RemoveTaskController(taskModel, stageView, this));
+		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		add(closeButton, "cell 1 0");
+		
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().addTab(TabType.TASK, taskModel);
+			}
+		});
+		add(btnEdit, "cell 0 2");
+		
+		
+		taskContentPane.setViewportView(taskContents);
+	}
 	
 	/**
-	 * creates a new task view based off the given model
-	 * 
-	 * @param stageView -stage view for the task to be added to
-	 * @param taskModel -model which the view is based off of
+	 * This method will override the default getPreferredSize and resize the task based on the size of its parent
+	 * THIS METHOD IS ALSO RESPONSIBLE FOR RESIZING THE TASK WHEN YOU CLICK ON IT
 	 */
-	public TaskView(StageView stageView, TaskModel taskModel ){
-		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][][grow]"));
-		/* makes a label for the date, and then it
-		 * gets the due date from the model and places it to view
-		 */
-		JLabel lblDue = new JLabel("Due:");
-		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblDue, "cell 0 0,alignx left");
+	public Dimension getPreferredSize() {
+		boolean isExpanded = taskModel.getIsExpanded();
+		Component parent = this.getParent();
+		Dimension parentSize = parent.getSize();
 		
-		JTextArea dateArea = new JTextArea( taskModel.getDueDate() );
-		dateArea.setLineWrap(true);
-		dateArea.setEditable(false);
-		add(dateArea, "cell 0 0, alignx right");
-		
-		JLabel lblEstimatedEffort = new JLabel("Estimated Effort:");
-		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblEstimatedEffort, "cell 0 1,alignx left");
-		
-		JLabel lblActualEffort = new JLabel("Actual Effort:");
-		lblActualEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblActualEffort, "cell 0 2,alignx left");
-		
-		JSeparator separator = new JSeparator();
-		add(separator, "cell 0 3");
-		
-		JLabel lblDescription = new JLabel("Description");
-		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblDescription, "cell 0 4,alignx left");
-		
-		JTextArea textArea = new JTextArea( taskModel.getDescription() );
-		textArea.setLineWrap(true);
-		textArea.setEditable(false);
-		add(textArea, "cell 0 5,grow");
-		
-		JSeparator separator_1 = new JSeparator();
-		add(separator_1, "cell 0 6");
-		
-		JLabel lblAssignedTo = new JLabel("Assigned To:");
-		lblAssignedTo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblAssignedTo, "cell 0 7");
-		
-
-		JList assignedToList = new JList();
-		add(assignedToList, "flowy, cell 0 8,grow");
+		if( parent == null ){
+			return new Dimension(300, 600);
+		} else{
+			
+			//If the task is expanded, set the preferred size to the parent width and the openSize height
+			if(isExpanded){
+				this.setMaximumSize(new Dimension(parentSize.width,openSize));
+				return new Dimension(parentSize.width,openSize);
+				
+			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
+			} else{
+				this.setMaximumSize(new Dimension(parentSize.width,closeSize));
+				return new Dimension(parentSize.width,closeSize);
+			}
+		}
+	}
+	
+	public int getHeight() {
+		if( taskModel.getIsExpanded() )
+			return openSize;
+		else
+			return closeSize;
+	}
+	
+	/**
+	 * Expand the task container to show details about the task
+	 */
+	public void showDetails(){
+		taskContents.add( taskView );
+		add(taskContentPane, "cell 0 1 3 1,grow");
+		taskModel.setIsExpanded(true);
+		stageView.updatePreferredDimensions();
+		revalidate();
+		repaint();
 	}
 	
 	
 	/**
-	 *  Populates the task with the list of assigned users
+	 * Collapse the task container and hide details about the task
 	 */
-	public void addAssignedUserViews(){
-		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
-			UserIconView iconView = new UserIconView(userModel);
-			this.assignedToPane.add(iconView);
-		}
+	public void hideDetails(){
+		taskContents.remove( taskView );
+		this.remove(taskContentPane);
+		taskModel.setIsExpanded(false);
+		stageView.updatePreferredDimensions();
+		revalidate();
+		repaint();
+	}
+	
+	public StageView getStageView(){
+		return stageView;
+	}
+	
+	public int getId(){
+		return id;
 	}
 }

@@ -31,7 +31,7 @@ public class NewStageTab extends JPanel{
 	
 	private JLabel titleLabel;
 	private JTextField stageTitleField;
-	private JButton makeStageButton;
+	private JButton sbmtStageButton;
     private final WorkflowModel workflowModel;
 	
 	//add a combo box here for task status
@@ -43,24 +43,27 @@ public class NewStageTab extends JPanel{
 	 */
 	public NewStageTab(StageModel stageModel) {
     	this.workflowModel = WorkflowController.getWorkflowModel();
-		this.titleLabel = new JLabel("Title: ");
+
+		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+    	
+		titleLabel = new JLabel("Title: ");
 		titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		setLayout(new MigLayout("", "[grow]", "[][grow]"));
-		
 		add(titleLabel, "cell 0 0,alignx left,aligny center");
-		this.stageTitleField = new JTextField();
+		
+		stageTitleField = new JTextField();
 		add(stageTitleField, "flowy,cell 0 1,growx,aligny center");
-		this.makeStageButton = new JButton("Create this Stage!");
-		makeStageButton.addActionListener(new AddStageController(this));
+		
+		sbmtStageButton = new JButton("Submit");
+		sbmtStageButton.addActionListener(new AddStageController(this));
 		NewStageTab thisTab = this;
-		makeStageButton.addActionListener( new ActionListener(){
+		sbmtStageButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TabController.getInstance().removeTab(thisTab);
 			}
 		});
-		add(makeStageButton, "cell 0 1,alignx center,aligny top");
+		add(sbmtStageButton, "cell 0 1,alignx center,aligny top");
 		
 	}
 	

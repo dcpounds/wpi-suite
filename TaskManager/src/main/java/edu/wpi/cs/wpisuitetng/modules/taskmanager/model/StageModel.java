@@ -22,8 +22,8 @@ public class StageModel extends AbstractListModel {
 	 * @param taskList - list of tasks to be added
 	 */
 	public StageModel(String title, ArrayList<TaskModel> taskList) {
-		this.setTitle(title);
-		this.setTaskList(taskList);
+		this.title = title;
+		this.taskList = taskList;
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class StageModel extends AbstractListModel {
 	 * @param title - title of the stage
 	 */
 	public StageModel(String title) {
-		this.setTitle(title);
+		this.title = title;
 		taskList = new ArrayList<TaskModel>();
 	}
 	
