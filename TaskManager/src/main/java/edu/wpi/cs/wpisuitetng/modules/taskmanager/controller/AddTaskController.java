@@ -8,9 +8,11 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
+import sun.security.krb5.Config;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -19,6 +21,9 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * A contoller that is used to add a task to the workflow
@@ -33,6 +38,7 @@ public class AddTaskController implements ActionListener {
 	private AssignUsersView assignUsersView;
 	private NewTaskTab newTaskTabView;
 	private int stageIndex;
+	private AddTaskRequestObserver observer;
 	
 
 
@@ -43,6 +49,7 @@ public class AddTaskController implements ActionListener {
 		this.newTaskTabView = newTaskTabView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
+		this.observer = new AddTaskRequestObserver(this);
 	}
 
 	/**
@@ -54,38 +61,32 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.stageIndex = newTaskTabView.getStageSelectionIndex();
-		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
-		Configuration config = ConfigManager.getConfig();
-		
 		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
-		taskModel.setUsersAssignedTo( this.getAssignedUsers());
-		taskModel.setCreator(new User(config.getUserName(), config.getUserName(), "password", -1));
+		String userName = ConfigManager.getConfig().getUserName();
+		taskModel.setCreator(new User(userName, userName, "password", -1));
 		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
 		taskModel.setDueDate(newTaskTabView.getDateText());
 		taskModel.setStatus(newTaskTabView.getStatusText());
+		//TODO: set users assigned to this task
+		
+		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.PUT); // PUT == create
+		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
+		request.addObserver(observer); // add an observer to process the response
+		request.send();
+	}
+	
+	public void addTask(TaskModel task){
+		this.stageIndex = newTaskTabView.getStageSelectionIndex();
+		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		
 		//IMPORTANT: workflow model must be updated before creating task so that proper id can be set
-		workflowModel.addTask(newTaskTabView.getStatusText(), taskModel);
-		this.taskView = new TaskView(taskModel, stageView);
+		workflowModel.addTask(newTaskTabView.getStatusText(), task);
+		this.taskView = new TaskView(task, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 	}
 
-	
-	//returns the final list of assigned 
-	public ArrayList<UserModel> getAssignedUsers() {
-		ArrayList<UserModel> assignedUsers = new ArrayList<UserModel>();
-		DefaultListModel<String> assignedListModel = assignUsersView.getAssignedListModel();
-		
-		int size = assignedListModel.getSize();
-		for(int index = 0; index < size; index++) {
-			UserModel userModel = new UserModel( assignedListModel.getElementAt(index) );
-			assignedUsers.add( userModel );
-		}
-		return assignedUsers;
-	}
 	
 
 

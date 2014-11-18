@@ -141,6 +141,19 @@ public class AssignUsersView extends JPanel{
 		}
 	}
 	
+
+	//returns the final list of assigned 
+	public ArrayList<UserModel> getAssignedUsers() {
+		ArrayList<UserModel> assignedUsers = new ArrayList<UserModel>();
+		
+		int size = assignedListModel.getSize();
+		for(int index = 0; index < size; index++) {
+			UserModel userModel = new UserModel( assignedListModel.getElementAt(index) );
+			assignedUsers.add( userModel );
+		}
+		return assignedUsers;
+	}
+	
 	public JList<String> getAssignedListComponent() {
 		return assignedListComponent;
 	}
