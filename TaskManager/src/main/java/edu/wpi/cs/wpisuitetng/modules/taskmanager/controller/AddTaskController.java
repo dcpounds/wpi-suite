@@ -30,6 +30,7 @@ public class AddTaskController implements ActionListener {
 	private int stageIndex;
 	
 
+
 	public AddTaskController(NewTaskTab taskCreationView, AssignUsersView assignUsersView, int stageIndex){
 		tabView = TabController.getTabView();
 		workflowModel = WorkflowController.getWorkflowModel();
@@ -37,8 +38,6 @@ public class AddTaskController implements ActionListener {
 		this.taskCreationView = taskCreationView;
 		//the pane that is used for adding users
 		this.assignUsersView = assignUsersView;
-		this.stageIndex = stageIndex;
-		
 	}
 
 	/**
@@ -50,6 +49,7 @@ public class AddTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.stageIndex = taskCreationView.getStageSelectionIndex();
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
