@@ -90,7 +90,7 @@ public class TaskContainerView extends JPanel{
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.TASK, new StageModel(""));
+				TabController.getInstance().addTab(TabType.TASK, taskModel);
 			}
 		});
 		add(btnEdit, "cell 0 2");
