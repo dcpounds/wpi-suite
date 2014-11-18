@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewStageTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
@@ -15,9 +14,9 @@ public class AddStageController implements ActionListener {
 	private WorkflowView workflowView;
 	private WorkflowModel workflowModel;
 	
-	public AddStageController(TaskManagerTabView tabView, NewStageTab newStageTab) {
+	public AddStageController(NewStageTab newStageTab) {
 		this.newStageTab = newStageTab;
-		this.workflowView = tabView.getWorkflowView();
+		this.workflowView = TabController.getTabView().getWorkflowView();
 		this.workflowModel = newStageTab.getWorkflowModel();
 	}
 

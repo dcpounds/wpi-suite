@@ -6,13 +6,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.SwingConstants;
 
 /**
@@ -48,8 +52,14 @@ public class NewStageTab extends JPanel{
 		this.stageTitleField = new JTextField();
 		add(stageTitleField, "flowy,cell 0 1,growx,aligny center");
 		this.makeStageButton = new JButton("Create this Stage!");
-		makeStageButton.addActionListener(new AddStageController(taskManagerTabView, this));
-		makeStageButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
+		makeStageButton.addActionListener(new AddStageController(this));
+		NewStageTab thisTab = this;
+		makeStageButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().removeTab(thisTab);
+			}
+		});
 		add(makeStageButton, "cell 0 1,alignx center,aligny top");
 		
 	}
