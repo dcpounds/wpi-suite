@@ -44,15 +44,16 @@ public class NewStageTab extends JPanel{
 	public NewStageTab(StageModel stageModel) {
     	this.workflowModel = WorkflowController.getWorkflowModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
     	
 		titleLabel = new JLabel("Title: ");
 		titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(titleLabel, "cell 0 0,alignx left,aligny center");
+		add(titleLabel, "cell 0 0,alignx left, aligny top");
 		
 		stageTitleField = new JTextField();
-		add(stageTitleField, "flowy,cell 0 1,growx,aligny center");
+		stageTitleField.setColumns(30);
+		add(stageTitleField, "cell 0 1,alignx left, aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
 		sbmtStageButton.addActionListener(new AddStageController(this));
@@ -63,7 +64,7 @@ public class NewStageTab extends JPanel{
 				TabController.getInstance().removeTab(thisTab);
 			}
 		});
-		add(sbmtStageButton, "cell 0 1,alignx center,aligny top");
+		add(sbmtStageButton, "cell 0 2,alignx left, aligny top");
 		
 	}
 	

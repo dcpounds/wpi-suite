@@ -43,7 +43,7 @@ public class TaskViewExpanded extends JPanel{
 	 * @param taskModel -model which the view is based off of
 	 */
 	public TaskViewExpanded(StageView stageView, TaskModel taskModel ){
-		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][][grow]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][][][][grow]"));
 		/* makes a label for the date, and then it
 		 * gets the due date from the model and places it to view
 		 */
