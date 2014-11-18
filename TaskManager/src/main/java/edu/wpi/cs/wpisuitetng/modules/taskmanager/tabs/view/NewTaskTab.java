@@ -230,7 +230,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		// empty = false, ! = true
 		boolean[] flags = {titleTextFull, descriptionTextFull, dateAdded};
 		return flags;
+		}
+		if(!this.getDateText().isEmpty()){
+			dateAdded = true;
+		}
+		// empty = false, ! = true
+		boolean[] flags = {titleTextFull, descriptionTextFull, dateAdded};
+		return flags;
 	}
+	  
 	  
 	
 	/**

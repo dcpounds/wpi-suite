@@ -1,10 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
+import java.awt.Color;
 <<<<<<< HEAD
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 =======
-import java.awt.Color;
+>>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.FocusEvent;
@@ -18,7 +19,6 @@ import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
->>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 import java.util.List;
 import java.util.Properties;
 
@@ -130,11 +130,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		add(assignUsersView, "cell 3 6,grow");
 		
+		makeTaskButton = new JButton("Create");
 <<<<<<< HEAD
-		JButton makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView));
 =======
-		makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));
 >>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
@@ -204,6 +203,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+=======
+>>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 		
 	}
 
@@ -212,6 +220,34 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean[] checkFields(){
+		boolean titleTextFull = false;
+		boolean descriptionTextFull = false;
+		boolean dateAdded = false;
+		if(taskTitleField.getText().isEmpty()){		
+			titleTextFull = false;
+		}
+		if(taskDescriptionField.getText().isEmpty()){
+			descriptionTextFull=false;
+		}
+		if(this.getDateText().isEmpty()){
+			dateAdded = false;
+		}
+		if(!taskTitleField.getText().isEmpty()){		
+			titleTextFull = true;
+		}
+		if(!taskDescriptionField.getText().isEmpty()){
+			descriptionTextFull=true;
+		}
+		if(!this.getDateText().isEmpty()){
+			dateAdded = true;
+		}
+		// empty = false, ! = true
+		boolean[] flags = {titleTextFull, descriptionTextFull, dateAdded};
+		return flags;
+	}
+	  
 	
 	public boolean[] checkFields(){
 		boolean titleTextFull = false;
@@ -280,9 +316,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		return formatter.format(datePicker.getModel().getValue());
 	}
 
-<<<<<<< HEAD
-}
-=======
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		boolean myFields[] = checkFields();
@@ -359,5 +392,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		}	
 	}
 	
+<<<<<<< HEAD
+}
+=======
 }
 >>>>>>> a6c517395bd7582dbc23706ae060f14121061729
