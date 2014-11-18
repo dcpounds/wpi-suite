@@ -23,8 +23,7 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
 		this.stageList = stageList;
-		this.userList = new ArrayList<UserModel>();
-		
+		this.userList = new ArrayList<UserModel>();		
 		addBaseStages();
 	}
 	

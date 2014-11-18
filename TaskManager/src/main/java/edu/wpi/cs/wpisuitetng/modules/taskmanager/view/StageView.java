@@ -54,17 +54,17 @@ public class StageView extends JPanel {
 	 */
 	public Dimension getPreferredSize() {
 		Component parent = this.getParent();
-		Dimension parentSize = parent.getSize();
-		final int parentWidth = workflowView.getScrollPane().getViewport().getSize().width;
+		final Dimension parentSize = new Dimension( workflowView.getScrollPane().getViewport().getWidth() - 30,
+				workflowView.getScrollPane().getViewport().getHeight() - 30 );
 		
 		if( parent == null ){
 			return new Dimension(300, 600);
 		} else {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
 			int stageCount = workflowView.getStageViewList().size();
-			int stageWidth = (int) parentWidth/( stageCount < 5 ? stageCount : 5);
+			int stageWidth = (int) parentSize.width/( stageCount < 4 ? stageCount : 4);
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
-			return new Dimension( stageWidth, (int)(parentSize.height * 0.95) );
+			return new Dimension( stageWidth, parentSize.height );
 		}
 	}
 	
