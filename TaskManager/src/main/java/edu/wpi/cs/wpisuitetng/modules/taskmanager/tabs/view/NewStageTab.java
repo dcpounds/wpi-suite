@@ -6,9 +6,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import net.miginfocom.swing.MigLayout;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 /**
  * this is a tab for creating stages
@@ -35,18 +40,25 @@ public class NewStageTab extends JPanel{
 	public NewStageTab(StageModel stageModel) {
     	this.workflowModel = WorkflowController.getWorkflowModel();
 		this.titleLabel = new JLabel("Title: ");
+		titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		
+		add(titleLabel, "cell 0 0,alignx left,aligny center");
 		this.stageTitleField = new JTextField();
+		add(stageTitleField, "flowy,cell 0 1,growx,aligny center");
 		this.makeStageButton = new JButton("Create this Stage!");
-		
-		add(titleLabel);
-		add(stageTitleField);
-		add(makeStageButton);
-		
-		setLayout(new FlowLayout() );
+		makeStageButton.addActionListener(new AddStageController(taskManagerTabView, this));
+		makeStageButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
+		add(makeStageButton, "cell 0 1,alignx center,aligny top");
 		
 	}
 	
 	public WorkflowModel getWorkflowModel() {
         return this.workflowModel;
     }
+	
+	public String getStageTitle(){
+		return stageTitleField.getText();
+	}
 }

@@ -26,6 +26,11 @@ public class StageModel extends AbstractListModel {
 		this.setTaskList(taskList);
 	}
 	
+	public StageModel(String title) {
+		this.setTitle(title);
+		this.setTaskList( new ArrayList<TaskModel>() );
+	}
+	
 	/**
 	 * constructs a new empty stage
 	 * 

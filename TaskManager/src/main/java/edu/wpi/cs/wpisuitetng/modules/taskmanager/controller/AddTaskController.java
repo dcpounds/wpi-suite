@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -51,13 +53,14 @@ public class AddTaskController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		this.stageIndex = taskCreationView.getStageSelectionIndex();
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
-		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
+		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getDateText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskContainerView(taskModel, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 		
 	}
+
 	
 	//returns the final list of assigned 
 	public ArrayList<UserModel> getAssignedUsers() {
@@ -71,5 +74,7 @@ public class AddTaskController implements ActionListener {
 		}
 		return assignedUsers;
 	}
+	
+
 
 }

@@ -6,9 +6,13 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Insets;
+
+import javafx.scene.image.Image;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -40,28 +44,32 @@ public class ToolbarView extends JPanel {
     public ToolbarView() {
         this.workflowModel = WorkflowController.getWorkflowModel();
         
+        ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
+        ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        
+        
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		
-		newStageButton = new JButton("New Stage");
-		newStageButton.addActionListener( new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.STAGE, new StageModel(""));
-			}
-		});
-		
+
+        newStageButton = new JButton("New Stage", stageIcon);
+        newStageButton.addActionListener( new ActionListener(){
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		TabController.getInstance().addTab(TabType.STAGE, new StageModel(""));
+        	}
+        });
+        newStageButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
 		
-		newTaskButton = new JButton("New Task");
+		newTaskButton = new JButton("New Task", taskIcon);
         newTaskButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TabController.getInstance().addTab(TabType.TASK, new TaskModel());
 			}
 		});
+        newTaskButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
-        
         add(newTaskButton);
     }
 
