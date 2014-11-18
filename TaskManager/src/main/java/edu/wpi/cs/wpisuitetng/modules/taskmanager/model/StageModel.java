@@ -1,12 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.AbstractListModel;
-
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
@@ -142,8 +137,10 @@ public class StageModel extends AbstractModel {
 
 	@Override
 	public String toJson() {
-		// TODO Auto-generated method stub
-		return null;
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, StageModel.class);
+		return json;
 	}
 
 	@Override
@@ -152,10 +149,24 @@ public class StageModel extends AbstractModel {
 		return null;
 	}
 
+	/**
+	 * @param json
+	 * @return - the JSON version of the object
+	 */
 	public static StageModel fromJson(String json) {
         final Gson parser = new Gson();
         return parser.fromJson(json, StageModel.class);
 	}
+	
+	
+    /**
+     * @param json
+     * @return - an array of JSON stageModels
+     */
+    public static StageModel[] fromJsonArray(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, StageModel[].class);
+    }
 	
 
 }
