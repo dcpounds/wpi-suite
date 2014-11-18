@@ -95,7 +95,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		this.tabView = TabController.getTabView();
 		
-		setLayout(new MigLayout("", "[][][grow]", "[][][][grow][][][]"));
+		setLayout(new MigLayout("", "[][][grow]", "[][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 1 1");
 		
