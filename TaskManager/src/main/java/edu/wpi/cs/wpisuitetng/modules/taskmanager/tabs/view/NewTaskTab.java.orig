@@ -1,8 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
 
-import java.awt.Color;
+<<<<<<< HEAD
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+=======
+import java.awt.Color;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.FocusEvent;
@@ -16,6 +18,7 @@ import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+>>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 import java.util.List;
 import java.util.Properties;
 
@@ -127,8 +130,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		AssignUsersView assignUsersView = new AssignUsersView(taskManagerTabView, workflowModel);
 		add(assignUsersView, "cell 3 6,grow");
 		
-		makeTaskButton = new JButton("Create");
+<<<<<<< HEAD
+		JButton makeTaskButton = new JButton("Create");
 		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView));
+=======
+		makeTaskButton = new JButton("Create");
+		makeTaskButton.addActionListener( new AddTaskController(taskManagerTabView, this, assignUsersView, 0));
+>>>>>>> a6c517395bd7582dbc23706ae060f14121061729
 		makeTaskButton.addActionListener( new RemoveTabController(taskManagerTabView, this));
 		add(makeTaskButton, "cell 1 10");		
 		makeTaskButton.setEnabled(false);
@@ -272,6 +280,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		return formatter.format(datePicker.getModel().getValue());
 	}
 
+<<<<<<< HEAD
+}
+=======
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		boolean myFields[] = checkFields();
@@ -349,3 +360,4 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 	}
 	
 }
+>>>>>>> a6c517395bd7582dbc23706ae060f14121061729

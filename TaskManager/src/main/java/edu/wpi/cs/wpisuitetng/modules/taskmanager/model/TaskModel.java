@@ -13,7 +13,8 @@ public class TaskModel extends AbstractModel {
 	private String title, description;
 	private User creator;
 	private ArrayList<UserModel> usersAssignedTo;
-	private Date creationDate, dueDate;
+	private Date creationDate;
+	private String dueDate;
 	private String status;
 	private boolean isExpanded;
 	
@@ -26,7 +27,7 @@ public class TaskModel extends AbstractModel {
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
 		usersAssignedTo = new ArrayList<UserModel>();
-		dueDate = new Date();	
+		dueDate = new String();	
 		status = "";
 		this.isExpanded = false;
 	}
@@ -41,7 +42,7 @@ public class TaskModel extends AbstractModel {
 		this.description = description;
 		creationDate = new Date();
 		usersAssignedTo = new ArrayList<UserModel>();
-		dueDate = new Date();	
+		dueDate = new String();	
 		this.isExpanded = false;
 	}
 	
@@ -64,6 +65,18 @@ public class TaskModel extends AbstractModel {
 		this.isExpanded = false;
 	}
 	
+	public TaskModel(String title, String description, String dueDate){
+		id = -1;
+		estimatedEffort = 0;
+		actualEffort = 0;
+		this.title = title;;
+		this.creator = new User("", "", "", -1);
+		this.description = description;
+		creationDate = new Date();
+		usersAssignedTo = new ArrayList<UserModel>();
+		this.dueDate = dueDate;	
+		this.isExpanded = false;
+	}
 	/**
 	 * @return the ID of this task
 	 */
@@ -205,7 +218,7 @@ public class TaskModel extends AbstractModel {
 	/**
 	 * @return the date that this task is due
 	 */
-	public Date getDueDate() {
+	public String getDueDate() {
 		return dueDate;
 	}
 	
@@ -220,7 +233,7 @@ public class TaskModel extends AbstractModel {
 	/**
 	 * @param dueDate - set the date that this task is due
 	 */
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
 
