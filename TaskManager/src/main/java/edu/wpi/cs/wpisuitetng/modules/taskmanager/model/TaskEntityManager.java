@@ -14,11 +14,11 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
-public class StageEntityManager implements EntityManager<StageModel> {
+public class TaskEntityManager implements EntityManager<TaskModel> {
 	
 	private Data db;
 
-	public StageEntityManager(Data db){
+	public TaskEntityManager(Data db){
 		this.db = db;
 	}
 
@@ -26,68 +26,69 @@ public class StageEntityManager implements EntityManager<StageModel> {
 	 * 
 	 */
 	@Override
-	public StageModel makeEntity(Session s, String content)
+	public TaskModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		final StageModel newStageModel = StageModel.fromJson( content );
+		final TaskModel newTaskModel = TaskModel.fromJson( content );
 		
-		if( !db.save(newStageModel, s.getProject())){
+		if( !db.save(newTaskModel, s.getProject())){
 			throw new WPISuiteException();
 		}
 		// TODO Auto-generated method stub
-		return newStageModel;
+		return newTaskModel;
 	}
 
 	/**
-	 * Gets a list of stagemodels with the given ID
+	 * Gets a list of taskmodels with the given ID
 	 */
 	@Override
-	public StageModel[] getEntity(Session s, String id)
+	public TaskModel[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		StageModel[] stageModels = null;
+		TaskModel[] taskModels = null;
 		try{
-			stageModels = db.retrieve(StageModel.class, "id", s.getProject()).toArray(new StageModel[0]);
+			taskModels = db.retrieve(TaskModel.class, "id", s.getProject()).toArray(new TaskModel[0]);
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
-		if( stageModels.length < 1 || stageModels[0] == null){
+		if( taskModels.length < 1 || taskModels[0] == null){
 			throw new NotFoundException();
 		}
 		// TODO Auto-generated method stub
-		return stageModels;
+		return taskModels;
 	}
 
 	@Override
 	/**
-	 * Gets all of the database entitys that are stageModels
+	 * Gets all of the database entitys that are taskModels
 	 */
-	public StageModel[] getAll(Session s) throws WPISuiteException {
-		List<Model> stages = db.retrieveAll(new StageModel((String)null), s.getProject());
-		return stages.toArray(new StageModel[0]);
+	public TaskModel[] getAll(Session s) throws WPISuiteException {
+		List<Model> tasks = db.retrieveAll(new TaskModel(), s.getProject());
+		return tasks.toArray(new TaskModel[0]);
 	}
 
 	/**
-	 * Updates the given stagemodel in the database
+	 * Updates the given taskmodel in the database
 	 */
 	@Override
-	public StageModel update(Session s, String content)
+	public TaskModel update(Session s, String content)
 			throws WPISuiteException {
-		StageModel updatedStage = StageModel.fromJson(content);
-		List<Model> oldStages = db.retrieve(StageModel.class, "name", updatedStage.getTitle(), s.getProject());
-		if( oldStages.size() < 1 || oldStages.get(0) == null) {
+		TaskModel updatedTask = TaskModel.fromJson(content);
+		//TODO tasks need IDs to distinguish one another
+		List<Model> oldTasks = db.retrieve(TaskModel.class, "name", updatedTask.getTitle(), s.getProject());
+		if( oldTasks.size() < 1 || oldTasks.get(0) == null) {
 			throw new NotFoundException();
 		}
-		StageModel existingStage = (StageModel)oldStages.get(0);
-		existingStage = new StageModel(updatedStage);
+		TaskModel existingTask = (TaskModel)oldTasks.get(0);
+		existingTask = new TaskModel(updatedTask);
 		
-		if(!db.save(existingStage, s.getProject() )){
+		if(!db.save(existingTask, s.getProject() )){
 			throw new WPISuiteException();
 		}
 		// TODO Auto-generated method stub
-		return existingStage;
+		return existingTask;
 	}
 
 	@Override
-	public void save(Session s, StageModel model) throws WPISuiteException {
+	public void save(Session s, TaskModel model) throws WPISuiteException {
 		db.save(model);
 		// TODO Auto-generated method stub
 		

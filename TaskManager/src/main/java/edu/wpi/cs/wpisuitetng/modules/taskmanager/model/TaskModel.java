@@ -46,6 +46,19 @@ public class TaskModel extends AbstractModel {
 		this.isExpanded = false;
 	}
 	
+	public TaskModel(TaskModel updatedStage) {
+		this.id = updatedStage.id;
+		this.estimatedEffort = updatedStage.estimatedEffort;
+		this.actualEffort = updatedStage.actualEffort;
+		this.title = updatedStage.title;
+		this.creator = updatedStage.creator;
+		this.description = updatedStage.description;
+		creationDate = updatedStage.creationDate;
+		usersAssignedTo = updatedStage.usersAssignedTo;
+		dueDate = updatedStage.dueDate;	
+		this.isExpanded = updatedStage.isExpanded;
+	}
+	
 	/**
 	 * @param id - the id of the task
 	 * @param title - the title of the task
@@ -308,5 +321,10 @@ public class TaskModel extends AbstractModel {
         TaskModel other = (TaskModel) obj;
         
         return this.id == other.getId();
+	}
+
+	public static TaskModel fromJson(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, TaskModel.class);
 	}
 }
