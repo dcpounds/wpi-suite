@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -19,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskContainerView;
  * TODO: update the main workflow model
  * 
  */
-public class AddTaskController implements ActionListener {
+public class AddTaskController implements ActionListener{
 	private StageView stageView;
 	private TaskContainerView taskView;
 	private AssignUsersView assignUsersView;
@@ -56,12 +58,13 @@ public class AddTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
-		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText());
+		TaskModel taskModel = new TaskModel(taskCreationView.getTitleLabelText(), taskCreationView.getDescriptionText(), taskCreationView.getDateText());
 		taskModel.setUsersAssignedTo( this.getAssignedUsers() );
 		this.taskView = new TaskContainerView(taskModel, stageView);
 		stageView.addTaskView(taskView);
 		
 	}
+
 	
 	//returns the final list of assigned 
 	public ArrayList<UserModel> getAssignedUsers() {
@@ -75,5 +78,7 @@ public class AddTaskController implements ActionListener {
 		}
 		return assignedUsers;
 	}
+	
+
 
 }

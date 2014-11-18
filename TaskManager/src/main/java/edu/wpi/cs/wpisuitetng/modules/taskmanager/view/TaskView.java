@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JTextPane;
@@ -36,10 +37,17 @@ public class TaskView extends JPanel{
 	 */
 	public TaskView(StageView stageView, TaskModel taskModel ){
 		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][][grow]"));
-		
+		/* makes a label for the date, and then it
+		 * gets the due date from the model and places it to view
+		 */
 		JLabel lblDue = new JLabel("Due:");
 		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblDue, "cell 0 0,alignx left");
+		
+		JTextArea dateArea = new JTextArea( taskModel.getDueDate() );
+		dateArea.setLineWrap(true);
+		dateArea.setEditable(false);
+		add(dateArea, "cell 0 0, alignx right");
 		
 		JLabel lblEstimatedEffort = new JLabel("Estimated Effort:");
 		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -70,7 +78,7 @@ public class TaskView extends JPanel{
 		
 		JList assignedToList = new JList();
 		add(assignedToList, "cell 0 8,grow");
-
+		
 	}
 	
 	
