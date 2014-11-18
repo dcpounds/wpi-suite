@@ -9,9 +9,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Properties;
+
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -24,7 +28,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StatusModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TaskManagerTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
@@ -85,8 +89,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 		
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
-		stageBox.setModel(new DefaultComboBoxModel<String>(new StatusModel().getStatusNames() ) );
-		//stageBox.setSelectedIndex(0);
+		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
 		add(stageBox, "cell 3 3");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -248,6 +251,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener{
 	 */
 	public String getStatusText() {
 		return (String)stageBox.getSelectedItem();
+	}
+	
+	public String[] getStatusOptions(){
+		ArrayList<String> statusOptions = new ArrayList<String>();
+		for( StageModel stage : workflowModel.getStageList() ){
+			statusOptions.add( stage.getTitle() );
+		}
+		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
 	/*Gets the date in a date format,
 	 * and then it is formatted to become

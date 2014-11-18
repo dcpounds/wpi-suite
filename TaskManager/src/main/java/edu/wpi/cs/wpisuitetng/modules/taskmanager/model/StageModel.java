@@ -26,6 +26,11 @@ public class StageModel extends AbstractListModel {
 		this.setTaskList(taskList);
 	}
 	
+	public StageModel(String title) {
+		this.setTitle(title);
+		this.setTaskList( new ArrayList<TaskModel>() );
+	}
+	
 	/**
      * Removes all tasks from this card
      * NOTE: One cannot simply construct a new instance of
