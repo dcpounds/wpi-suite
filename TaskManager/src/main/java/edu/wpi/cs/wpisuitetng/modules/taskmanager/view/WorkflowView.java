@@ -51,7 +51,7 @@ public class WorkflowView extends JPanel {
 		
 		stageViewList = new ArrayList<StageView>();
 		for(StageModel stageModel : stageModelList){
-			StageView stageToAdd = new StageView(stageModel, this, false);
+			StageView stageToAdd = new StageView(stageModel, this);
 			addStageView( stageToAdd );
 		}
 		

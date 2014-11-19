@@ -1,6 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
@@ -28,8 +31,9 @@ public class CoreUserController implements ActionListener {
 	}
 	
 	public void addUsersToList(User[] users) {
-		for( User user : users)
-			view.getUnassignedListModel().addElement(user.getName());
+		DefaultListModel<String> unassignedList = view.getUnassignedListModel();
+		for( User user: users)
+			unassignedList.addElement( user.getName() );
 		view.revalidate();
 		view.repaint();
 	}

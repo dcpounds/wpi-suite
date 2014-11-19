@@ -35,18 +35,17 @@ public class StageView extends JPanel {
 	private WorkflowView workflowView;
 	private JButton btnClose;
 	private boolean closable;
-
-
+	
 	/**
 	 * Constructs a new Stage based off the given model
 	 * @param stageModel - the model the view is based off of
 	 */
-	public StageView(StageModel stageModel, WorkflowView workflowView, boolean closable) {
+	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
 		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
-		this.closable = closable;
+		this.closable = stageModel.getClosable();
 		
 		JLabel lblStageTitle = new JLabel(title);
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);

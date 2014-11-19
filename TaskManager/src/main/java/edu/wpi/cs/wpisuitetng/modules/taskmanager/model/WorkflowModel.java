@@ -168,10 +168,10 @@ public class WorkflowModel extends AbstractModel {
 	 * adds the default list of stages to the main workflow
 	 */
 	private void addBaseStages(){
-		stageList.add(new StageModel("New", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>()));
-		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>()));
+		stageList.add(new StageModel("New", new ArrayList<TaskModel>(), false));
+		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>(), false));
+		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>(), false));
+		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>(), false));
 	}
 	
 	

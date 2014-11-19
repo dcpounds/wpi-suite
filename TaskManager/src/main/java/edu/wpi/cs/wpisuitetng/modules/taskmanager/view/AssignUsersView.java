@@ -91,7 +91,6 @@ public class AssignUsersView extends JPanel{
 		ArrayList<String> userNames = new ArrayList<String>();
 		for( User user : workflowModel.getUserList() ){
 			String userName = user.getUsername();
-			System.out.println("USERNAMES: " + userName);
 			userNames.add(userName);
 		}
 		return userNames.toArray(new String[userList.length]);
@@ -132,18 +131,6 @@ public class AssignUsersView extends JPanel{
 		return index;
 	}
 	
-	/**
-	 * 
-	 * @param list - the list to add elements to
-	 * @param usernameList - the list to add elements from
-	 */
-	public void addElementsToList(DefaultListModel<String> list, String[] usernameList ){
-		for( String username : usernameList ){
-			System.out.println("Added " + username + " to the model");
-			list.addElement(username);
-		}
-	}
-	
 	//returns the final list of assigned 
 	public ArrayList<User> getAssignedUsers() {
 		ArrayList<User> assignedUsers = new ArrayList<User>();
@@ -154,19 +141,6 @@ public class AssignUsersView extends JPanel{
 			String userName = assignedListModel.getElementAt(index);
 			User user = new User( userName, userName, "", 0);
 			assignedUsers.add( user );
-		}
-		return assignedUsers;
-	}
-	
-
-	//returns the final list of assigned 
-	public ArrayList<UserModel> getAssignedUsers() {
-		ArrayList<UserModel> assignedUsers = new ArrayList<UserModel>();
-		
-		int size = assignedListModel.getSize();
-		for(int index = 0; index < size; index++) {
-			UserModel userModel = new UserModel( assignedListModel.getElementAt(index) );
-			assignedUsers.add( userModel );
 		}
 		return assignedUsers;
 	}

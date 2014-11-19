@@ -13,9 +13,10 @@ public class StageModel extends AbstractModel {
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private ArrayList<TaskModel> taskList;
+	private boolean closable;
 
 	public StageModel(StageModel updatedStage) {
-		this(updatedStage.getTitle(), updatedStage.getTaskList());
+		this(updatedStage.getTitle(), updatedStage.getTaskList(), updatedStage.getClosable());
 	}
 	
 	/**
@@ -24,9 +25,19 @@ public class StageModel extends AbstractModel {
 	 * @param title - title of the stage
 	 * @param taskList - list of tasks to be added
 	 */
-	public StageModel(String title, ArrayList<TaskModel> taskList) {
+	public StageModel(String title, ArrayList<TaskModel> taskList, boolean closable) {
 		this.title = title;
 		this.taskList = taskList;
+		this.closable = closable;
+	}
+	
+	/**
+	 * constructs a new stage
+	 * 
+	 * @param title - title of the stage
+	 * @param taskList - list of tasks to be added
+	 */
+	public StageModel() {
 	}
 	
 	/**
@@ -34,8 +45,9 @@ public class StageModel extends AbstractModel {
 	 * 
 	 * @param title - title of the stage
 	 */
-	public StageModel(String title) {
+	public StageModel(String title, boolean closable) {
 		this.title = title;
+		this.closable = closable;
 		taskList = new ArrayList<TaskModel>();
 	}
     
@@ -167,6 +179,10 @@ public class StageModel extends AbstractModel {
         final Gson parser = new Gson();
         return parser.fromJson(json, StageModel[].class);
     }
+
+	public boolean getClosable() {
+		return closable;
+	}
 	
 
 }

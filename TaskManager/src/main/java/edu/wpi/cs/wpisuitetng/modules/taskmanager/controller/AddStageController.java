@@ -28,7 +28,7 @@ public class AddStageController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String stageName = newStageTab.getStageTitle();
-		StageModel stageModel = new StageModel(stageName);
+		StageModel stageModel = new StageModel(stageName, true);
 		
 		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.PUT); // PUT == create
 		request.setBody(stageModel.toJson()); // put the new stage in the body of the request

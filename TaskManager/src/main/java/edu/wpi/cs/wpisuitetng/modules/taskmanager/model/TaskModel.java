@@ -340,6 +340,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	public static TaskModel fromJson(String json) {
         final Gson parser = new Gson();
         return parser.fromJson(json, TaskModel.class);
+	}
 
 	public void setEditIndex(int editIndex) {
 		this.editIndex = editIndex;

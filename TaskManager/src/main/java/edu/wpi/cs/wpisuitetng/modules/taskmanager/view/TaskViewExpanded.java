@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import net.miginfocom.swing.MigLayout;

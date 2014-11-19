@@ -61,7 +61,7 @@ public class StageEntityManager implements EntityManager<StageModel> {
 	 * Gets all of the database entitys that are stageModels
 	 */
 	public StageModel[] getAll(Session s) throws WPISuiteException {
-		List<Model> stages = db.retrieveAll(new StageModel((String)null), s.getProject());
+		List<Model> stages = db.retrieveAll(new StageModel(), s.getProject());
 		return stages.toArray(new StageModel[0]);
 	}
 
