@@ -3,10 +3,11 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import net.miginfocom.swing.MigLayout;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JList;
@@ -16,6 +17,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Color;
 
 
 /**
@@ -27,6 +29,7 @@ public class TaskViewExpanded extends JPanel{
 	private TaskModel taskModel;
 	private JPanel assignedToPane;
 	private TaskView taskView;
+	private DefaultListModel<String> assignedListModel;
 	
 	/**
 	 * creates a new task view based off the given model
@@ -35,8 +38,10 @@ public class TaskViewExpanded extends JPanel{
 	 * @param taskModel -model which the view is based off of
 	 */
 	public TaskViewExpanded(StageView stageView, TaskModel taskModel, TaskView taskView){
+		setBackground(Color.WHITE);
 		setLayout(new MigLayout("", "[grow]", "[][][][][][][][][grow]"));
 		this.taskView = taskView;
+		this.taskModel = taskModel;
 		/* makes a label for the date, and then it
 		 * gets the due date from the model and places it to view
 		 */
@@ -78,8 +83,10 @@ public class TaskViewExpanded extends JPanel{
 		add(lblAssignedTo, "cell 0 7");
 		
 
-		JList assignedToList = new JList();
-		add(assignedToList, "flowy, cell 0 8,grow");
+		this.assignedListModel = new DefaultListModel<String>();
+		addAssignedUsers();
+		JList<String> assignedListComponent = new JList<String>( assignedListModel );
+		add(assignedListComponent, "flowy, cell 0 8,grow");
 	}
 	
 	public Dimension getPreferredSize() {
@@ -88,7 +95,6 @@ public class TaskViewExpanded extends JPanel{
 		if( parent == null ){
 			return super.getPreferredSize();
 		}
-		System.out.println("Parent width" + parentSize.width);
 		return new Dimension(parentSize.width - 10, super.getPreferredSize().height );
 	}
 	
@@ -96,10 +102,9 @@ public class TaskViewExpanded extends JPanel{
 	/**
 	 *  Populates the task with the list of assigned users
 	 */
-	public void addAssignedUserViews(){
-		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
-			UserIconView iconView = new UserIconView(userModel);
-			this.assignedToPane.add(iconView);
+	public void addAssignedUsers(){
+		for( User user : taskModel.getUsersAssignedTo() ){
+			assignedListModel.addElement( user.getName() );
 		}
 	}
 }

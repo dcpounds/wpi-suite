@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -37,9 +38,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+
+import javax.swing.JScrollPane;
 
 
 /**
@@ -53,6 +57,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TabView tabView;
+	private TaskModel taskModel;
 	private JTextField taskTitleField;
 	private JTextField estEffortField;
 	private JTextField actEffortField;
@@ -62,7 +67,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextArea taskDescriptionField;
     private final WorkflowModel workflowModel;
     private JLabel dateDue;
-    private UtilDateModel model;
+    private UtilDateModel dateModel;
     private JDatePanelImpl datePanel; 
     private JDatePickerImpl datePicker;  
     private JButton sbmtTaskButton;
@@ -72,6 +77,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel descriptionEmptyError;
 	private JLabel dateNotAddedError;
 	private JLabel starredFieldsRequired;
+	private JScrollPane descriptionScrollPane;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -79,7 +85,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
 
-	public NewTaskTab(TaskModel taskModel) {
+	public NewTaskTab(TaskModel model) {	
+		taskModel = model;
 		boolean shouldRemove = false;
 		String oldStage = null;
 		int oldId = -1;
@@ -91,33 +98,34 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		} else {
 			taskModel = new TaskModel();
 		}
+    	taskModel.setEditState(true);
 		
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		this.tabView = TabController.getTabView();
 		
-		setLayout(new MigLayout("", "[][][grow]", "[][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
-		add(taskTitleLabel, "flowx,cell 1 1");
+		add(taskTitleLabel, "flowx,cell 0 0");
 		
 		titleEmptyError = new JLabel("Task Needs A Title");
 		titleEmptyError.setForeground(Color.red);
-		add(titleEmptyError, "flowx, cell 1 1");
+		add(titleEmptyError, "flowx,cell 0 0");
 		titleEmptyError.setVisible(false);
 		
 		taskTitleField = new JTextField();
 		taskTitleField.setText(taskModel.getTitle());
-		add(taskTitleField, "flowx,cell 1 2,alignx left");
+		add(taskTitleField, "flowx,cell 0 1,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
 		
 		
 		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "cell 2 1");
+		add(stageLabel, "cell 1 0");
 
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
-		add(stageBox, "cell 2 2");
+		add(stageBox, "cell 1 1");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
@@ -125,49 +133,52 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		});
 		
 		taskDescriptionLabel = new JLabel("Task Description(*)");
-		add(taskDescriptionLabel, "cell 1 3");
+		add(taskDescriptionLabel, "cell 0 2");
 		
 		descriptionEmptyError = new JLabel("Task Needs A Description");
 		descriptionEmptyError.setForeground(Color.red);
-		add(descriptionEmptyError, "cell 1 3");
+		add(descriptionEmptyError, "cell 0 2");
 		descriptionEmptyError.setVisible(false);
+		
+		descriptionScrollPane = new JScrollPane();
+		add(descriptionScrollPane, "cell 0 3,grow");
 		
 
 		taskDescriptionField = new JTextArea(taskModel.getDescription());
+		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(50);
 		taskDescriptionField.setRows(10);
-		add(taskDescriptionField, "cell 1 4,alignx left,growy");
 		taskDescriptionField.addKeyListener(this);
 		
 		AssignUsersView assignUsersView = new AssignUsersView();
-		add(assignUsersView, "cell 2 4,grow");
+		add(assignUsersView, "cell 1 3,grow");
 		
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
-		add(estEffortLabel, "flowx,cell 2 5");
+		add(estEffortLabel, "flowx,cell 1 4");
 		
 		estEffortError = new JLabel("Must specify nonnegative effort");
 		estEffortError.setForeground(Color.red);
-		add(estEffortError, "flowx, cell 2 5");
+		add(estEffortError, "flowx,cell 1 4");
 		estEffortError.setVisible(false);
 		
 		estEffortField = new JTextField();
 		estEffortField.setText(Integer.toString(taskModel.getEstimatedEffort()));
-		add(estEffortField, "flowx,cell 2 6,alignx left");
+		add(estEffortField, "flowx,cell 1 5,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
 		
 		JLabel actEffortLabel = new JLabel("Actual Effort");
-		add(actEffortLabel, "flowx,cell 2 7");
+		add(actEffortLabel, "flowx,cell 1 6");
 		
 		actEffortError = new JLabel("Must specify nonnegative effort");
 		actEffortError.setForeground(Color.red);
-		add(actEffortError, "flowx, cell 2 7");
+		add(actEffortError, "flowx,cell 1 6");
 		actEffortError.setVisible(false);
 		
 		actEffortField = new JTextField();
 		actEffortField.setText(Integer.toString(taskModel.getActualEffort()));
-		add(actEffortField, "flowx,cell 2 8,alignx left");
+		add(actEffortField, "flowx,cell 1 7,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
 		
@@ -184,14 +195,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
 			TaskView tView = sView.getTaskViewById(oldId);
 			sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
+			
 		}
 		
 		
-		add(sbmtTaskButton, "cell 1 8");		
+		add(sbmtTaskButton, "cell 0 7");		
 		sbmtTaskButton.setEnabled(false);
 		starredFieldsRequired = new JLabel("Starred Fields Are Required");
 		starredFieldsRequired.setForeground(Color.red);
-		add(starredFieldsRequired, "cell 1 8");
+		add(starredFieldsRequired, "cell 0 7");
 		
 		/*
 		 * Creates a model of the calendar. properties sets the date to todays
@@ -200,21 +212,21 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		 * in MM-dd-YYYY
 		 */
 		dateDue = new JLabel("Due Date:(*)");
-		add(dateDue, "cell 1 5");
+		add(dateDue, "cell 0 4");
 		
 		dateNotAddedError = new JLabel("Task Needs A Due Date");
 		dateNotAddedError.setForeground(Color.red);
-		add(dateNotAddedError, "cell 1 5");
+		add(dateNotAddedError, "cell 0 4");
 		dateNotAddedError.setVisible(false);
 		
-		model = new UtilDateModel();
+		dateModel = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-	    datePanel = new JDatePanelImpl(model, p);
+	    datePanel = new JDatePanelImpl(dateModel, p);
 	    datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		add(datePicker, "cell 1 6");
+		add(datePicker, "cell 0 5");
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
@@ -293,6 +305,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			effort = -1;
 		}
 		return effort;
+	}
+	
+	/**
+	 * get the task model
+	 * 
+	 * @return
+	 */
+	public TaskModel getTaskModel(){
+		return this.taskModel;
 	}
 	
 	/**

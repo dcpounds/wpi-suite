@@ -2,11 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
-import javax.swing.DefaultListModel;
 
 import sun.security.krb5.Config;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -14,7 +9,6 @@ import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
@@ -62,7 +56,7 @@ public class AddTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
-		String userName = ConfigManager.getConfig().getUserName();
+		taskModel.setUsersAssignedTo( this.getAssignedUsers());
 		taskModel.setCreator(new User(userName, userName, "password", -1));
 		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
@@ -86,7 +80,6 @@ public class AddTaskController implements ActionListener {
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
 	}
-
 	
 
 

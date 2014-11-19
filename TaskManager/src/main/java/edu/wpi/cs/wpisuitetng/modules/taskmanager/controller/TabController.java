@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -30,23 +31,30 @@ public class TabController {
 	}
 	
 	
-    public void addTab(TabType tabType, Object model) {
+    public void addTab(TabType tabType, IDisplayModel model) {
     	String tabName = null;
     	Component newTab = null;
     	
     	switch(tabType){
     	case TASK:
-        	tabName = "New Task ";
+    		if(model != null){
+    			tabName =  (model.getTitle() + "   ");
+    		}else{
+    			tabName = "New Task   ";
+    		}
         	newTab = new NewTaskTab((TaskModel) model);
         	break;
     	case STAGE:
-        	tabName = "New Stage ";
+        	tabName = "New Stage   ";
         	newTab = new NewStageTab((StageModel) model);
         }
     	addTabHelper(tabName, newTab);
     }
     
     public void removeTab(Component tabComponent){
+    	if(tabComponent instanceof NewTaskTab){
+    		((NewTaskTab) tabComponent).getTaskModel().setEditState(false); 		
+    	}
     	tabView.remove(tabComponent);
     }
     

@@ -258,4 +258,9 @@ public class User extends AbstractModel {
         //Users are not currently Associated with projects directly 
     }
 
+    public static User[] fromJsonArray(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, User[].class);
+    }
+
 }

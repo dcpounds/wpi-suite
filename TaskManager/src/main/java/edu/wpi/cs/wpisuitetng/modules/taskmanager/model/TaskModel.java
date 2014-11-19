@@ -8,15 +8,17 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
-public class TaskModel extends AbstractModel {
+public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator;
-	private ArrayList<UserModel> usersAssignedTo;
+	private ArrayList<User> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
 	private String status;
 	private boolean isExpanded;
+	private boolean editState;
+	private int editIndex;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -26,7 +28,7 @@ public class TaskModel extends AbstractModel {
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		dueDate = new String();	
 		status = "";
 		this.isExpanded = false;
@@ -41,7 +43,7 @@ public class TaskModel extends AbstractModel {
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		dueDate = new String();	
 		this.isExpanded = false;
 	}
@@ -67,7 +69,7 @@ public class TaskModel extends AbstractModel {
 	 * @param usersAssignedTo - the List users this task is assigned to
 	 */
 	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
-			User creator, ArrayList<UserModel> usersAssignedTo) {
+			User creator, ArrayList<User> usersAssignedTo) {
 		this.id = id;
 		this.estimatedEffort = estimatedEffort;
 		this.actualEffort = actualEffort;
@@ -86,7 +88,7 @@ public class TaskModel extends AbstractModel {
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		this.dueDate = dueDate;	
 		this.isExpanded = false;
 	}
@@ -192,18 +194,18 @@ public class TaskModel extends AbstractModel {
 	/**
 	 * @return the user that created the task
 	 */
-	public ArrayList<UserModel> getUsersAssignedTo(){
+	public ArrayList<User> getUsersAssignedTo(){
 		if(usersAssignedTo == null){
 			System.out.println("WARNING: NO USERS ASSIGNED, COUNT " + usersAssignedTo.size() );
+			return new ArrayList<User>();
 		}
-		System.out.println("WARNING: COUNT " + usersAssignedTo.size() );
 		return usersAssignedTo;
 	}
 	
 	/**
 	 * @param arrayList - set the list of users that this task is assigned to
 	 */
-	public void setUsersAssignedTo(ArrayList<UserModel> arrayList) {
+	public void setUsersAssignedTo(ArrayList<User> arrayList) {
 		this.usersAssignedTo = arrayList;
 	}
 
@@ -211,7 +213,7 @@ public class TaskModel extends AbstractModel {
 	/**
 	 * @param assignee - set the user assigned to this task
 	 */
-	public void assignToUser(UserModel assignee) {
+	public void assignToUser(User assignee) {
 		usersAssignedTo.add(assignee);
 	}
 	
@@ -250,7 +252,19 @@ public class TaskModel extends AbstractModel {
 	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
-
+	/**
+	 * @return- get whether the tab is being editted
+	 */
+	public boolean getEditState() {
+		return this.editState;	
+	}
+	/**
+	 * @param creator - set the user that created this task
+	 */
+	public void setEditState(boolean editState) {
+		this.editState = editState;
+	}
+		
 	/**
 	 * Converts the task to a JSON string
 	 * @return a JSON string representation of the task 
@@ -326,5 +340,8 @@ public class TaskModel extends AbstractModel {
 	public static TaskModel fromJson(String json) {
         final Gson parser = new Gson();
         return parser.fromJson(json, TaskModel.class);
+
+	public void setEditIndex(int editIndex) {
+		this.editIndex = editIndex;
 	}
 }

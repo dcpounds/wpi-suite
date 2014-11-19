@@ -1,4 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -16,6 +17,8 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.SwingConstants;
 
@@ -23,16 +26,15 @@ import javax.swing.SwingConstants;
  * this is a tab for creating stages
  *
  */
-public class NewStageTab extends JPanel{
-	/**
-	 * 
-	 */
+public class NewStageTab extends JPanel implements KeyListener{
 	private static final long serialVersionUID = 7394421664708095366L;
 	
 	private JLabel titleLabel;
 	private JTextField stageTitleField;
 	private JButton sbmtStageButton;
     private final WorkflowModel workflowModel;
+    private boolean validTitle = false;
+    private JLabel stageTitleError;
 	
 	//add a combo box here for task status
     
@@ -43,20 +45,21 @@ public class NewStageTab extends JPanel{
 	 */
 	public NewStageTab(StageModel stageModel) {
     	this.workflowModel = WorkflowController.getWorkflowModel();
-
 		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
     	
-		titleLabel = new JLabel("Title: ");
+		titleLabel = new JLabel("Stage Title(*)");
 		titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(titleLabel, "cell 0 0,alignx left, aligny top");
 		
-		stageTitleField = new JTextField();
+		this.stageTitleField = new JTextField();
 		stageTitleField.setColumns(30);
-		add(stageTitleField, "cell 0 1,alignx left, aligny top");
+		stageTitleField.addKeyListener(this);
+		add(stageTitleField, "flowx,cell 0 1,alignx left,aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
 		sbmtStageButton.addActionListener(new AddStageController(this));
+		sbmtStageButton.setEnabled(false);
 		NewStageTab thisTab = this;
 		sbmtStageButton.addActionListener( new ActionListener(){
 			@Override
@@ -66,6 +69,9 @@ public class NewStageTab extends JPanel{
 		});
 		add(sbmtStageButton, "cell 0 2,alignx left, aligny top");
 		
+		stageTitleError = new JLabel("Must enter a title for the stage");
+		stageTitleError.setForeground(Color.red);
+		add(stageTitleError, "cell 0 1,alignx left,aligny top");
 	}
 	
 	public WorkflowModel getWorkflowModel() {
@@ -74,5 +80,27 @@ public class NewStageTab extends JPanel{
 	
 	public String getStageTitle(){
 		return stageTitleField.getText();
+	}
+
+	
+	
+	
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
+		sbmtStageButton.setEnabled(validTitle);
+		stageTitleError.setVisible(!validTitle);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
