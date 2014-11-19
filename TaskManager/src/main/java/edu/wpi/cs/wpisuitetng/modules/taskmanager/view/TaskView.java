@@ -59,7 +59,7 @@ public class TaskView extends JPanel{
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		this.stageView = stageView;
 		this.taskModel = taskModel;
-		this.taskView = new TaskViewExpanded(stageView, taskModel);
+		this.taskView = new TaskViewExpanded(stageView, taskModel, this);
 		
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow]"));
 		
@@ -81,7 +81,6 @@ public class TaskView extends JPanel{
 		
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		
 		
 		closeButton.addActionListener(new RemoveTaskController(taskModel, stageView, this));
@@ -117,6 +116,7 @@ public class TaskView extends JPanel{
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
+				taskView.getPreferredSize();
 				return new Dimension(parentSize.width,openSize);
 				
 			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
@@ -161,6 +161,10 @@ public class TaskView extends JPanel{
 	
 	public StageView getStageView(){
 		return stageView;
+	}
+	
+	public JScrollPane getScrollPane(){
+		return taskContentPane;
 	}
 	
 	public int getId(){
