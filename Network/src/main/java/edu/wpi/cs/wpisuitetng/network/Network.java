@@ -99,7 +99,6 @@ public class Network {
 		if (instance == null) {
 			instance = new Network();
 		}
-		
 		return instance;
 	}
 }

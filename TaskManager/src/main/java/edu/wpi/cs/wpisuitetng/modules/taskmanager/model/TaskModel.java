@@ -12,7 +12,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator;
-	private ArrayList<UserModel> usersAssignedTo;
+	private ArrayList<User> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
 	private String status;
@@ -28,7 +28,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		title = description = "";
 		creator = new User("", "", "", -1);
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		dueDate = new String();	
 		status = "";
 		this.isExpanded = false;
@@ -43,7 +43,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		dueDate = new String();	
 		this.isExpanded = false;
 	}
@@ -56,7 +56,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @param usersAssignedTo - the List users this task is assigned to
 	 */
 	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
-			User creator, ArrayList<UserModel> usersAssignedTo) {
+			User creator, ArrayList<User> usersAssignedTo) {
 		this.id = id;
 		this.estimatedEffort = estimatedEffort;
 		this.actualEffort = actualEffort;
@@ -75,7 +75,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creator = new User("", "", "", -1);
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<UserModel>();
+		usersAssignedTo = new ArrayList<User>();
 		this.dueDate = dueDate;	
 		this.isExpanded = false;
 	}
@@ -181,7 +181,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @return the user that created the task
 	 */
-	public ArrayList<UserModel> getUsersAssignedTo(){
+	public ArrayList<User> getUsersAssignedTo(){
 		if(usersAssignedTo == null){
 			System.out.println("WARNING: NO USERS ASSIGNED, COUNT " + usersAssignedTo.size() );
 		}
@@ -192,7 +192,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @param arrayList - set the list of users that this task is assigned to
 	 */
-	public void setUsersAssignedTo(ArrayList<UserModel> arrayList) {
+	public void setUsersAssignedTo(ArrayList<User> arrayList) {
 		this.usersAssignedTo = arrayList;
 	}
 
@@ -200,7 +200,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @param assignee - set the user assigned to this task
 	 */
-	public void assignToUser(UserModel assignee) {
+	public void assignToUser(User assignee) {
 		usersAssignedTo.add(assignee);
 	}
 	

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
@@ -68,6 +69,7 @@ public class ToolbarView extends JPanel {
 				TabController.getInstance().addTab(TabType.TASK, null);
 			}
 		});
+        newTaskButton.addActionListener(new CoreUserController());
         newTaskButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);

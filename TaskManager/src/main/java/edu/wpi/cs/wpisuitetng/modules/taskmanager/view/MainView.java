@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 
@@ -32,8 +31,6 @@ public class MainView extends JPanel{
 		mainTabView = TabController.getTabView();
 		
 		setLayout(new BorderLayout());
-		workflowModel.addUserToList(new UserModel());
-
 		WorkflowView view = new WorkflowView(workflowModel);
 		mainTabView.setWorkflowTab(view);
 		add(mainTabView, BorderLayout.CENTER);

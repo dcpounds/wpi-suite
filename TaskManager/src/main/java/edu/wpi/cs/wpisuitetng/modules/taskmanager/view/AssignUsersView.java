@@ -1,14 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JList;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
@@ -19,17 +15,20 @@ import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AssignUnassignUserController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 
 /**
  * @author Alec
  * A view that is used to assign viewers between two lists
  */
 public class AssignUsersView extends JPanel{
-	private ArrayList<UserModel> userList;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3447866744304683605L;
+	private User[] userList;
 	private WorkflowModel workflowModel;
 	
 	private JList<String> unassignedListComponent;
@@ -39,7 +38,7 @@ public class AssignUsersView extends JPanel{
 	
 	public AssignUsersView() {
 		this.workflowModel = WorkflowController.getWorkflowModel();
-		userList = workflowModel.getUserList();
+		this.userList = workflowModel.getUserList();
 		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
 		
 		JLabel lblAssignUsers = new JLabel("Assign Users To This Task");
@@ -86,12 +85,13 @@ public class AssignUsersView extends JPanel{
 	 * @return an array of userName strings from the provided list of userModels
 	 */	
 	private String[] getUsernameList() {
-		ArrayList<String> usernameList = new ArrayList<String>();
-		for( UserModel user : userList ){
-			String name = user.getUsername();
-			usernameList.add(name);
+		ArrayList<String> userNames = new ArrayList<String>();
+		for( User user : workflowModel.getUserList() ){
+			String userName = user.getUsername();
+			System.out.println("USERNAMES: " + userName);
+			userNames.add(userName);
 		}
-		return (String[]) usernameList.toArray(new String[userList.size()]);
+		return userNames.toArray(new String[userList.length]);
 	}
 	
 	
@@ -139,6 +139,20 @@ public class AssignUsersView extends JPanel{
 			System.out.println("Added " + username + " to the model");
 			list.addElement(username);
 		}
+	}
+	
+	//returns the final list of assigned 
+	public ArrayList<User> getAssignedUsers() {
+		ArrayList<User> assignedUsers = new ArrayList<User>();
+		DefaultListModel<String> assignedListModel = this.getAssignedListModel();
+		
+		int size = assignedListModel.getSize();
+		for(int index = 0; index < size; index++) {
+			String userName = assignedListModel.getElementAt(index);
+			User user = new User( userName, userName, "", 0);
+			assignedUsers.add( user );
+		}
+		return assignedUsers;
 	}
 	
 	public JList<String> getAssignedListComponent() {

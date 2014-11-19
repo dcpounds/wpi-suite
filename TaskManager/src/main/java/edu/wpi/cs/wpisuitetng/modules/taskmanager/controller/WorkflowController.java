@@ -1,20 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-//import edu.wpi.cs.wpisuitetng.janeway.gui.container
 
 public class WorkflowController implements InternalFrameListener{
 	private static WorkflowController instance = new WorkflowController();

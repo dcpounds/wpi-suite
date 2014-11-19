@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -37,9 +38,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+
 import javax.swing.JScrollPane;
 
 
@@ -82,7 +85,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
 
-	public NewTaskTab(TaskModel model) {
+	public NewTaskTab(TaskModel model) {	
 		taskModel = model;
 		boolean shouldRemove = false;
 		String oldStage = null;

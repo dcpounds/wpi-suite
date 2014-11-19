@@ -3,8 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JScrollPane;
@@ -95,10 +95,9 @@ public class TaskViewExpanded extends JPanel{
 	/**
 	 *  Populates the task with the list of assigned users
 	 */
-	public void addAssignedUserViews(){
-		for( UserModel userModel : taskModel.getUsersAssignedTo() ){
-			UserIconView iconView = new UserIconView(userModel);
-			this.assignedToPane.add(iconView);
+	public void addAssignedUsers(){
+		for( User user : taskModel.getUsersAssignedTo() ){
+			System.out.println("Added user " + user.getUsername());
 		}
 	}
 }

@@ -1,8 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 
 /**
  * the main model representing the workflow. 
@@ -12,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class WorkflowModel extends AbstractModel {
 	final private String name;
 	public ArrayList<StageModel> stageList;
-	private ArrayList<UserModel> userList;
+	private static ArrayList<User> userList; 
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -23,7 +28,7 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
 		this.stageList = stageList;
-		this.userList = new ArrayList<UserModel>();		
+		this.userList = new ArrayList<User>();
 		addBaseStages();
 	}
 	
@@ -36,8 +41,6 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageList = new ArrayList<StageModel>();
-		this.userList = new ArrayList<UserModel>();
-		
 		addBaseStages();
 	}
 	
@@ -92,8 +95,7 @@ public class WorkflowModel extends AbstractModel {
 				return stageModel;
 			}
 		}
-		return null;
-		
+		return null;	
 	}
 	
 	/**
@@ -144,28 +146,18 @@ public class WorkflowModel extends AbstractModel {
 		return highestId + 1;
 	}
 	
-	/**
-	 * @param user - the user to add to the list
-	 * @return the list of users
-	 */
-	public ArrayList<UserModel> addUserToList(UserModel user) {
-		if(this.userList == null){
-			System.out.println("Warning: WorkflowModel had a null userList!");
-			this.userList = new ArrayList<UserModel>();
-		}
-		this.userList.add(user);
-		return this.userList;
-	}
 	
 	/**
 	 * @return the list of users that can be assigned to tasks in this workflow
 	 */
-	public ArrayList<UserModel> getUserList() {
-		if( userList == null || userList.size() == 0){
-			System.out.println("Warning: WorkflowModel has no users assigned!");
-			return new ArrayList<UserModel>();
-		}
-		return userList;
+	public User[] getUserList() {
+		if(userList == null)
+			return new User[]{};
+		return userList.toArray(new User[userList.size()]);
+	}
+	
+	public void setUserList(User[] userList){
+		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
 	
 	

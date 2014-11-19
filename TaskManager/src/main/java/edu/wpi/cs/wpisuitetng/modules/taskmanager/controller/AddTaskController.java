@@ -2,17 +2,11 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
-import javax.swing.DefaultListModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
@@ -59,7 +53,7 @@ public class AddTaskController implements ActionListener {
 		Configuration config = ConfigManager.getConfig();
 		
 		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
-		taskModel.setUsersAssignedTo( this.getAssignedUsers());
+		taskModel.setUsersAssignedTo( assignUsersView.getAssignedUsers());
 		taskModel.setCreator(new User(config.getUserName(), config.getUserName(), "password", -1));
 		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
@@ -72,20 +66,6 @@ public class AddTaskController implements ActionListener {
 		this.taskView = new TaskView(taskModel, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);
-	}
-
-	
-	//returns the final list of assigned 
-	public ArrayList<UserModel> getAssignedUsers() {
-		ArrayList<UserModel> assignedUsers = new ArrayList<UserModel>();
-		DefaultListModel<String> assignedListModel = assignUsersView.getAssignedListModel();
-		
-		int size = assignedListModel.getSize();
-		for(int index = 0; index < size; index++) {
-			UserModel userModel = new UserModel( assignedListModel.getElementAt(index) );
-			assignedUsers.add( userModel );
-		}
-		return assignedUsers;
 	}
 	
 
