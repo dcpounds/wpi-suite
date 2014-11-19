@@ -47,6 +47,9 @@ public class TabController {
     }
     
     public void removeTab(Component tabComponent){
+    	if(tabComponent instanceof NewTaskTab){
+    		((NewTaskTab) tabComponent).getTaskModel().setEditState(false); 		
+    	}
     	tabView.remove(tabComponent);
     }
     
