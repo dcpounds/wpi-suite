@@ -65,6 +65,7 @@ public class AddTaskController implements ActionListener {
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
 		taskModel.setDueDate(newTaskTabView.getDateText());
 		taskModel.setStatus(newTaskTabView.getStatusText());
+		taskModel.setEditState(false);
 		
 		//IMPORTANT: workflow model must be updated before creating task so that proper id can be set
 		workflowModel.addTask(newTaskTabView.getStatusText(), taskModel);

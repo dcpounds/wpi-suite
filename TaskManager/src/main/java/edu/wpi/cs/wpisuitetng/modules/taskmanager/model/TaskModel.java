@@ -16,7 +16,9 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private Date creationDate;
 	private String dueDate;
 	private String status;
-	private boolean isExpanded, initialized = false;
+	private boolean isExpanded;
+	private boolean editState;
+	private int editIndex;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -170,14 +172,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	
 	/**
-	 */
-	public void Init(){
-		if(title == ""){
-			title = "New Task";
-		}
-	}
-	
-	/**
 	 * @param status - set the status of this task
 	 */
 	public void setStatus(String status) {
@@ -245,7 +239,19 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
-
+	/**
+	 * @return- get whether the tab is being editted
+	 */
+	public boolean getEditState() {
+		return this.editState;	
+	}
+	/**
+	 * @param creator - set the user that created this task
+	 */
+	public void setEditState(boolean editState) {
+		this.editState = editState;
+	}
+		
 	/**
 	 * Converts the task to a JSON string
 	 * @return a JSON string representation of the task 
@@ -316,5 +322,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         TaskModel other = (TaskModel) obj;
         
         return this.id == other.getId();
+	}
+
+	public int getEditIndex() {
+		return editIndex;
+	}
+
+	public void setEditIndex(int editIndex) {
+		this.editIndex = editIndex;
 	}
 }

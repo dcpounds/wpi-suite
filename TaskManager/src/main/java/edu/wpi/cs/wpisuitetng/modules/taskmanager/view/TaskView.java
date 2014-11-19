@@ -92,7 +92,11 @@ public class TaskView extends JPanel{
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.TASK, taskModel);
+				if(!taskModel.getEditState())
+				{	TabController.getInstance().addTab(TabType.TASK, taskModel);
+				}
+				else{
+				}
 			}
 		});
 		add(btnEdit, "cell 0 2");

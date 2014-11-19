@@ -53,6 +53,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TabView tabView;
+	private TaskModel taskModel;
 	private JTextField taskTitleField;
 	private JTextField estEffortField;
 	private JTextField actEffortField;
@@ -62,7 +63,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextArea taskDescriptionField;
     private final WorkflowModel workflowModel;
     private JLabel dateDue;
-    private UtilDateModel model;
+    private UtilDateModel dateModel;
     private JDatePanelImpl datePanel; 
     private JDatePickerImpl datePicker;  
     private JButton sbmtTaskButton;
@@ -79,7 +80,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
 
-	public NewTaskTab(TaskModel taskModel) {
+	public NewTaskTab(TaskModel model) {
+		taskModel = model;
 		boolean shouldRemove = false;
 		String oldStage = null;
 		int oldId = -1;
@@ -91,6 +93,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		} else {
 			taskModel = new TaskModel();
 		}
+    	taskModel.setEditState(true);
 		
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		this.tabView = TabController.getTabView();
@@ -184,6 +187,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
 			TaskView tView = sView.getTaskViewById(oldId);
 			sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
+			
 		}
 		
 		
@@ -207,12 +211,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		add(dateNotAddedError, "cell 1 5");
 		dateNotAddedError.setVisible(false);
 		
-		model = new UtilDateModel();
+		dateModel = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-	    datePanel = new JDatePanelImpl(model, p);
+	    datePanel = new JDatePanelImpl(dateModel, p);
 	    datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 		add(datePicker, "cell 1 6");
 		datePicker.addMouseListener(this);
@@ -293,6 +297,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			effort = -1;
 		}
 		return effort;
+	}
+	
+	/**
+	 * get the task model
+	 * 
+	 * @return
+	 */
+	public TaskModel getTaskModel(){
+		return this.taskModel;
 	}
 	
 	/**
