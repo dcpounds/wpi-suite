@@ -11,8 +11,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
-	private User creator;
-	private ArrayList<User> usersAssignedTo;
+	private String creatorName;
+	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
 	private String status;
@@ -26,9 +26,9 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		estimatedEffort = 0;
 		actualEffort = 0;
 		title = description = "";
-		creator = new User("", "", "", -1);
+		creatorName = "";
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<User>();
+		usersAssignedTo = new ArrayList<String>();
 		dueDate = new String();	
 		status = "";
 		this.isExpanded = false;
@@ -40,10 +40,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		estimatedEffort = 0;
 		actualEffort = 0;
 		this.title = title;
-		this.creator = new User("", "", "", -1);
+		this.creatorName = "";
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<User>();
+		usersAssignedTo = new ArrayList<String>();
 		dueDate = new String();	
 		this.isExpanded = false;
 	}
@@ -53,7 +53,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.estimatedEffort = updatedStage.estimatedEffort;
 		this.actualEffort = updatedStage.actualEffort;
 		this.title = updatedStage.title;
-		this.creator = updatedStage.creator;
+		this.creatorName = updatedStage.getCreatorName();
 		this.description = updatedStage.description;
 		creationDate = updatedStage.creationDate;
 		usersAssignedTo = updatedStage.usersAssignedTo;
@@ -69,13 +69,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @param usersAssignedTo - the List users this task is assigned to
 	 */
 	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
-			User creator, ArrayList<User> usersAssignedTo) {
+			String creatorName, ArrayList<String> usersAssignedTo) {
 		this.id = id;
 		this.estimatedEffort = estimatedEffort;
 		this.actualEffort = actualEffort;
 		this.title = title;
 		this.description = description;
-		this.creator = creator;
+		this.creatorName = creatorName;
 		this.usersAssignedTo = usersAssignedTo;
 		this.isExpanded = false;
 	}
@@ -85,10 +85,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		estimatedEffort = 0;
 		actualEffort = 0;
 		this.title = title;;
-		this.creator = new User("", "", "", -1);
+		this.creatorName = "";
 		this.description = description;
 		creationDate = new Date();
-		usersAssignedTo = new ArrayList<User>();
+		usersAssignedTo = new ArrayList<String>();
 		this.dueDate = dueDate;	
 		this.isExpanded = false;
 	}
@@ -166,15 +166,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @return the core user that created this task
 	 */
-	public User getCreator() {
-		return creator;
+	public String getCreatorName() {
+		return creatorName;
 	}
 	
 	/**
 	 * @param creator - set the user that created this task
 	 */
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setCreator(String creatorName) {
+		this.creatorName = creatorName;
 	}
 	
 	/**
@@ -194,10 +194,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @return the user that created the task
 	 */
-	public ArrayList<User> getUsersAssignedTo(){
+	public ArrayList<String> getUsersAssignedTo(){
 		if(usersAssignedTo == null){
 			System.out.println("WARNING: NO USERS ASSIGNED, COUNT " + usersAssignedTo.size() );
-			return new ArrayList<User>();
+			return new ArrayList<String>();
 		}
 		return usersAssignedTo;
 	}
@@ -205,16 +205,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @param arrayList - set the list of users that this task is assigned to
 	 */
-	public void setUsersAssignedTo(ArrayList<User> arrayList) {
-		this.usersAssignedTo = arrayList;
-	}
-
-	
-	/**
-	 * @param assignee - set the user assigned to this task
-	 */
-	public void assignToUser(User assignee) {
-		usersAssignedTo.add(assignee);
+	public void setUsersAssignedTo(ArrayList<String> usernameList) {
+		this.usersAssignedTo = usernameList;
 	}
 	
 	/**

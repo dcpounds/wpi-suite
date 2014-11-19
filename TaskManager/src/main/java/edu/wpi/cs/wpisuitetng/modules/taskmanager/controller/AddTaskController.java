@@ -58,7 +58,7 @@ public class AddTaskController implements ActionListener {
 		String creatorName = ConfigManager.getConfig().getUserName();
 		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
 		taskModel.setUsersAssignedTo( assignUsersView.getAssignedUsers());
-		taskModel.setCreator(new User(creatorName, creatorName, "password", -1));
+		taskModel.setCreator( creatorName );
 		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
 		taskModel.setDueDate(newTaskTabView.getDateText());

@@ -104,8 +104,8 @@ public class TaskViewExpanded extends JPanel{
 	 *  Populates the task with the list of assigned users
 	 */
 	public void addAssignedUsers(){
-		for( User user : taskModel.getUsersAssignedTo() ){
-			assignedListModel.addElement( user.getName() );
+		for( String username : taskModel.getUsersAssignedTo() ){
+			assignedListModel.addElement( username );
 		}
 	}
 }
