@@ -1,30 +1,21 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.UserModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import net.miginfocom.swing.MigLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.TaskManager;
-
-import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
+import java.awt.Insets;
 
 
 /**
@@ -35,6 +26,7 @@ public class TaskViewExpanded extends JPanel{
 	private static final long serialVersionUID = -4932681028640603728L;
 	private TaskModel taskModel;
 	private JPanel assignedToPane;
+	private TaskView taskView;
 	
 	/**
 	 * creates a new task view based off the given model
@@ -42,8 +34,9 @@ public class TaskViewExpanded extends JPanel{
 	 * @param stageView -stage view for the task to be added to
 	 * @param taskModel -model which the view is based off of
 	 */
-	public TaskViewExpanded(StageView stageView, TaskModel taskModel ){
+	public TaskViewExpanded(StageView stageView, TaskModel taskModel, TaskView taskView){
 		setLayout(new MigLayout("", "[grow]", "[][][][][][][][][grow]"));
+		this.taskView = taskView;
 		/* makes a label for the date, and then it
 		 * gets the due date from the model and places it to view
 		 */
@@ -74,6 +67,7 @@ public class TaskViewExpanded extends JPanel{
 		JTextArea textArea = new JTextArea( taskModel.getDescription() );
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
+		textArea.setMargin(new Insets(0, 0, 0, 0));
 		add(textArea, "cell 0 5,grow");
 		
 		JSeparator separator_1 = new JSeparator();
@@ -86,6 +80,15 @@ public class TaskViewExpanded extends JPanel{
 
 		JList assignedToList = new JList();
 		add(assignedToList, "flowy, cell 0 8,grow");
+	}
+	
+	public Dimension getPreferredSize() {
+		Component parent = this.getParent();
+		Dimension parentSize = taskView.getScrollPane().getViewport().getSize();
+		if( parent == null ){
+			return super.getPreferredSize();
+		}
+		return new Dimension(parentSize.width - 10, super.getPreferredSize().height );
 	}
 	
 	
