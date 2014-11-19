@@ -1,8 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 /**
  * Model for respresenting a stage that holds individual tasks
@@ -12,11 +15,11 @@ public class StageModel extends AbstractModel {
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
-	private ArrayList<TaskModel> taskList;
 	private boolean closable;
+	private WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
 
 	public StageModel(StageModel updatedStage) {
-		this(updatedStage.getTitle(), updatedStage.getTaskList(), updatedStage.getClosable());
+		this(updatedStage.getTitle(), updatedStage.getClosable());
 	}
 	
 	/**
@@ -25,9 +28,8 @@ public class StageModel extends AbstractModel {
 	 * @param title - title of the stage
 	 * @param taskList - list of tasks to be added
 	 */
-	public StageModel(String title, ArrayList<TaskModel> taskList, boolean closable) {
+	public StageModel(String title, boolean closable) {
 		this.title = title;
-		this.taskList = taskList;
 		this.closable = closable;
 	}
 	
@@ -39,49 +41,6 @@ public class StageModel extends AbstractModel {
 	 */
 	public StageModel() {
 	}
-	
-	/**
-	 * constructs a new empty stage
-	 * 
-	 * @param title - title of the stage
-	 */
-	public StageModel(String title, boolean closable) {
-		this.title = title;
-		this.closable = closable;
-		taskList = new ArrayList<TaskModel>();
-	}
-    
-    /**
-     * @param newTask - the task to add to the list of cards
-     */
-    public void addTask(TaskModel newTask) {
-    	this.taskList.add(newTask);
-    }
-    
-    /**
-     * @param newTasks - the list of tasks to add to the card
-     */
-    public void addTasks(TaskModel[] newTasks) {
-    	for (int i = 0; i < newTasks.length; i++) {
-    		this.taskList.add( newTasks[i] );
-    	}
-    }
-    
-    /**
-     * @param newTask - the task to add to the list of cards
-     */
-    public void removeTask(TaskModel task) {
-    	this.taskList.remove(task);
-    }
-    
-    /**
-     * @param newTasks - the list of tasks to add to the card
-     */
-    public void removeTasks(TaskModel[] tasks) {
-    	for (int i = 0; i < tasks.length; i++) {
-    		this.taskList.remove( tasks[i] );
-    	}
-    }
 
 	/**
 	 * @return the title of the card
@@ -95,27 +54,6 @@ public class StageModel extends AbstractModel {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	
-	/**
-	 * @return the size of the list of tasks
-	 */
-	public int getSize() {
-		return taskList.size();
-	}
-
-	/**
-	 * @return a list of taskModels that are contained in this card
-	 */
-	public ArrayList<TaskModel> getTaskList() {
-		return taskList;
-	}
-
-	/**
-	 * @param taskList - sets the list of tasks that are contained in this card
-	 */
-	public void setTaskList(ArrayList<TaskModel> taskList) {
-		this.taskList = taskList;
 	}
 	
 	/* (non-Javadoc)

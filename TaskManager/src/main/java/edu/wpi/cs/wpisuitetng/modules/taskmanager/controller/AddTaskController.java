@@ -76,7 +76,7 @@ public class AddTaskController implements ActionListener {
 		this.stageView = tabView.getWorkflowView().getStageViewList().get(stageIndex);
 		
 		//IMPORTANT: workflow model must be updated before creating task so that proper id can be set
-		workflowModel.addTask(newTaskTabView.getStatusText(), task);
+		workflowModel.addTask(task);
 		this.taskView = new TaskView(task, stageView);
 		stageView.updatePreferredDimensions();
 		stageView.addTaskView(taskView);

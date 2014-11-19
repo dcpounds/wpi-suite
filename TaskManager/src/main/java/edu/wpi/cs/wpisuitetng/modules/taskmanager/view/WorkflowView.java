@@ -23,10 +23,7 @@ import javax.swing.BoxLayout;
  *
  */
 public class WorkflowView extends JPanel {
-	
-	private ArrayList<StageModel> stageModelList;
 	private ArrayList<StageView> stageViewList;
-	private WorkflowModel workflowModel;
 	private JPanel workflowPanel;
 	private JScrollPane scrollBar;
 	
@@ -40,17 +37,14 @@ public class WorkflowView extends JPanel {
 		Configuration configuration = ConfigManager.getConfig();
 		String projectName = configuration.getProjectName();
 		JLabel title = new JLabel(projectName + " stage list");
-		//add(title);
-		
 		workflowModel = WorkflowController.getWorkflowModel();
-		this.stageModelList = workflowModel.getStageList();
 		
 		this.workflowPanel = new JPanel();
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
 		stageViewList = new ArrayList<StageView>();
-		for(StageModel stageModel : stageModelList){
+		for(StageModel stageModel : workflowModel.getStageList() ){
 			StageView stageToAdd = new StageView(stageModel, this);
 			addStageView( stageToAdd );
 		}
@@ -92,19 +86,6 @@ public class WorkflowView extends JPanel {
 		stageViewList.remove(stageView);
 		revalidate();
 		repaint();
-	}
-	
-	/**
-	 * @param name - the name of the stage to retrieve
-	 * @return the stage with the given name
-	 */
-	public StageView getStageViewByName(String name){
-		for(StageView stageView: stageViewList){
-			if(stageView.getTitle() == name){
-				return stageView;
-			}
-		}
-		return null;
 	}
 	
 	/**

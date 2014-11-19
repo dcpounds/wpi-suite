@@ -192,10 +192,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			}
 		});
 		if(shouldRemove){
-			StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
-			TaskView tView = sView.getTaskViewById(oldId);
-			sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
-			
+			//StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
+			//TaskView tView = sView.getTaskViewById(oldId);
+			//sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
 		}
 		
 		

@@ -19,31 +19,31 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	public ArrayList<StageModel> stageList;
+	private ArrayList<StageModel> stageModelList;
+	private ArrayList<TaskModel> taskModelList;
 	private static ArrayList<User> userList; 
 
 	/**
 	 * construct the main workflow based off a given list of stages
-	 * 
 	 * @param name - the name of the workflow (usually "main")
 	 * @param stageList
 	 */
 	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
-		this.stageList = stageList;
+		this.stageModelList = stageList;
+		this.taskModelList = new ArrayList<TaskModel>();
 		this.userList = new ArrayList<User>();
 		addBaseStages();
 	}
 	
 	/**
-	 * 
 	 * Construct the main workflow
-	 * 
 	 * @param name - the name of the workflow (usually "main")
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageList = new ArrayList<StageModel>();
+		this.taskModelList = new ArrayList<TaskModel>();
+		this.stageModelList = new ArrayList<StageModel>();
 		addBaseStages();
 	}
 	
@@ -58,14 +58,14 @@ public class WorkflowModel extends AbstractModel {
 	 * @return a list of stages in the workflow
 	 */
 	public ArrayList<StageModel> getStageList() {
-		return stageList;
+		return stageModelList;
 	}
 	
 	/**
 	 * @param stageList - set the list of stages to add to the workflow
 	 */
 	public void setStageList(ArrayList<StageModel> stageList) {
-		this.stageList = stageList;
+		this.stageModelList = stageList;
 	}
 	
 	/**
@@ -73,8 +73,8 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the updated list of stages in the workflow
 	 */
 	public ArrayList<StageModel> addStage(StageModel stage) {
-		stageList.add(stage);
-		return stageList;
+		stageModelList.add(stage);
+		return stageModelList;
 	}
 	
 	/**
@@ -82,73 +82,27 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the updated list of stages in the workflow
 	 */
 	public ArrayList<StageModel> removeStage(StageModel stage) {
-		stageList.remove(stage);
-		return stageList;
+		stageModelList.remove(stage);
+		return stageModelList;
 	}
 	
 	/**
-	 * get a stage model by its name
-	 * 
-	 * @param name
-	 * @return
+	 * @param task - the task to add to the list of tasks
+	 * @return - the list of tasks
 	 */
-	public StageModel getStageByName(String name){
-		for(StageModel stageModel : stageList){
-			if(stageModel.getTitle() == name){
-				return stageModel;
-			}
-		}
-		return null;	
+	public ArrayList<TaskModel> addTask(TaskModel task){
+		taskModelList.add(task);
+		return taskModelList;
 	}
 	
 	/**
-	 * add a task to a specific stage
-	 * 
-	 * @param stageName - name of the stage
-	 * @param task - model of task to be added
+	 * @param task - the task to remove from the list of tasks
+	 * @return - the updated list of tasks
 	 */
-	public void addTask(String stageName, TaskModel task) {
-		StageModel stage = getStageByName(stageName);
-		for(StageModel stageModel : stageList){
-			if(stageModel == stage){
-				task.setId(getNextTaskId());
-				stageModel.addTask(task);
-				return;
-			}
-		}
+	public ArrayList<TaskModel> removeTask(TaskModel task){
+		taskModelList.remove(task);
+		return taskModelList;
 	}
-	
-	/**
-	 * @param stage - a TaskModel to add to the workflow
-	 */
-	public void removeTask(TaskModel task) {
-		StageModel stageToBeUpdated = null;
-		TaskModel taskToBeRemoved = null;
-		for(StageModel stageModel : stageList){
-			for(TaskModel taskModel : stageModel.getTaskList()){
-				if(taskModel == task){
-					stageToBeUpdated = stageModel;
-					taskToBeRemoved = taskModel;
-				}
-			}
-		}
-		if(stageToBeUpdated != null){
-			stageToBeUpdated.removeTask(taskToBeRemoved);
-		}
-	}
-	
-	private int getNextTaskId() {
-		int highestId = 0;
-		for(StageModel stageModel : stageList){
-			for(TaskModel taskModel : stageModel.getTaskList()){
-				if(taskModel.getId() > highestId){
-					highestId = taskModel.getId();
-				}
-			}
-		}
-		return highestId + 1;
-	}
-	
 	
 	/**
 	 * @return the list of users that can be assigned to tasks in this workflow
@@ -163,15 +117,14 @@ public class WorkflowModel extends AbstractModel {
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
 	
-	
 	/**
 	 * adds the default list of stages to the main workflow
 	 */
 	private void addBaseStages(){
-		stageList.add(new StageModel("New", new ArrayList<TaskModel>(), false));
-		stageList.add(new StageModel("In Progress", new ArrayList<TaskModel>(), false));
-		stageList.add(new StageModel("Scheduled", new ArrayList<TaskModel>(), false));
-		stageList.add(new StageModel("Completed", new ArrayList<TaskModel>(), false));
+		stageModelList.add(new StageModel("New", true));
+		stageModelList.add(new StageModel("Scheduled", true));
+		stageModelList.add(new StageModel("In Progress", true));
+		stageModelList.add(new StageModel("Completed", true));
 	}
 	
 	
@@ -234,7 +187,7 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	public void copyFrom(WorkflowModel other){
-		this.stageList = other.stageList;
+		this.stageModelList = other.stageModelList;
 	}
 
 }
