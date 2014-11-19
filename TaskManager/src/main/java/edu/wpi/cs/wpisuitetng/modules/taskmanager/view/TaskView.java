@@ -95,8 +95,6 @@ public class TaskView extends JPanel{
 			}
 		});
 		add(btnEdit, "cell 0 2");
-		
-		
 		taskContentPane.setViewportView(taskContents);
 	}
 	

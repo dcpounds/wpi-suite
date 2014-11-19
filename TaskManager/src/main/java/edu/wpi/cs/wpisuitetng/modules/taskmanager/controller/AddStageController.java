@@ -24,7 +24,7 @@ public class AddStageController implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		String stageName = newStageTab.getStageTitle();
 		StageModel stageModel = new StageModel(stageName);
-		StageView stageView = new StageView(stageModel, workflowView);
+		StageView stageView = new StageView(stageModel, workflowView, true);
 		workflowView.addStageView(stageView);
 		workflowModel.addStage(stageModel);
 		

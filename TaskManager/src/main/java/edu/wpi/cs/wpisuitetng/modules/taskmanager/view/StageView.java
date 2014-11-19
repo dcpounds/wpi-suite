@@ -3,14 +3,25 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JButton;
 
 /**
  * This view is responsible for rendering a stage that can be placed inside a workflow.
@@ -22,29 +33,40 @@ public class StageView extends JPanel {
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
 	private WorkflowView workflowView;
+	private JButton btnClose;
+	private boolean closable;
 
 
 	/**
 	 * Constructs a new Stage based off the given model
 	 * @param stageModel - the model the view is based off of
 	 */
-	public StageView(StageModel stageModel, WorkflowView workflowView) {
+	public StageView(StageModel stageModel, WorkflowView workflowView, boolean closable) {
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
+		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
+		this.closable = closable;
 		
 		JLabel lblStageTitle = new JLabel(title);
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblStageTitle);
+		add(lblStageTitle, "cell 0 0,alignx center,aligny center");
+		
+		btnClose = new JButton("\u2716");
+		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
+		btnClose.setMargin(new Insets(0, 0, 0, 0));
+		btnClose.addActionListener( new RemoveStageController(this, stageModel, workflowView));
+		btnClose.setEnabled(closable);
+		add(btnClose, "cell 1 0,aligny center");
+		
 		scrollPane = new JScrollPane(stagePane);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
-		add(scrollPane);
+		add(scrollPane, "cell 0 1 2 1,grow");
 		setBackground(new Color(135, 206, 250));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
 		updatePreferredDimensions();
 	}

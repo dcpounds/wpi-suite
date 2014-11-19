@@ -51,7 +51,8 @@ public class WorkflowView extends JPanel {
 		
 		stageViewList = new ArrayList<StageView>();
 		for(StageModel stageModel : stageModelList){
-			addStageView( stageModel );
+			StageView stageToAdd = new StageView(stageModel, this, false);
+			addStageView( stageToAdd );
 		}
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));	
@@ -84,18 +85,19 @@ public class WorkflowView extends JPanel {
 	}
 	
 	/**
-	 * Adds a stage view to the work flow view based off of the given stage view
-	 * 
-	 * @param stageModel - model for which
+	 * @param stageView - the view to add to the list
 	 */
-	public void addStageView(StageModel stageModel){
-		StageView stageView = new StageView(stageModel, this);
-		workflowPanel.add(stageView);
-		stageViewList.add(stageView);
+	public void removeStage(StageView stageView){
+		workflowPanel.remove(stageView);
+		stageViewList.remove(stageView);
 		revalidate();
 		repaint();
 	}
 	
+	/**
+	 * @param name - the name of the stage to retrieve
+	 * @return the stage with the given name
+	 */
 	public StageView getStageViewByName(String name){
 		for(StageView stageView: stageViewList){
 			if(stageView.getTitle() == name){
