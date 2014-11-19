@@ -8,7 +8,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
-public class TaskModel extends AbstractModel {
+public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int id, estimatedEffort, actualEffort;
 	private String title, description;
 	private User creator;
@@ -16,7 +16,7 @@ public class TaskModel extends AbstractModel {
 	private Date creationDate;
 	private String dueDate;
 	private String status;
-	private boolean isExpanded;
+	private boolean isExpanded, initialized = false;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -167,6 +167,14 @@ public class TaskModel extends AbstractModel {
 	 */
 	public String getStatus(){
 		return status;
+	}
+	
+	/**
+	 */
+	public void Init(){
+		if(title == ""){
+			title = "New Task";
+		}
 	}
 	
 	/**

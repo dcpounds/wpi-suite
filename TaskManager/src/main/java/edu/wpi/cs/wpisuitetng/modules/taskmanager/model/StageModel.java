@@ -9,7 +9,7 @@ import javax.swing.AbstractListModel;
  * Model for respresenting a stage that holds individual tasks
  *
  */
-public class StageModel extends AbstractListModel {
+public class StageModel extends AbstractListModel implements IDisplayModel{
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
