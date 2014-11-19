@@ -184,6 +184,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	public ArrayList<User> getUsersAssignedTo(){
 		if(usersAssignedTo == null){
 			System.out.println("WARNING: NO USERS ASSIGNED, COUNT " + usersAssignedTo.size() );
+			return new ArrayList<User>();
 		}
 		System.out.println("WARNING: COUNT " + usersAssignedTo.size() );
 		return usersAssignedTo;
