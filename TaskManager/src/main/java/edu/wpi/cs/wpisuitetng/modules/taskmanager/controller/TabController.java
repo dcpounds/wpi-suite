@@ -40,12 +40,12 @@ public class TabController {
     		if(model != null){
     			tabName =  (model.getTitle() + "   ");
     		}else{
-    			tabName = "New Tab   ";
+    			tabName = "New Task   ";
     		}
         	newTab = new NewTaskTab((TaskModel) model);
         	break;
     	case STAGE:
-        	tabName = ((StageModel) model).getTitle();
+        	tabName = "New Stage   ";
         	newTab = new NewStageTab((StageModel) model);
         }
     	addTabHelper(tabName, newTab);
