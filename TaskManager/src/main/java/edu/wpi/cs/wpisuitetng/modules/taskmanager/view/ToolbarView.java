@@ -69,7 +69,6 @@ public class ToolbarView extends JPanel {
 				TabController.getInstance().addTab(TabType.TASK, null);
 			}
 		});
-        newTaskButton.addActionListener(new CoreUserController());
         newTaskButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);

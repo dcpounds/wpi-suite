@@ -6,9 +6,8 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * 
- * request observer for the initialize workflow controller
- * Note: this class should not need to be modified unless doing stuff with the database
+ * Responsible for listening for db requests from the CoreUserController
+ * used to fetch the list of core users from the database
  */
 public class CoreUserRequestObserver implements RequestObserver {
     
@@ -26,6 +25,7 @@ public class CoreUserRequestObserver implements RequestObserver {
         User[] coreUsers = User.fromJsonArray(iReq.getResponse().getBody());
         WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
         workflowModel.setUserList(coreUsers);
+        controller.addUsersToList(coreUsers);
     }
     
     /*

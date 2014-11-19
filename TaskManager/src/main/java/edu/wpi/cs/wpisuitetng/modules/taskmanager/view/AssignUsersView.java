@@ -37,6 +37,10 @@ public class AssignUsersView extends JPanel{
 	private DefaultListModel<String> assignedListModel;
 	
 	public AssignUsersView() {
+		
+		//Call the controller responsible for making 
+		//the call to the database for fetching core users
+		new CoreUserController(this).requestUserList();
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		this.userList = workflowModel.getUserList();
 		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
@@ -57,7 +61,6 @@ public class AssignUsersView extends JPanel{
 		
 		//List of unassigned users
 		unassignedListModel = new DefaultListModel<String>();
-		this.addElementsToList(unassignedListModel, this.getUsernameList() );
 		unassignedListComponent = new JList<String>( unassignedListModel );
 		unassignedListComponent.setFixedCellWidth(150);
 		unassignedScrollPane.setViewportView(unassignedListComponent);
