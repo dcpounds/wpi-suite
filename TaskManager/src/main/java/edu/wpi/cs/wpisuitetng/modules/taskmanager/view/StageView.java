@@ -16,6 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
 
@@ -33,6 +34,7 @@ public class StageView extends JPanel {
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
 	private WorkflowView workflowView;
+	private ArrayList<TaskView> taskViewList;
 	private JButton btnClose;
 	private boolean closable;
 	private StageModel stageModel;
@@ -43,6 +45,7 @@ public class StageView extends JPanel {
 	 */
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		this.stageModel = stageModel;
+		this.taskViewList = new ArrayList<TaskView>();
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
@@ -130,6 +133,7 @@ public class StageView extends JPanel {
 	 */
 	public void addTaskView(TaskView taskView) {
 		stagePane.add(taskView);
+		taskViewList.add(taskView);
 		updatePreferredDimensions();
 		revalidate();
 		repaint();
@@ -151,5 +155,9 @@ public class StageView extends JPanel {
 	 */
 	public int getID(){
 		return  stageModel.getID();
+	}
+	
+	public ArrayList<TaskView> getTaskViewList(){
+		return taskViewList;
 	}
 }

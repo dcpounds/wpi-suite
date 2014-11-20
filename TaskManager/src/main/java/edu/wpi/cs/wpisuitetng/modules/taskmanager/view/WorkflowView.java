@@ -23,7 +23,6 @@ import javax.swing.BoxLayout;
 public class WorkflowView extends JPanel {
 	private static final long serialVersionUID = -3276090208342185552L;
 	private ArrayList<StageView> stageViewList;
-	private ArrayList<TaskView> taskViewList;
 	private JPanel workflowPanel;
 	private JScrollPane scrollBar;
 	
@@ -35,7 +34,6 @@ public class WorkflowView extends JPanel {
 		//Code for getting the name of the project need to work on placement of the label
 		Configuration configuration = ConfigManager.getConfig();
 		String projectName = configuration.getProjectName();
-		this.taskViewList = new ArrayList<TaskView>();
 		workflowModel = WorkflowController.getWorkflowModel();
 		
 		this.workflowPanel = new JPanel();
@@ -90,17 +88,10 @@ public class WorkflowView extends JPanel {
 	 */
 	public void removeTaskView(TaskView taskView){
 		for( StageView stageView : stageViewList){
-			for( Component component : stageView.getComponents() ){
-				//TODO: make this actually find the component
-				return;
-			}
+			if(stageView.getTaskViewList().contains(taskView))
+				stageView.remove(taskView);
 		}
 	}
-	
-	public void addTaskView(TaskView taskView){
-		taskViewList.add(taskView);
-	}
-	
 	
 	/**
 	 * sets the current stage views for the given workflow view
@@ -132,9 +123,11 @@ public class WorkflowView extends JPanel {
 	 * @return - the TaskModel if a match is found, null otherwise
 	 */
 	public TaskView getTaskViewByID( int id ){
-		for( TaskView taskView : taskViewList ){
-			if(taskView.getID() == id)
-				return taskView;
+		for( StageView stageView : stageViewList ){
+			for( TaskView taskView : stageView.getTaskViewList()){
+				if(taskView.getID() == id)
+					return taskView;
+			}
 		}
 		return null;
 	}
