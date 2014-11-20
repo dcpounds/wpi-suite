@@ -46,7 +46,9 @@ public class TaskView extends JPanel{
 	private JPanel taskContents;
 	private JPanel titlePanel;
 	private TaskViewExpanded taskView;
+	private JLabel lblNewTask;
 	private JScrollPane taskContentPane;
+	private JButton btnEdit;
 	private StageView stageView;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
@@ -69,7 +71,7 @@ public class TaskView extends JPanel{
 		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
 		
-		JLabel lblNewTask = new JLabel( taskModel.getTitle() );
+		lblNewTask = new JLabel( taskModel.getTitle() );
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
 		
@@ -84,7 +86,7 @@ public class TaskView extends JPanel{
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
 		
-		JButton btnEdit = new JButton("Edit");
+		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -171,6 +173,10 @@ public class TaskView extends JPanel{
 	
 	public void updateContents(TaskModel newTaskModel){
 		taskView.updateTaskContents(newTaskModel);
-		System.out.println("UPDATING TASK");
+		this.lblNewTask.setText(newTaskModel.getTitle());
+		this.taskModel = newTaskModel;
+		titlePanel.addMouseListener(  new ExpandTaskController(this, newTaskModel) );
+		revalidate();
+		repaint();
 	}
 }
