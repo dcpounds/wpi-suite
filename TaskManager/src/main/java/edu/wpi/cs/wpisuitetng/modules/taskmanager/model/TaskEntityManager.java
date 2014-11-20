@@ -7,6 +7,7 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
@@ -23,37 +24,35 @@ public class TaskEntityManager implements EntityManager<TaskModel> {
 	}
 
 	/** Creates a new entity for saving in the database
-	 * 
 	 */
 	@Override
-	public TaskModel makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
-		final TaskModel newTaskModel = TaskModel.fromJson( content );
-		
-		if( !db.save(newTaskModel, s.getProject())){
-			throw new WPISuiteException();
-		}
-		// TODO Auto-generated method stub
-		return newTaskModel;
+	public TaskModel makeEntity(Session s, String content) throws WPISuiteException {
+	final TaskModel newTask = TaskModel.fromJson(content);
+	if(!db.save(newTask, s.getProject())) {
+		throw new WPISuiteException();
+	}
+	return newTask;
 	}
 
 	/**
 	 * Gets a list of taskmodels with the given ID
 	 */
 	@Override
-	public TaskModel[] getEntity(Session s, String id)
-			throws NotFoundException, WPISuiteException {
-		TaskModel[] taskModels = null;
-		try{
-			taskModels = db.retrieve(TaskModel.class, "id", s.getProject()).toArray(new TaskModel[0]);
+	public TaskModel[] getEntity(Session s, String id) throws NotFoundException {
+		final int intId = Integer.parseInt(id);
+		if(intId < 1) {
+			throw new NotFoundException();
+		}
+		TaskModel[] tasks = null;
+		try {
+			tasks = db.retrieve(TaskModel.class, "id", intId, s.getProject()).toArray(new TaskModel[0]);
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
-		if( taskModels.length < 1 || taskModels[0] == null){
+		if(tasks.length < 1 || tasks[0] == null) {
 			throw new NotFoundException();
 		}
-		// TODO Auto-generated method stub
-		return taskModels;
+		return tasks;
 	}
 
 	@Override
@@ -114,22 +113,17 @@ public class TaskEntityManager implements EntityManager<TaskModel> {
 
 	@Override
 	public int Count() throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return db.retrieveAll(new TaskModel()).size();
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+	public String advancedPut(Session s, String[] args, String content) throws NotImplementedException {
+		throw new NotImplementedException();
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+	public String advancedPost(Session s, String string, String content) throws NotImplementedException {
+		throw new NotImplementedException();
 	}
 	
 	/**
