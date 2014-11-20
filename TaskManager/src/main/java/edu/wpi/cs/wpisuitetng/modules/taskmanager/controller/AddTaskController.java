@@ -94,7 +94,6 @@ public class AddTaskController implements ActionListener {
 	}
 	
 	public void sendUpdateRequest(TaskModel task){
-		System.out.println("Task came in with id " + saveTask.getID() + " and the model being sent has id " + task.getID());
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
 		request.addObserver(observer); // add an observer to process the response

@@ -16,12 +16,7 @@ public class StageModel extends AbstractModel {
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private boolean closable;
-	private int id = System.identityHashCode(this);
-	
-	public StageModel(StageModel updatedStage) {
-		this(updatedStage.getTitle(), updatedStage.getClosable());
-		this.id = updatedStage.id;
-	}
+	private int id;
 	
 	/**
 	 * constructs a new stage
@@ -32,6 +27,17 @@ public class StageModel extends AbstractModel {
 	public StageModel(String title, boolean closable) {
 		this.title = title;
 		this.closable = closable;
+		this.id = this.hashCode();
+	}
+	
+	
+	/**
+	 * @param updatedStage - copies the 
+	 */
+	public void copyFrom(StageModel updatedStage) {
+		this.title = updatedStage.getTitle();
+		this.closable = updatedStage.getClosable();
+		this.id = updatedStage.getID();
 	}
 	
 	
@@ -64,6 +70,13 @@ public class StageModel extends AbstractModel {
 	 */
 	public int getID(){
 		return this.id;
+	}
+	
+	/**
+	 * @param id - the id to set the stage to
+	 */
+	public void setID(int id){
+		this.id = id;
 	}
 	
 	

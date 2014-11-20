@@ -38,7 +38,6 @@ public class AddStageController implements ActionListener {
 	}
 	
 	public void addStage(StageModel receivedStage) {
-		System.out.println("Added a stage to the db");
         // Empty the local model to eliminate duplications
     	if(receivedStage != null){
     		StageView stageView = new StageView(receivedStage, workflowView);

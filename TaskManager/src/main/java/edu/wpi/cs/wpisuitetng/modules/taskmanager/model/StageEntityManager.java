@@ -77,7 +77,7 @@ public class StageEntityManager implements EntityManager<StageModel> {
 			throw new NotFoundException();
 		}
 		StageModel existingStage = (StageModel)oldStages.get(0);
-		existingStage = new StageModel(updatedStage);
+		existingStage.copyFrom(updatedStage);
 		
 		if(!db.save(existingStage, s.getProject() )){
 			throw new WPISuiteException();

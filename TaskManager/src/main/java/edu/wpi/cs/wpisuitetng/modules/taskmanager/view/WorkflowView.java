@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
@@ -83,16 +84,17 @@ public class WorkflowView extends JPanel {
 		repaint();
 	}
 	
+	/**
+	 * Finds the view in the workflowView and removes it
+	 * @param taskView - the taskview to remove from the workflowview
+	 */
 	public void removeTaskView(TaskView taskView){
 		for( StageView stageView : stageViewList){
 			for( Component component : stageView.getComponents() ){
-				if( taskView == component)
-					System.out.println("found the matching component!");
-					//stageView.remove(taskView);
-					return;
+				//TODO: make this actually find the component
+				return;
 			}
 		}
-		System.out.println("could not find a task in any of the views you gave me");
 	}
 	
 	public void addTaskView(TaskView taskView){

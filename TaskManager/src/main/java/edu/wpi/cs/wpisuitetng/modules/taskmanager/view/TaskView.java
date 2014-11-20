@@ -79,9 +79,8 @@ public class TaskView extends JPanel{
 		
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-		
-		
 		closeButton.addActionListener(new RemoveTaskController(taskModel, this));
+		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
 		
