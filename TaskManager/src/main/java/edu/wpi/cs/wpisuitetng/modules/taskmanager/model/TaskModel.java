@@ -50,7 +50,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/** Copies the contents of updatedStage into this one
 	 * @param updatedStage the stage to copy from
 	 */
-	public TaskModel(TaskModel updatedStage) {
+	public void copyFrom(TaskModel updatedStage) {
 		this.id = updatedStage.id;
 		this.estimatedEffort = updatedStage.estimatedEffort;
 		this.actualEffort = updatedStage.actualEffort;

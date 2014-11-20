@@ -69,22 +69,20 @@ public class TaskEntityManager implements EntityManager<TaskModel> {
 	 * Updates the given taskmodel in the database
 	 */
 	@Override
-	public TaskModel update(Session s, String content)
-			throws WPISuiteException {
+	public TaskModel update(Session s, String content) throws WPISuiteException {
 		TaskModel updatedTask = TaskModel.fromJson(content);
-		//TODO tasks need IDs to distinguish one another
-		List<Model> oldTasks = db.retrieve(TaskModel.class, "name", updatedTask.getTitle(), s.getProject());
-		if( oldTasks.size() < 1 || oldTasks.get(0) == null) {
-			throw new NotFoundException();
+		List<Model> oldTasks = db.retrieve(TaskModel.class, "id", updatedTask.getID(), s.getProject());
+		if(oldTasks.size() < 1 || oldTasks.get(0) == null) {
+			throw new BadRequestException("Task with ID does not exist.");
 		}
-		TaskModel existingTask = (TaskModel)oldTasks.get(0);
-		existingTask = new TaskModel(updatedTask);
+				
+		TaskModel existingRequirement = (TaskModel)oldTasks.get(0);		
+		existingRequirement.copyFrom(updatedTask);
 		
-		if(!db.save(existingTask, s.getProject() )){
+		if(!db.save(existingRequirement, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		// TODO Auto-generated method stub
-		return existingTask;
+		return existingRequirement;
 	}
 
 	@Override

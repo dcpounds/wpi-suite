@@ -22,8 +22,6 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -35,13 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.UpdateTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 import javax.swing.JScrollPane;
@@ -185,22 +178,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 				TabController.getInstance().removeTab(thisTab);
 			}
 		});
-		
-		/*
-		//If the user is editing this task, update the task, otherwise add a new one to the database and view
-		if(editingTask){
-			TaskView taskView = tabView.getWorkflowView().getTaskViewByID(taskModel.getID());
-			if(taskView != null){
-				taskView.updateContents(taskModel);
-				sbmtTaskButton.addActionListener( new UpdateTaskController(taskModel) );
-			}
-			//StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
-			//TaskView tView = sView.getTaskViewById(oldId);
-			//sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
-		} else
-			sbmtTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
-		
-		*/
 		
 		sbmtTaskButton.addActionListener( new AddTaskController(this, taskModel, isEditing));
 		
