@@ -16,10 +16,11 @@ public class StageModel extends AbstractModel {
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private boolean closable;
-	private WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
-
+	private int id = System.identityHashCode(this);
+	
 	public StageModel(StageModel updatedStage) {
 		this(updatedStage.getTitle(), updatedStage.getClosable());
+		this.id = updatedStage.id;
 	}
 	
 	/**
@@ -33,15 +34,15 @@ public class StageModel extends AbstractModel {
 		this.closable = closable;
 	}
 	
+	
 	/**
-	 * constructs a new stage
-	 * 
-	 * @param title - title of the stage
-	 * @param taskList - list of tasks to be added
+	 * Blank stage constructor since the 
+	 * database needs a class to identify the type to fetch
 	 */
 	public StageModel() {
 	}
 
+	
 	/**
 	 * @return the title of the card
 	 */
@@ -49,12 +50,22 @@ public class StageModel extends AbstractModel {
 		return title;
 	}
 
+	
 	/**
 	 * @param title - set the title of the string
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	
+	/**
+	 * @return - the ID of this object
+	 */
+	public int getID(){
+		return this.id;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -118,6 +129,10 @@ public class StageModel extends AbstractModel {
         return parser.fromJson(json, StageModel[].class);
     }
 
+    
+	/**
+	 * @return whether or not the stage can be closed
+	 */
 	public boolean getClosable() {
 		return closable;
 	}

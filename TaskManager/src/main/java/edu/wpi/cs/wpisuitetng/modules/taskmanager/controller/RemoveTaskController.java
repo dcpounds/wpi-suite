@@ -4,8 +4,10 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
 
 /**
@@ -15,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
  */
 public class RemoveTaskController implements ActionListener {
 	private WorkflowModel workflowModel;
+	private WorkflowView workflowView;
 	private TaskModel taskModel;
 	private StageView stageView;
 	private TaskView taskView;
@@ -25,10 +28,11 @@ public class RemoveTaskController implements ActionListener {
 	 * @param view -stage view that contains the task view
 	 * @param taskView 
 	 */
-	public RemoveTaskController(TaskModel taskModel, StageView view, TaskView taskView){
+	public RemoveTaskController(TaskModel taskModel, TaskView taskView){
+		TabView tabView = TabController.getTabView();
+		this.workflowView = tabView.getWorkflowView();
 		workflowModel = WorkflowController.getWorkflowModel();
 		this.taskModel = taskModel;
-		this.stageView = view;
 		this.taskView = taskView;
 	}
 
@@ -40,6 +44,6 @@ public class RemoveTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		workflowModel.removeTask(taskModel);
-		stageView.removeTaskView(taskView);
+		workflowView.removeTaskView(taskView);
 	}
 }

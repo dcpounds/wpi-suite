@@ -30,8 +30,8 @@ public class RemoveStageController implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		workflowModel.removeStage(stageModel);
-		workflowView.removeStage(stageView);
+		workflowModel.removeStageModel(stageModel);
+		workflowView.removeStageView(stageView);
 		workflowView.remove(stageView);
 	}
 

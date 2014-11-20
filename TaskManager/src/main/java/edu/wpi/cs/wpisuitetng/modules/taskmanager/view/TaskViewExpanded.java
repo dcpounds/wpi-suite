@@ -30,6 +30,9 @@ public class TaskViewExpanded extends JPanel{
 	private TaskModel taskModel;
 	private JPanel assignedToPane;
 	private TaskView taskView;
+	private JTextArea descriptionField;
+	private JLabel lblEstimatedEffort;
+	private JLabel lblActualEffort;
 	private DefaultListModel<String> assignedListModel;
 	
 	/**
@@ -55,11 +58,11 @@ public class TaskViewExpanded extends JPanel{
 		dateArea.setEditable(false);
 		add(dateArea, "cell 0 0, alignx right");
 		
-		JLabel lblEstimatedEffort = new JLabel("Estimated Effort: " + taskModel.getEstimatedEffort());
+		this.lblEstimatedEffort = new JLabel("Estimated Effort: " + taskModel.getEstimatedEffort());
 		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblEstimatedEffort, "cell 0 1,alignx left");
 		
-		JLabel lblActualEffort = new JLabel("Actual Effort: " + taskModel.getActualEffort());
+		lblActualEffort = new JLabel("Actual Effort: " + taskModel.getActualEffort());
 		lblActualEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblActualEffort, "cell 0 2,alignx left");
 		
@@ -70,11 +73,11 @@ public class TaskViewExpanded extends JPanel{
 		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblDescription, "cell 0 4,alignx left");
 		
-		JTextArea textArea = new JTextArea( taskModel.getDescription() );
-		textArea.setLineWrap(true);
-		textArea.setEditable(false);
-		textArea.setMargin(new Insets(0, 0, 0, 0));
-		add(textArea, "cell 0 5,grow");
+		this.descriptionField = new JTextArea( taskModel.getDescription() );
+		descriptionField.setLineWrap(true);
+		descriptionField.setEditable(false);
+		descriptionField.setMargin(new Insets(0, 0, 0, 0));
+		add(descriptionField, "cell 0 5,grow");
 		
 		JSeparator separator_1 = new JSeparator();
 		add(separator_1, "cell 0 6");
@@ -88,6 +91,20 @@ public class TaskViewExpanded extends JPanel{
 		addAssignedUsers();
 		JList<String> assignedListComponent = new JList<String>( assignedListModel );
 		add(assignedListComponent, "flowy, cell 0 8,grow");
+	}
+	
+	public void updateTaskContents(TaskModel newModel){
+		this.taskModel = newModel;
+		this.lblEstimatedEffort.setText("Estimated Effort: " + newModel.getEstimatedEffort() );
+		this.descriptionField.setText( newModel.getDescription() );
+		this.lblActualEffort.setText("Actual Effort: " + newModel.getActualEffort());
+		this.assignedListModel = new DefaultListModel<String>();
+		
+		for(String username : newModel.getUsersAssignedTo()){
+			assignedListModel.addElement(username);
+		}
+		revalidate();
+		repaint();
 	}
 	
 	public Dimension getPreferredSize() {

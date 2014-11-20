@@ -36,6 +36,7 @@ public class WorkflowModel extends AbstractModel {
 		addBaseStages();
 	}
 	
+	
 	/**
 	 * Construct the main workflow
 	 * @param name - the name of the workflow (usually "main")
@@ -47,12 +48,14 @@ public class WorkflowModel extends AbstractModel {
 		addBaseStages();
 	}
 	
+	
 	/**
 	 * @return the string name of the workflow
 	 */
 	public String getName(){
 		return this.name;
 	}
+	
 	
 	/**
 	 * @return a list of stages in the workflow
@@ -61,12 +64,14 @@ public class WorkflowModel extends AbstractModel {
 		return stageModelList;
 	}
 	
+	
 	/**
 	 * @param stageList - set the list of stages to add to the workflow
 	 */
 	public void setStageList(ArrayList<StageModel> stageList) {
 		this.stageModelList = stageList;
 	}
+	
 	
 	/**
 	 * @param stage - a StageModel to add to the workflow
@@ -77,14 +82,16 @@ public class WorkflowModel extends AbstractModel {
 		return stageModelList;
 	}
 	
+	
 	/**
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public ArrayList<StageModel> removeStage(StageModel stage) {
+	public ArrayList<StageModel> removeStageModel(StageModel stage) {
 		stageModelList.remove(stage);
 		return stageModelList;
 	}
+	
 	
 	/**
 	 * @param task - the task to add to the list of tasks
@@ -95,6 +102,7 @@ public class WorkflowModel extends AbstractModel {
 		return taskModelList;
 	}
 	
+	
 	/**
 	 * @param task - the task to remove from the list of tasks
 	 * @return - the updated list of tasks
@@ -103,6 +111,7 @@ public class WorkflowModel extends AbstractModel {
 		taskModelList.remove(task);
 		return taskModelList;
 	}
+	
 	
 	/**
 	 * @return the list of users that can be assigned to tasks in this workflow
@@ -113,9 +122,14 @@ public class WorkflowModel extends AbstractModel {
 		return userList.toArray(new User[userList.size()]);
 	}
 	
+	
+	/**
+	 * @param userList - the list of assignable users to set within the workflow
+	 */
 	public void setUserList(User[] userList){
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
+	
 	
 	/**
 	 * adds the default list of stages to the main workflow
@@ -125,6 +139,32 @@ public class WorkflowModel extends AbstractModel {
 		stageModelList.add(new StageModel("Scheduled", true));
 		stageModelList.add(new StageModel("In Progress", true));
 		stageModelList.add(new StageModel("Completed", true));
+	}
+	
+	
+	/**
+	 * @param id - id of the task to look for
+	 * @return the taskModel if successful, null otherwise
+	 */
+	public TaskModel getTaskModelByID(int id){
+		for( TaskModel task : taskModelList ){
+			if( task.getID() == id  )
+				return task;
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * @param id - id of the stage to look for
+	 * @return - the stageModel if successful, nul otherwise
+	 */
+	public StageModel getStageModelByID(int id){
+		for( StageModel stage : stageModelList ){
+			if( stage.getID() == id)
+				return stage;
+		}
+		return null;
 	}
 	
 	

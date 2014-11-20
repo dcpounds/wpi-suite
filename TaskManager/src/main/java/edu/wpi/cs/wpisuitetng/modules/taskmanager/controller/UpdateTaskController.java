@@ -17,20 +17,15 @@ public class UpdateTaskController implements ActionListener {
 	private WorkflowModel workflowModel;
 	private WorkflowView workflowView;
 	
-	public UpdateTaskController(WorkflowView workflowView, TaskModel taskModel) {
+	public UpdateTaskController(TaskModel taskModel) {
 		this.taskModel = taskModel;
 		this.observer = new UpdateTaskRequestObserver(this);
+		this.workflowView = TabController.getTabView().getWorkflowView();
 		this.workflowModel = WorkflowController.getWorkflowModel();
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		//get the id of the taskModel that got passed in
-		//views need update method
-		//find the appropriate view and run update(taskModel) on it
-		//workflowModels need a list of stageViews
-		
-		
+	public void actionPerformed(ActionEvent arg0) {		
 		//Send a request to update the entity in the database
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(taskModel.toJson()); // put the new stage in the body of the request

@@ -13,7 +13,7 @@ public class AddTaskRequestObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
         TaskModel task = TaskModel.fromJson(iReq.getResponse().getBody());
-        controller.addTask(task);
+        controller.processResponse(task);
 	}
 
 	@Override

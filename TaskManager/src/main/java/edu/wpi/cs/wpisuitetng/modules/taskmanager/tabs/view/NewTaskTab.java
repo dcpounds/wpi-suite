@@ -41,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.UpdateTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 import javax.swing.JScrollPane;
@@ -62,7 +63,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextField estEffortField;
 	private JTextField actEffortField;
 	private JComboBox<String> stageBox;
-	private JComboBox<String> workFlowBox;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
     private final WorkflowModel workflowModel;
@@ -78,6 +78,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel dateNotAddedError;
 	private JLabel starredFieldsRequired;
 	private JScrollPane descriptionScrollPane;
+	private AssignUsersView assignUsersView;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -87,17 +88,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 
 	public NewTaskTab(TaskModel model) {	
 		taskModel = model;
-		boolean shouldRemove = false;
-		String oldStage = null;
-		int oldId = -1;
-		
-		if(taskModel != null){
-			shouldRemove = true;
-			oldStage = taskModel.getStatus();
-			oldId = taskModel.getId();
-		} else {
+		boolean isEditing = false;
+		if(taskModel != null)
+			isEditing = true;
+		 else
 			taskModel = new TaskModel();
-		}
     	taskModel.setEditState(true);
 		
 		this.workflowModel = WorkflowController.getWorkflowModel();
@@ -151,7 +146,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskDescriptionField.setRows(10);
 		taskDescriptionField.addKeyListener(this);
 		
-		AssignUsersView assignUsersView = new AssignUsersView();
+		assignUsersView = new AssignUsersView();
 		add(assignUsersView, "cell 1 3,grow");
 		
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
@@ -183,7 +178,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		actEffortField.addKeyListener(this);
 		
 		sbmtTaskButton = new JButton("Submit");
-		sbmtTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
 		NewTaskTab thisTab = this;
 		sbmtTaskButton.addActionListener( new ActionListener(){
 			@Override
@@ -191,15 +185,29 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 				TabController.getInstance().removeTab(thisTab);
 			}
 		});
-		if(shouldRemove){
+		
+		/*
+		//If the user is editing this task, update the task, otherwise add a new one to the database and view
+		if(editingTask){
+			TaskView taskView = tabView.getWorkflowView().getTaskViewByID(taskModel.getID());
+			if(taskView != null){
+				taskView.updateContents(taskModel);
+				sbmtTaskButton.addActionListener( new UpdateTaskController(taskModel) );
+			}
 			//StageView sView = tabView.getWorkflowView().getStageViewByName(oldStage);
 			//TaskView tView = sView.getTaskViewById(oldId);
 			//sbmtTaskButton.addActionListener( new RemoveTaskController(taskModel, sView, tView));
-		}
+		} else
+			sbmtTaskButton.addActionListener( new AddTaskController(this, assignUsersView, 0));
+		
+		*/
+		
+		sbmtTaskButton.addActionListener( new AddTaskController(this, taskModel, isEditing));
 		
 		
 		add(sbmtTaskButton, "cell 0 7");		
 		sbmtTaskButton.setEnabled(false);
+		
 		starredFieldsRequired = new JLabel("Starred Fields Are Required");
 		starredFieldsRequired.setForeground(Color.red);
 		add(starredFieldsRequired, "cell 0 7");
@@ -262,6 +270,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 					isActEffortPosInt? true: false;
 		sbmtTaskButton.setEnabled(shouldSubmitBeEnabled);	
 		starredFieldsRequired.setVisible(!shouldSubmitBeEnabled);
+	}
+	
+	public AssignUsersView getAssignUserView(){
+		return assignUsersView;
 	}
 	
 	

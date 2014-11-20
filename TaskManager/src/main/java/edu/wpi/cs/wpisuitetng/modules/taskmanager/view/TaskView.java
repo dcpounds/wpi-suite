@@ -42,7 +42,6 @@ public class TaskView extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 6517799529927334536L;
-	private int id;
 	private TaskModel taskModel;
 	private JPanel taskContents;
 	private JPanel titlePanel;
@@ -53,7 +52,6 @@ public class TaskView extends JPanel{
 	private static final int closeSize = 40;
 	
 	public TaskView(TaskModel taskModel, StageView stageView) {
-		id = taskModel.getId();
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
@@ -83,7 +81,7 @@ public class TaskView extends JPanel{
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		
 		
-		closeButton.addActionListener(new RemoveTaskController(taskModel, stageView, this));
+		closeButton.addActionListener(new RemoveTaskController(taskModel, this));
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
 		
@@ -92,8 +90,7 @@ public class TaskView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!taskModel.getEditState())
-				{	TabController.getInstance().addTab(TabType.TASK, taskModel);
-				}
+					TabController.getInstance().addTab(TabType.TASK, taskModel);
 				else{
 				}
 			}
@@ -169,7 +166,12 @@ public class TaskView extends JPanel{
 		return taskContentPane;
 	}
 	
-	public int getId(){
-		return id;
+	public int getID(){
+		return taskModel.getID();
+	}
+	
+	public void updateContents(TaskModel newTaskModel){
+		taskView.updateTaskContents(newTaskModel);
+		System.out.println("UPDATING TASK");
 	}
 }

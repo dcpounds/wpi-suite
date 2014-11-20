@@ -35,12 +35,14 @@ public class StageView extends JPanel {
 	private WorkflowView workflowView;
 	private JButton btnClose;
 	private boolean closable;
+	private StageModel stageModel;
 	
 	/**
 	 * Constructs a new Stage based off the given model
 	 * @param stageModel - the model the view is based off of
 	 */
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
+		this.stageModel = stageModel;
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
@@ -95,7 +97,6 @@ public class StageView extends JPanel {
 	 * Updates the preferred dimensions of the panel that houses the task views
 	 */
 	public void updatePreferredDimensions() {
-		int currentStageHeight = this.getHeight();
 		int heightNeeded = 0;
 		
 		//Go through each component in the stageView
@@ -103,14 +104,12 @@ public class StageView extends JPanel {
 			if( childComponent instanceof TaskView ){
 				heightNeeded += ((TaskView) childComponent).getHeight();
 			}
-			
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
 		}
 	}
 
 	/**
 	 * gets the title of the stage
-	 * 
 	 * @return
 	 */
 	public String getTitle() {
@@ -119,7 +118,6 @@ public class StageView extends JPanel {
 
 	/**
 	 * sets the title of the stage
-	 * 
 	 * @param title
 	 */
 	public void setTitle(String title) {
@@ -128,7 +126,6 @@ public class StageView extends JPanel {
 	
 	/**
 	 * adds a task to the stage
-	 * 
 	 * @param taskView
 	 */
 	public void addTaskView(TaskView taskView) {
@@ -140,7 +137,6 @@ public class StageView extends JPanel {
 	
 	/**
 	 * removes a task from the stage
-	 * 
 	 * @param taskView
 	 */
 	public void removeTaskView(TaskView taskView) {
@@ -150,16 +146,10 @@ public class StageView extends JPanel {
 		repaint();	
 	}
 	
-	
-	public TaskView getTaskViewById(int taskId){
-		for(Component component: stagePane.getComponents()){
-			TaskView taskView = (TaskView) component;
-			if(taskView.getId() == taskId){
-				return taskView;
-			}
-			
-		}
-		return null;
+	/**
+	 * gets the ID of this stage
+	 */
+	public int getID(){
+		return  stageModel.getID();
 	}
-
 }

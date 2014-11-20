@@ -9,7 +9,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
-	private int id, estimatedEffort, actualEffort;
+	private int estimatedEffort, actualEffort;
+	private int id = System.identityHashCode(this);
 	private String title, description;
 	private String creatorName;
 	private ArrayList<String> usersAssignedTo;
@@ -22,7 +23,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
-		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
 		title = description = "";
@@ -36,7 +36,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	/** The default constructor for a Task **/
 	public TaskModel(String title, String description){
-		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
 		this.title = title;
@@ -48,6 +47,9 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = false;
 	}
 	
+	/** Copies the contents of updatedStage into this one
+	 * @param updatedStage the stage to copy from
+	 */
 	public TaskModel(TaskModel updatedStage) {
 		this.id = updatedStage.id;
 		this.estimatedEffort = updatedStage.estimatedEffort;
@@ -61,27 +63,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = updatedStage.isExpanded;
 	}
 	
+	
 	/**
-	 * @param id - the id of the task
 	 * @param title - the title of the task
 	 * @param description - the description of the task
-	 * @param creator - the creator of the task (User)
-	 * @param usersAssignedTo - the List users this task is assigned to
+	 * @param dueDate - the duedate of the task
 	 */
-	public TaskModel(int id, int estimatedEffort, int actualEffort, String title, String description, 
-			String creatorName, ArrayList<String> usersAssignedTo) {
-		this.id = id;
-		this.estimatedEffort = estimatedEffort;
-		this.actualEffort = actualEffort;
-		this.title = title;
-		this.description = description;
-		this.creatorName = creatorName;
-		this.usersAssignedTo = usersAssignedTo;
-		this.isExpanded = false;
-	}
-	
 	public TaskModel(String title, String description, String dueDate){
-		id = -1;
 		estimatedEffort = 0;
 		actualEffort = 0;
 		this.title = title;;
@@ -92,18 +80,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.dueDate = dueDate;	
 		this.isExpanded = false;
 	}
+	
+	
 	/**
 	 * @return the ID of this task
 	 */
-	public int getId() {
+	public int getID() {
 		return id;
-	}
-	
-	/**
-	 * @param id - set the id of the task
-	 */
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	/**
@@ -223,6 +206,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creationDate = creationDate;
 	}
 	
+	
 	/**
 	 * @return the date that this task is due
 	 */
@@ -230,13 +214,16 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return dueDate;
 	}
 	
+	
 	public boolean getIsExpanded(){
 		return isExpanded;
 	}
 	
+	
 	public void setIsExpanded(boolean status){
 		this.isExpanded = status;
 	}
+	
 	
 	/**
 	 * @param dueDate - set the date that this task is due
@@ -244,18 +231,23 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
+	
+	
 	/**
 	 * @return- get whether the tab is being editted
 	 */
 	public boolean getEditState() {
 		return this.editState;	
 	}
+	
+	
 	/**
 	 * @param creator - set the user that created this task
 	 */
 	public void setEditState(boolean editState) {
 		this.editState = editState;
 	}
+	
 		
 	/**
 	 * Converts the task to a JSON string
@@ -267,6 +259,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		json = gson.toJson(this, TaskModel.class);
 		return json;
 	}
+	
 	
 	/**
 	 * Converts the given list of tasks to a JSON string
@@ -286,7 +279,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof TaskModel && id == ((TaskModel) o).getId()) {
+		if(o instanceof TaskModel && id == ((TaskModel) o).getID()) {
 			returnValue = true;
 		}
 		if(o instanceof String && Integer.toString(id).equals(o)) {
@@ -326,7 +319,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         
         TaskModel other = (TaskModel) obj;
         
-        return this.id == other.getId();
+        return this.id == other.getID();
 	}
 
 	public static TaskModel fromJson(String json) {
