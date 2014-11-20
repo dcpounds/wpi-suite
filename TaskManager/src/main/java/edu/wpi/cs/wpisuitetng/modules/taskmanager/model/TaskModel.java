@@ -10,7 +10,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int estimatedEffort, actualEffort;
-	private int id = System.identityHashCode(this);
+	private int id;
 	private String title, description;
 	private String creatorName;
 	private ArrayList<String> usersAssignedTo;
@@ -23,27 +23,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
-		estimatedEffort = 0;
-		actualEffort = 0;
-		title = description = "";
-		creatorName = "";
-		creationDate = new Date();
-		usersAssignedTo = new ArrayList<String>();
-		dueDate = new String();	
-		status = "";
-		this.isExpanded = false;
-	}
-	
-	/** The default constructor for a Task **/
-	public TaskModel(String title, String description){
-		estimatedEffort = 0;
-		actualEffort = 0;
-		this.title = title;
+		this.id = this.hashCode();
+		this.estimatedEffort = 0;
+		this.actualEffort = 0;
+		this.title = description = "";
 		this.creatorName = "";
-		this.description = description;
-		creationDate = new Date();
-		usersAssignedTo = new ArrayList<String>();
-		dueDate = new String();	
+		this.creationDate = new Date();
+		this.usersAssignedTo = new ArrayList<String>();
+		this.dueDate = new String();	
+		this.status = "";
 		this.isExpanded = false;
 	}
 	
@@ -65,28 +53,14 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	
 	/**
-	 * @param title - the title of the task
-	 * @param description - the description of the task
-	 * @param dueDate - the duedate of the task
-	 */
-	public TaskModel(String title, String description, String dueDate){
-		estimatedEffort = 0;
-		actualEffort = 0;
-		this.title = title;;
-		this.creatorName = "";
-		this.description = description;
-		creationDate = new Date();
-		usersAssignedTo = new ArrayList<String>();
-		this.dueDate = dueDate;	
-		this.isExpanded = false;
-	}
-	
-	
-	/**
 	 * @return the ID of this task
 	 */
 	public int getID() {
 		return id;
+	}
+	
+	public void setID(int id){
+		this.id = id;
 	}
 	
 	/**
@@ -272,6 +246,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		json = gson.toJson(taskList, TaskModel.class);
 		return json;
 	}
+	
+	/**
+	 * @param json - the json obejct to convert back to a TaskModel
+	 * @return
+	 */
+	public static TaskModel fromJson(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, TaskModel.class);
+	}
 
 	/* (non-Javadoc)
 	 * returns true if this task id matches the one provided
@@ -320,11 +303,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         TaskModel other = (TaskModel) obj;
         
         return this.id == other.getID();
-	}
-
-	public static TaskModel fromJson(String json) {
-        final Gson parser = new Gson();
-        return parser.fromJson(json, TaskModel.class);
 	}
 
 	public void setEditIndex(int editIndex) {

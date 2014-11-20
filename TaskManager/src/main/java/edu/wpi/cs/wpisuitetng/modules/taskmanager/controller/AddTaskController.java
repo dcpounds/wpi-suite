@@ -2,12 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import sun.security.krb5.Config;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
@@ -30,7 +25,7 @@ public class AddTaskController implements ActionListener {
 	private WorkflowModel workflowModel;
 	private StageView stageView;
 	private TaskView taskView;
-	private TaskModel taskModel;
+	private TaskModel saveTask;
 	private AssignUsersView assignUsersView;
 	private NewTaskTab newTaskTabView;
 	private int stageIndex;
@@ -39,10 +34,10 @@ public class AddTaskController implements ActionListener {
 	
 
 
-	public AddTaskController(NewTaskTab newTaskTabView, TaskModel taskModel, boolean isEditing){
+	public AddTaskController(NewTaskTab newTaskTabView, TaskModel saveTask, boolean isEditing){
 		tabView = TabController.getTabView();
 		this.assignUsersView = newTaskTabView.getAssignUserView();
-		this.taskModel = taskModel;
+		this.saveTask = saveTask;
 		workflowModel = WorkflowController.getWorkflowModel();
 		this.newTaskTabView = newTaskTabView;
 		this.observer = new AddTaskRequestObserver(this);
@@ -57,17 +52,22 @@ public class AddTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		TaskModel taskToSend = buildTask();
-		if(isEditing)
+		if(isEditing){
 			sendUpdateRequest(taskToSend);
-		else
+		}else{
 			sendAddRequest(taskToSend);
+		}
 	}
 	
 	public TaskModel buildTask() {
+		TaskModel taskModel = new TaskModel();
+		taskModel.setID( saveTask.getID() );
 		String creatorName = ConfigManager.getConfig().getUserName();
-		TaskModel taskModel = new TaskModel(newTaskTabView.getTitleLabelText(), newTaskTabView.getDescriptionText(), newTaskTabView.getDateText());
-		taskModel.setUsersAssignedTo( assignUsersView.getAssignedUsers());
 		taskModel.setCreator( creatorName );
+		taskModel.setTitle(newTaskTabView.getTitleLabelText());
+		taskModel.setDescription(newTaskTabView.getDescriptionText());
+		taskModel.setDueDate(newTaskTabView.getDateText());
+		taskModel.setUsersAssignedTo( assignUsersView.getAssignedUsers());
 		taskModel.setEstimatedEffort(newTaskTabView.getEstimatedEffort());
 		taskModel.setActualEffort(newTaskTabView.getActualEffort());
 		taskModel.setDueDate(newTaskTabView.getDateText());
@@ -93,9 +93,10 @@ public class AddTaskController implements ActionListener {
 		}
 	}
 	
-	public void sendUpdateRequest(TaskModel taskModel){
+	public void sendUpdateRequest(TaskModel task){
+		System.out.println("Task came in with id " + saveTask.getID() + " and the model being sent has id " + task.getID());
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
-		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
+		request.setBody(task.toJson()); // put the new stage in the body of the request
 		request.addObserver(observer); // add an observer to process the response
 		request.send();
 	}
