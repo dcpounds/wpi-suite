@@ -38,9 +38,6 @@ import java.awt.event.ActionEvent;
  * An accordian style expandable task view that can be inserted into the stages
  */
 public class TaskView extends JPanel{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6517799529927334536L;
 	private TaskModel taskModel;
 	private JPanel taskContents;

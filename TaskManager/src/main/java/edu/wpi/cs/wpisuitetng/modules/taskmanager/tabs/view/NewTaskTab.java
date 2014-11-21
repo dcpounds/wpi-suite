@@ -335,14 +335,19 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		return (String)stageBox.getSelectedItem();
 	}
 	
+	/**
+	 * @return - a string list of all stage titles
+	 */
 	public String[] getStatusOptions(){
 		ArrayList<String> statusOptions = new ArrayList<String>();
-		for( StageModel stage : workflowModel.getStageList() ){
+		for( StageModel stage : workflowModel.getStageModelList() ){
 			statusOptions.add( stage.getTitle() );
 		}
 		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
-	/*Gets the date in a date format,
+	
+	
+	/**Gets the date in a date format,
 	 * and then it is formatted to become
 	 * a string 
 	 */

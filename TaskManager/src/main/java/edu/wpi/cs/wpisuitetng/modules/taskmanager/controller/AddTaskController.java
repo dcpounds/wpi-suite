@@ -83,7 +83,7 @@ public class AddTaskController implements ActionListener {
 			this.stageView = workflowView.getStageViewList().get(stageIndex);
 			taskView = new TaskView(task, stageView);
 			
-			workflowModel.addTask(task);
+			workflowModel.getStageModelList().get(stageIndex).addTask(task);
 			workflowView.getStageViewList().get(stageIndex).addTaskView(taskView);
 			
 			stageView.updatePreferredDimensions();

@@ -43,7 +43,7 @@ public class RemoveTaskController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		workflowModel.removeTask(taskModel);
+		workflowModel.removeTaskModel(taskModel);
 		workflowView.removeTaskView(taskView);
 	}
 }

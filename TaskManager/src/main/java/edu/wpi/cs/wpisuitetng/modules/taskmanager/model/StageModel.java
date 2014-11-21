@@ -17,10 +17,10 @@ public class StageModel extends AbstractModel {
 	private String title;
 	private boolean closable;
 	private int id;
+	private ArrayList<TaskModel> taskModelList;
 	
 	/**
 	 * constructs a new stage
-	 * 
 	 * @param title - title of the stage
 	 * @param taskList - list of tasks to be added
 	 */
@@ -28,6 +28,7 @@ public class StageModel extends AbstractModel {
 		this.title = title;
 		this.closable = closable;
 		this.id = this.hashCode();
+		this.taskModelList = new ArrayList<TaskModel>();
 	}
 	
 	
@@ -38,7 +39,28 @@ public class StageModel extends AbstractModel {
 		this.title = updatedStage.getTitle();
 		this.closable = updatedStage.getClosable();
 		this.id = updatedStage.getID();
+		this.taskModelList = updatedStage.taskModelList;
 	}
+	
+	/**
+	 * @param task - the task to add to the list of tasks
+	 * @return - the list of tasks
+	 */
+	public ArrayList<TaskModel> addTask(TaskModel task){
+		taskModelList.add(task);
+		return taskModelList;
+	}
+	
+	
+	/**
+	 * @param task - the task to remove from the list of tasks
+	 * @return - the updated list of tasks
+	 */
+	public ArrayList<TaskModel> removeTask(TaskModel task){
+		taskModelList.remove(task);
+		return taskModelList;
+	}
+	
 	
 	
 	/**
@@ -70,6 +92,14 @@ public class StageModel extends AbstractModel {
 	 */
 	public int getID(){
 		return this.id;
+	}
+	
+	
+	/**
+	 * @return - the list of taskModels in this stage
+	 */
+	public ArrayList<TaskModel>getTaskModelList(){
+		return this.taskModelList;
 	}
 	
 	/**

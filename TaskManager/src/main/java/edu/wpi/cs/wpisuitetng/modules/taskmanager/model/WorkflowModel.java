@@ -20,7 +20,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 public class WorkflowModel extends AbstractModel {
 	final private String name;
 	private ArrayList<StageModel> stageModelList;
-	private ArrayList<TaskModel> taskModelList;
 	private static ArrayList<User> userList; 
 
 	/**
@@ -31,7 +30,6 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name, ArrayList<StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
-		this.taskModelList = new ArrayList<TaskModel>();
 		this.userList = new ArrayList<User>();
 		addBaseStages();
 	}
@@ -43,7 +41,6 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.taskModelList = new ArrayList<TaskModel>();
 		this.stageModelList = new ArrayList<StageModel>();
 		addBaseStages();
 	}
@@ -60,7 +57,7 @@ public class WorkflowModel extends AbstractModel {
 	/**
 	 * @return a list of stages in the workflow
 	 */
-	public ArrayList<StageModel> getStageList() {
+	public ArrayList<StageModel> getStageModelList() {
 		return stageModelList;
 	}
 	
@@ -94,24 +91,17 @@ public class WorkflowModel extends AbstractModel {
 	
 	
 	/**
-	 * @param task - the task to add to the list of tasks
-	 * @return - the list of tasks
+	 * @param taskModel - the taskModel to remove from the stageModel
 	 */
-	public ArrayList<TaskModel> addTask(TaskModel task){
-		taskModelList.add(task);
-		return taskModelList;
+	public void removeTaskModel(TaskModel taskModel){
+		for( StageModel stage : stageModelList){
+			if(stage.getTaskModelList().contains(taskModel) ){
+				stage.removeTask(taskModel);
+				return;
+			}
+		}
+		
 	}
-	
-	
-	/**
-	 * @param task - the task to remove from the list of tasks
-	 * @return - the updated list of tasks
-	 */
-	public ArrayList<TaskModel> removeTask(TaskModel task){
-		taskModelList.remove(task);
-		return taskModelList;
-	}
-	
 	
 	/**
 	 * @return the list of users that can be assigned to tasks in this workflow
@@ -147,9 +137,11 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the taskModel if successful, null otherwise
 	 */
 	public TaskModel getTaskModelByID(int id){
-		for( TaskModel task : taskModelList ){
-			if( task.getID() == id  )
-				return task;
+		for( StageModel stageModel : stageModelList ){
+			for( TaskModel task : stageModel.getTaskModelList() ){
+				if(task.getID() == id)
+					return task;
+			}
 		}
 		return null;
 	}

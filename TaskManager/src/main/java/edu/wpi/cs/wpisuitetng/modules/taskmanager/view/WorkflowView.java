@@ -41,7 +41,7 @@ public class WorkflowView extends JPanel {
 		add(scrollBar);
 		
 		stageViewList = new ArrayList<StageView>();
-		for(StageModel stageModel : workflowModel.getStageList() ){
+		for(StageModel stageModel : workflowModel.getStageModelList() ){
 			StageView stageToAdd = new StageView(stageModel, this);
 			addStageView( stageToAdd );
 		}
@@ -88,8 +88,10 @@ public class WorkflowView extends JPanel {
 	 */
 	public void removeTaskView(TaskView taskView){
 		for( StageView stageView : stageViewList){
-			if(stageView.getTaskViewList().contains(taskView))
-				stageView.remove(taskView);
+			if(stageView.getTaskViewList().contains(taskView)){
+				stageView.removeTaskView(taskView);
+				return;
+			}
 		}
 	}
 	
