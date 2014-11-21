@@ -76,9 +76,7 @@ public class TaskController implements ActionListener {
 		
 		workflowModel.getStageModelList().get(stageIndex).addTask(task);
 		workflowView.getStageViewList().get(stageIndex).addTaskView(taskView);
-		
 		stageView.updatePreferredDimensions();
-		stageView.addTaskView(taskView);
 	}
 	
 	/**

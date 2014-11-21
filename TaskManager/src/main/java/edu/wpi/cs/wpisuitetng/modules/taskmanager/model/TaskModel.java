@@ -27,7 +27,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = "";
 		this.creationDate = new Date();
 		this.usersAssignedTo = new ArrayList<String>();
-		this.dueDate = new String();	
+		this.dueDate = new String();
 		this.stageIndex = 0;
 		this.isExpanded = false;
 		this.isArchived = false;
@@ -47,7 +47,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		usersAssignedTo = updatedStage.usersAssignedTo;
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
-		this.stageIndex = 0;
+		this.stageIndex = updatedStage.stageIndex;
 		this.isArchived = false;
 	}
 	
