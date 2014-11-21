@@ -83,8 +83,10 @@ public class TaskController implements ActionListener {
 		//already in the database, then make a new view for it
 		if(taskView == null)
 			taskView = new TaskView(task, stageView);
-		else
+		else{
 			updateTask(task);
+			return;
+		}
 			//will also want some code here to put the task in the appropriate spot in the stage
 			
 		this.stageIndex = task.getStageIndex();
