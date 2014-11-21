@@ -1,8 +1,11 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task;
 import java.util.ArrayList;
 import java.util.Date;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -48,7 +51,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
 		this.stageIndex = updatedStage.stageIndex;
-		this.isArchived = this.isArchived;
+		this.isArchived = updatedStage.isArchived;
 	}
 	
 	
@@ -227,7 +230,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @param archiveStatus - set the task to archived (true) or active (false)
 	 */
 	public void setIsArchived(boolean archiveStatus){
-		this.isArchived = isArchived;
+		this.isArchived = archiveStatus;
 	}
 	
 	/**

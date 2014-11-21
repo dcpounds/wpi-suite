@@ -93,6 +93,7 @@ public class WorkflowView extends JPanel {
 				return;
 			}
 		}
+		System.out.println("unable to find the task with the given view");
 	}
 	
 	/**

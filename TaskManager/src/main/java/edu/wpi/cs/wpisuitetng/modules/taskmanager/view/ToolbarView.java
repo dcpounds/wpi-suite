@@ -19,15 +19,15 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 /**
  * Class representing the view of the toolbar at the top of the gui

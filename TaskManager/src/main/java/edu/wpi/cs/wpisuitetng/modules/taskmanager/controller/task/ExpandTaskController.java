@@ -1,8 +1,9 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 

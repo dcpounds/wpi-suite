@@ -1,14 +1,16 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -70,6 +72,10 @@ public class TaskController implements ActionListener {
 	
 	public void addTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
+		
+		if(taskView == null)
+			taskView = new TaskView(task, stageView);
+			
 		this.stageIndex = task.getStageIndex();
 		this.stageView = workflowView.getStageViewList().get(stageIndex);
 		taskView = new TaskView(task, stageView);
@@ -103,7 +109,6 @@ public class TaskController implements ActionListener {
 	
 	public void deleteTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
-		task.setIsArchived(true);
 		workflowModel.removeTaskModel(task);
 		workflowView.removeTaskView(taskView);
 	}
@@ -117,6 +122,7 @@ public class TaskController implements ActionListener {
 	}
 	
 	public void sendDeleteRequest(TaskModel task){
+		task.setIsArchived(true);
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
 		request.addObserver(deleteObserver); // add an observer to process the response

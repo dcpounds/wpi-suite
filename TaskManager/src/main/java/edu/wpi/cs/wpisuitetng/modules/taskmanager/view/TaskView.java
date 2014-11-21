@@ -15,18 +15,21 @@ import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
+
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -44,42 +47,48 @@ public class TaskView extends JPanel{
 	private JScrollPane taskContentPane;
 	private JButton btnEdit;
 	private StageView stageView;
+	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
 	
 	public TaskView(TaskModel taskModel, StageView stageView) {
+		setLayout(new MigLayout("", "[grow][][]", "[][][grow]"));
 		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
+		
 		this.stageView = stageView;
 		this.taskModel = taskModel;
+		this.id = taskModel.getID();
 		this.taskView = new TaskViewExpanded(stageView, taskModel, this);
 		
-		setLayout(new MigLayout("", "[grow][][]", "[][][grow]"));
 		
+		//Sets the parameters of the panel that holds the title
 		titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		titlePanel.addMouseListener(  new ExpandTaskController(this, taskModel) );
-		
 		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
 		
+		//Sets the title of the task
 		lblNewTask = new JLabel( taskModel.getTitle() );
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
 		
+		//The scrollPane that the task contents are surrounded by
 		this.taskContentPane = new JScrollPane();
-		
 		this.taskContents = new JPanel();
+		taskContentPane.setViewportView(taskContents);
 		
+		//Set up the close button to remove the task
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		closeButton.addActionListener(new TaskController(taskModel, ActionType.DELETE));
-		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
 		
+		//Set up the edit button
 		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
@@ -91,7 +100,6 @@ public class TaskView extends JPanel{
 			}
 		});
 		add(btnEdit, "cell 0 2");
-		taskContentPane.setViewportView(taskContents);
 	}
 	
 	/**
@@ -110,7 +118,6 @@ public class TaskView extends JPanel{
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
-				taskView.getPreferredSize();
 				return new Dimension(parentSize.width,openSize);
 				
 			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
@@ -162,7 +169,7 @@ public class TaskView extends JPanel{
 	}
 	
 	public int getID(){
-		return taskModel.getID();
+		return id;
 	}
 	
 	public void updateContents(TaskModel newTaskModel){

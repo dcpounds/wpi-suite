@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
  * the main model representing the workflow. 

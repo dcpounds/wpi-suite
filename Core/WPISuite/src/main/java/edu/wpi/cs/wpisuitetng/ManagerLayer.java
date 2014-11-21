@@ -36,8 +36,8 @@ import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskEntityManager;
 
 /**
  * This singleton class responds to API requests directed at 

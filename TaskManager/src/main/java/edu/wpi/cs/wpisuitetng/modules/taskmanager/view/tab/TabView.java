@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.BorderLayout;
 

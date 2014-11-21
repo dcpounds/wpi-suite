@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 /**
  * enumeration representing the different possible types of tabs

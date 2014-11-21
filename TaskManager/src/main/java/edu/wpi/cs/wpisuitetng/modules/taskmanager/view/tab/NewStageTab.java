@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 import java.awt.Color;
 import java.awt.FlowLayout;
 
@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddStageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import net.miginfocom.swing.MigLayout;
 

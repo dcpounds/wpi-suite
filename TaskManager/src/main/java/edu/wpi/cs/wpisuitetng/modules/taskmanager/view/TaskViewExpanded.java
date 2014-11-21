@@ -2,7 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.DefaultListModel;

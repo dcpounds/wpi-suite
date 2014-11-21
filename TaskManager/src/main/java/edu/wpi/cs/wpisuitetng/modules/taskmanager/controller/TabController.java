@@ -1,15 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.Component;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewStageTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 public class TabController {
 	private static TabController instance = new TabController();
