@@ -133,7 +133,6 @@ public class TaskController implements ActionListener {
 	
 	public void sendGetRequest (TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.GET); // PUT == create
-		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
 		request.addObserver(getObserver); // add an observer to process the response
 		request.send();
 	}
