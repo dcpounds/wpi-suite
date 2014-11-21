@@ -22,6 +22,8 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -33,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AddTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
@@ -50,8 +52,7 @@ import javax.swing.JScrollPane;
 public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
-	private TabView tabView;
-	private TaskModel taskModel;
+	private TaskModel model;
 	private JTextField taskTitleField;
 	private JTextField estEffortField;
 	private JTextField actEffortField;
@@ -69,9 +70,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel actEffortError;
 	private JLabel descriptionEmptyError;
 	private JLabel dateNotAddedError;
-	private JLabel starredFieldsRequired;
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
+	private ActionType action;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -79,37 +80,33 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
 
-	public NewTaskTab(TaskModel model) {	
-		taskModel = model;
-		boolean isEditing = false;
-		if(taskModel != null)
-			isEditing = true;
-		 else
-			taskModel = new TaskModel();
-    	taskModel.setEditState(true);
-		
-		this.workflowModel = WorkflowController.getWorkflowModel();
-		this.tabView = TabController.getTabView();
-		
+	public NewTaskTab(TaskModel model) {
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 0 0");
+		this.workflowModel = WorkflowController.getWorkflowModel();
 		
+		
+		//Decide what action the user is taking
+		this.model = (model == null) ? new TaskModel() : model;
+		this.action = model == null ? ActionType.CREATE : ActionType.EDIT;
+		
+		//Set an error if the task needs a title
 		titleEmptyError = new JLabel("Task Needs A Title");
 		titleEmptyError.setForeground(Color.red);
 		add(titleEmptyError, "flowx,cell 0 0");
 		titleEmptyError.setVisible(false);
 		
+		//Set the task title
 		taskTitleField = new JTextField();
-		taskTitleField.setText(taskModel.getTitle());
+		taskTitleField.setText(this.model.getTitle());
 		add(taskTitleField, "flowx,cell 0 1,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
 		
-		
+		//Let the user decide where to put the task
 		JLabel stageLabel = new JLabel("Stage");
 		add(stageLabel, "cell 1 0");
-
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
@@ -120,74 +117,71 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		      }
 		});
 		
+		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
 		add(taskDescriptionLabel, "cell 0 2");
 		
+		//Warn if the user has not put in a description
 		descriptionEmptyError = new JLabel("Task Needs A Description");
 		descriptionEmptyError.setForeground(Color.red);
 		add(descriptionEmptyError, "cell 0 2");
 		descriptionEmptyError.setVisible(false);
-		
 		descriptionScrollPane = new JScrollPane();
 		add(descriptionScrollPane, "cell 0 3,grow");
-		
-
-		taskDescriptionField = new JTextArea(taskModel.getDescription());
+		taskDescriptionField = new JTextArea(this.model.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(50);
 		taskDescriptionField.setRows(10);
 		taskDescriptionField.addKeyListener(this);
 		
+		//Create a view where users can assign users to the task
 		assignUsersView = new AssignUsersView();
 		add(assignUsersView, "cell 1 3,grow");
 		
+		//Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
 		add(estEffortLabel, "flowx,cell 1 4");
-		
-		estEffortError = new JLabel("Must specify nonnegative effort");
+		estEffortError = new JLabel("Must specify a valid effort");
 		estEffortError.setForeground(Color.red);
 		add(estEffortError, "flowx,cell 1 4");
 		estEffortError.setVisible(false);
 		
+		//Set the estimated effort
 		estEffortField = new JTextField();
-		estEffortField.setText(Integer.toString(taskModel.getEstimatedEffort()));
+		estEffortField.setText(Integer.toString(this.model.getEstimatedEffort()));
 		add(estEffortField, "flowx,cell 1 5,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
 		
+		//Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
 		add(actEffortLabel, "flowx,cell 1 6");
+		actEffortField = new JTextField();
+		actEffortField.setText(Integer.toString(this.model.getActualEffort()));
+		add(actEffortField, "flowx,cell 1 7,alignx left");
+		actEffortField.setColumns(10);
+		actEffortField.addKeyListener(this);
 		
+		//Warn if users put an invalid actual effort
 		actEffortError = new JLabel("Must specify nonnegative effort");
 		actEffortError.setForeground(Color.red);
 		add(actEffortError, "flowx,cell 1 6");
 		actEffortError.setVisible(false);
 		
-		actEffortField = new JTextField();
-		actEffortField.setText(Integer.toString(taskModel.getActualEffort()));
-		add(actEffortField, "flowx,cell 1 7,alignx left");
-		actEffortField.setColumns(10);
-		actEffortField.addKeyListener(this);
-		
+		//The submit button
 		sbmtTaskButton = new JButton("Submit");
 		NewTaskTab thisTab = this;
-		sbmtTaskButton.addActionListener( new ActionListener(){
+		sbmtTaskButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
+				TaskModel task = buildTask();
+				new TaskController(task, action).act();
 				TabController.getInstance().removeTab(thisTab);
-			}
+			}	
 		});
-		
-		sbmtTaskButton.addActionListener( new AddTaskController(this, taskModel, isEditing));
-		
-		
 		add(sbmtTaskButton, "cell 0 7");		
 		sbmtTaskButton.setEnabled(false);
-		
-		starredFieldsRequired = new JLabel("Starred Fields Are Required");
-		starredFieldsRequired.setForeground(Color.red);
-		add(starredFieldsRequired, "cell 0 7");
 		
 		/*
 		 * Creates a model of the calendar. properties sets the date to todays
@@ -216,7 +210,26 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		datePicker.addActionListener(this);
 		
 		checkAndUpdateFields();
-		
+	}
+	
+	/**
+	 * 
+	 * @return - the task that has been built with the fields that the user entered
+	 */
+	public TaskModel buildTask() {
+		TaskModel taskModel = new TaskModel();
+		taskModel.setID( model.getID() );
+		String creatorName = ConfigManager.getConfig().getUserName();
+		taskModel.setCreator( creatorName );
+		taskModel.setTitle(this.getTitleLabelText());
+		taskModel.setDescription(this.getDescriptionText());
+		taskModel.setDueDate(this.getDateText());
+		taskModel.setUsersAssignedTo( assignUsersView.getAssignedUsers());
+		taskModel.setEstimatedEffort(this.getEstimatedEffort());
+		taskModel.setActualEffort(this.getActualEffort());
+		taskModel.setDueDate(this.getDateText());
+		taskModel.setStatus(this.getStatusText());
+		return taskModel;
 	}
 	
 	/**
@@ -246,7 +259,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 					isEstEffortPosInt &&
 					isActEffortPosInt? true: false;
 		sbmtTaskButton.setEnabled(shouldSubmitBeEnabled);	
-		starredFieldsRequired.setVisible(!shouldSubmitBeEnabled);
 	}
 	
 	public AssignUsersView getAssignUserView(){
@@ -293,15 +305,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			effort = -1;
 		}
 		return effort;
-	}
-	
-	/**
-	 * get the task model
-	 * 
-	 * @return
-	 */
-	public TaskModel getTaskModel(){
-		return this.taskModel;
 	}
 	
 	/**

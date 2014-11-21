@@ -1,13 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
@@ -36,14 +33,14 @@ public class TabController {
     	Component newTab = null;
     	
     	switch(tabType){
-    	case TASK:
-    		if(model != null){
-    			tabName =  (model.getTitle() + "   ");
-    		}else{
-    			tabName = "New Task   ";
-    		}
-        	newTab = new NewTaskTab((TaskModel) model);
-        	break;
+    		case TASK:
+	    		if(model != null){
+	    			tabName =  (model.getTitle() + "   ");
+	    		}else{
+	    			tabName = "New Task   ";
+	    		}
+	        	newTab = new NewTaskTab((TaskModel) model);
+	        	break;
     	case STAGE:
         	tabName = "New Stage   ";
         	newTab = new NewStageTab((StageModel) model);
@@ -52,9 +49,6 @@ public class TabController {
     }
     
     public void removeTab(Component tabComponent){
-    	if(tabComponent instanceof NewTaskTab){
-    		((NewTaskTab) tabComponent).getTaskModel().setEditState(false); 		
-    	}
     	tabView.remove(tabComponent);
     }
     
