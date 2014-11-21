@@ -35,6 +35,10 @@ public class TaskController implements ActionListener {
 	
 
 
+	/**
+	 * @param saveTask - the task to interact with the database wit
+	 * @param action - the action to take as specified by the ActionType enum
+	 */
 	public TaskController(TaskModel saveTask, ActionType action){
 		this.addObserver = new AddTaskRequestObserver(this);
 		this.updateObserver = new UpdateTaskRequestObserver(this);
@@ -49,9 +53,7 @@ public class TaskController implements ActionListener {
 	}
 
 	/**
-	 * do the specified action with the model sent over
-	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * Depending on the specified action, either create, edit, delete, or get taskModel(s) from the database
 	 */
 	public void act(){
 		switch(action){
@@ -70,11 +72,20 @@ public class TaskController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * @param task - the response task. Add this to the list of tasks
+	 * if the task is already there, just update the contents of it
+	 */
 	public void addTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
 		
+		//If there is no such stage with the id 
+		//already in the database, then make a new view for it
 		if(taskView == null)
 			taskView = new TaskView(task, stageView);
+		else
+			updateTask(task);
+			//will also want some code here to put the task in the appropriate spot in the stage
 			
 		this.stageIndex = task.getStageIndex();
 		this.stageView = workflowView.getStageViewList().get(stageIndex);
@@ -107,6 +118,9 @@ public class TaskController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * @param task - the task that was just archived in the database
+	 */
 	public void deleteTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
 		workflowModel.removeTaskModel(task);
@@ -114,6 +128,10 @@ public class TaskController implements ActionListener {
 	}
 	
 	
+	
+	/**
+	 * @param task - the task to update in the database
+	 */
 	public void sendUpdateRequest(TaskModel task){
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
@@ -121,6 +139,10 @@ public class TaskController implements ActionListener {
 		request.send();
 	}
 	
+	
+	/**
+	 * @param task - the task to archive in the database
+	 */
 	public void sendDeleteRequest(TaskModel task){
 		task.setIsArchived(true);
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
@@ -129,6 +151,9 @@ public class TaskController implements ActionListener {
 		request.send();
 	}
 	
+	/**
+	 * @param taskModel - the task to add to the database
+	 */
 	public void sendAddRequest(TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.PUT); // PUT == create
 		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
@@ -136,6 +161,9 @@ public class TaskController implements ActionListener {
 		request.send();
 	}
 	
+	/**
+	 * get a list of all tasks from the database
+	 */
 	public void sendGetRequest (TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.GET); // PUT == create
 		request.addObserver(getObserver); // add an observer to process the response

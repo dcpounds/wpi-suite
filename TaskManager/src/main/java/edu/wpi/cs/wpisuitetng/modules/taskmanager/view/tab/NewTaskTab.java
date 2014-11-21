@@ -89,10 +89,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Decide what action the user is taking		
 		if(model == null){
-			this.model = new TaskModel();
+			model = new TaskModel();
 			this.action = ActionType.CREATE;
 		} else{
-			this.model.setEditState(true);
+			model.setEditState(true);
 			this.action = ActionType.EDIT;
 		}
 		
@@ -104,7 +104,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the task title
 		taskTitleField = new JTextField();
-		taskTitleField.setText(this.model.getTitle());
+		taskTitleField.setText(model.getTitle());
 		add(taskTitleField, "flowx,cell 0 1,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
@@ -133,7 +133,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		descriptionEmptyError.setVisible(false);
 		descriptionScrollPane = new JScrollPane();
 		add(descriptionScrollPane, "cell 0 3,grow");
-		taskDescriptionField = new JTextArea(this.model.getDescription());
+		taskDescriptionField = new JTextArea(model.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(45);
@@ -154,7 +154,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the estimated effort
 		estEffortField = new JTextField();
-		estEffortField.setText(Integer.toString(this.model.getEstimatedEffort()));
+		estEffortField.setText(Integer.toString(model.getEstimatedEffort()));
 		add(estEffortField, "flowx,cell 1 5,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
@@ -163,7 +163,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		JLabel actEffortLabel = new JLabel("Actual Effort");
 		add(actEffortLabel, "flowx,cell 1 6");
 		actEffortField = new JTextField();
-		actEffortField.setText(Integer.toString(this.model.getActualEffort()));
+		actEffortField.setText(Integer.toString(model.getActualEffort()));
 		add(actEffortField, "flowx,cell 1 7,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
