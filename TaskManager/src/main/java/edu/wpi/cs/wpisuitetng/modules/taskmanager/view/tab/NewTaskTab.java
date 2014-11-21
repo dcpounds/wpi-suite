@@ -87,12 +87,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		
 		
-		//Decide what action the user is taking		
+		//Decide what action the user is taking	
 		if(model == null){
-			model = new TaskModel();
+			this.model = new TaskModel();
 			this.action = ActionType.CREATE;
 		} else{
-			model.setEditState(true);
+			this.model = model;
+			this.model.setEditState(true);
 			this.action = ActionType.EDIT;
 		}
 		
@@ -104,7 +105,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the task title
 		taskTitleField = new JTextField();
-		taskTitleField.setText(model.getTitle());
+		taskTitleField.setText(this.model.getTitle());
 		add(taskTitleField, "flowx,cell 0 1,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
@@ -133,7 +134,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		descriptionEmptyError.setVisible(false);
 		descriptionScrollPane = new JScrollPane();
 		add(descriptionScrollPane, "cell 0 3,grow");
-		taskDescriptionField = new JTextArea(model.getDescription());
+		taskDescriptionField = new JTextArea(this.model.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(45);
@@ -154,7 +155,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the estimated effort
 		estEffortField = new JTextField();
-		estEffortField.setText(Integer.toString(model.getEstimatedEffort()));
+		estEffortField.setText(Integer.toString(this.model.getEstimatedEffort()));
 		add(estEffortField, "flowx,cell 1 5,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
@@ -163,7 +164,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		JLabel actEffortLabel = new JLabel("Actual Effort");
 		add(actEffortLabel, "flowx,cell 1 6");
 		actEffortField = new JTextField();
-		actEffortField.setText(Integer.toString(model.getActualEffort()));
+		actEffortField.setText(Integer.toString(this.model.getActualEffort()));
 		add(actEffortField, "flowx,cell 1 7,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
@@ -223,7 +224,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 	public TaskModel buildTask() {
 		TaskModel taskModel = new TaskModel();
-		taskModel.setID( model.getID() );
+		taskModel.setID( this.model.getID() );
 		String creatorName = ConfigManager.getConfig().getUserName();
 		taskModel.setCreator( creatorName );
 		taskModel.setTitle(this.getTitleLabelText());
