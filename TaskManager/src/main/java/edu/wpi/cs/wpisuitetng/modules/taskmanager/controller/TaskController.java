@@ -84,6 +84,7 @@ public class TaskController implements ActionListener {
 	}
 	
 	public void deleteTask(TaskModel task){
+		System.out.println("Deleting task " + task.getID());
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
 		workflowModel.removeTaskModel(task);
 		workflowView.removeTaskView(taskView);
