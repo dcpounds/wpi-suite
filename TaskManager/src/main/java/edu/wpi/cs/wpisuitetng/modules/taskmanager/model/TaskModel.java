@@ -16,10 +16,9 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
-	private String status;
+	private int stageIndex;
 	private boolean isExpanded;
 	private boolean editState;
-	private int editIndex;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -31,7 +30,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creationDate = new Date();
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = new String();	
-		this.status = "";
+		this.stageIndex = 0;
 		this.isExpanded = false;
 	}
 	
@@ -49,6 +48,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		usersAssignedTo = updatedStage.usersAssignedTo;
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
+		this.stageIndex = stageIndex;
 	}
 	
 	
@@ -61,6 +61,20 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	public void setID(int id){
 		this.id = id;
+	}
+	
+	/**
+	 * @return the stageIndex that this task is in
+	 */
+	public int getStageIndex(){
+		return stageIndex;
+	}
+	
+	/**
+	 * @param stageIndex - the stageIndex to set the task to
+	 */
+	public void setStageIndex(int stageIndex){
+		this.stageIndex = stageIndex;
 	}
 	
 	/**
@@ -134,19 +148,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = creatorName;
 	}
 	
-	/**
-	 * @return the status of this task
-	 */
-	public String getStatus(){
-		return status;
-	}
-	
-	/**
-	 * @param status - set the status of this task
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	
 	/**
 	 * @return the user that created the task
@@ -303,9 +304,5 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         TaskModel other = (TaskModel) obj;
         
         return this.id == other.getID();
-	}
-
-	public void setEditIndex(int editIndex) {
-		this.editIndex = editIndex;
 	}
 }

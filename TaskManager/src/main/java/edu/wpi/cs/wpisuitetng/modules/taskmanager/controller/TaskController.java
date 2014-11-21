@@ -60,7 +60,7 @@ public class TaskController {
 		if(taskView == null){
 			WorkflowView workflowView = tabView.getWorkflowView();
 			//TODO: store this selection in the actual tab
-			this.stageIndex = newTaskTabView.getStageSelectionIndex();
+			this.stageIndex = task.getStageIndex();
 			this.stageView = workflowView.getStageViewList().get(stageIndex);
 			taskView = new TaskView(task, stageView);
 			
