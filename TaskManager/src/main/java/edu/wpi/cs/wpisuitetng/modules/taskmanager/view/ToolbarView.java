@@ -19,11 +19,13 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
 
@@ -71,6 +73,11 @@ public class ToolbarView extends JPanel {
 			}
 		});
         newTaskButton.setMargin(new Insets(0,0,0,0));
+        
+        
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener( new TaskController(new TaskModel(), ActionType.GET));
+        add(refreshButton);
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }

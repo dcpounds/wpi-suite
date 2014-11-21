@@ -24,6 +24,7 @@ public class TaskController implements ActionListener {
 	private StageView stageView;
 	private int stageIndex;
 	private AddTaskRequestObserver addObserver;
+	private GetTaskRequestObserver getObserver;
 	private UpdateTaskRequestObserver updateObserver;
 	private DeleteTaskRequestObserver deleteObserver;
 	private ActionType action;
@@ -36,6 +37,7 @@ public class TaskController implements ActionListener {
 		this.addObserver = new AddTaskRequestObserver(this);
 		this.updateObserver = new UpdateTaskRequestObserver(this);
 		this.deleteObserver = new DeleteTaskRequestObserver(this);
+		this.getObserver = new GetTaskRequestObserver(this);
 		
 		tabView = TabController.getTabView();
 		this.workflowView = tabView.getWorkflowView();
@@ -60,6 +62,9 @@ public class TaskController implements ActionListener {
 			case DELETE:
 				sendDeleteRequest(saveTask);	
 				break;
+			case GET:
+				sendGetRequest(saveTask);
+				break;
 		}
 	}
 	
@@ -76,9 +81,25 @@ public class TaskController implements ActionListener {
 		stageView.addTaskView(taskView);
 	}
 	
+	/**
+	 * @param task - the task that was updated
+	 */
 	public void updateTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
 		taskView.updateContents(task);
+	}
+	
+	
+	/**
+	 * @param tasks - the list of tasks retrieved from the database
+	 */
+	public void getTasks(TaskModel[] tasks){
+		for(TaskModel task : tasks){
+			if(task.getIsArchived() == false){
+				System.out.println("Got task from the database" + task.getTitle());
+				addTask(task);
+			}
+		}
 	}
 	
 	public void deleteTask(TaskModel task){
@@ -107,6 +128,13 @@ public class TaskController implements ActionListener {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.PUT); // PUT == create
 		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
 		request.addObserver(addObserver); // add an observer to process the response
+		request.send();
+	}
+	
+	public void sendGetRequest (TaskModel taskModel) {
+		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.GET); // PUT == create
+		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
+		request.addObserver(getObserver); // add an observer to process the response
 		request.send();
 	}
 

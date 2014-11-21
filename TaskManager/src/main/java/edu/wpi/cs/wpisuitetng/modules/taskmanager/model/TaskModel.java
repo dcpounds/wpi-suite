@@ -1,11 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 import java.util.ArrayList;
 import java.util.Date;
-
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -273,6 +270,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         final Gson parser = new Gson();
         return parser.fromJson(json, TaskModel.class);
 	}
+	
+	
+	   /**
+	 * @param json - the json to deserialize
+	 * @return - the list of deserialized tasks
+	 */
+	public static TaskModel[] fromJsonArray(String json) {
+	        return new Gson().fromJson(json, TaskModel[].class);
+	    }
 
 	/* (non-Javadoc)
 	 * returns true if this task id matches the one provided
