@@ -8,11 +8,26 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 public class WorkflowController {
 	private static WorkflowController instance = new WorkflowController();
 	private static WorkflowModel model;
-	boolean hasReceivedGetResponse;
-
+	
 	private WorkflowController () {
 		model = new WorkflowModel("main");
-		hasReceivedGetResponse = false;
+		
+		Thread thread = new Thread() {
+			public void run() {
+				while (true) {
+					try {
+						sleep(5000);
+						new TaskController(new TaskModel(), ActionType.GET).act();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		
+		thread.setName("poll");
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	public static WorkflowController getInstance(){
@@ -22,23 +37,5 @@ public class WorkflowController {
 	public static WorkflowModel getWorkflowModel(){
 		return model;
 	}
-	
-	Thread thread = new Thread() {
-		public void run() {
-			while (true) {
-				try {
-					sleep(5000);
-					new TaskController(new TaskModel(), ActionType.GET).act();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				thread.setName("poll");
-				thread.setDaemon(true);
-				thread.start();
-				
-			}
-		}
-	};
-
-	
+		
 }
