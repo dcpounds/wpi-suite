@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
@@ -73,60 +74,76 @@ public class TaskController implements ActionListener {
 	}
 	
 	/**
-	 * @param task - the response task. Add this to the list of tasks
-	 * if the task is already there, just update the contents of it
+	 * @param task - the task that was updated in the database
 	 */
-	public void addTask(TaskModel task){
-		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
+	public void updateTask(TaskModel task){
 		
-		//If there is no such stage with the id 
-		//already in the database, then make a new view for it
-		if(taskView == null)
-			taskView = new TaskView(task, stageView);
-		else{
-			updateTask(task);
-			return;
+		StageView stageView = tabView.getWorkflowView().getStageViewList().get( task.getStageIndex() );
+		for( TaskView taskView : stageView.getTaskViewList() ){
+			if( task.getID() == taskView.getID() )
+				taskView.updateContents(task);
+				return;
 		}
-			//will also want some code here to put the task in the appropriate spot in the stage
-			
-		this.stageIndex = task.getStageIndex();
-		this.stageView = workflowView.getStageViewList().get(stageIndex);
-		taskView = new TaskView(task, stageView);
-		
-		workflowModel.getStageModelList().get(stageIndex).addTask(task);
-		workflowView.getStageViewList().get(stageIndex).addTaskView(taskView);
-		stageView.updatePreferredDimensions();
 	}
 	
 	/**
-	 * @param task - the task that was updated
+	 * @param task - the task that just got added to the database
 	 */
-	public void updateTask(TaskModel task){
-		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
-		taskView.updateContents(task);
+	public void addTask(TaskModel task){
+		StageModel stageModel = workflowModel.getStageModelList().get(task.getStageIndex());
+		stageModel.addTaskModel(task);
+		StageView stageView = tabView.getWorkflowView().getStageViewList().get( task.getStageIndex() );
+		TaskView newTaskView = new TaskView(task, stageView);
+		stageView.addTaskView(newTaskView);
+	}
+	
+	/**
+	 * Given the list of tasks that were updated by the DB,
+	 * clears all tasks in all stages and repopulates the stages
+	 */
+	public void reloadTasks(){
+		for( StageView stageView : workflowView.getStageViewList() ){
+			stageView.clearTaskViewList();
+			StageModel stageModel = workflowModel.getStageModelByID( stageView.getID() );
+			for( TaskModel task : stageModel.getTaskModelList() ){
+				TaskView taskView = new TaskView(task, stageView);
+				stageView.addTaskView(taskView);
+			}
+		}
 	}
 	
 	
 	/**
 	 * @param tasks - the list of tasks retrieved from the database
 	 */
-	public void getTasks(TaskModel[] tasks){
+	public void syncTasks(TaskModel[] tasks){
 		for(TaskModel task : tasks){
-			if(task.getIsArchived())
+			if( task.getIsArchived())
 				continue;
-			else
-				System.out.println("Got task from the database" + task.getTitle());
-				addTask(task);
+			//If the task is already in the list of models, update and move on to the next
+			if( workflowModel.getTaskModelByID( task.getID() ) != null){
+				updateTask(task);
+				continue;
+			} else{
+				//Get the stageModel the task belongs in
+				StageModel stage = workflowModel.getStageModelList().get( task.getStageIndex() );
+				stage.addTaskModel(task);
+			}
 		}
+		reloadTasks();
 	}
 	
 	/**
 	 * @param task - the task that was just archived in the database
 	 */
 	public void deleteTask(TaskModel task){
-		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
-		workflowModel.removeTaskModel(task);
-		workflowView.removeTaskView(taskView);
+		StageView stageView = workflowView.getStageViewList().get( task.getStageIndex() );
+		for( TaskView taskView : stageView.getTaskViewList() ){
+			if( taskView.getID() == task.getID() )
+				stageView.removeTaskView(taskView);
+		}
+		StageModel stageModel = workflowModel.getStageModelList().get( task.getStageIndex() );
+		stageModel.removeTask(task);
 	}
 	
 	

@@ -47,8 +47,18 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to add to the list of tasks
 	 * @return - the list of tasks
 	 */
-	public ArrayList<TaskModel> addTask(TaskModel task){
+	public ArrayList<TaskModel> addTaskModel(TaskModel task){
 		taskModelList.add(task);
+		return taskModelList;
+	}
+	
+	/**
+	 * @param index - the position in the taskList to add the task to
+	 * @param task - the task to add to the list of taskModels
+	 * @return the updated list of taskModels
+	 */
+	public ArrayList<TaskModel> addTaskModelAtIndex(int index, TaskModel task){
+		taskModelList.add(index, task);
 		return taskModelList;
 	}
 	

@@ -82,31 +82,6 @@ public class WorkflowView extends JPanel {
 		repaint();
 	}
 	
-	/**
-	 * Finds the view in the workflowView and removes it
-	 * @param taskView - the taskview to remove from the workflowview
-	 */
-	public void removeTaskView(TaskView taskView){
-		for( StageView stageView : stageViewList){
-			if(stageView.getTaskViewList().contains(taskView)){
-				stageView.removeTaskView(taskView);
-				return;
-			}
-		}
-		System.out.println("unable to find the task with the given view");
-	}
-	
-	/**
-	 * sets the current stage views for the given workflow view
-	 * @param stageViewList - a list of stageViews to put in the list of stage views
-	 */
-	public void setStageViewList( ArrayList<StageView> stageViewList ) {
-		this.stageViewList = stageViewList;
-	}
-	public JScrollPane getScrollPane() {
-		return scrollBar;
-	}
-	
 	
 	/**
 	 * @param stageName - the title of the stage to look for
@@ -120,19 +95,17 @@ public class WorkflowView extends JPanel {
 		return null;
 	}
 	
+	public void clearAllTaskViews(){
+		for ( StageView stageView : stageViewList ){
+			
+		}
+	}
 	
 	/**
-	 * @param id - the ID of the task to look for
-	 * @return - the TaskModel if a match is found, null otherwise
+	 * @return the JScrollPane scrollbar that the workflow holds everything in
 	 */
-	public TaskView getTaskViewByID( int id ){
-		for( StageView stageView : stageViewList ){
-			for( TaskView taskView : stageView.getTaskViewList()){
-				if(taskView.getID() == id)
-					return taskView;
-			}
-		}
-		return null;
+	public JScrollPane getScrollPane(){
+		return scrollBar;
 	}
 
 }

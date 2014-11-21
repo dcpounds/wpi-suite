@@ -134,6 +134,20 @@ public class StageView extends JPanel {
 	public void addTaskView(TaskView taskView) {
 		stagePane.add(taskView);
 		taskViewList.add(taskView);
+		updatePreferredDimensions();
+		revalidate();
+		repaint();
+	}
+	
+	/**
+	 * adds a task to the stage at the given index
+	 * @param taskView
+	 * @param index - the spot in the list to add the view
+	 */
+	public void addTaskViewAtIndex(int index, TaskView taskView) {
+		stagePane.add(taskView);
+		taskViewList.add(index, taskView);
+		updatePreferredDimensions();
 		revalidate();
 		repaint();
 	}
@@ -147,6 +161,15 @@ public class StageView extends JPanel {
 		updatePreferredDimensions();
 		stagePane.revalidate();
 		stagePane.repaint();	
+	}
+	
+	public void clearTaskViewList(){
+		for(TaskView taskView : taskViewList)
+			stagePane.remove(taskView);
+		taskViewList.clear();
+		updatePreferredDimensions();
+		stagePane.revalidate();
+		stagePane.repaint();
 	}
 	
 	/**

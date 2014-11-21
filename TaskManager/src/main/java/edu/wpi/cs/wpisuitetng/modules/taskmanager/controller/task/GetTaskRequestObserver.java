@@ -13,7 +13,7 @@ public class GetTaskRequestObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
         TaskModel tasks[] = TaskModel.fromJsonArray(iReq.getResponse().getBody());
-        controller.getTasks(tasks);
+        controller.syncTasks(tasks);
 	}
 
 	@Override

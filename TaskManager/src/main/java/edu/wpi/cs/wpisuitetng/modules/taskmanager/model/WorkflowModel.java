@@ -47,6 +47,32 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	
+	
+	/**
+	 * Moves a taskModel from one stage to another and puts it at the given index within the stage
+	 * @param task - the task to move
+	 * @param stageIndex - the index of the stage to move to
+	 * @param taskIndex - the index within the stage to put the task into
+	 * @throws IndexOutOfBoundsException
+	 */
+	public void moveTask(TaskModel task, int toStageIndex, int toTaskIndex) throws IndexOutOfBoundsException{
+		if(toStageIndex < 0 || toStageIndex > stageModelList.size() ){
+			System.out.println("You tried to add a task to an invalid stage position");
+			throw new IndexOutOfBoundsException();
+		}
+		StageModel oldStage = stageModelList.get(task.getStageIndex());
+		StageModel newStage = stageModelList.get(toStageIndex);
+		
+		
+		if(toTaskIndex < 0 || toTaskIndex > newStage.getTaskModelList().size() ){
+			System.out.println("You tried to add a task to an invalid position in the stage");
+			throw new IndexOutOfBoundsException();
+		}
+		oldStage.removeTask(task);
+		newStage.addTaskModelAtIndex(toTaskIndex, task);
+	}
+	
+	
 	/**
 	 * @return the string name of the workflow
 	 */
@@ -64,19 +90,21 @@ public class WorkflowModel extends AbstractModel {
 	
 	
 	/**
-	 * @param stageList - set the list of stages to add to the workflow
-	 */
-	public void setStageList(ArrayList<StageModel> stageList) {
-		this.stageModelList = stageList;
-	}
-	
-	
-	/**
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
 	public ArrayList<StageModel> addStage(StageModel stage) {
 		stageModelList.add(stage);
+		return stageModelList;
+	}
+	
+	/**
+	 * @param index - the index to put the stage into
+	 * @param stage - the stage to add
+	 * @return
+	 */
+	public ArrayList<StageModel> addStage(int index, StageModel stage){
+		stageModelList.add(index, stage);
 		return stageModelList;
 	}
 	
@@ -88,20 +116,6 @@ public class WorkflowModel extends AbstractModel {
 	public ArrayList<StageModel> removeStageModel(StageModel stage) {
 		stageModelList.remove(stage);
 		return stageModelList;
-	}
-	
-	
-	/**
-	 * @param taskModel - the taskModel to remove from the stageModel
-	 */
-	public void removeTaskModel(TaskModel taskModel){
-		for( StageModel stage : stageModelList){
-			if(stage.getTaskModelList().contains(taskModel) ){
-				stage.removeTask(taskModel);
-				return;
-			}
-		}
-		
 	}
 	
 	/**
