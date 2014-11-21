@@ -3,17 +3,17 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-public class TaskRequestObserver implements RequestObserver{
+public class UpdateTaskRequestObserver implements RequestObserver{
 
 	TaskController controller;
 	
-	public TaskRequestObserver(TaskController controller){
+	public UpdateTaskRequestObserver(TaskController controller){
 		this.controller = controller;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
         TaskModel task = TaskModel.fromJson(iReq.getResponse().getBody());
-        controller.processResponse(task);
+        controller.updateTask(task);
 	}
 
 	@Override

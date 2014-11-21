@@ -1,4 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
@@ -16,23 +19,30 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * TODO: update the main workflow model
  * 
  */
-public class TaskController {
+public class TaskController implements ActionListener {
 	private TabView tabView;
 	private WorkflowModel workflowModel;
 	private StageView stageView;
 	private NewTaskTab newTaskTabView;
 	private int stageIndex;
-	private TaskRequestObserver observer;
+	private AddTaskRequestObserver addObserver;
+	private UpdateTaskRequestObserver updateObserver;
+	private DeleteTaskRequestObserver deleteObserver;
 	private ActionType action;
 	private TaskModel saveTask;
+	private WorkflowView workflowView; 
 	
 
 
 	public TaskController(TaskModel saveTask, ActionType action){
+		this.addObserver = new AddTaskRequestObserver(this);
+		this.updateObserver = new UpdateTaskRequestObserver(this);
+		this.deleteObserver = new DeleteTaskRequestObserver(this);
+		
 		tabView = TabController.getTabView();
+		this.workflowView = tabView.getWorkflowView();
 		this.saveTask = saveTask;
 		workflowModel = WorkflowController.getWorkflowModel();
-		this.observer = new TaskRequestObserver(this);
 		this.action = action;
 	}
 
@@ -55,44 +65,55 @@ public class TaskController {
 		}
 	}
 	
-	public void processResponse(TaskModel task){
+	public void addTask(TaskModel task){
 		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
-		if(taskView == null){
-			WorkflowView workflowView = tabView.getWorkflowView();
-			//TODO: store this selection in the actual tab
-			this.stageIndex = task.getStageIndex();
-			this.stageView = workflowView.getStageViewList().get(stageIndex);
-			taskView = new TaskView(task, stageView);
-			
-			workflowModel.getStageModelList().get(stageIndex).addTask(task);
-			workflowView.getStageViewList().get(stageIndex).addTaskView(taskView);
-			
-			stageView.updatePreferredDimensions();
-			stageView.addTaskView(taskView);
-		}else{
-			taskView.updateContents(task);
-		}
+		this.stageIndex = task.getStageIndex();
+		this.stageView = workflowView.getStageViewList().get(stageIndex);
+		taskView = new TaskView(task, stageView);
+		
+		workflowModel.getStageModelList().get(stageIndex).addTask(task);
+		workflowView.getStageViewList().get(stageIndex).addTaskView(taskView);
+		
+		stageView.updatePreferredDimensions();
+		stageView.addTaskView(taskView);
 	}
+	
+	public void updateTask(TaskModel task){
+		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
+		taskView.updateContents(task);
+	}
+	
+	public void deleteTask(TaskModel task){
+		TaskView taskView = tabView.getWorkflowView().getTaskViewByID(task.getID());
+		workflowModel.removeTaskModel(task);
+		workflowView.removeTaskView(taskView);
+	}
+	
 	
 	public void sendUpdateRequest(TaskModel task){
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
-		request.addObserver(observer); // add an observer to process the response
+		request.addObserver(updateObserver); // add an observer to process the response
 		request.send();
 	}
 	
 	public void sendDeleteRequest(TaskModel task){
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.DELETE); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
-		request.addObserver(observer); // add an observer to process the response
+		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 	}
 	
 	public void sendAddRequest(TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.PUT); // PUT == create
 		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
-		request.addObserver(observer); // add an observer to process the response
+		request.addObserver(addObserver); // add an observer to process the response
 		request.send();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		act();
 	}
 
 

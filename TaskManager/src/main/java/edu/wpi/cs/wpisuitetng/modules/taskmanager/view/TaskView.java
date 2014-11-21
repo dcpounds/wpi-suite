@@ -16,11 +16,12 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ExpandTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
@@ -78,7 +79,7 @@ public class TaskView extends JPanel{
 		
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-		closeButton.addActionListener(new RemoveTaskController(taskModel, this));
+		closeButton.addActionListener(new TaskController(taskModel, ActionType.DELETE));
 		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
