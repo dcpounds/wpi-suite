@@ -19,6 +19,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int stageIndex;
 	private boolean isExpanded;
 	private boolean editState;
+	private boolean isArchived;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -32,6 +33,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.dueDate = new String();	
 		this.stageIndex = 0;
 		this.isExpanded = false;
+		this.isArchived = false;
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -48,7 +50,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		usersAssignedTo = updatedStage.usersAssignedTo;
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
-		this.stageIndex = stageIndex;
+		this.stageIndex = 0;
+		this.isArchived = false;
 	}
 	
 	
@@ -209,7 +212,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	
 	/**
-	 * @return- get whether the tab is being editted
+	 * @return- get whether the tab is being edited
 	 */
 	public boolean getEditState() {
 		return this.editState;	
@@ -221,6 +224,20 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 */
 	public void setEditState(boolean editState) {
 		this.editState = editState;
+	}
+	
+	/**
+	 * @param archiveStatus - set the task to archived (true) or active (false)
+	 */
+	public void setIsArchived(boolean archiveStatus){
+		this.isArchived = isArchived;
+	}
+	
+	/**
+	 * @return
+	 */
+	public boolean getIsArchived(){
+		return this.isArchived;
 	}
 	
 		

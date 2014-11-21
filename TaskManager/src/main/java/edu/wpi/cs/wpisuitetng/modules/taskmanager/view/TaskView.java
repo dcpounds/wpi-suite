@@ -25,12 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.tabs.view.TabView;
-
 import java.awt.Color;
-
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 

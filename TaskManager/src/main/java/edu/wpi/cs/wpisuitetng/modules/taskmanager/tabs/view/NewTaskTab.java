@@ -87,9 +87,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		
 		
-		//Decide what action the user is taking
-		this.model = (model == null) ? new TaskModel() : model;
-		this.action = model == null ? ActionType.CREATE : ActionType.EDIT;
+		//Decide what action the user is taking		
+		if(model == null){
+			this.model = new TaskModel();
+			this.action = ActionType.CREATE;
+		} else{
+			this.model.setEditState(true);
+			this.action = ActionType.EDIT;
+		}
 		
 		//Set an error if the task needs a title
 		titleEmptyError = new JLabel("Task Needs A Title");
@@ -131,7 +136,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskDescriptionField = new JTextArea(this.model.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
-		taskDescriptionField.setColumns(50);
+		taskDescriptionField.setColumns(45);
 		taskDescriptionField.setRows(10);
 		taskDescriptionField.addKeyListener(this);
 		
