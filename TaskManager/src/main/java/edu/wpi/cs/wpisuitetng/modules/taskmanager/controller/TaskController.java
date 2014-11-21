@@ -93,10 +93,11 @@ public class TaskController implements ActionListener {
 	 */
 	public void getTasks(TaskModel[] tasks){
 		for(TaskModel task : tasks){
-			if(task.getIsArchived() == false){
+			if(task.getIsArchived())
+				continue;
+			else
 				System.out.println("Got task from the database" + task.getTitle());
 				addTask(task);
-			}
 		}
 	}
 	

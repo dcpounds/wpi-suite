@@ -48,7 +48,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
 		this.stageIndex = updatedStage.stageIndex;
-		this.isArchived = false;
+		this.isArchived = this.isArchived;
 	}
 	
 	
