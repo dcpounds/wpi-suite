@@ -39,6 +39,7 @@ public class StageView extends JPanel {
 	private JButton btnClose;
 	private boolean closable;
 	private StageModel stageModel;
+	private int id;
 	
 	/**
 	 * Constructs a new Stage based off the given model
@@ -46,6 +47,7 @@ public class StageView extends JPanel {
 	 */
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		this.stageModel = stageModel;
+		this.id = stageModel.getID();
 		this.taskViewList = new ArrayList<TaskView>();
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
@@ -173,7 +175,7 @@ public class StageView extends JPanel {
 	 * gets the ID of this stage
 	 */
 	public int getID(){
-		return  stageModel.getID();
+		return  id;
 	}
 	
 	public ArrayList<TaskView> getTaskViewList(){

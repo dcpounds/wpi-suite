@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -34,6 +36,8 @@ public class StageController implements ActionListener{
 		this.updateObserver = new UpdateStageRequestObserver(this);
 		this.deleteObserver = new DeleteStageRequestObserver(this);
 		this.getObserver = new GetStageRequestObserver(this);
+		this.workflowModel = WorkflowController.getWorkflowModel();
+		this.workflowView = TabController.getTabView().getWorkflowView();
 		this.stage = stage;
 	}
 	
@@ -119,7 +123,7 @@ public class StageController implements ActionListener{
 	}
 	
 	public void syncStages(StageModel[] stages) {
-		for(StageModel stage : workflowModel.getStageModelList() ){
+		for(StageModel stage : stages ){
 			boolean exists = workflowModel.getStageModelByID( stage.getID())  == null ? false : true;
 			
 			if(exists){

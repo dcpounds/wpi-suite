@@ -36,6 +36,14 @@ public class StageModel extends AbstractModel {
 	
 	
 	/**
+	 * Blank stage constructor since the 
+	 * database needs a class to identify the type to fetch
+	 */
+	public StageModel() {
+	}
+
+	
+	/**
 	 * @param updatedStage - copies the 
 	 */
 	public void copyFrom(StageModel updatedStage) {
@@ -74,16 +82,6 @@ public class StageModel extends AbstractModel {
 		taskModelList.remove(task);
 		return taskModelList;
 	}
-	
-	
-	
-	/**
-	 * Blank stage constructor since the 
-	 * database needs a class to identify the type to fetch
-	 */
-	public StageModel() {
-	}
-
 	
 	/**
 	 * @return the title of the card

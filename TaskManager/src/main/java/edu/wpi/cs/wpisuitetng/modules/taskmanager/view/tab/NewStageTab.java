@@ -13,6 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Font;
@@ -38,6 +39,7 @@ public class NewStageTab extends JPanel implements KeyListener{
     private JLabel stageTitleError;
     private StageModel model;
     private ActionType action;
+    private NewStageTab thisTab;
 	
 	//add a combo box here for task status
     
@@ -70,15 +72,16 @@ public class NewStageTab extends JPanel implements KeyListener{
 		add(stageTitleField, "flowx,cell 0 1,alignx left,aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
-		sbmtStageButton.addActionListener( new StageController(this.model, ActionType.CREATE) );
-		sbmtStageButton.setEnabled(false);
-		NewStageTab thisTab = this;
-		sbmtStageButton.addActionListener( new ActionListener(){
+		this.thisTab = this;
+		sbmtStageButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
+				StageModel stage = buildStage();
+				new StageController(stage, action).act();
 				TabController.getInstance().removeTab(thisTab);
-			}
+			}	
 		});
+		sbmtStageButton.setEnabled(false);
 		add(sbmtStageButton, "cell 0 2,alignx left, aligny top");
 		
 		stageTitleError = new JLabel("Must enter a title for the stage");
@@ -92,6 +95,12 @@ public class NewStageTab extends JPanel implements KeyListener{
 	
 	public String getStageTitle(){
 		return stageTitleField.getText();
+	}
+	
+	
+	public StageModel buildStage(){
+		StageModel stageModel = new StageModel(this.getStageTitle(), true);
+		return stageModel;
 	}
 
 	
