@@ -10,8 +10,8 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Font;
@@ -58,7 +58,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 		add(stageTitleField, "flowx,cell 0 1,alignx left,aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
-		sbmtStageButton.addActionListener(new AddStageController(this));
+		sbmtStageButton.addActionListener( new StageController(stageModel, ActionType.CREATE) );
 		sbmtStageButton.setEnabled(false);
 		NewStageTab thisTab = this;
 		sbmtStageButton.addActionListener( new ActionListener(){

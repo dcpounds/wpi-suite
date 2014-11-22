@@ -89,6 +89,7 @@ public class TaskController implements ActionListener {
 	
 	
 	/**
+	 * Adds a task to the workflow after saving it in the database
 	 * @param task - the task that just got added to the database
 	 */
 	public void addTask(TaskModel task){
@@ -101,23 +102,7 @@ public class TaskController implements ActionListener {
 	
 	
 	/**
-	 * Given the list of tasks that were updated by the DB,
-	 * clears all tasks in all stages and repopulates the stages
-	 */
-	public void reloadTasks(){
-		for( StageView stageView : workflowView.getStageViewList() ){
-			stageView.clearTaskViewList();
-			StageModel stageModel = workflowModel.getStageModelByID( stageView.getID() );
-			for( TaskModel task : stageModel.getTaskModelList() ){
-				TaskView taskView = new TaskView(task, stageView);
-				stageView.addTaskView(taskView);
-			}
-			stageView.redrawStage();
-		}
-	}
-	
-	
-	/**
+	 * Applies any updates to the tasks after receiving updates from the database
 	 * @param tasks - the list of tasks retrieved from the database
 	 */
 	public void syncTasks(TaskModel[] tasks){
@@ -139,7 +124,6 @@ public class TaskController implements ActionListener {
 				continue;
 			addTask(task);
 		}
-		reloadTasks();
 	}
 	
 	

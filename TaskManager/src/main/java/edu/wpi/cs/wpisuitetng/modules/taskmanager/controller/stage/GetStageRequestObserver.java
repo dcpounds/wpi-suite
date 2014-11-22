@@ -2,20 +2,21 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-public class AddStageRequestObserver implements RequestObserver{
+public class GetStageRequestObserver implements RequestObserver{
 
 	StageController controller;
 	
-	public AddStageRequestObserver(StageController stageController){
-		this.controller = stageController;
+	public GetStageRequestObserver(StageController controller){
+		this.controller = controller;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
-        StageModel stage = StageModel.fromJson(iReq.getResponse().getBody());
-        controller.addStage(stage);
+		StageModel stages[] = StageModel.fromJsonArray(iReq.getResponse().getBody());
+        controller.syncStages(stages);
 		
 	}
 

@@ -5,17 +5,17 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-public class AddStageRequestObserver implements RequestObserver{
+public class UpdateStageRequestObserver implements RequestObserver{
 
 	StageController controller;
 	
-	public AddStageRequestObserver(StageController stageController){
+	public UpdateStageRequestObserver(StageController stageController){
 		this.controller = stageController;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
         StageModel stage = StageModel.fromJson(iReq.getResponse().getBody());
-        controller.addStage(stage);
+        controller.updateStage(stage);
 		
 	}
 

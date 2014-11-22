@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
@@ -17,6 +18,7 @@ public class StageModel extends AbstractModel {
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
 	private boolean closable;
+	private boolean isArchived;
 	private int id;
 	private ArrayList<TaskModel> taskModelList;
 	
@@ -41,6 +43,7 @@ public class StageModel extends AbstractModel {
 		this.closable = updatedStage.getClosable();
 		this.id = updatedStage.getID();
 		this.taskModelList = updatedStage.taskModelList;
+		this.isArchived = updatedStage.isArchived;
 	}
 	
 	/**
@@ -189,6 +192,22 @@ public class StageModel extends AbstractModel {
 	 */
 	public boolean getClosable() {
 		return closable;
+	}
+
+
+	/**
+	 * @param archived - set the stage as archived or not
+	 */
+	public void setIsArchived(boolean archived) {
+		this.isArchived = archived;
+		
+	}
+	
+	/**
+	 * @return - whether or not the stage is in an archived state
+	 */
+	public boolean getIsArchived(){
+		return this.isArchived;
 	}
 	
 

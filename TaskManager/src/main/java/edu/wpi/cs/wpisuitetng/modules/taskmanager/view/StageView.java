@@ -35,6 +35,7 @@ public class StageView extends JPanel {
 	private JScrollPane scrollPane;
 	private WorkflowView workflowView;
 	private ArrayList<TaskView> taskViewList;
+	private JLabel lblStageTitle;
 	private JButton btnClose;
 	private boolean closable;
 	private StageModel stageModel;
@@ -52,7 +53,7 @@ public class StageView extends JPanel {
 		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
 		
-		JLabel lblStageTitle = new JLabel(title);
+		this.lblStageTitle = new JLabel(title);
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -177,5 +178,14 @@ public class StageView extends JPanel {
 	
 	public ArrayList<TaskView> getTaskViewList(){
 		return taskViewList;
+	}
+	
+	/**
+	 * Updates the current stage by passing in new stages
+	 * @param newStageModel - the stageModel to replace the current stage with
+	 */
+	public void updateContents(StageModel newStageModel){
+		this.lblStageTitle.setText(newStageModel.getTitle());
+		this.stageModel = newStageModel;
 	}
 }
