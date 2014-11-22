@@ -58,7 +58,7 @@ public class ToolbarView extends JPanel {
         newStageButton.addActionListener( new ActionListener(){
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		TabController.getInstance().addTab(TabType.STAGE,null);
+        		TabController.getInstance().addTab(TabType.STAGE ,null);
         	}
         });
         newStageButton.setMargin(new Insets(0,0,0,0));

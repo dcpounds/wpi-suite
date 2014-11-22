@@ -11,6 +11,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import net.miginfocom.swing.MigLayout;
 
@@ -35,6 +36,8 @@ public class NewStageTab extends JPanel implements KeyListener{
     private final WorkflowModel workflowModel;
     private boolean validTitle = false;
     private JLabel stageTitleError;
+    private StageModel model;
+    private ActionType action;
 	
 	//add a combo box here for task status
     
@@ -43,7 +46,16 @@ public class NewStageTab extends JPanel implements KeyListener{
 	 * 
 	 * @param taskManagerTabView - the main view that holds tabs
 	 */
-	public NewStageTab(StageModel stageModel) {
+	public NewStageTab(StageModel model, ActionType action) {
+		if(model == null){
+			this.model = new StageModel();
+			this.action = ActionType.CREATE;
+		} else{
+			this.model = model;
+			this.action = ActionType.EDIT;
+		}
+		
+		
     	this.workflowModel = WorkflowController.getWorkflowModel();
 		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
     	
@@ -58,7 +70,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 		add(stageTitleField, "flowx,cell 0 1,alignx left,aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
-		sbmtStageButton.addActionListener( new StageController(stageModel, ActionType.CREATE) );
+		sbmtStageButton.addActionListener( new StageController(this.model, ActionType.CREATE) );
 		sbmtStageButton.setEnabled(false);
 		NewStageTab thisTab = this;
 		sbmtStageButton.addActionListener( new ActionListener(){

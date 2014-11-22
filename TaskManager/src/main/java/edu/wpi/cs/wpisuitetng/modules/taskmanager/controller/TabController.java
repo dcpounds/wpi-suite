@@ -6,6 +6,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
@@ -44,7 +45,7 @@ public class TabController {
 	        	break;
     	case STAGE:
         	tabName = "New Stage   ";
-        	newTab = new NewStageTab((StageModel) model);
+        	newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
         }
     	addTabHelper(tabName, newTab);
     }

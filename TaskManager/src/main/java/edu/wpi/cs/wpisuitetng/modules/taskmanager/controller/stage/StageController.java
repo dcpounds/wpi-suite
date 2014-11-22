@@ -1,8 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
@@ -64,7 +66,7 @@ public class StageController implements ActionListener{
 	 * @param stage - the stage to update in the database
 	 */
 	public void sendUpdateRequest(StageModel stage){
-		final Request request = Network.getInstance().makeRequest("stagemanager/stage", HttpMethod.POST); // POST == update
+		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.POST); // POST == update
 		request.setBody(stage.toJson()); // put the new stage in the body of the request
 		request.addObserver(updateObserver); // add an observer to process the response
 		request.send();
@@ -76,7 +78,7 @@ public class StageController implements ActionListener{
 	 */
 	public void sendDeleteRequest(StageModel stage){
 		stage.setIsArchived(true);
-		final Request request = Network.getInstance().makeRequest("stagemanager/stage", HttpMethod.POST); // POST == update
+		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.POST); // POST == update
 		request.setBody(stage.toJson()); // put the new stage in the body of the request
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
@@ -86,7 +88,7 @@ public class StageController implements ActionListener{
 	 * @param stageModel - the stage to add to the database
 	 */
 	public void sendAddRequest(StageModel stageModel) {
-		final Request request = Network.getInstance().makeRequest("stagemanager/stage", HttpMethod.PUT); // PUT == create
+		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.PUT); // PUT == create
 		request.setBody(stageModel.toJson()); // put the new stage in the body of the request
 		request.addObserver(addObserver); // add an observer to process the response
 		request.send();
@@ -96,7 +98,7 @@ public class StageController implements ActionListener{
 	 * get a list of all stages from the database
 	 */
 	public void sendGetRequest (StageModel stageModel) {
-		final Request request = Network.getInstance().makeRequest("stagemanager/stage", HttpMethod.GET); // PUT == create
+		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.GET); // PUT == create
 		request.addObserver(getObserver); // add an observer to process the response
 		request.send();
 	}
@@ -112,18 +114,33 @@ public class StageController implements ActionListener{
 	}
 	
 	public void updateStage(StageModel stage) {
-		// TODO Auto-generated method stub
+		StageView stageView = workflowView.getStageViewByID(stage.getID());
+		stageView.updateContents(stage);
 	}
 	
 	public void syncStages(StageModel[] stages) {
-		// TODO Auto-generated method stub
+		for(StageModel stage : workflowModel.getStageModelList() ){
+			boolean exists = workflowModel.getStageModelByID( stage.getID())  == null ? false : true;
+			
+			if(exists){
+				if( stage.getIsArchived()){
+					workflowModel.removeStageModel(stage);
+					continue;
+				} else{
+					updateStage(stage);
+					continue;
+				}
+			}
+			if(stage.getIsArchived())
+				continue;
+			addStage(stage);
+		}
 	}
 	
 	public void deleteStage(StageModel stage) {
 		workflowModel.removeStageModel(stage);
 		workflowView.removeStageView(stageView);
 		workflowView.remove(stageView);
-		// TODO Auto-generated method stub
 	}
 	
 	
