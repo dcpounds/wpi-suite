@@ -52,6 +52,7 @@ public class TaskController implements ActionListener {
 		workflowModel = WorkflowController.getWorkflowModel();
 		this.action = action;
 	}
+	
 
 	/**
 	 * Depending on the specified action, either create, edit, delete, or get taskModel(s) from the database
@@ -73,11 +74,11 @@ public class TaskController implements ActionListener {
 		}
 	}
 	
+	
 	/**
 	 * @param task - the task that was updated in the database
 	 */
 	public void updateTask(TaskModel task){
-		
 		StageView stageView = tabView.getWorkflowView().getStageViewList().get( task.getStageIndex() );
 		for( TaskView taskView : stageView.getTaskViewList() ){
 			if( task.getID() == taskView.getID() )
@@ -85,6 +86,7 @@ public class TaskController implements ActionListener {
 				return;
 		}
 	}
+	
 	
 	/**
 	 * @param task - the task that just got added to the database
@@ -96,6 +98,7 @@ public class TaskController implements ActionListener {
 		TaskView newTaskView = new TaskView(task, stageView);
 		stageView.addTaskView(newTaskView);
 	}
+	
 	
 	/**
 	 * Given the list of tasks that were updated by the DB,
@@ -109,6 +112,7 @@ public class TaskController implements ActionListener {
 				TaskView taskView = new TaskView(task, stageView);
 				stageView.addTaskView(taskView);
 			}
+			stageView.redrawStage();
 		}
 	}
 	
@@ -118,20 +122,26 @@ public class TaskController implements ActionListener {
 	 */
 	public void syncTasks(TaskModel[] tasks){
 		for(TaskModel task : tasks){
-			if( task.getIsArchived())
-				continue;
-			//If the task is already in the list of models, update and move on to the next
-			if( workflowModel.getTaskModelByID( task.getID() ) != null){
-				updateTask(task);
-				continue;
-			} else{
-				//Get the stageModel the task belongs in
-				StageModel stage = workflowModel.getStageModelList().get( task.getStageIndex() );
-				stage.addTaskModel(task);
+			boolean exists = workflowModel.getTaskModelByID( task.getID() ) == null ? false : true;
+			
+			if(exists){
+				if( task.getIsArchived()){
+					StageModel stage = workflowModel.getStageModelList().get( task.getStageIndex() );
+					stage.getTaskModelList().remove(task);
+					continue;
+				} else{
+					updateTask(task);
+					continue;
+				}
 			}
+			
+			if(task.getIsArchived())
+				continue;
+			addTask(task);
 		}
 		reloadTasks();
 	}
+	
 	
 	/**
 	 * @param task - the task that was just archived in the database
@@ -141,11 +151,11 @@ public class TaskController implements ActionListener {
 		for( TaskView taskView : stageView.getTaskViewList() ){
 			if( taskView.getID() == task.getID() )
 				stageView.removeTaskView(taskView);
+				stageView.repaint();
 		}
 		StageModel stageModel = workflowModel.getStageModelList().get( task.getStageIndex() );
 		stageModel.removeTask(task);
 	}
-	
 	
 	
 	/**

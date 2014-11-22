@@ -81,6 +81,11 @@ public class TaskView extends JPanel{
 		this.taskContents = new JPanel();
 		taskContentPane.setViewportView(taskContents);
 		
+		if( taskModel.getIsExpanded() ){
+			showDetails();
+		}
+			
+		
 		//Set up the close button to remove the task
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
@@ -111,9 +116,9 @@ public class TaskView extends JPanel{
 		Component parent = this.getParent();
 		Dimension parentSize = parent.getSize();
 		
-		if( parent == null ){
-			return new Dimension(300, 600);
-		} else{
+		if( parent == null )
+			return new Dimension(600,300);
+		else{
 			
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			if(isExpanded){
@@ -144,7 +149,6 @@ public class TaskView extends JPanel{
 		taskModel.setIsExpanded(true);
 		stageView.updatePreferredDimensions();
 		revalidate();
-		repaint();
 	}
 	
 	
@@ -157,7 +161,6 @@ public class TaskView extends JPanel{
 		taskModel.setIsExpanded(false);
 		stageView.updatePreferredDimensions();
 		revalidate();
-		repaint();
 	}
 	
 	public StageView getStageView(){
@@ -178,6 +181,5 @@ public class TaskView extends JPanel{
 		this.taskModel = newTaskModel;
 		titlePanel.addMouseListener(  new ExpandTaskController(this, newTaskModel) );
 		revalidate();
-		repaint();
 	}
 }

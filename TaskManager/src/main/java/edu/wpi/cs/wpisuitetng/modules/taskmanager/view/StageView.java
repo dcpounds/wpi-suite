@@ -85,7 +85,7 @@ public class StageView extends JPanel {
 				workflowView.getScrollPane().getViewport().getHeight() - 30 );
 		
 		if( parent == null ){
-			return new Dimension(300, 600);
+			return super.getPreferredSize();
 		} else {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
 			int stageCount = workflowView.getStageViewList().size();
@@ -135,8 +135,11 @@ public class StageView extends JPanel {
 		stagePane.add(taskView);
 		taskViewList.add(taskView);
 		updatePreferredDimensions();
-		revalidate();
-		repaint();
+		redrawStage();
+	}
+	
+	public void redrawStage(){
+		stagePane.revalidate();
 	}
 	
 	/**
@@ -148,8 +151,6 @@ public class StageView extends JPanel {
 		stagePane.add(taskView);
 		taskViewList.add(index, taskView);
 		updatePreferredDimensions();
-		revalidate();
-		repaint();
 	}
 	
 	/**
@@ -158,18 +159,13 @@ public class StageView extends JPanel {
 	 */
 	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
-		updatePreferredDimensions();
-		stagePane.revalidate();
-		stagePane.repaint();	
+		updatePreferredDimensions();	
+		redrawStage();
 	}
 	
 	public void clearTaskViewList(){
-		for(TaskView taskView : taskViewList)
-			stagePane.remove(taskView);
+		stagePane.removeAll();
 		taskViewList.clear();
-		updatePreferredDimensions();
-		stagePane.revalidate();
-		stagePane.repaint();
 	}
 	
 	/**
