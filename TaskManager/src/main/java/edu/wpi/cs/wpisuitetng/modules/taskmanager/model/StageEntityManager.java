@@ -7,6 +7,7 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
@@ -69,12 +70,11 @@ public class StageEntityManager implements EntityManager<StageModel> {
 	 * Updates the given stagemodel in the database
 	 */
 	@Override
-	public StageModel update(Session s, String content)
-			throws WPISuiteException {
+	public StageModel update(Session s, String content) throws WPISuiteException {
 		StageModel updatedStage = StageModel.fromJson(content);
-		List<Model> oldStages = db.retrieve(StageModel.class, "name", updatedStage.getTitle(), s.getProject());
+		List<Model> oldStages = db.retrieve(StageModel.class, "id", updatedStage.getID(), s.getProject());
 		if( oldStages.size() < 1 || oldStages.get(0) == null) {
-			throw new NotFoundException();
+			throw new BadRequestException("Stage with ID does not exist.");
 		}
 		StageModel existingStage = (StageModel)oldStages.get(0);
 		existingStage.copyFrom(updatedStage);
@@ -82,7 +82,6 @@ public class StageEntityManager implements EntityManager<StageModel> {
 		if(!db.save(existingStage, s.getProject() )){
 			throw new WPISuiteException();
 		}
-		// TODO Auto-generated method stub
 		return existingStage;
 	}
 
@@ -120,17 +119,13 @@ public class StageEntityManager implements EntityManager<StageModel> {
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+	public String advancedPut(Session s, String[] args, String content) throws NotImplementedException {
+		throw new NotImplementedException();
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+	public String advancedPost(Session s, String string, String content) throws NotImplementedException {
+		throw new NotImplementedException();
 	}
 	
 	/**

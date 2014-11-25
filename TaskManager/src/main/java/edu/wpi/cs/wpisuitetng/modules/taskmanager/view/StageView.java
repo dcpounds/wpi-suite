@@ -6,16 +6,19 @@ import java.awt.Dimension;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RemoveStageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
@@ -64,7 +67,12 @@ public class StageView extends JPanel {
 		btnClose = new JButton("\u2716");
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
-		btnClose.addActionListener( new RemoveStageController(this, stageModel, workflowView));
+		btnClose.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Sending a delete request from stage " + stageModel.getID());
+		        new StageController(stageModel, ActionType.DELETE).act();
+		      }
+		});
 		btnClose.setEnabled(closable);
 		add(btnClose, "cell 1 0,aligny center");
 		

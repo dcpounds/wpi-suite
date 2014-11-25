@@ -21,7 +21,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class StageController implements ActionListener{
 	private WorkflowModel workflowModel;
-	private WorkflowView workflowView;
 	private StageView stageView;
 	private StageModel stage;
 	private ActionType action;
@@ -37,7 +36,6 @@ public class StageController implements ActionListener{
 		this.deleteObserver = new DeleteStageRequestObserver(this);
 		this.getObserver = new GetStageRequestObserver(this);
 		this.workflowModel = WorkflowController.getWorkflowModel();
-		this.workflowView = TabController.getTabView().getWorkflowView();
 		this.stage = stage;
 	}
 	
@@ -80,10 +78,10 @@ public class StageController implements ActionListener{
 	/**
 	 * @param stage - the stage to archive in the database
 	 */
-	public void sendDeleteRequest(StageModel stage){
+	public void sendDeleteRequest(StageModel stageplp){
 		stage.setIsArchived(true);
 		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.POST); // POST == update
-		request.setBody(stage.toJson()); // put the new stage in the body of the request
+		request.setBody(stageplp.toJson()); // put the new stage in the body of the request
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 	}
@@ -112,12 +110,15 @@ public class StageController implements ActionListener{
 	 * @param stage - the stage that was just added to the database
 	 */
 	public void addStage(StageModel stage) {
+		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = new StageView(stage, workflowView);
 		workflowView.addStageView(stageView);
 		workflowModel.addStage(stage);
 	}
 	
 	public void updateStage(StageModel stage) {
+		System.out.println("Updating a stage with id " + stage.getID());
+		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		stageView.updateContents(stage);
 	}
@@ -142,9 +143,10 @@ public class StageController implements ActionListener{
 	}
 	
 	public void deleteStage(StageModel stage) {
+		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
+		StageView sv = workflowView.getStageViewByID(stage.getID());
 		workflowModel.removeStageModel(stage);
-		workflowView.removeStageView(stageView);
-		workflowView.remove(stageView);
+		workflowView.removeStageView(sv);
 	}
 	
 	
