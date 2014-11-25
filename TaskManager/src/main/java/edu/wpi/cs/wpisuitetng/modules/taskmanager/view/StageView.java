@@ -67,12 +67,7 @@ public class StageView extends JPanel {
 		btnClose = new JButton("\u2716");
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
-		btnClose.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Sending a delete request from stage " + stageModel.getID());
-		        new StageController(stageModel, ActionType.DELETE).act();
-		      }
-		});
+		btnClose.addActionListener(new StageController(stageModel, ActionType.DELETE));
 		btnClose.setEnabled(closable);
 		add(btnClose, "cell 1 0,aligny center");
 		
