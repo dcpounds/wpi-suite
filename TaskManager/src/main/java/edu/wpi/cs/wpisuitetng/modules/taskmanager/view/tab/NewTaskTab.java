@@ -234,7 +234,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setEstimatedEffort(this.getEstimatedEffort());
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
-		taskModel.setStageIndex(this.getStageSelectionIndex());
+		taskModel.setStageID( workflowModel.getStageModelList().get( this.getStageSelectionIndex() ).getID() );
 		return taskModel;
 	}
 	

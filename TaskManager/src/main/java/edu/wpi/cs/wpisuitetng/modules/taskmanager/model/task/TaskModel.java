@@ -17,7 +17,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
-	private int stageIndex;
+	private int stageID;
 	private boolean isExpanded;
 	private boolean editState;
 	private boolean isArchived;
@@ -32,7 +32,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creationDate = new Date();
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = new String();
-		this.stageIndex = 0;
+		this.stageID = 0;
 		this.isExpanded = false;
 		this.isArchived = false;
 	}
@@ -51,7 +51,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		usersAssignedTo = updatedStage.usersAssignedTo;
 		dueDate = updatedStage.dueDate;	
 		this.isExpanded = updatedStage.isExpanded;
-		this.stageIndex = updatedStage.stageIndex;
+		this.stageID = updatedStage.stageID;
 		this.isArchived = updatedStage.isArchived;
 	}
 	
@@ -70,15 +70,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/**
 	 * @return the stageIndex that this task is in
 	 */
-	public int getStageIndex(){
-		return stageIndex;
+	public int getStageID(){
+		return stageID;
 	}
 	
 	/**
 	 * @param stageIndex - the stageIndex to set the task to
 	 */
-	public void setStageIndex(int stageIndex){
-		this.stageIndex = stageIndex;
+	public void setStageID(int stageIndex){
+		this.stageID = stageIndex;
 	}
 	
 	/**

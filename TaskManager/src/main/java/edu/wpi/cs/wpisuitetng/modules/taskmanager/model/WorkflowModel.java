@@ -60,7 +60,7 @@ public class WorkflowModel extends AbstractModel {
 			System.out.println("You tried to add a task to an invalid stage position");
 			throw new IndexOutOfBoundsException();
 		}
-		StageModel oldStage = stageModelList.get(task.getStageIndex());
+		StageModel oldStage = this.getStageModelByID( task.getStageID() );
 		StageModel newStage = stageModelList.get(toStageIndex);
 		
 		

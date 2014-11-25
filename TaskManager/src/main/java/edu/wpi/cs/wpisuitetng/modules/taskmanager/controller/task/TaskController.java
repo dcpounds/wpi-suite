@@ -79,7 +79,7 @@ public class TaskController implements ActionListener {
 	 * @param task - the task that was updated in the database
 	 */
 	public void updateTask(TaskModel task){
-		StageView stageView = tabView.getWorkflowView().getStageViewList().get( task.getStageIndex() );
+		StageView stageView = tabView.getWorkflowView().getStageViewByID( task.getStageID() );
 		for( TaskView taskView : stageView.getTaskViewList() ){
 			if( task.getID() == taskView.getID() )
 				taskView.updateContents(task);
@@ -93,9 +93,9 @@ public class TaskController implements ActionListener {
 	 * @param task - the task that just got added to the database
 	 */
 	public void addTask(TaskModel task){
-		StageModel stageModel = workflowModel.getStageModelList().get(task.getStageIndex());
+		StageModel stageModel = workflowModel.getStageModelByID( task.getStageID() );
 		stageModel.addTaskModel(task);
-		StageView stageView = tabView.getWorkflowView().getStageViewList().get( task.getStageIndex() );
+		StageView stageView = tabView.getWorkflowView().getStageViewByID( task.getStageID() );
 		TaskView newTaskView = new TaskView(task, stageView);
 		stageView.addTaskView(newTaskView);
 	}
@@ -111,7 +111,7 @@ public class TaskController implements ActionListener {
 			
 			if(exists){
 				if( task.getIsArchived()){
-					StageModel stage = workflowModel.getStageModelList().get( task.getStageIndex() );
+					StageModel stage = workflowModel.getStageModelByID( task.getStageID() );
 					stage.getTaskModelList().remove(task);
 					continue;
 				} else{
@@ -131,13 +131,13 @@ public class TaskController implements ActionListener {
 	 * @param task - the task that was just archived in the database
 	 */
 	public void deleteTask(TaskModel task){
-		StageView stageView = workflowView.getStageViewList().get( task.getStageIndex() );
+		StageView stageView = workflowView.getStageViewByID( task.getStageID() );
 		for( TaskView taskView : stageView.getTaskViewList() ){
 			if( taskView.getID() == task.getID() )
 				stageView.removeTaskView(taskView);
 				stageView.repaint();
 		}
-		StageModel stageModel = workflowModel.getStageModelList().get( task.getStageIndex() );
+		StageModel stageModel = workflowModel.getStageModelByID( task.getStageID() );
 		stageModel.removeTask(task);
 	}
 	
