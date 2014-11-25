@@ -99,7 +99,7 @@ public class TaskView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!taskModel.getEditState())
-					TabController.getInstance().addTab(TabType.TASK, taskModel);
+					TabController.getInstance().addTab(TabType.TASK, taskModel, taskModel.getTitle());
 				else{
 				}
 			}

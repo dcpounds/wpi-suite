@@ -30,7 +30,19 @@ public class TabController {
 	}
 	
 	
-    public void addTab(TabType tabType, IDisplayModel model) {
+	public void addTab(TabType tabType, IDisplayModel model) {
+		switch(tabType){
+		case TASK:
+			addTab(tabType, model, "New Task   ");
+			break;
+		case STAGE:
+			addTab(tabType, model, "New Stage   ");
+			break;
+		}
+		
+	}
+	
+    public void addTab(TabType tabType, IDisplayModel model, String name) {
     	String tabName = null;
     	Component newTab = null;
     	
@@ -39,13 +51,14 @@ public class TabController {
 	    		if(model != null){
 	    			tabName =  (model.getTitle() + "   ");
 	    		}else{
-	    			tabName = "New Task   ";
+	    			tabName = name;
 	    		}
 	        	newTab = new NewTaskTab((TaskModel) model);
 	        	break;
     	case STAGE:
-        	tabName = "New Stage   ";
+        	tabName = name;
         	newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
+        	break;
         }
     	addTabHelper(tabName, newTab);
     }

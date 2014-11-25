@@ -22,7 +22,7 @@ public class WorkflowController {
 						new StageController(new StageModel(), ActionType.GET).act();
 						sleep(500);
 						new TaskController(new TaskModel(), ActionType.GET).act();
-					} catch (Exception e) {
+				    } catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
