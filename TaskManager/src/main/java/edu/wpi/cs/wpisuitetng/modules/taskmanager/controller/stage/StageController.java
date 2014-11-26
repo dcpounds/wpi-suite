@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -78,10 +79,10 @@ public class StageController implements ActionListener{
 	/**
 	 * @param stage - the stage to archive in the database
 	 */
-	public void sendDeleteRequest(StageModel stageplp){
+	public void sendDeleteRequest(StageModel stage){
 		stage.setIsArchived(true);
 		final Request request = Network.getInstance().makeRequest("taskmanager/stage", HttpMethod.POST); // POST == update
-		request.setBody(stageplp.toJson()); // put the new stage in the body of the request
+		request.setBody(stage.toJson()); // put the new stage in the body of the request
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 	}
@@ -143,10 +144,18 @@ public class StageController implements ActionListener{
 	}
 	
 	public void deleteStage(StageModel stage) {
-		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		StageView sv = workflowView.getStageViewByID(stage.getID());
-		workflowModel.removeStageModel(stage);
-		workflowView.removeStageView(sv);
+		try{
+			for(TaskModel task : stage.getTaskModelList())
+				TaskController.sendDeleteRequest(task);
+		}catch(Exception e){
+			System.out.println("Error trying to remove the stage contents");
+			e.printStackTrace();
+		} finally{
+			WorkflowView workflowView = TabController.getTabView().getWorkflowView();
+			StageView sv = workflowView.getStageViewByID(stage.getID());
+			workflowModel.removeStageModel(stage);
+			workflowView.removeStageView(sv);
+		}
 	}
 	
 	

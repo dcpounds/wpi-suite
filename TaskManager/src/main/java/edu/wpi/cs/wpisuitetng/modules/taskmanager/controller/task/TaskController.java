@@ -26,10 +26,10 @@ public class TaskController implements ActionListener {
 	private WorkflowModel workflowModel;
 	private StageView stageView;
 	private int stageIndex;
-	private AddTaskRequestObserver addObserver;
-	private GetTaskRequestObserver getObserver;
-	private UpdateTaskRequestObserver updateObserver;
-	private DeleteTaskRequestObserver deleteObserver;
+	private static AddTaskRequestObserver addObserver;
+	private static GetTaskRequestObserver getObserver;
+	private static UpdateTaskRequestObserver updateObserver;
+	private static DeleteTaskRequestObserver deleteObserver;
 	private ActionType action;
 	private TaskModel saveTask;
 	private WorkflowView workflowView; 
@@ -93,11 +93,13 @@ public class TaskController implements ActionListener {
 	 * @param task - the task that just got added to the database
 	 */
 	public void addTask(TaskModel task){
-		StageModel stageModel = workflowModel.getStageModelByID( task.getStageID() );
-		stageModel.addTaskModel(task);
 		StageView stageView = tabView.getWorkflowView().getStageViewByID( task.getStageID() );
-		TaskView newTaskView = new TaskView(task, stageView);
-		stageView.addTaskView(newTaskView);
+		if(stageView != null){
+			StageModel stageModel = workflowModel.getStageModelByID( task.getStageID() );
+			stageModel.addTaskModel(task);
+			TaskView newTaskView = new TaskView(task, stageView);
+			stageView.addTaskView(newTaskView);
+		}
 	}
 	
 	
@@ -107,6 +109,8 @@ public class TaskController implements ActionListener {
 	 */
 	public void syncTasks(TaskModel[] tasks){
 		for(TaskModel task : tasks){
+			System.out.println("Trying to sync task with title " + task.getTitle() + " and archive status " + task.getIsArchived() + 
+					" with id" + task.getID());
 			boolean exists = workflowModel.getTaskModelByID( task.getID() ) == null ? false : true;
 			
 			if(exists){
@@ -132,10 +136,12 @@ public class TaskController implements ActionListener {
 	 */
 	public void deleteTask(TaskModel task){
 		StageView stageView = workflowView.getStageViewByID( task.getStageID() );
-		for( TaskView taskView : stageView.getTaskViewList() ){
-			if( taskView.getID() == task.getID() )
-				stageView.removeTaskView(taskView);
-				stageView.repaint();
+		if(stageView != null){
+			for( TaskView taskView : stageView.getTaskViewList() ){
+				if( taskView.getID() == task.getID() )
+					stageView.removeTaskView(taskView);
+					stageView.repaint();
+			}
 		}
 		StageModel stageModel = workflowModel.getStageModelByID( task.getStageID() );
 		stageModel.removeTask(task);
@@ -145,7 +151,7 @@ public class TaskController implements ActionListener {
 	/**
 	 * @param task - the task to update in the database
 	 */
-	public void sendUpdateRequest(TaskModel task){
+	public static void sendUpdateRequest(TaskModel task){
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
 		request.addObserver(updateObserver); // add an observer to process the response
@@ -156,7 +162,7 @@ public class TaskController implements ActionListener {
 	/**
 	 * @param task - the task to archive in the database
 	 */
-	public void sendDeleteRequest(TaskModel task){
+	public static void sendDeleteRequest(TaskModel task){
 		task.setIsArchived(true);
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.POST); // POST == update
 		request.setBody(task.toJson()); // put the new stage in the body of the request
@@ -167,7 +173,7 @@ public class TaskController implements ActionListener {
 	/**
 	 * @param taskModel - the task to add to the database
 	 */
-	public void sendAddRequest(TaskModel taskModel) {
+	public static void sendAddRequest(TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.PUT); // PUT == create
 		request.setBody(taskModel.toJson()); // put the new stage in the body of the request
 		request.addObserver(addObserver); // add an observer to process the response
@@ -177,7 +183,7 @@ public class TaskController implements ActionListener {
 	/**
 	 * get a list of all tasks from the database
 	 */
-	public void sendGetRequest (TaskModel taskModel) {
+	public static void sendGetRequest (TaskModel taskModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/task", HttpMethod.GET); // PUT == create
 		request.addObserver(getObserver); // add an observer to process the response
 		request.send();
