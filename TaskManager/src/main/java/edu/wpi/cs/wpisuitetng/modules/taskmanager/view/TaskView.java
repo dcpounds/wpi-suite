@@ -11,20 +11,14 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 import java.awt.Color;
 
@@ -89,7 +83,13 @@ public class TaskView extends JPanel{
 		//Set up the close button to remove the task
 		JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-		closeButton.addActionListener(new TaskController(taskModel, ActionType.DELETE));
+		TaskView tv = this;
+		closeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				StageController.deleteTask(tv, stageView);
+			}
+		});
+		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 		add(closeButton, "cell 1 0");
 		

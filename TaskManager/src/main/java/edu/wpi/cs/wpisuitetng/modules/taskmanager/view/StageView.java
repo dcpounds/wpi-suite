@@ -169,10 +169,6 @@ public class StageView extends JPanel {
 		redrawStage();
 	}
 	
-	public void clearTaskViewList(){
-		stagePane.removeAll();
-		taskViewList.clear();
-	}
 	
 	/**
 	 * gets the ID of this stage
@@ -191,6 +187,9 @@ public class StageView extends JPanel {
 	 */
 	public void updateContents(StageModel newStageModel){
 		this.lblStageTitle.setText(newStageModel.getTitle());
+		this.closable = newStageModel.getClosable();
 		this.stageModel = newStageModel;
+		btnClose.setEnabled(newStageModel.getClosable());
+		this.redrawStage();
 	}
 }

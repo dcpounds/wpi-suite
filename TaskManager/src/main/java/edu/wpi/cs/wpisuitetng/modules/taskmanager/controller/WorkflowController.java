@@ -1,10 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
 public class WorkflowController {
@@ -20,8 +18,6 @@ public class WorkflowController {
 					try {
 						sleep(4000);
 						new StageController(new StageModel(), ActionType.GET).act();
-						sleep(500);
-						new TaskController(new TaskModel(), ActionType.GET).act();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
