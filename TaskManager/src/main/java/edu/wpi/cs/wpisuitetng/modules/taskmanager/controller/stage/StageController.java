@@ -144,7 +144,7 @@ public class StageController implements ActionListener{
 				//If we found a taskView with the same ID as the taskModel (a match)
 				if(taskView.getID() == task.getID()){
 					//update this taskView and continue
-					taskView.updateContents(task);
+					taskView.setContents(task);
 					matched = true;
 					break;
 				}

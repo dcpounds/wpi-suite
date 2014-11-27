@@ -221,7 +221,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * Given the input that the user provided, construct the task
 	 * @return - the task that has been built with the fields that the user entered
 	 */
-	public TaskModel buildTask() {
+	public void buildTask() {
 		StageModel stageModel = workflowModel.getStageModelList().get( this.getStageSelectionIndex() );
 		TaskModel taskModel = new TaskModel();
 		taskModel.setID( this.model.getID() );
@@ -237,12 +237,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setStageID( stageModel.getID() );
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
-		
-		//Move this later
-		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(stageModel.getID());
-		TaskView taskView = new TaskView(taskModel, stageView);
-		stageView.addTaskView(taskView);
-		return taskModel;
 	}
 	
 	/**

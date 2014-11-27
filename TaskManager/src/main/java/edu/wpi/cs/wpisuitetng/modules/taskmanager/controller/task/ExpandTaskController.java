@@ -21,6 +21,7 @@ public class ExpandTaskController implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		boolean isExpanded = taskModel.getIsExpanded();
+		System.out.println("Toggled expanded state of task view, expanded view set to " + isExpanded);
 		if(isExpanded == true)
 			taskContainerView.hideDetails();
 		else

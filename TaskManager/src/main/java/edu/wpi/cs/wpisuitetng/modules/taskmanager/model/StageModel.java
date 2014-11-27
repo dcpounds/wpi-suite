@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
  * Model for respresenting a stage that holds individual tasks
@@ -64,16 +67,19 @@ public class StageModel extends AbstractModel {
 	public ArrayList<TaskModel> addUpdateTaskModel(TaskModel task){
 		int index = 0;
 		for(TaskModel existingTask : this.getTaskModelList()){
-			index++;
 			if(existingTask.getID() == task.getID()){
 				this.getTaskModelList().set(index,task);
 				StageController.sendUpdateRequest(this);
 				return this.getTaskModelList();
 				
 			}
+			index++;
 		}
 		taskModelList.add(task);
 		StageController.sendUpdateRequest(this);
+		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
+		TaskView taskView = new TaskView(task, stageView);
+		stageView.addTaskView(taskView);
 		return taskModelList;
 	}
 	
