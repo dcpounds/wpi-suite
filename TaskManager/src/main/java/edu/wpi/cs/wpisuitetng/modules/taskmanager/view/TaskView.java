@@ -7,6 +7,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import java.awt.Component;
@@ -23,6 +24,8 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.BoxLayout;
+import javax.swing.ListSelectionModel;
 
 /**
  * @author Alec
@@ -39,6 +42,7 @@ public class TaskView extends JPanel{
 	private JTextArea dateArea;
 	private JLabel lblEstimatedEffort;
 	private JLabel lblActualEffort;
+	private JLabel lblDue;
 	private JTextArea descriptionField;
 	private DefaultListModel<String> assignedListModel;
 	private StageView stageView;
@@ -72,52 +76,63 @@ public class TaskView extends JPanel{
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
-		this.taskContentPane = new JScrollPane();
-		this.taskContents = new JPanel();
+		this.taskContents = new JPanel(){
+			public Dimension getPreferredSize() {
+            	return new Dimension(this.getParent().getWidth()-30,super.getPreferredSize().height);
+	    }};
+	    
+		this.taskContentPane = new JScrollPane(taskContents,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		taskContents.setBackground(Color.WHITE);
-		taskContents.setLayout(new MigLayout("", "[grow]", "[][][][][][][][][grow]"));
 		taskContentPane.setViewportView(taskContents);
+		taskContents.setLayout(new BoxLayout(taskContents, BoxLayout.Y_AXIS));
 		
-		JLabel lblDue = new JLabel("Due:");
+		lblDue = new JLabel();
+		lblDue.setVerticalAlignment(SwingConstants.TOP);
+		lblDue.setAlignmentY(Component.TOP_ALIGNMENT);
+		lblDue.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
-		taskContents.add(lblDue, "cell 0 0,alignx left");
-		
-		dateArea = new JTextArea( taskModel.getDueDate() );
-		dateArea.setLineWrap(true);
-		dateArea.setEditable(false);
-		taskContents.add(dateArea, "cell 0 0, alignx right");
+		taskContents.add(lblDue);
 		
 		this.lblEstimatedEffort = new JLabel();
+		lblEstimatedEffort.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		taskContents.add(lblEstimatedEffort, "cell 0 1,alignx left");
+		taskContents.add(lblEstimatedEffort);
 		
 		lblActualEffort = new JLabel();
+		lblActualEffort.setHorizontalAlignment(SwingConstants.LEFT);
 		lblActualEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
-		taskContents.add(lblActualEffort, "cell 0 2,alignx left");
+		taskContents.add(lblActualEffort);
 		
 		JSeparator separator = new JSeparator();
-		taskContents.add(separator, "cell 0 3");
+		taskContents.add(separator);
 		
 		JLabel lblDescription = new JLabel("Description");
+		lblDescription.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
-		taskContents.add(lblDescription, "cell 0 4,alignx left");
+		taskContents.add(lblDescription);
 		
 		this.descriptionField = new JTextArea();
+		descriptionField.setWrapStyleWord(true);
+		descriptionField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		descriptionField.setLineWrap(true);
 		descriptionField.setEditable(false);
 		descriptionField.setMargin(new Insets(0, 0, 0, 0));
-		taskContents.add(descriptionField, "cell 0 5,grow");
+		taskContents.add(descriptionField);
 		
 		JSeparator separator_1 = new JSeparator();
-		taskContents.add(separator_1, "cell 0 6");
+		taskContents.add(separator_1);
 		
 		JLabel lblAssignedTo = new JLabel("Assigned To:");
+		lblAssignedTo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAssignedTo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		taskContents.add(lblAssignedTo, "cell 0 7");
+		taskContents.add(lblAssignedTo);
 		
 		this.assignedListModel = new DefaultListModel<String>();
 		JList<String> assignedListComponent = new JList<String>( assignedListModel );
-		taskContents.add(assignedListComponent, "flowy, cell 0 8,grow");
+		assignedListComponent.setEnabled(false);
+		assignedListComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
+		taskContents.add(assignedListComponent);
 		
 		
 		//Set up the close button to remove the task
@@ -142,8 +157,6 @@ public class TaskView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!taskModel.getEditState())
 					TabController.getInstance().addTab(TabType.TASK, taskModel);
-				else
-					System.out.println("REfused to edit task");
 			}
 		});
 		add(btnEdit, "cell 2 3");
@@ -246,6 +259,9 @@ public class TaskView extends JPanel{
 		
 		this.taskModel.setTitle(task.getTitle());
 		this.lblNewTask.setText(task.getTitle());
+		
+		task.setDueDate(task.getDueDate());
+		this.lblDue.setText("Due: " + task.getDueDate());
 		
 		this.taskModel.setDescription(task.getDescription());
 		this.descriptionField.setText(task.getDescription());
