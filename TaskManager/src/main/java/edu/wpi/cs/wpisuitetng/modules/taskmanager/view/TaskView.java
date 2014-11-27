@@ -142,8 +142,8 @@ public class TaskView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!taskModel.getEditState())
 					TabController.getInstance().addTab(TabType.TASK, taskModel);
-				else{
-				}
+				else
+					System.out.println("REfused to edit task");
 			}
 		});
 		add(btnEdit, "cell 2 3");
@@ -220,13 +220,18 @@ public class TaskView extends JPanel{
 	 * @param newTaskModel
 	 */
 	public void setContents(TaskModel task){
-		this.lblNewTask.setText(task.getTitle());
-		this.descriptionField.setText(task.getDescription());
-		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
-		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
+		this.taskModel.setEditState(task.getEditState());
 		
-		if( task.getIsExpanded())
-			showDetails();
+		this.taskModel.setTitle(task.getTitle());
+		this.lblNewTask.setText(task.getTitle());
+		
+		this.taskModel.setDescription(task.getDescription());
+		this.descriptionField.setText(task.getDescription());
+		
+		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
+		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
+		this.taskModel.setActualEffort(task.getActualEffort());
+		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		
 		revalidate();
 		repaint();

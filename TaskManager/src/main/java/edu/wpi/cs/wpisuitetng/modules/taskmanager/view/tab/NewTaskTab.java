@@ -235,6 +235,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
+		taskModel.setEditState(false);
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 	}
