@@ -151,7 +151,6 @@ public class TaskView extends JPanel{
 	
 	/**
 	 * This method will override the default getPreferredSize and resize the task based on the size of its parent
-	 * THIS METHOD IS ALSO RESPONSIBLE FOR RESIZING THE TASK WHEN YOU CLICK ON IT
 	 */
 	public Dimension getPreferredSize() {
 		boolean isExpanded = taskModel.getIsExpanded();
@@ -175,6 +174,9 @@ public class TaskView extends JPanel{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#getHeight()
+	 */
 	public int getHeight() {
 		if( taskModel.getIsExpanded() )
 			return openSize;
@@ -203,14 +205,34 @@ public class TaskView extends JPanel{
 		revalidate();
 	}
 	
+	/**
+	 * given the task model, set the users this task is assigned to
+	 * @param task - the taskModel that contains the assigned users
+	 */
+	public void addAssignedUsers(TaskModel task){
+		assignedListModel.removeAllElements();
+		for( String username : task.getUsersAssignedTo() ){
+			assignedListModel.addElement( username );
+		}
+	}
+	
+	/**
+	 * @return the stageView associated with this task
+	 */
 	public StageView getStageView(){
 		return stageView;
 	}
 	
+	/**
+	 * @return the scrollPane that holds the task contents
+	 */
 	public JScrollPane getScrollPane(){
 		return taskContentPane;
 	}
 	
+	/**
+	 * @return the ID of this task
+	 */
 	public int getID(){
 		return id;
 	}
@@ -232,6 +254,8 @@ public class TaskView extends JPanel{
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
+		
+		this.addAssignedUsers(task);
 		
 		revalidate();
 		repaint();
