@@ -153,6 +153,7 @@ public class StageController implements ActionListener{
 				//If we found no match, add the task to the stageView
 				TaskView newTaskView = new TaskView(task, stage);
 				stage.addTaskView(newTaskView);
+				newTaskView.getPreferredSize();
 			}
 		}
 	}

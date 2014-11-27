@@ -155,17 +155,15 @@ public class TaskView extends JPanel{
 	public Dimension getPreferredSize() {
 		boolean isExpanded = taskModel.getIsExpanded();
 		Component parent = this.getParent();
-		Dimension parentSize = parent.getSize();
 		
-		if( parent == null )
-			return new Dimension(600,300);
-		else{
-			
+		if( parent == null)
+			return super.getPreferredSize();
+		else{	
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
+			Dimension parentSize = parent.getSize();
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
-				return new Dimension(parentSize.width,openSize);
-				
+				return new Dimension(parentSize.width,openSize);	
 			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
 			} else{
 				this.setMaximumSize(new Dimension(parentSize.width,closeSize));
@@ -188,7 +186,8 @@ public class TaskView extends JPanel{
 	 * Expand the task container to show details about the task
 	 */
 	public void showDetails(){
-		taskContents.setVisible(true);
+		taskContentPane.setVisible(true);
+		btnEdit.setVisible(true);
 		taskModel.setIsExpanded(true);
 		stageView.updatePreferredDimensions();
 		revalidate();
@@ -199,7 +198,8 @@ public class TaskView extends JPanel{
 	 * Collapse the task container and hide details about the task
 	 */
 	public void hideDetails(){
-		taskContents.setVisible(false);
+		taskContentPane.setVisible(false);
+		btnEdit.setVisible(false);
 		taskModel.setIsExpanded(false);
 		stageView.updatePreferredDimensions();
 		revalidate();
