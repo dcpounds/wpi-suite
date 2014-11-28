@@ -65,7 +65,7 @@ public class TaskView extends JPanel{
 		titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
-		titlePanel.addMouseListener(  new ExpandTaskController(this, taskModel) );
+		addMouseListener(  new ExpandTaskController(this, taskModel) );
 		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
 		
