@@ -1,15 +1,19 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
+	private final long DAY_IN_MILLIS = 24 * 60 * 60 * 1000;  // Static for converting milliseconds into days
 	private int estimatedEffort, actualEffort;
 	private int id;
 	private String title, description;
@@ -191,6 +195,19 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 */
 	public String getDueDate() {
 		return dueDate;
+	}
+	
+	public int daysUntilDue() throws ParseException{
+		int days = 0;
+		DateLabelFormatter format = new DateLabelFormatter();
+		Calendar currentTime = Calendar.getInstance();
+		Date due = (Date) format.stringToValue(getDueDate());
+		Calendar dueTime = Calendar.getInstance();
+		dueTime.setTime(due);
+		if(dueTime.after(currentTime)){
+			days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS));
+		}
+		return days;
 	}
 	
 	
