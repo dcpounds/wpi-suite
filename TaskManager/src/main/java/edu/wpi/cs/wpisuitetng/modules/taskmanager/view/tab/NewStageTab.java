@@ -13,7 +13,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Font;
@@ -99,7 +98,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 	
 	
 	public StageModel buildStage(){
-		StageModel stageModel = new StageModel(this.getStageTitle(), true);
+		StageModel stageModel = new StageModel(this.getStageTitle());
 		return stageModel;
 	}
 

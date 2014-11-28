@@ -34,10 +34,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 
 import javax.swing.JScrollPane;
 
@@ -181,8 +181,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		sbmtTaskButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				TaskModel task = buildTask();
-				new TaskController(task, action).act();
+				buildTask();
 				TabController.getInstance().removeTab(thisTab);
 			}	
 		});
@@ -219,10 +218,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	}
 	
 	/**
-	 * 
+	 * Given the input that the user provided, construct the task
 	 * @return - the task that has been built with the fields that the user entered
 	 */
-	public TaskModel buildTask() {
+	public void buildTask() {
+		StageModel stageModel = workflowModel.getStageModelList().get( this.getStageSelectionIndex() );
 		TaskModel taskModel = new TaskModel();
 		taskModel.setID( this.model.getID() );
 		String creatorName = ConfigManager.getConfig().getUserName();
@@ -234,8 +234,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setEstimatedEffort(this.getEstimatedEffort());
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
-		taskModel.setStageIndex(this.getStageSelectionIndex());
-		return taskModel;
+		taskModel.setStageID( stageModel.getID() );
+		taskModel.setEditState(false);
+		//Adds the task to the stageModel if it is new, or updataes it if it already exists
+		stageModel.addUpdateTaskModel(taskModel);
 	}
 	
 	/**

@@ -2,15 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.SwingUtilities;
-
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
@@ -32,7 +26,6 @@ public class WorkflowModel extends AbstractModel {
 		this.name = name;
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
-		addBaseStages();
 	}
 	
 	
@@ -43,7 +36,6 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageModelList = new ArrayList<StageModel>();
-		addBaseStages();
 	}
 	
 	
@@ -60,7 +52,7 @@ public class WorkflowModel extends AbstractModel {
 			System.out.println("You tried to add a task to an invalid stage position");
 			throw new IndexOutOfBoundsException();
 		}
-		StageModel oldStage = stageModelList.get(task.getStageIndex());
+		StageModel oldStage = this.getStageModelByID( task.getStageID() );
 		StageModel newStage = stageModelList.get(toStageIndex);
 		
 		
@@ -133,17 +125,6 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public void setUserList(User[] userList){
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
-	}
-	
-	
-	/**
-	 * adds the default list of stages to the main workflow
-	 */
-	private void addBaseStages(){
-		stageModelList.add(new StageModel("New", true));
-		stageModelList.add(new StageModel("Scheduled", true));
-		stageModelList.add(new StageModel("In Progress", true));
-		stageModelList.add(new StageModel("Completed", true));
 	}
 	
 	

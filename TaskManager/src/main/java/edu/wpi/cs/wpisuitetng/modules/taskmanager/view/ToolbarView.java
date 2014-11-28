@@ -2,32 +2,19 @@
  * 
  */
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
-
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Insets;
-
-import javafx.scene.image.Image;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.TaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 /**
  * Class representing the view of the toolbar at the top of the gui
@@ -74,10 +61,6 @@ public class ToolbarView extends JPanel {
 		});
         newTaskButton.setMargin(new Insets(0,0,0,0));
         
-        
-        JButton refreshButton = new JButton("Refresh");
-        refreshButton.addActionListener( new TaskController(new TaskModel(), ActionType.GET));
-        add(refreshButton);
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
     }

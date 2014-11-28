@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
  * Model for respresenting a stage that holds individual tasks
@@ -27,9 +31,9 @@ public class StageModel extends AbstractModel {
 	 * @param title - title of the stage
 	 * @param taskList - list of tasks to be added
 	 */
-	public StageModel(String title, boolean closable) {
+	public StageModel(String title) {
 		this.title = title;
-		this.closable = closable;
+		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
 		this.id = this.hashCode();
 		this.taskModelList = new ArrayList<TaskModel>();
 	}
@@ -40,6 +44,8 @@ public class StageModel extends AbstractModel {
 	 * database needs a class to identify the type to fetch
 	 */
 	public StageModel() {
+		this.taskModelList = new ArrayList<TaskModel>();
+		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
 	}
 
 	
@@ -58,8 +64,22 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to add to the list of tasks
 	 * @return - the list of tasks
 	 */
-	public ArrayList<TaskModel> addTaskModel(TaskModel task){
+	public ArrayList<TaskModel> addUpdateTaskModel(TaskModel task){
+		int index = 0;
+		for(TaskModel existingTask : this.getTaskModelList()){
+			if(existingTask.getID() == task.getID()){
+				this.getTaskModelList().set(index,task);
+				StageController.sendUpdateRequest(this);
+				return this.getTaskModelList();
+				
+			}
+			index++;
+		}
 		taskModelList.add(task);
+		StageController.sendUpdateRequest(this);
+		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
+		TaskView taskView = new TaskView(task, stageView);
+		stageView.addTaskView(taskView);
 		return taskModelList;
 	}
 	
@@ -190,6 +210,14 @@ public class StageModel extends AbstractModel {
 	 */
 	public boolean getClosable() {
 		return closable;
+	}
+	
+	
+	/**
+	 * @param closable - set whether or not this stage may be deleted
+	 */
+	public void setClosable(boolean closable){
+		this.closable = closable;
 	}
 
 
