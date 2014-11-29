@@ -8,22 +8,32 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+
 import javax.swing.JScrollPane;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
@@ -50,9 +60,9 @@ public class TaskView extends JPanel{
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
 	
-	public TaskView(TaskModel taskModel, StageView stageView) {
+	public TaskView(TaskModel taskModel, StageView stageView) throws ParseException {
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
-		setBackground(taskModel.getColor());
+		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		

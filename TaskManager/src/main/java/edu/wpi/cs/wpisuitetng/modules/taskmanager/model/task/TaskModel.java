@@ -27,6 +27,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private boolean isExpanded;
 	private boolean editState;
 	private boolean isArchived;
+	public Color color = Color.GREEN;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -207,13 +208,17 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 */
 	public int daysUntilDue(){
 		int days = 0;
-		DateLabelFormatter format = new DateLabelFormatter();
-		Calendar currentTime = Calendar.getInstance();
-		Date due = (Date) format.stringToValue(getDueDate());
-		Calendar dueTime = Calendar.getInstance();
-		dueTime.setTime(due);
-		if(dueTime.after(currentTime)){
-			days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS) + 1);
+		try{
+			DateLabelFormatter format = new DateLabelFormatter();
+			Calendar currentTime = Calendar.getInstance();
+			Date due = (Date) format.stringToValue(getDueDate());
+			Calendar dueTime = Calendar.getInstance();
+			dueTime.setTime(due);
+			if(dueTime.after(currentTime)){
+				days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS) + 1);
+			}
+		}catch(ParseException e){
+			e.printStackTrace();
 		}
 		return days;
 	}
@@ -223,13 +228,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @throws ParseException 
 	 */
 	public Color getColor(){
-		Color col = Color.GREEN;
+		color = Color.GREEN;
 		if(daysUntilDue() == 0){
-			col = Color.RED;
+			color = Color.RED;
 		}else if(daysUntilDue() <= timeThreshold){
-			col = Color.YELLOW;
+			color = Color.YELLOW;
 		}
-		return col;
+		return color;
 	}
 	
 	
