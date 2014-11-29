@@ -62,8 +62,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.stageID = updatedStage.stageID;
 		this.isArchived = updatedStage.isArchived;
 		this.timeThreshold = updatedStage.timeThreshold;
-		updatedStage.updateColor();
-		this.color = updatedStage.color;
+		this.color = updatedStage.updateColor();
 	}
 	
 	
