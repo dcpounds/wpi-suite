@@ -8,22 +8,32 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+
 import javax.swing.JScrollPane;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
@@ -31,7 +41,7 @@ import javax.swing.ListSelectionModel;
  * @author Alec
  * An accordian style expandable task view that can be inserted into the stages
  */
-public class TaskView extends JPanel{
+public class TaskView extends DragTaskPanel{
 	private static final long serialVersionUID = 6517799529927334536L;
 	private TaskModel taskModel;
 	private JPanel taskContents;

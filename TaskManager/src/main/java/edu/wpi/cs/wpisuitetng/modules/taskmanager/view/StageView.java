@@ -10,7 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
@@ -31,7 +33,7 @@ import javax.swing.JButton;
  * This view is responsible for rendering a stage that can be placed inside a workflow.
  *
  */
-public class StageView extends JPanel {
+public class StageView extends DragStagePanel {
 	private static final long serialVersionUID = 7765491802045400161L;
 	private String title;
 	private JPanel stagePane;
