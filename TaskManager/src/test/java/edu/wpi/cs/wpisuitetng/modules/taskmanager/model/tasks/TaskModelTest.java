@@ -33,7 +33,7 @@ public class TaskModelTest {
 		task.setEstimatedEffort(16);
 		task.setActualEffort(20);
 		task.setDescription("Test Description");
-		task.setDueDate("11-30-2014");
+		task.setDueDate("11/30/2014");
 		task.setCreationDate(new Date());
 		task.setIsExpanded(true);
 		task.setExpanded(true);
@@ -53,7 +53,7 @@ public class TaskModelTest {
 		assertEquals(16,task.getEstimatedEffort());
 		assertEquals(20,task.getActualEffort());
 		assertTrue("Test Description".equals(task.getDescription()));
-		assertTrue("11-30-2014".equals(task.getDueDate()));
+		assertTrue("11/30/2014".equals(task.getDueDate()));
 		assertEquals(2,task.daysUntilDue());
 		assertTrue(task.getIsExpanded());
 		assertTrue(task.identify(task1));

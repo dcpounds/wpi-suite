@@ -62,6 +62,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.stageID = updatedStage.stageID;
 		this.isArchived = updatedStage.isArchived;
 		this.timeThreshold = updatedStage.timeThreshold;
+		updatedStage.updateColor();
+		this.color = updatedStage.color;
 	}
 	
 	
@@ -199,7 +201,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @return the date that this task is due
 	 */
 	public String getDueDate() {
-		return dueDate;
+		return dueDate;		
 	}
 	
 	/**
@@ -219,15 +221,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 			}
 		}catch(ParseException e){
 			e.printStackTrace();
+			System.out.println("I FAILED to parse date");
 		}
 		return days;
 	}
 	
 	/**
 	 * @return returns the color of the task relative to its due date
-	 * @throws ParseException 
 	 */
-	public Color getColor(){
+	public Color updateColor(){
 		color = Color.GREEN;
 		if(daysUntilDue() == 0){
 			color = Color.RED;

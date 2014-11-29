@@ -60,9 +60,10 @@ public class TaskView extends JPanel{
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
 	
-	public TaskView(TaskModel taskModel, StageView stageView) throws ParseException {
+	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
-		setBackground(Color.LIGHT_GRAY);
+		taskModel.updateColor();
+		setBackground(taskModel.color);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -282,6 +283,7 @@ public class TaskView extends JPanel{
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		
 		this.addAssignedUsers(task);
+		this.taskModel.updateColor();
 		
 		revalidate();
 		repaint();

@@ -16,7 +16,9 @@ public class DateLabelFormatter extends AbstractFormatter {
 
     @Override
     public Object stringToValue(String text) throws ParseException{
-      
+    	if(!"-".equals(text.substring(2, 3))){
+    		text = text.substring(0, 2) + "-" + text.substring(3, 5) + "-" + text.substring(6);
+    	}
 		return dateFormatter.parseObject(text);
       
     }
