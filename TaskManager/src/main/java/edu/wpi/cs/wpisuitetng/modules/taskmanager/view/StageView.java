@@ -167,6 +167,7 @@ public class StageView extends DragStagePanel {
 	 */
 	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
+		this.getTaskViewList().remove(taskView);
 		updatePreferredDimensions();	
 		redrawStage();
 	}

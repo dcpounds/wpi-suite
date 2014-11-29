@@ -21,6 +21,9 @@ public class DragTaskPanel extends JPanel implements Transferable{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
+	 */
 	@Override
 	public Object getTransferData(DataFlavor flavor)
 			throws UnsupportedFlavorException, IOException {
@@ -31,12 +34,18 @@ public class DragTaskPanel extends JPanel implements Transferable{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		DataFlavor[] flavors = { TaskTransferHandler.getFlavor() };
 		return flavors;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
+	 */
 	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		return flavor.equals(TaskTransferHandler.getFlavor());

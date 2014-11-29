@@ -90,6 +90,9 @@ public class StageModel extends AbstractModel {
 	 */
 	public ArrayList<TaskModel> addTaskModelAtIndex(int index, TaskModel task){
 		taskModelList.add(index, task);
+		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
+		TaskView taskView = new TaskView(task, stageView);
+		stageView.addTaskViewAtIndex(index,taskView);
 		return taskModelList;
 	}
 	

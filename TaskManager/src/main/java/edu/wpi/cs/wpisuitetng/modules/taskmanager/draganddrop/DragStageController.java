@@ -26,6 +26,9 @@ public class DragStageController implements DropTargetListener{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dragOver(java.awt.dnd.DropTargetDragEvent)
+	 */
 	@Override
 	public void dragOver(DropTargetDragEvent dtde) {
 				Transferable transferable = dtde.getTransferable();
@@ -43,6 +46,9 @@ public class DragStageController implements DropTargetListener{
 				panel.setVisible(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
+	 */
 	@Override
 	public void drop(DropTargetDropEvent dtde) {
 		Transferable transferable = dtde.getTransferable();
@@ -60,6 +66,9 @@ public class DragStageController implements DropTargetListener{
 		stage.dropTask(panel, dtde.getLocation());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.DropTargetDragEvent)
+	 */
 	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {
 		// TODO Auto-generated method stub

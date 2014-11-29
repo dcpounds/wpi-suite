@@ -16,6 +16,9 @@ public class TaskTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = -7864499109197001974L;
 	private static DataFlavor flavor;
 	
+	/**
+	 * @return the dataFlavor that encapsulates the draggableTaskPanel 
+	 */
 	public static DataFlavor getFlavor() {
 		if(flavor == null){
 			try {
@@ -29,6 +32,9 @@ public class TaskTransferHandler extends TransferHandler {
 		return flavor;
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.TransferHandler#createTransferable(javax.swing.JComponent)
+	 */
 	public Transferable createTransferable(JComponent component) {
 		if (component instanceof Transferable) {
 			return (Transferable) component;
@@ -36,11 +42,18 @@ public class TaskTransferHandler extends TransferHandler {
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.TransferHandler#getSourceActions(javax.swing.JComponent)
+	 */
 	public int getSourceActions(JComponent component) {
 		setDragImage(component);
 		return TransferHandler.MOVE;
 	}
 	
+	/**
+	 * @param component - the component to make the graphic from
+	 * Generates a drag image so that the user can see what they're dragging
+	 */
 	public void setDragImage(JComponent component){
 		Image image = new BufferedImage(component.getWidth(), component.getHeight(),BufferedImage.TYPE_INT_RGB);
 		Graphics graphic = image.getGraphics().create();
@@ -48,6 +61,9 @@ public class TaskTransferHandler extends TransferHandler {
 		setDragImage(image);
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.TransferHandler#exportDone(javax.swing.JComponent, java.awt.datatransfer.Transferable, int)
+	 */
 	@Override
 	protected void exportDone(JComponent component, Transferable data, int action) {
 		component.setVisible(true);
