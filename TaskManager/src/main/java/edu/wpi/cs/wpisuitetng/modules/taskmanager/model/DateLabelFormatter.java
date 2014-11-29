@@ -15,12 +15,19 @@ public class DateLabelFormatter extends AbstractFormatter {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     @Override
-    public Object stringToValue(String text) throws ParseException {
-        return dateFormatter.parseObject(text);
+    public Object stringToValue(String text){
+        try {
+			return dateFormatter.parseObject(text);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Invalid Date Entered");
+		}
+        return null;
     }
 
     @Override
-    public String valueToString(Object value) throws ParseException {
+    public String valueToString(Object value){
         if (value != null) {
             Calendar cal = (Calendar) value;
             return dateFormatter.format(cal.getTime());

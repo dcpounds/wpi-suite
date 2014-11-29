@@ -1,4 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task;
+import java.awt.Color;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,6 +23,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private Date creationDate;
 	private String dueDate;
 	private int stageID;
+	private int timeThreshold;
 	private boolean isExpanded;
 	private boolean editState;
 	private boolean isArchived;
@@ -37,6 +39,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = new String();
 		this.stageID = 0;
+		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
 	}
@@ -57,6 +60,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = updatedStage.isExpanded;
 		this.stageID = updatedStage.stageID;
 		this.isArchived = updatedStage.isArchived;
+		this.timeThreshold = updatedStage.timeThreshold;
 	}
 	
 	
@@ -197,7 +201,11 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return dueDate;
 	}
 	
-	public int daysUntilDue() throws ParseException{
+	/**
+	 * @return number of days until the task is due
+	 * @throws ParseException
+	 */
+	public int daysUntilDue(){
 		int days = 0;
 		DateLabelFormatter format = new DateLabelFormatter();
 		Calendar currentTime = Calendar.getInstance();
@@ -205,9 +213,23 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		Calendar dueTime = Calendar.getInstance();
 		dueTime.setTime(due);
 		if(dueTime.after(currentTime)){
-			days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS));
+			days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS) + 1);
 		}
 		return days;
+	}
+	
+	/**
+	 * @return returns the color of the task relative to its due date
+	 * @throws ParseException 
+	 */
+	public Color getColor(){
+		Color col = Color.GREEN;
+		if(daysUntilDue() == 0){
+			col = Color.RED;
+		}else if(daysUntilDue() <= timeThreshold){
+			col = Color.YELLOW;
+		}
+		return col;
 	}
 	
 	

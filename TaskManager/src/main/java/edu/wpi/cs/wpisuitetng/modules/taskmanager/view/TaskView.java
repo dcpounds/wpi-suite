@@ -52,7 +52,7 @@ public class TaskView extends JPanel{
 	
 	public TaskView(TaskModel taskModel, StageView stageView) {
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(taskModel.getColor());
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
