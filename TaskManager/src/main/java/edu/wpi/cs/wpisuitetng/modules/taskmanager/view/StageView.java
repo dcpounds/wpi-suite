@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
@@ -81,6 +82,10 @@ public class StageView extends DragStagePanel {
 		setBackground(new Color(135, 206, 250));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
 		updatePreferredDimensions();
+		
+		DragStageController dragController = new DragStageController(this);
+		this.addMouseListener(dragController);
+		this.addMouseMotionListener(dragController);
 	}
 	
 	

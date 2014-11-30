@@ -24,6 +24,7 @@ public class StageModel extends AbstractModel {
 	private boolean closable;
 	private boolean isArchived;
 	private int id;
+	private int index;
 	private ArrayList<TaskModel> taskModelList;
 	
 	/**
@@ -36,6 +37,7 @@ public class StageModel extends AbstractModel {
 		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
 		this.id = this.hashCode();
 		this.taskModelList = new ArrayList<TaskModel>();
+		this.index = -1;
 	}
 	
 	
@@ -46,6 +48,7 @@ public class StageModel extends AbstractModel {
 	public StageModel() {
 		this.taskModelList = new ArrayList<TaskModel>();
 		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
+		this.index = -1;
 	}
 
 	
@@ -142,6 +145,14 @@ public class StageModel extends AbstractModel {
 	 */
 	public void setID(int id){
 		this.id = id;
+	}
+	
+	public int getIndex(){
+		return index;
+	}
+	
+	public void setIndex(int index){
+		this.index = index;
 	}
 	
 	
