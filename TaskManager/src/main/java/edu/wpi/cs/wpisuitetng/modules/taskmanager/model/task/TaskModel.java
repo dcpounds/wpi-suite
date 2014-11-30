@@ -31,28 +31,28 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = "";
 		this.creationDate = new Date();
 		this.usersAssignedTo = new ArrayList<String>();
-		this.dueDate = new String();
+		this.dueDate = "";
 		this.stageID = 0;
 		this.isExpanded = false;
 		this.isArchived = false;
 	}
 	
 	/** Copies the contents of updatedStage into this one
-	 * @param updatedStage the stage to copy from
+	 * @param updatedTask the stage to copy from
 	 */
-	public void copyFrom(TaskModel updatedStage) {
-		this.id = updatedStage.id;
-		this.estimatedEffort = updatedStage.estimatedEffort;
-		this.actualEffort = updatedStage.actualEffort;
-		this.title = updatedStage.title;
-		this.creatorName = updatedStage.getCreatorName();
-		this.description = updatedStage.description;
-		creationDate = updatedStage.creationDate;
-		usersAssignedTo = updatedStage.usersAssignedTo;
-		dueDate = updatedStage.dueDate;	
-		this.isExpanded = updatedStage.isExpanded;
-		this.stageID = updatedStage.stageID;
-		this.isArchived = updatedStage.isArchived;
+	public void copyFrom(TaskModel updatedTask) {
+		id = updatedTask.getID();
+		estimatedEffort = updatedTask.getEstimatedEffort();
+		actualEffort = updatedTask.getActualEffort();
+		title = updatedTask.getTitle();
+		creatorName = updatedTask.getCreatorName();
+		description = updatedTask.getDescription();
+		creationDate = updatedTask.getCreationDate();
+		usersAssignedTo = updatedTask.getUsersAssignedTo();
+		dueDate = updatedTask.getDueDate();	
+		isExpanded = updatedTask.getIsExpanded();
+		stageID = updatedTask.getStageID();
+		isArchived = updatedTask.getIsArchived();
 	}
 	
 	

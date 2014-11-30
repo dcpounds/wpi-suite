@@ -19,7 +19,7 @@ public class WorkflowController {
 						sleep(4000);
 						new StageController(new StageModel(), ActionType.GET).act();
 					} catch (Exception e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 			}
