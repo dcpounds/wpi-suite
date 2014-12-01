@@ -116,12 +116,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Let the user decide where to put the task
 		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "cell 1 0");
+		add(stageLabel, "cell 1 0, pad 0 5 0 0");
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
 		//stageBox.setSelectedIndex(this.taskModel.getStageID());
-		add(stageBox, "cell 1 1");
+		add(stageBox, "cell 1 1, pad 0 5 0 0");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
@@ -130,16 +130,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Let the user specify the number of critical days before due
 		JLabel daysUntilLabel = new JLabel("Critical days before Deadline");
-		add(daysUntilLabel, "cell 1 0");
+		add(daysUntilLabel, "flowx, cell 1 0, alignx right, pad 0 0 0 50");
 		daysUntilError = new JLabel("Must specify number of days");
 		daysUntilError.setForeground(Color.red);
-		add(daysUntilError, "flowx,cell 1 0");
+		add(daysUntilError, "flowx,cell 1 0, alignx right, pad 0 0 0 50");
 		daysUntilError.setVisible(false);
 		
 		daysUntilField = new JTextField();
-		daysUntilField.setText(Integer.toString(model.getTimeThreshold()));
+		daysUntilField.setText(Integer.toString(this.taskModel.getTimeThreshold()));
 		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
-		add(daysUntilField, "flowx,cell 1 1,alignx left");
+		add(daysUntilField, "flowx,cell 1 1, gap 100");
 		daysUntilField.setColumns(10);
 		daysUntilField.addKeyListener(this);
 		
