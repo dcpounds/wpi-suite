@@ -46,18 +46,18 @@ public class AssignUsersView extends JPanel{
 		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
 		
 		JLabel lblAssignUsers = new JLabel("Assign Users To This Task");
-		add(lblAssignUsers, "cell 1 0 5 1,alignx center,aligny top");
+		add(lblAssignUsers, "cell 0 0 5 1,alignx left,aligny top");
 		
 		JLabel lblUsersNotAssigned = new JLabel("Users not assigned:");
-		lblUsersNotAssigned.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblUsersNotAssigned, "cell 1 1");
+		lblUsersNotAssigned.setHorizontalAlignment(SwingConstants.LEFT);
+		add(lblUsersNotAssigned, "cell 0 1");
 		
 		JLabel lblUsersAssigned = new JLabel("Users assigned");
-		lblUsersAssigned.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblUsersAssigned, "cell 5 1");
+		lblUsersAssigned.setHorizontalAlignment(SwingConstants.LEFT);
+		add(lblUsersAssigned, "cell 4 1");
 		
 		JScrollPane unassignedScrollPane = new JScrollPane();
-		add(unassignedScrollPane, "cell 1 2,growy");
+		add(unassignedScrollPane, "cell 0 2,growy");
 		
 		//List of unassigned users
 		unassignedListModel = new DefaultListModel<String>();
@@ -66,7 +66,7 @@ public class AssignUsersView extends JPanel{
 		unassignedScrollPane.setViewportView(unassignedListComponent);
 		
 		JScrollPane assignedScrollPane = new JScrollPane();
-		add(assignedScrollPane, "cell 5 2,growy");
+		add(assignedScrollPane, "cell 4 2,growy");
 		
 		//List of assigned users
 		assignedListModel = new DefaultListModel<String>();
@@ -76,11 +76,11 @@ public class AssignUsersView extends JPanel{
 		
 		JButton btnAssign = new JButton("Assign >>");
 		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
-		add(btnAssign, "cell 1 3,alignx center");
+		add(btnAssign, "cell 0 3,alignx center");
 		
 		JButton buttonUnassign = new JButton("<< Unassign");
 		buttonUnassign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.UNASSIGN) );
-		add(buttonUnassign, "cell 5 3,alignx center");
+		add(buttonUnassign, "cell 4 3,alignx center");
 	
 	}
 	

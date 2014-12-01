@@ -33,7 +33,6 @@ public class ClosableTabView extends JPanel{
 	/**
 	 * construct the panel to make a tab closable
 	 * 
-	 * @param view - the parent pane that houses all the tabs
 	 * @param tabModel - the tab's model
 	 * @param paneComponent - the child component that this tab is attached to
 	 */

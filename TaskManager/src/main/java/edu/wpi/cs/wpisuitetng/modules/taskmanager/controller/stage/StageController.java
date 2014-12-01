@@ -201,8 +201,9 @@ public class StageController implements ActionListener{
 					continue;
 				}
 			}
-			if(stage.getIsArchived())
+			if(stage.getIsArchived()){
 				continue;
+			}
 			addStage(stage);
 		}
 	}
