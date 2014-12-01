@@ -8,8 +8,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -52,7 +54,7 @@ import javax.swing.JScrollPane;
 public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
-	private TaskModel model;
+	private TaskModel taskModel;
 	private JTextField taskTitleField;
 	private JTextField estEffortField;
 	private JTextField actEffortField;
@@ -91,11 +93,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Decide what action the user is taking	
 		if(model == null){
-			this.model = new TaskModel();
+			this.taskModel = new TaskModel();
 			this.action = ActionType.CREATE;
 		} else{
-			this.model = model;
-			this.model.setEditState(true);
+			this.taskModel = model;
+			this.taskModel.setEditState(true);
 			this.action = ActionType.EDIT;
 		}
 		
@@ -107,7 +109,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the task title
 		taskTitleField = new JTextField();
-		taskTitleField.setText(this.model.getTitle());
+		taskTitleField.setText(this.taskModel.getTitle());
 		add(taskTitleField, "flowx,cell 0 1,alignx left");
 		taskTitleField.setColumns(35);
 		taskTitleField.addKeyListener(this);
@@ -118,6 +120,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
+		//stageBox.setSelectedIndex(this.taskModel.getStageID());
 		add(stageBox, "cell 1 1");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -134,7 +137,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		daysUntilError.setVisible(false);
 		
 		daysUntilField = new JTextField();
-		daysUntilField.setText(Integer.toString(this.model.getTimeThreshold()));
+		daysUntilField.setText(Integer.toString(model.getTimeThreshold()));
 		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
 		add(daysUntilField, "flowx,cell 1 1,alignx left");
 		daysUntilField.setColumns(10);
@@ -151,7 +154,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		descriptionEmptyError.setVisible(false);
 		descriptionScrollPane = new JScrollPane();
 		add(descriptionScrollPane, "cell 0 3,grow");
-		taskDescriptionField = new JTextArea(this.model.getDescription());
+		taskDescriptionField = new JTextArea(this.taskModel.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
 		taskDescriptionField.setColumns(45);
@@ -172,7 +175,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Set the estimated effort
 		estEffortField = new JTextField();
-		estEffortField.setText(Integer.toString(this.model.getEstimatedEffort()));
+		estEffortField.setText(Integer.toString(this.taskModel.getEstimatedEffort()));
 		add(estEffortField, "flowx,cell 1 5,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
@@ -181,7 +184,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		JLabel actEffortLabel = new JLabel("Actual Effort");
 		add(actEffortLabel, "flowx,cell 1 6");
 		actEffortField = new JTextField();
-		actEffortField.setText(Integer.toString(this.model.getActualEffort()));
+		actEffortField.setText(Integer.toString(this.taskModel.getActualEffort()));
 		add(actEffortField, "flowx,cell 1 7,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
@@ -220,6 +223,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		dateNotAddedError.setVisible(false);
 		
 		dateModel = new UtilDateModel();
+		if(!this.taskModel.getDueDate().equals("")){
+			try{
+				Date date = new SimpleDateFormat("MM/dd/yyyy").parse(this.taskModel.getDueDate());
+				dateModel.setValue(date);
+			} catch(ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -231,7 +242,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
 		
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 	
 	/**
@@ -241,7 +252,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public void buildTask() {
 		StageModel stageModel = workflowModel.getStageModelList().get( this.getStageSelectionIndex() );
 		TaskModel taskModel = new TaskModel();
-		taskModel.setID( this.model.getID() );
+		taskModel.setID( this.taskModel.getID() );
 		String creatorName = ConfigManager.getConfig().getUserName();
 		taskModel.setCreator( creatorName );
 		taskModel.setTitle(this.getTitleLabelText());
@@ -262,7 +273,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * Checks that all the requirements for creating a new task are met and updates the correct fields
 	 * indicating what if anything still needs to be done.
 	 */
-	public void checkAndUpdateFields(){
+	public void checkForErrors(){
 		boolean isTitleTextFull = taskTitleField.getText().isEmpty()? false: true;	
 		titleEmptyError.setVisible(!isTitleTextFull);
 		
@@ -298,23 +309,23 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 	  
 	public int getEstimatedEffort(){
@@ -405,27 +416,27 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 		
 	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		checkAndUpdateFields();
+		checkForErrors();
 	}
 	
 }

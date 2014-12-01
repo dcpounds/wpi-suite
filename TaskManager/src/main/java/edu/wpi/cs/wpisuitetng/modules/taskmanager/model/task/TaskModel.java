@@ -38,7 +38,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = "";
 		this.creationDate = new Date();
 		this.usersAssignedTo = new ArrayList<String>();
-		this.dueDate = new String();
+		this.dueDate = "";
 		this.stageID = 0;
 		this.timeThreshold = 1;
 		this.isExpanded = false;
@@ -46,22 +46,22 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	
 	/** Copies the contents of updatedStage into this one
-	 * @param updatedStage the stage to copy from
+	 * @param updatedTask the stage to copy from
 	 */
 	public void copyFrom(TaskModel updatedStage) {
 		this.id = updatedStage.id;
-		this.estimatedEffort = updatedStage.estimatedEffort;
-		this.actualEffort = updatedStage.actualEffort;
+		this.estimatedEffort = updatedStage.getEstimatedEffort();
+		this.actualEffort = updatedStage.getActualEffort();
 		this.title = updatedStage.title;
 		this.creatorName = updatedStage.getCreatorName();
-		this.description = updatedStage.description;
-		creationDate = updatedStage.creationDate;
-		usersAssignedTo = updatedStage.usersAssignedTo;
-		dueDate = updatedStage.dueDate;	
-		this.isExpanded = updatedStage.isExpanded;
-		this.stageID = updatedStage.stageID;
-		this.isArchived = updatedStage.isArchived;
-		this.timeThreshold = updatedStage.timeThreshold;
+		this.description = updatedStage.getDescription();
+		creationDate = updatedStage.getCreationDate();
+		usersAssignedTo = updatedStage.getUsersAssignedTo();
+		dueDate = updatedStage.getDueDate();	
+		this.isExpanded = updatedStage.getIsExpanded();
+		this.stageID = updatedStage.getStageID();
+		this.isArchived = updatedStage.getIsArchived();
+		this.timeThreshold = updatedStage.getTimeThreshold();
 		this.color = updatedStage.updateColor();
 	}
 	

@@ -36,7 +36,6 @@ import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskEntityManager;
 
 /**
@@ -78,7 +77,6 @@ public class ManagerLayer {
 		map.put("postboardpostboardmessage", new PostBoardEntityManager(data));
 		map.put("requirementmanager" + "requirement", new RequirementEntityManager(data));
 		map.put("requirementmanager" + "iteration", new IterationEntityManager(data));
-		map.put("taskmanager" + "workflowmodel", new WorkflowEntityManager(data));
 		map.put("taskmanager" + "task", new TaskEntityManager(data));
 		map.put("taskmanager" + "stage", new StageEntityManager(data));
 		
