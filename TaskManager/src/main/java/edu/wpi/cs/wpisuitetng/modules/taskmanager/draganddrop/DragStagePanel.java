@@ -39,37 +39,12 @@ public class DragStagePanel extends JPanel{
 		StageModel oldStageModel = workflowModel.getStageModelByID(oldStageView.getID());
 		StageModel newStageModel = workflowModel.getStageModelByID(newStageView.getID());
 		
-		int index = getIndexAtPoint(dropPoint);
 		oldStageView.removeTaskView(taskView);
 		oldStageModel.removeTask(taskModel);
 		taskModel.setStageID(newStageView.getID());
-		newStageModel.addTaskModelAtIndex(index, taskModel);
+		newStageModel.addTaskModelAtIndex(taskModel);
 		StageController.sendUpdateRequest(oldStageModel);
 		StageController.sendUpdateRequest(newStageModel);
 
-	}
-	
-	/**
-	 * @param point - the coordinate within the target stage that the user dropped the task 
-	 * @return the index at which to put the stage into 
-	 */
-	public int getIndexAtPoint(Point point){
-		TaskView closestTask = null;
-		double shortestDistance = Double.MAX_VALUE;
-		for(TaskView taskView : ((StageView) this).getTaskViewList()){
-			Point taskLocation = taskView.getLocation();
-			double dy = taskLocation.y - point.y;
-			double dx = taskLocation.x - point.x;
-			double distance = Math.sqrt( Math.pow(dx,2) + Math.pow(dy,2) );
-			if(distance < shortestDistance){
-				shortestDistance = distance;
-				closestTask = taskView;
-			}
-		}
-		int index = ((StageView)this).getTaskViewList().indexOf(closestTask);
-		if(index < 0)
-			return 0;
-		System.out.println("Index of drop is " + index);
-		return index;
 	}
 }

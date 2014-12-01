@@ -233,7 +233,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 * @return - the task that has been built with the fields that the user entered
 	 */
 	public void buildTask() {
-		StageModel stageModel = workflowModel.getStageModelList().get( this.getStageSelectionIndex() );
+		StageModel stageModel = null;
+		for(StageModel stage : workflowModel.getStageModelList().values()){
+			if(stage.getTitle() == stageBox.getSelectedItem())
+				stageModel = stage;
+		}
+		
 		TaskModel taskModel = new TaskModel();
 		taskModel.setID( this.taskModel.getID() );
 		String creatorName = ConfigManager.getConfig().getUserName();
@@ -362,7 +367,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 	public String[] getStatusOptions(){
 		ArrayList<String> statusOptions = new ArrayList<String>();
-		for( StageModel stage : workflowModel.getStageModelList() ){
+		for( StageModel stage : workflowModel.getStageModelList().values() ){
 			statusOptions.add( stage.getTitle() );
 		}
 		return statusOptions.toArray( new String[statusOptions.size() ]);

@@ -137,17 +137,15 @@ public class StageController implements ActionListener{
 	 * @param stage - the stageView to add the taskViews to
 	 */
 	public void syncTaskViews(StageModel stageModel, StageView stage){
-		for( TaskModel task : stageModel.getTaskModelList()){
+		for( TaskModel task : stageModel.getTaskModelList().values() ){
 			//Skip if the task is archived
 			boolean matched = false;
-			for(TaskView taskView : stage.getTaskViewList()){
-				//If we found a taskView with the same ID as the taskModel (a match)
-				if(taskView.getID() == task.getID()){
-					//update this taskView and continue
-					taskView.setContents(task);
-					matched = true;
-					break;
-				}
+			//go through all the taskModels aand look for the taskView
+			TaskView taskView = stage.getTaskViewList().get(task.getID());
+			if(taskView != null){
+				taskView.setContents(task);
+				matched = true;
+				break;
 			}
 			if(!matched){
 				//If we found no match, add the task to the stageView
@@ -166,15 +164,12 @@ public class StageController implements ActionListener{
 	public static void deleteTask(TaskView taskView, StageView stageView){
 		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
 		try{
-			for( TaskModel task : stageModel.getTaskModelList()){
-				if(task.getID() == taskView.getID()){
-					stageModel.removeTask(task);
-					stageView.removeTaskView(taskView);
-					StageController.sendUpdateRequest(stageModel);
-					stageView.repaint();
-					return;
-				}
-			}
+			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
+			stageModel.removeTask(task);
+			stageView.removeTaskView(taskView);
+			StageController.sendUpdateRequest(stageModel);
+			stageView.repaint();
+			return;
 		} catch(Exception e){
 			System.out.println("Could not remove. Either the task could not be found"
 					+ " or the stage could not be found");

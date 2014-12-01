@@ -25,7 +25,6 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	private int mouseX;
 	private int mouseY;
 	private int stageID;
-	private int targetIndex;
 	private StageModel stageModel;
 	private WorkflowView workflowView;
 	
@@ -104,15 +103,13 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		stage.setLocation(e.getX(), stage.getY());
 		int overlap = stage.getX() + (stage.getWidth()/3);
 		
-		for(StageView view : TabController.getTabView().getWorkflowView().getStageViewList() ){
+		for(StageView view : TabController.getTabView().getWorkflowView().getStageViewList().values() ){
 			if(view == stage)
 				continue;
 			
 			if(view.getX() < overlap && (view.getX() + stage.getWidth() > overlap)){
 				//The position we will put our stage in if the user lets go of the mouse
 				this.targetXPos = view.getX();
-				this.targetIndex = workflowView.getStageViewList().indexOf(view);
-				System.out.println("Moving stage to target index " + targetIndex);
 				//Put the stage we're displacing at the old initialXPos
 				view.setLocation(initialXPos, stage.getY() );
 				this.initialXPos = targetXPos;
@@ -161,7 +158,6 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		this.stageModel = WorkflowController.getWorkflowModel().getStageModelByID(stageID);
 		stage.setLocation(targetXPos, stage.getLocation().y);
 		initialXPos = stage.getX();
-		stageModel.setIndex(targetIndex);
 		StageController.sendUpdateRequest(stageModel);
 		
 		// TODO Auto-generated method stub
