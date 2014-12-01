@@ -2,7 +2,10 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -14,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	private ArrayList<StageModel> stageModelList;
+	private HashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 
 	/**
@@ -22,7 +25,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param name - the name of the workflow (usually "main")
 	 * @param stageList
 	 */
-	public WorkflowModel(String name, ArrayList<StageModel> stageList){
+	public WorkflowModel(String name, HashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
@@ -35,33 +38,7 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageModelList = new ArrayList<StageModel>();
-	}
-	
-	
-	
-	/**
-	 * Moves a taskModel from one stage to another and puts it at the given index within the stage
-	 * @param task - the task to move
-	 * @param stageIndex - the index of the stage to move to
-	 * @param taskIndex - the index within the stage to put the task into
-	 * @throws IndexOutOfBoundsException
-	 */
-	public void moveTask(TaskModel task, int toStageIndex, int toTaskIndex) throws IndexOutOfBoundsException{
-		if(toStageIndex < 0 || toStageIndex > stageModelList.size() ){
-			System.out.println("You tried to add a task to an invalid stage position");
-			throw new IndexOutOfBoundsException();
-		}
-		StageModel oldStage = this.getStageModelByID( task.getStageID() );
-		StageModel newStage = stageModelList.get(toStageIndex);
-		
-		
-		if(toTaskIndex < 0 || toTaskIndex > newStage.getTaskModelList().size() ){
-			System.out.println("You tried to add a task to an invalid position in the stage");
-			throw new IndexOutOfBoundsException();
-		}
-		oldStage.removeTask(task);
-		newStage.addTaskModelAtIndex(toTaskIndex, task);
+		this.stageModelList = new HashMap<Integer, StageModel>();
 	}
 	
 	
@@ -76,7 +53,7 @@ public class WorkflowModel extends AbstractModel {
 	/**
 	 * @return a list of stages in the workflow
 	 */
-	public ArrayList<StageModel> getStageModelList() {
+	public HashMap<Integer, StageModel> getStageModelList() {
 		return stageModelList;
 	}
 	
@@ -85,18 +62,8 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public ArrayList<StageModel> addStage(StageModel stage) {
-		stageModelList.add(stage);
-		return stageModelList;
-	}
-	
-	/**
-	 * @param index - the index to put the stage into
-	 * @param stage - the stage to add
-	 * @return
-	 */
-	public ArrayList<StageModel> addStage(int index, StageModel stage){
-		stageModelList.add(index, stage);
+	public HashMap<Integer, StageModel> addStage(StageModel stage) {
+		stageModelList.put(stage.getID(),stage);
 		return stageModelList;
 	}
 	
@@ -105,8 +72,8 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public ArrayList<StageModel> removeStageModel(StageModel stage) {
-		stageModelList.remove(stage);
+	public HashMap<Integer, StageModel> removeStageModel(StageModel stage) {
+		stageModelList.remove(stage.getID());
 		return stageModelList;
 	}
 	
@@ -133,11 +100,10 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the taskModel if successful, null otherwise
 	 */
 	public TaskModel getTaskModelByID(int id){
-		for( StageModel stageModel : stageModelList ){
-			for( TaskModel task : stageModel.getTaskModelList() ){
-				if(task.getID() == id)
-					return task;
-			}
+		for( StageModel stageModel : stageModelList.values()){
+			TaskModel task = stageModel.getTaskModelList().get(id);
+			if(task != null)
+				return task;
 		}
 		return null;
 	}
@@ -148,11 +114,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @return - the stageModel if successful, nul otherwise
 	 */
 	public StageModel getStageModelByID(int id){
-		for( StageModel stage : stageModelList ){
-			if( stage.getID() == id)
-				return stage;
-		}
-		return null;
+		return stageModelList.get(id);
 	}
 	
 	

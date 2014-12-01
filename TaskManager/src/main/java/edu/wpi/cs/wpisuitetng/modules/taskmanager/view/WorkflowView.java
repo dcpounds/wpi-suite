@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,7 +23,7 @@ import javax.swing.BoxLayout;
  */
 public class WorkflowView extends JPanel {
 	private static final long serialVersionUID = -3276090208342185552L;
-	private ArrayList<StageView> stageViewList;
+	private HashMap<Integer,StageView> stageViewList;
 	private JPanel workflowPanel;
 	private JScrollPane scrollBar;
 	
@@ -40,8 +41,8 @@ public class WorkflowView extends JPanel {
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
-		stageViewList = new ArrayList<StageView>();
-		for(StageModel stageModel : workflowModel.getStageModelList() ){
+		stageViewList = new HashMap<Integer,StageView>();
+		for(StageModel stageModel : workflowModel.getStageModelList().values() ){
 			StageView stageToAdd = new StageView(stageModel, this);
 			addStageView( stageToAdd );
 		}
@@ -52,9 +53,9 @@ public class WorkflowView extends JPanel {
 	 * get the list of stage views in the workflow 
 	 * @return the list of StageViews in the workflow view
 	 */
-	public ArrayList<StageView> getStageViewList() {
+	public HashMap<Integer,StageView> getStageViewList() {
 		if(stageViewList.size() == 0){
-			return new ArrayList<StageView>();
+			return new HashMap<Integer,StageView>();
 		}
 		return this.stageViewList;
 	}
@@ -66,7 +67,7 @@ public class WorkflowView extends JPanel {
 	 */
 	public void addStageView(StageView stageView){
 		workflowPanel.add(stageView);
-		stageViewList.add(stageView);
+		stageViewList.put(stageView.getID(),stageView);
 		revalidate();
 		repaint();
 	}
@@ -77,7 +78,7 @@ public class WorkflowView extends JPanel {
 	 */
 	public void removeStageView(StageView stageView){
 		workflowPanel.remove(stageView);
-		stageViewList.remove(stageView);
+		stageViewList.remove(stageView.getID());
 		revalidate();
 		repaint();
 	}
@@ -88,17 +89,7 @@ public class WorkflowView extends JPanel {
 	 * @return - the stage with the given title, null otherwise
 	 */
 	public StageView getStageViewByID(int id) {
-		for( StageView stageView : stageViewList ){
-			if( stageView.getID() == id)
-				return stageView;
-		}
-		return null;
-	}
-	
-	public void clearAllTaskViews(){
-		for ( StageView stageView : stageViewList ){
-			
-		}
+		return stageViewList.get(id);
 	}
 	
 	/**

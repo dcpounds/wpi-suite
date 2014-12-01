@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 
@@ -24,7 +25,8 @@ public class StageModel extends AbstractModel {
 	private boolean closable;
 	private boolean isArchived;
 	private int id;
-	private ArrayList<TaskModel> taskModelList;
+	private int index;
+	private HashMap<Integer, TaskModel> taskModelList;
 	
 	/**
 	 * constructs a new stage
@@ -35,7 +37,8 @@ public class StageModel extends AbstractModel {
 		this.title = title;
 		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
 		this.id = this.hashCode();
-		this.taskModelList = new ArrayList<TaskModel>();
+		this.taskModelList = new HashMap<Integer, TaskModel>();
+		this.index = -1;
 	}
 	
 	
@@ -44,8 +47,9 @@ public class StageModel extends AbstractModel {
 	 * database needs a class to identify the type to fetch
 	 */
 	public StageModel() {
-		this.taskModelList = new ArrayList<TaskModel>();
+		this.taskModelList = new HashMap<Integer, TaskModel>();
 		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
+		this.index = -1;
 	}
 
 	
@@ -64,18 +68,14 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to add to the list of tasks
 	 * @return - the list of tasks
 	 */
-	public ArrayList<TaskModel> addUpdateTaskModel(TaskModel task){
-		int index = 0;
-		for(TaskModel existingTask : this.getTaskModelList()){
-			if(existingTask.getID() == task.getID()){
-				this.getTaskModelList().set(index,task);
-				StageController.sendUpdateRequest(this);
-				return this.getTaskModelList();
-				
-			}
-			index++;
+	public HashMap<Integer,TaskModel> addUpdateTaskModel(TaskModel task){
+		if( taskModelList.get(task.getID()) != null ){
+			taskModelList.put(task.getID(), task);
+			StageController.sendUpdateRequest(this);
+			return this.getTaskModelList();
 		}
-		taskModelList.add(task);
+			
+		taskModelList.put(task.getID(),task);
 		StageController.sendUpdateRequest(this);
 		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
 		TaskView taskView = new TaskView(task, stageView);
@@ -88,8 +88,11 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to add to the list of taskModels
 	 * @return the updated list of taskModels
 	 */
-	public ArrayList<TaskModel> addTaskModelAtIndex(int index, TaskModel task){
-		taskModelList.add(index, task);
+	public HashMap<Integer,TaskModel> addTaskModelAtIndex(TaskModel task){
+		taskModelList.put(task.getID(), task);
+		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
+		TaskView taskView = new TaskView(task, stageView);
+		stageView.addTaskViewAtIndex(index,taskView);
 		return taskModelList;
 	}
 	
@@ -98,8 +101,8 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to remove from the list of tasks
 	 * @return - the updated list of tasks
 	 */
-	public ArrayList<TaskModel> removeTask(TaskModel task){
-		taskModelList.remove(task);
+	public HashMap<Integer,TaskModel> removeTask(TaskModel task){
+		taskModelList.remove(task.getID());
 		return taskModelList;
 	}
 	
@@ -130,7 +133,7 @@ public class StageModel extends AbstractModel {
 	/**
 	 * @return - the list of taskModels in this stage
 	 */
-	public ArrayList<TaskModel>getTaskModelList(){
+	public HashMap<Integer,TaskModel> getTaskModelList(){
 		return this.taskModelList;
 	}
 	
@@ -139,6 +142,14 @@ public class StageModel extends AbstractModel {
 	 */
 	public void setID(int id){
 		this.id = id;
+	}
+	
+	public int getIndex(){
+		return index;
+	}
+	
+	public void setIndex(int index){
+		this.index = index;
 	}
 	
 	

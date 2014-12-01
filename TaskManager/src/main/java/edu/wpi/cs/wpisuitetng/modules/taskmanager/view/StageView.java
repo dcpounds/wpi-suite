@@ -10,8 +10,12 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
 import javax.swing.JLabel;
@@ -20,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.SwingConstants;
 
@@ -31,13 +36,13 @@ import javax.swing.JButton;
  * This view is responsible for rendering a stage that can be placed inside a workflow.
  *
  */
-public class StageView extends JPanel {
+public class StageView extends DragStagePanel {
 	private static final long serialVersionUID = 7765491802045400161L;
 	private String title;
 	private JPanel stagePane;
 	private JScrollPane scrollPane;
 	private WorkflowView workflowView;
-	private ArrayList<TaskView> taskViewList;
+	private HashMap<Integer,TaskView> taskViewList;
 	private JLabel lblStageTitle;
 	private JButton btnClose;
 	private boolean closable;
@@ -51,7 +56,7 @@ public class StageView extends JPanel {
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		this.stageModel = stageModel;
 		this.id = stageModel.getID();
-		this.taskViewList = new ArrayList<TaskView>();
+		this.taskViewList = new HashMap<Integer,TaskView>();
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
@@ -79,6 +84,10 @@ public class StageView extends JPanel {
 		setBackground(new Color(135, 206, 250));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
 		updatePreferredDimensions();
+		
+		DragStageController dragController = new DragStageController(this);
+		this.addMouseListener(dragController);
+		this.addMouseMotionListener(dragController);
 	}
 	
 	
@@ -139,7 +148,7 @@ public class StageView extends JPanel {
 	 */
 	public void addTaskView(TaskView taskView) {
 		stagePane.add(taskView);
-		taskViewList.add(taskView);
+		taskViewList.put(taskView.getID(),taskView);
 		updatePreferredDimensions();
 		redrawStage();
 	}
@@ -154,8 +163,8 @@ public class StageView extends JPanel {
 	 * @param index - the spot in the list to add the view
 	 */
 	public void addTaskViewAtIndex(int index, TaskView taskView) {
-		stagePane.add(taskView);
-		taskViewList.add(index, taskView);
+		stagePane.add(taskView, index);
+		taskViewList.put(taskView.getID(),taskView);
 		updatePreferredDimensions();
 	}
 	
@@ -165,6 +174,7 @@ public class StageView extends JPanel {
 	 */
 	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
+		this.getTaskViewList().remove(taskView);
 		updatePreferredDimensions();	
 		redrawStage();
 	}
@@ -177,7 +187,7 @@ public class StageView extends JPanel {
 		return  id;
 	}
 	
-	public ArrayList<TaskView> getTaskViewList(){
+	public HashMap<Integer,TaskView> getTaskViewList(){
 		return taskViewList;
 	}
 	
