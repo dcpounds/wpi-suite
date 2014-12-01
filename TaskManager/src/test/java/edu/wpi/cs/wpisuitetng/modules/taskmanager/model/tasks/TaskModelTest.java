@@ -54,7 +54,6 @@ public class TaskModelTest {
 		assertEquals(20,task.getActualEffort());
 		assertTrue("Test Description".equals(task.getDescription()));
 		assertTrue("11/30/2014".equals(task.getDueDate()));
-		assertEquals(2,task.daysUntilDue());
 		assertTrue(task.getIsExpanded());
 		assertTrue(task.identify(task1));
 		assertTrue(task.getEditState());
@@ -72,7 +71,6 @@ public class TaskModelTest {
 		assertEquals(20,task1.getActualEffort());
 		assertTrue("Test Description".equals(task1.getDescription()));
 		assertTrue("12-15-2015".equals(task1.getDueDate()));
-		assertEquals(382,task1.daysUntilDue());
 		assertTrue(task1.getIsExpanded());
 	}
 	

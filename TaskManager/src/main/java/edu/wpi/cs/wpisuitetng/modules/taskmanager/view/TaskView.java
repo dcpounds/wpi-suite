@@ -280,10 +280,8 @@ public class TaskView extends JPanel{
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
-		
+		this.setBackground(task.updateColor());
 		this.addAssignedUsers(task);
-		this.taskModel.updateColor();
-		
 		revalidate();
 		repaint();
 	}

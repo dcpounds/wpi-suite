@@ -57,6 +57,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextField estEffortField;
 	private JTextField actEffortField;
 	private JComboBox<String> stageBox;
+	private JTextField daysUntilField;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
     private final WorkflowModel workflowModel;
@@ -68,6 +69,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel titleEmptyError;
 	private JLabel estEffortError;
 	private JLabel actEffortError;
+	private JLabel daysUntilError;
 	private JLabel descriptionEmptyError;
 	private JLabel dateNotAddedError;
 	private JScrollPane descriptionScrollPane;
@@ -123,6 +125,21 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		      }
 		});
 		
+		//Let the user specify the number of critical days before due
+		JLabel daysUntilLabel = new JLabel("Critical days before Deadline");
+		add(daysUntilLabel, "cell 1 0");
+		daysUntilError = new JLabel("Must specify number of days");
+		daysUntilError.setForeground(Color.red);
+		add(daysUntilError, "flowx,cell 1 0");
+		daysUntilError.setVisible(false);
+		
+		daysUntilField = new JTextField();
+		daysUntilField.setText(Integer.toString(this.model.getTimeThreshold()));
+		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
+		add(daysUntilField, "flowx,cell 1 1,alignx left");
+		daysUntilField.setColumns(10);
+		daysUntilField.addKeyListener(this);
+		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
 		add(taskDescriptionLabel, "cell 0 2");
@@ -170,7 +187,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		actEffortField.addKeyListener(this);
 		
 		//Warn if users put an invalid actual effort
-		actEffortError = new JLabel("Must specify nonnegative effort");
+		actEffortError = new JLabel("Must specify a valid effort");
 		actEffortError.setForeground(Color.red);
 		add(actEffortError, "flowx,cell 1 6");
 		actEffortError.setVisible(false);
@@ -236,6 +253,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
 		taskModel.setEditState(false);
+		taskModel.setTimeThreshold(getDaysUntil());
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 	}
@@ -260,8 +278,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		boolean isActEffortPosInt = this.getActualEffort() < 0? false: true;
 		actEffortError.setVisible(!isActEffortPosInt);
 		
+		boolean isDaysUntilPosInt = this.getDaysUntil() < 0? false: true;
+		daysUntilError.setVisible(!isDaysUntilPosInt);
+		
 		boolean shouldSubmitBeEnabled = 
-					isTitleTextFull && 
+					isTitleTextFull &&
+					isDaysUntilPosInt &&
 					isDescriptionTextFull && 
 					isDateAdded &&
 					isEstEffortPosInt &&
@@ -313,6 +335,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			effort = -1;
 		}
 		return effort;
+	}
+	
+	public int getDaysUntil(){
+		int days;
+		try {
+			days = Integer.parseInt(daysUntilField.getText());
+		} catch (NumberFormatException e){
+			days = -1;
+		}
+		return days;
 	}
 	
 	/**
