@@ -20,7 +20,9 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int stageID;
 	private boolean isExpanded;
 	private boolean editState;
+	private boolean activitiesOpened;
 	private boolean isArchived;
+	private ActivityListModel activities;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -35,6 +37,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.stageID = 0;
 		this.isExpanded = false;
 		this.isArchived = false;
+		this.activities = new ActivityListModel();
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -53,6 +56,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		isExpanded = updatedTask.getIsExpanded();
 		stageID = updatedTask.getStageID();
 		isArchived = updatedTask.getIsArchived();
+		activities = updatedTask.getActivities();
 	}
 	
 	
@@ -332,4 +336,37 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         
         return this.id == other.getID();
 	}
+
+	/**
+	 * @return the activities
+	 */
+	public ActivityListModel getActivities() {
+		return activities;
+	}
+	
+	public void setActivities(ActivityListModel newActivities) {
+		activities = newActivities;
+	}
+
+	/**
+	 * @return the areActivitiesOpened
+	 */
+	public boolean isActivitiesOpened() {
+		return activitiesOpened;
+	}
+
+	/**
+	 * @param activitiesOpened the areActivitiesOpened to set
+	 */
+	public void setActivitiesOpened(boolean activitiesOpened) {
+		this.activitiesOpened = activitiesOpened;
+	}
+
+	/**
+	 * @param activity
+	 */
+	public void addActivity(ActivityModel activity){
+		activities.addActivity(activity);
+	}
+	
 }

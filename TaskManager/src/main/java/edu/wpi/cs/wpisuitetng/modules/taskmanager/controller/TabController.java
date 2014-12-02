@@ -7,6 +7,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
@@ -16,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 public class TabController {
 	private static TabController instance = new TabController();
 	private static TabView tabView;
+	private TabType tabType;
 
 	private TabController () {
 		tabView = new TabView();
@@ -33,19 +35,24 @@ public class TabController {
     public void addTab(TabType tabType, IDisplayModel model) {
     	String tabName = null;
     	Component newTab = null;
-    	
+    	this.tabType = tabType;
     	switch(tabType){
     		case TASK:
 	    		if(model != null){
-	    			tabName =  (model.getTitle() + "   ");
+	    			tabName =  ("Edit " + model.getTitle() + "   ");
 	    		}else{
 	    			tabName = "New Task   ";
 	    		}
 	        	newTab = new NewTaskTab((TaskModel) model);
 	        	break;
-    	case STAGE:
-        	tabName = "New Stage   ";
-        	newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
+    		case STAGE:
+    			tabName = "New Stage   ";
+    			newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
+    			break;
+    		case ACTIVITIES:
+    			tabName =  (model.getTitle() + " Activities   ");
+	        	newTab = new ActivitiesTab((TaskModel) model);
+    			break;
         }
     	addTabHelper(tabName, newTab);
     }
@@ -68,7 +75,7 @@ public class TabController {
     	//Instantiate a new closable tab model
     	ClosableTabModel tabModel = new ClosableTabModel(tabTitle, index);
     	//Add the closable tab to the correct tab
-    	tabView.setTabComponentAt(index, new ClosableTabView(tabModel, pane));
+    	tabView.setTabComponentAt(index, new ClosableTabView(tabModel, pane, tabType));
     	tabView.setSelectedIndex(index);
     	
     }

@@ -36,7 +36,7 @@ public class ClosableTabView extends JPanel{
 	 * @param tabModel - the tab's model
 	 * @param paneComponent - the child component that this tab is attached to
 	 */
-	public ClosableTabView(ClosableTabModel tabModel, Component paneComponent){
+	public ClosableTabView(ClosableTabModel tabModel, Component paneComponent, TabType tabType){
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.view = TabController.getTabView();
 		tabLabel = new JLabel(tabModel.getTabTitle());
@@ -50,8 +50,12 @@ public class ClosableTabView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TabController.getInstance().removeTab(paneComponent);
+				if(tabType == TabType.ACTIVITIES){
+					((ActivitiesTab)paneComponent).getTaskModel().setActivitiesOpened(false);
+				}
 			}
 		});
+		
 		this.add(tabLabel);
 		this.add(closeButton);
 	}
