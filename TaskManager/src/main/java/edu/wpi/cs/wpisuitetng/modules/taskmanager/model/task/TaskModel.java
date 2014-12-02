@@ -238,7 +238,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 			color = new Color(255,204,00);
 		}
 		if(!toggleColor){
-			return color = Color.LIGHT_GRAY;
+			return Color.LIGHT_GRAY;
 		}
 		return color;
 	}
