@@ -27,7 +27,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private boolean isExpanded;
 	private boolean editState;
 	private boolean isArchived;
-	public Color color = Color.GREEN;
+	private boolean toggleColor;
+	public Color color;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -43,6 +44,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
+		this.toggleColor = false;
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -235,7 +237,22 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		}else if(daysUntilDue() <= timeThreshold){
 			color = new Color(255,204,00);
 		}
+		if(!toggleColor){
+			return color = Color.LIGHT_GRAY;
+		}
 		return color;
+	}
+	
+	public void toggleColor(){
+		if(toggleColor){
+			toggleColor = false;
+		}else{
+			toggleColor = true;
+		}
+	}
+	
+	public boolean getToggleColor(){
+		return toggleColor;
 	}
 	
 	public int getTimeThreshold(){

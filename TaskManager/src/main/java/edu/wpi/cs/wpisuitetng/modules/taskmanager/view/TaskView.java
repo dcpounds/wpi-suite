@@ -60,10 +60,10 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
-	private JLabel label;
+	private JLabel statusLabel;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
-		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
+		setLayout(new MigLayout("", "[grow][][][]", "[][][grow][]"));
 		setBackground(taskModel.updateColor());
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
@@ -78,17 +78,13 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
-		
-		label = new JLabel("!!!!");
-		label.setFont(new Font("Tahoma", Font.BOLD, 15));
-		titlePanel.add(label, "cell 0 0");
+		add(titlePanel, "cell 0 0 5 1,alignx center,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[][][][grow][][]", "[]"));
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel();
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
+		titlePanel.add(lblNewTask, "cell 3 0,alignx center,aligny top");
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
@@ -161,10 +157,14 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		
+		statusLabel = new JLabel("!!");//taskModel.getStatusLabel();
+		add(statusLabel, "cell 2 0");
+		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
-		add(closeButton, "cell 2 0,alignx trailing");
+		add(closeButton, "cell 3 0,alignx trailing");
 		this.setContents(taskModel);
-		this.add(taskContentPane, "cell 0 1 3 2,grow");
+		this.add(taskContentPane, "cell 0 1 4 2,grow");
 		
 		//Set up the edit button
 		btnEdit = new JButton("Edit");
@@ -175,7 +175,7 @@ public class TaskView extends DragTaskPanel{
 					TabController.getInstance().addTab(TabType.TASK, taskModel);
 			}
 		});
-		add(btnEdit, "cell 2 3");
+		add(btnEdit, "cell 3 3");
 	}
 	
 	/**
@@ -297,6 +297,12 @@ public class TaskView extends DragTaskPanel{
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.setBackground(task.updateColor());
 		this.addAssignedUsers(task);
+		if(this.taskModel.getToggleColor()){
+			statusLabel.setVisible(true);
+		}else{
+			statusLabel.setForeground(this.taskModel.color);
+			statusLabel.setVisible(true);
+		}
 		revalidate();
 		repaint();
 	}
