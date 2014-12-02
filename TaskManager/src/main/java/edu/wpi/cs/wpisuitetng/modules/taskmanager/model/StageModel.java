@@ -99,6 +99,7 @@ public class StageModel extends AbstractModel {
 	 * @return - the updated list of tasks
 	 */
 	public HashMap<Integer,TaskModel> removeTask(TaskModel task){
+		System.out.println("Trying to remove task with from " + this.getTitle());
 		taskModelList.remove(task.getID());
 		return taskModelList;
 	}

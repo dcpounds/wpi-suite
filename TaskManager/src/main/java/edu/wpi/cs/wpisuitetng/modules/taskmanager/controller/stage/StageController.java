@@ -150,8 +150,13 @@ public class StageController implements ActionListener{
 	public static void syncTaskViews(StageModel stageModel, StageView stage){
 		HashMap<Integer, TaskModel> taskModelList = stageModel.getTaskModelList();
 		HashMap<Integer, TaskView> taskViewList = stage.getTaskViewList();
+		
+		if(taskViewList.size() != taskModelList.size()){
+			stage.clearAllStages();
+		}
 			
 		for( TaskModel task : taskModelList.values() ){
+			System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
 			TaskView taskView = taskViewList.get(task.getID());
 			//If we found a matching taskView...
 			if(taskView != null){
@@ -169,7 +174,8 @@ public class StageController implements ActionListener{
 	 * @param taskView - the taskView to delete 
 	 * @param stageView - the stageView to delete from
 	 */
-	public static void deleteTask(TaskView taskView, StageView stageView){
+	public static void deleteTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
 		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
 		try{
 			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
@@ -180,7 +186,8 @@ public class StageController implements ActionListener{
 			return;
 		} catch(Exception e){
 			System.out.println("Could not remove. Either the task could not be found"
-					+ " or the stage could not be found");
+					+ " or the stage could not be found.");
+			
 			e.printStackTrace();
 		}
 	}

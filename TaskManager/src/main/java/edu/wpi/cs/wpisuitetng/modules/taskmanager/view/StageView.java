@@ -192,6 +192,11 @@ public class StageView extends DragStagePanel {
 		this.redrawStage();
 	}
 	
+	public void clearAllStages(){
+		stagePane.removeAll();
+		this.getTaskViewList().clear();
+	}
+	
 	
 	/**
 	 * Truncates the stage title if it is too long

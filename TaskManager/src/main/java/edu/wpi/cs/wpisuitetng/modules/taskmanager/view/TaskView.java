@@ -159,7 +159,7 @@ public class TaskView extends DragTaskPanel{
 		TaskView tv = this;
 		closeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				StageController.deleteTask(tv, stageView);
+				StageController.deleteTask(tv);
 			}
 		});
 		
