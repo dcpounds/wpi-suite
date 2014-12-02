@@ -125,7 +125,6 @@ public class StageController implements ActionListener{
 	public void updateStage(StageModel stage) {
 		boolean closable = TabController.getTabView().getWorkflowView().getStageViewList().size() <= 1 ? false : true;
 		stage.setClosable(closable);
-		System.out.println("Updating a stage with id " + stage.getID());
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		this.syncTaskViews(stage, stageView);
@@ -157,7 +156,6 @@ public class StageController implements ActionListener{
 			//If we found a matching taskView...
 			if(taskView != null){
 				taskView.setContents(task);
-				break;
 			} else{
 				//If we found no match, add the task to the stageView
 				TaskView newTaskView = new TaskView(task, stage);
