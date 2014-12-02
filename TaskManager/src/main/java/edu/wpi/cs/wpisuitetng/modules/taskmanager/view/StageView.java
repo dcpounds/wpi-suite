@@ -66,6 +66,7 @@ public class StageView extends DragStagePanel {
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblStageTitle.putClientProperty("html.disable", Boolean.TRUE);
 		add(lblStageTitle, "cell 0 0,alignx center,aligny center");
 		
 		btnClose = new JButton("\u2716");

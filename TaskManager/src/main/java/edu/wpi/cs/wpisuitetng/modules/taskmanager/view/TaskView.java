@@ -87,6 +87,7 @@ public class TaskView extends DragTaskPanel{
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
+		lblNewTask.putClientProperty("html.disable", Boolean.TRUE);
 		lblNewTask.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
@@ -129,6 +130,7 @@ public class TaskView extends DragTaskPanel{
 		taskContents.add(lblDescription);
 		
 		this.descriptionField = new JTextArea();
+		descriptionField.putClientProperty("html.disable", Boolean.TRUE);
 		descriptionField.setWrapStyleWord(true);
 		descriptionField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		descriptionField.setLineWrap(true);
