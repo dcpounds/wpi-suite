@@ -15,12 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
@@ -37,7 +35,6 @@ public class ActivitiesTab extends JPanel {
 	public ActivitiesTab(TaskModel model){
 		taskModel = model;
 		workflowModel = WorkflowController.getWorkflowModel();
-		taskModel.setActivitiesOpened(true);
 		setLayout(new MigLayout("", "[grow]", "[grow][]"));
      
 		//make
@@ -84,7 +81,7 @@ public class ActivitiesTab extends JPanel {
 		taskModel.addActivity(new ActivityModel(newCommentTxt.getText()));
 		newCommentTxt.setText("");
 		//Updates task on the stage model
-		stageModel.addUpdateTaskModel(taskModel);
+		StageController.sendUpdateRequest(stageModel);
 	}
 	
 	public TaskModel getTaskModel(){

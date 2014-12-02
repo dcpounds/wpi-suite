@@ -302,6 +302,7 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
+		this.taskModel.setActivitiesOpened(task.isActivitiesOpened());
 		this.taskModel.setTitle(task.getTitle());
 		
 		task.setDueDate(task.getDueDate());

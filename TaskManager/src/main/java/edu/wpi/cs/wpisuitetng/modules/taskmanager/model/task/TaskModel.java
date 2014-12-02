@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -345,7 +347,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	
 	public void setActivities(ActivityListModel newActivities) {
-		activities = newActivities;
+		this.activities = newActivities;
 	}
 
 	/**
