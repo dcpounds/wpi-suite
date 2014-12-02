@@ -63,7 +63,14 @@ public class StageView extends DragStagePanel {
 		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
 		
-		this.lblStageTitle = new JLabel(title);
+		if (title.length()<=30)
+		{
+			this.lblStageTitle = new JLabel(title);
+		}
+		else
+		{
+			this.lblStageTitle = new JLabel("...");
+		}
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -196,7 +203,14 @@ public class StageView extends DragStagePanel {
 	 * @param newStageModel - the stageModel to replace the current stage with
 	 */
 	public void updateContents(StageModel newStageModel){
-		this.lblStageTitle.setText(newStageModel.getTitle());
+		if (newStageModel.getTitle().length()<=30)
+		{
+			this.lblStageTitle.setText(newStageModel.getTitle());
+		}
+		else
+		{
+			this.lblStageTitle.setText("...");
+		}
 		this.closable = newStageModel.getClosable();
 		this.stageModel = newStageModel;
 		btnClose.setEnabled(newStageModel.getClosable());
