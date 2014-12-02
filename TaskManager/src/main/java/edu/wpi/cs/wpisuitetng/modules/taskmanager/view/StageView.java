@@ -155,6 +155,7 @@ public class StageView extends DragStagePanel {
 	
 	public void redrawStage(){
 		stagePane.revalidate();
+		stagePane.repaint();
 	}
 	
 	/**
@@ -169,12 +170,12 @@ public class StageView extends DragStagePanel {
 	}
 	
 	/**
-	 * removes a task from the stage
+	 * removes a task from the stage and from the stageView list
 	 * @param taskView
 	 */
 	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
-		this.getTaskViewList().remove(taskView);
+		this.getTaskViewList().remove(taskView.getID());
 		updatePreferredDimensions();	
 		redrawStage();
 	}

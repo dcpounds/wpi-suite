@@ -29,21 +29,26 @@ public class DragStagePanel extends JPanel{
 	 * @param taskPanel - the taskPanel that is being dropped
 	 * @param dropPoint - the point withint the stage that the task was dropped
 	 */
-	public void dropTask(DragTaskPanel taskPanel, Point dropPoint) {
+	public void placeTask(Point dropPoint, DragTaskPanel taskPanel) {
 		WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
 		TaskView taskView = (TaskView)taskPanel;
-		StageView oldStageView = taskView.getStageView();
-		StageView newStageView = (StageView)this;
-		int taskID = (taskView).getID();
-		TaskModel taskModel = workflowModel.getTaskModelByID(taskID);
-		StageModel oldStageModel = workflowModel.getStageModelByID(oldStageView.getID());
-		StageModel newStageModel = workflowModel.getStageModelByID(newStageView.getID());
 		
-		oldStageView.removeTaskView(taskView);
-		oldStageModel.removeTask(taskModel);
+		StageView newStageView = (StageView)this;
+		TaskModel taskModel = workflowModel.getTaskModelByID(taskView.getID());
+		
+		//The original stage the task was in
+		StageView originalStageView = taskView.getStageView();
+		StageModel originalStageModel = workflowModel.getStageModelByID(originalStageView.getID());
+		originalStageView.removeTaskView(taskView);
+		originalStageModel.removeTask(taskModel);
+		StageController.sendUpdateRequest(originalStageModel);
+		
+		//Update the task that
+		StageModel newStageModel = workflowModel.getStageModelByID(newStageView.getID());
 		taskModel.setStageID(newStageView.getID());
 		newStageModel.addTaskModelAtIndex(taskModel);
-		StageController.sendUpdateRequest(oldStageModel);
+		
+	
 		StageController.sendUpdateRequest(newStageModel);
 
 	}
