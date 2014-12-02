@@ -272,8 +272,17 @@ public class TaskView extends DragTaskPanel{
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
 		
+		if (task.getTitle().length()<=16)
+		{
+			
+			this.lblNewTask.setText(task.getTitle());
+		}
+		else
+		{
+			this.lblNewTask.setText("...");
+		}
 		this.taskModel.setTitle(task.getTitle());
-		this.lblNewTask.setText(task.getTitle());
+		
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
