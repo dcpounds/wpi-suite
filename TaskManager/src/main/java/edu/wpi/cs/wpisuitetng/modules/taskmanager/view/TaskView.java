@@ -267,7 +267,7 @@ public class TaskView extends DragTaskPanel{
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
 		
-		if (task.getTitle().length()<=24)
+		if (task.getTitle().length()<=16)
 		{
 			
 			this.lblNewTask.setText(task.getTitle());
