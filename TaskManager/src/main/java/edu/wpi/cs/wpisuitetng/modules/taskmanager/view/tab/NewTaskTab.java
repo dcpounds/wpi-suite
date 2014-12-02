@@ -40,6 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -259,6 +260,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		for(StageModel stage : workflowModel.getStageModelList().values()){
 			if(stage.getTitle() == stageBox.getSelectedItem())
 				stageModel = stage;
+		}
+		
+		//If the task has moved to a different stage, make sure to remove it from the original stage before moving it
+		if(taskModel.getStageID()!= 0 && taskModel.getStageID() != stageModel.getID()){
+			StageModel originalStage = workflowModel.getStageModelByID(taskModel.getStageID());
+			originalStage.removeTask(taskModel);
+			StageController.sendUpdateRequest(originalStage);
 		}
 		
 		TaskModel taskModel = new TaskModel();
