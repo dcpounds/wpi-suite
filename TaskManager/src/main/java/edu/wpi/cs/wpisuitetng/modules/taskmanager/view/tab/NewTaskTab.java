@@ -51,7 +51,7 @@ import javax.swing.JScrollPane;
  * 		Authors  Guillermo, Ashton;
  *		
  */
-public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
+public class NewTaskTab extends AbstractTab implements KeyListener, MouseListener, ActionListener{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TaskModel taskModel;
@@ -293,22 +293,26 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void keyReleased(KeyEvent e) {
 		checkForErrors();
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 	  
 	public int getEstimatedEffort(){
@@ -395,21 +399,44 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		checkForErrors();
-		
+		hasBeenModified();
 	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		checkForErrors();
-		
+		hasBeenModified();
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
+	}
+
+	@Override
+	public boolean hasBeenModified() {
+		boolean isTitleTextModified = taskTitleField.getText().isEmpty()? false: true;	
+		
+		boolean isDescriptionTextModified = taskDescriptionField.getText().isEmpty()? false: true;
+	
+		boolean isDateModified = this.getDateText().isEmpty()? false: true;
+	
+		boolean isEstEffortModified = this.getEstimatedEffort() < 0? false: true;
+
+		boolean isActEffortModified = this.getActualEffort() < 0? false: true;
+
+		boolean beenModified = 
+					isTitleTextModified || 
+					isDescriptionTextModified ||
+					isDateModified ||
+					isEstEffortModified ||
+					isActEffortModified? true: false;
+		return beenModified;
 	}
 	
 }

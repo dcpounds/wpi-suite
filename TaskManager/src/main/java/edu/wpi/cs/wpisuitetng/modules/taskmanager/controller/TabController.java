@@ -8,6 +8,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.AbstractTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
@@ -32,7 +33,7 @@ public class TabController {
 	
     public void addTab(TabType tabType, IDisplayModel model) {
     	String tabName = null;
-    	Component newTab = null;
+    	AbstractTab newTab = null;
     	
     	switch(tabType){
     		case TASK:
@@ -45,7 +46,7 @@ public class TabController {
 	        	break;
     	case STAGE:
         	tabName = "New Stage   ";
-        	newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
+        	newTab = (AbstractTab) new NewStageTab((StageModel) model, ActionType.CREATE);
         }
     	addTabHelper(tabName, newTab);
     }
@@ -60,7 +61,7 @@ public class TabController {
      * @param tabTitle -name of tab
      * @param pane -
      */
-    private void addTabHelper(String tabTitle, Component pane) {
+    private void addTabHelper(String tabTitle, AbstractTab pane) {
     	//add a tab containing the newTabPane as a view
     	tabView.addTab("", pane); 
     	//Store the index of this tab

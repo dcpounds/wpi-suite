@@ -27,7 +27,7 @@ import javax.swing.SwingConstants;
  * this is a tab for creating stages
  *
  */
-public class NewStageTab extends JPanel implements KeyListener{
+public class NewStageTab extends AbstractTab implements KeyListener{
 	private static final long serialVersionUID = 7394421664708095366L;
 	
 	private JLabel titleLabel;
@@ -110,6 +110,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
 		sbmtStageButton.setEnabled(validTitle);
 		stageTitleError.setVisible(!validTitle);
+		hasBeenModified();
 	}
 
 	@Override
@@ -122,5 +123,10 @@ public class NewStageTab extends JPanel implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public boolean hasBeenModified(){
+		boolean changedTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
+		return changedTitle;
 	}
 }

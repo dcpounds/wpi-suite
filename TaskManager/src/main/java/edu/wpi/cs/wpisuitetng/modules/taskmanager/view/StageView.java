@@ -202,4 +202,6 @@ public class StageView extends DragStagePanel {
 		btnClose.setEnabled(newStageModel.getClosable());
 		this.redrawStage();
 	}
+	
+
 }
