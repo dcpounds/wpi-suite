@@ -85,7 +85,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 
 		} else
 			return;
-		stage.dropTask(panel, dtde.getLocation());
+		stage.placeTask(dtde.getLocation(), panel);
 	}
 
 	/* (non-Javadoc)

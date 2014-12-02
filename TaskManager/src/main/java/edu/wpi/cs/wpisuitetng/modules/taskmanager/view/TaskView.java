@@ -60,6 +60,7 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
+	private JLabel label;
 	
 	public TaskView(TaskModel taskModel, StageView stageView) {
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
@@ -77,13 +78,18 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
+		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
+		
+		label = new JLabel("!!!");
+		label.setFont(new Font("Tahoma", Font.BOLD, 15));
+		titlePanel.add(label, "cell 0 0");
 		
 		//Sets the title of the task
-		lblNewTask = new JLabel();
+		lblNewTask = new JLabel(taskModel.getTitle());
+		lblNewTask.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
+		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
@@ -148,6 +154,7 @@ public class TaskView extends DragTaskPanel{
 		
 		//Set up the close button to remove the task
 		JButton closeButton = new JButton("\u2716");
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		TaskView tv = this;
 		closeButton.addActionListener(new ActionListener(){
@@ -197,6 +204,7 @@ public class TaskView extends DragTaskPanel{
 		else{	
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			Dimension parentSize = parent.getSize();
+			truncateTitle(parentSize.width);
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
 				return new Dimension(parentSize.width,openSize);	
@@ -274,14 +282,27 @@ public class TaskView extends DragTaskPanel{
 	}
 	
 	/**
+	 * Truncates the task title if it is too long
+	 * @param title
+	 * @return
+	 */
+	public void truncateTitle(int width){
+		int numChars = (int) Math.pow(width, 1.6)/500;
+		String truncatedTitle;
+		if(taskModel.getTitle().length() >= numChars)
+			truncatedTitle =  taskModel.getTitle().substring(0,numChars) + "...";
+		else
+			truncatedTitle = taskModel.getTitle();
+		lblNewTask.setText(truncatedTitle);
+	}
+	
+	/**
 	 * Updates the contents of the taskView when given a new task model
 	 * @param newTaskModel
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
-		
 		this.taskModel.setTitle(task.getTitle());
-		this.lblNewTask.setText(task.getTitle());
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
