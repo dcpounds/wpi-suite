@@ -75,6 +75,7 @@ public class NewTaskTab extends AbstractTab implements KeyListener, MouseListene
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
 	private ActionType action;
+	private TaskModel oldTask;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -399,44 +400,34 @@ public class NewTaskTab extends AbstractTab implements KeyListener, MouseListene
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		checkForErrors();
-		hasBeenModified();
 	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		checkForErrors();
-		hasBeenModified();
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		checkForErrors();
-		hasBeenModified();
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
-		hasBeenModified();
 	}
 
 	@Override
 	public boolean hasBeenModified() {
-		boolean isTitleTextModified = taskTitleField.getText().isEmpty()? false: true;	
-		
-		boolean isDescriptionTextModified = taskDescriptionField.getText().isEmpty()? false: true;
-	
-		boolean isDateModified = this.getDateText().isEmpty()? false: true;
-	
-		boolean isEstEffortModified = this.getEstimatedEffort() < 0? false: true;
 
-		boolean isActEffortModified = this.getActualEffort() < 0? false: true;
-
-		boolean beenModified = 
-					isTitleTextModified || 
-					isDescriptionTextModified ||
-					isDateModified ||
-					isEstEffortModified ||
-					isActEffortModified? true: false;
-		return beenModified;
+		if(taskModel.getTitle() == taskTitleField.getText() && 
+				taskModel.getDueDate() == this.getDateText() &&
+				taskModel.getDescription() == taskDescriptionField.getText() &&
+				taskModel.getEstimatedEffort() == this.getEstimatedEffort()&&
+				taskModel.getActualEffort() == this.getActualEffort()){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 	
 }
