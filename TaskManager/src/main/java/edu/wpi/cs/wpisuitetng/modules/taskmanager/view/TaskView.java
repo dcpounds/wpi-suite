@@ -21,6 +21,7 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
@@ -59,11 +60,10 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
-	private JButton statusButton;
+	private JLabel statusLabel;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
-		setBackground(taskModel.updateColor());
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -76,14 +76,14 @@ public class TaskView extends DragTaskPanel{
 		titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
 		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
 		
-		statusButton = new JButton("!!");//taskModel.getStatusLabel();
-		statusButton.setFont(new Font("Tahoma", Font.BOLD, 15));
-		statusButton.setMargin(new Insets(0,1,-2,1));
-		titlePanel.add(statusButton, "cell 0 0");
+		statusLabel = new JLabel("!!");
+		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		titlePanel.add(statusLabel, "cell 0 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
@@ -255,6 +255,10 @@ public class TaskView extends DragTaskPanel{
 		return stageView;
 	}
 	
+	public void setStageView(StageView stageView){
+		this.stageView = stageView;
+	}
+	
 	/**
 	 * @return the scrollPane that holds the task contents
 	 */
@@ -302,15 +306,20 @@ public class TaskView extends DragTaskPanel{
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
-		this.setBackground(task.updateColor());
 		this.addAssignedUsers(task);
-		if(this.taskModel.getToggleColor()){
-			statusButton.setVisible(false);
-		}else{
-			statusButton.setForeground(this.taskModel.color);
-			statusButton.setVisible(true);
-		}
+		toggleTaskViewColor(task.getColor());
 		revalidate();
 		repaint();
+	}
+	
+	public void toggleTaskViewColor(Color color){
+		if(WorkflowController.getWorkflowModel().getToggleColor()){
+			statusLabel.setForeground(color);
+			statusLabel.setVisible(true);
+			this.setBackground(color);
+		}else{
+			statusLabel.setVisible(false);
+			this.setBackground(Color.LIGHT_GRAY);
+		}
 	}
 }

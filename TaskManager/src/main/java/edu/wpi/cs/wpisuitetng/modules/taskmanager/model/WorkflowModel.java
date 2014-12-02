@@ -19,6 +19,7 @@ public class WorkflowModel extends AbstractModel {
 	final private String name;
 	private HashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
+	private static boolean toggleColor;
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -29,6 +30,7 @@ public class WorkflowModel extends AbstractModel {
 		this.name = name;
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
+		this.toggleColor = false;
 	}
 	
 	
@@ -39,6 +41,7 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageModelList = new HashMap<Integer, StageModel>();
+		this.toggleColor = false;
 	}
 	
 	
@@ -84,6 +87,14 @@ public class WorkflowModel extends AbstractModel {
 		if(userList == null)
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
+	}
+	
+	public void toggleColor(){
+		WorkflowModel.toggleColor = !WorkflowModel.toggleColor;
+	}
+	
+	public boolean getToggleColor(){
+		return WorkflowModel.toggleColor;
 	}
 	
 	

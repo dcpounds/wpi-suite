@@ -133,11 +133,22 @@ public class StageController implements ActionListener{
 	}
 	
 	/**
+	 * Refreshes all the stageViews on the local client
+	 * this method will not send any changes to the database
+	 */
+	public static void locallyUpdateAllStages(){
+		for(StageModel stage : workflowModel.getStageModelList().values()){
+			StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(stage.getID());
+			syncTaskViews(stage, stageView);
+		}
+	}
+	
+	/**
 	 * Given a stage, update/add all the task views
 	 * @param stageModel - the stageModel to sync the views of
 	 * @param stage - the stageView to add the taskViews to
 	 */
-	public void syncTaskViews(StageModel stageModel, StageView stage){
+	public static void syncTaskViews(StageModel stageModel, StageView stage){
 		HashMap<Integer, TaskModel> taskModelList = stageModel.getTaskModelList();
 		HashMap<Integer, TaskView> taskViewList = stage.getTaskViewList();
 			

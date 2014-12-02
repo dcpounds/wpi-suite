@@ -33,20 +33,24 @@ public class DragStagePanel extends JPanel{
 		WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
 		TaskView taskView = (TaskView)taskPanel;
 		
-		StageView newStageView = (StageView)this;
 		TaskModel taskModel = workflowModel.getTaskModelByID(taskView.getID());
 		
 		//The original stage the task was in
 		StageView originalStageView = taskView.getStageView();
 		StageModel originalStageModel = workflowModel.getStageModelByID(originalStageView.getID());
-		originalStageView.removeTaskView(taskView);
 		originalStageModel.removeTask(taskModel);
+		originalStageView.removeTaskView(taskView);
 		StageController.sendUpdateRequest(originalStageModel);
 		
 		//Update the task that
+		StageView newStageView = (StageView)this;
 		StageModel newStageModel = workflowModel.getStageModelByID(newStageView.getID());
+		newStageModel.addTaskModel(taskModel);
+		newStageView.addTaskView(taskView);
+		
+		taskView.setStageView(newStageView);
 		taskModel.setStageID(newStageView.getID());
-		newStageModel.addTaskModelAtIndex(taskModel);
+		System.out.println("Adding a taskModel to stage " + newStageModel.getTitle());
 		
 	
 		StageController.sendUpdateRequest(newStageModel);

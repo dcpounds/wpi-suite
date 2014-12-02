@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
@@ -68,19 +69,19 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
         
-//        Component horizontalStrut = Box.createHorizontalStrut(20);
-//        add(horizontalStrut);
-//        
-//        JButton toggleColor = new JButton("Toggle Color", null);
-//        toggleColor.setMargin(new Insets(0, 0, 0, 0));
-//        toggleColor.addActionListener(new ActionListener(){
-//        	 @Override
-//     		public void actionPerformed(ActionEvent e) {
-//     			TaskModel.toggleColor();
-//     			System.out.println("button pressed");
-//     		}
-//        });
-//        add(toggleColor);
+        Component horizontalStrut = Box.createHorizontalStrut(20);
+        add(horizontalStrut);
+        
+        JButton toggleColor = new JButton("Toggle Color", null);
+        toggleColor.setMargin(new Insets(0, 0, 0, 0));
+        toggleColor.addActionListener(new ActionListener(){
+        	 @Override
+     		public void actionPerformed(ActionEvent e) {
+     			workflowModel.toggleColor();
+     			StageController.locallyUpdateAllStages();
+     		}
+        });
+        add(toggleColor);
        
     }
 

@@ -159,17 +159,6 @@ public class StageView extends DragStagePanel {
 	}
 	
 	/**
-	 * adds a task to the stage at the given index
-	 * @param taskView
-	 * @param index - the spot in the list to add the view
-	 */
-	public void addTaskViewAtIndex(int index, TaskView taskView) {
-		stagePane.add(taskView, index);
-		taskViewList.put(taskView.getID(),taskView);
-		updatePreferredDimensions();
-	}
-	
-	/**
 	 * removes a task from the stage and from the stageView list
 	 * @param taskView
 	 */
