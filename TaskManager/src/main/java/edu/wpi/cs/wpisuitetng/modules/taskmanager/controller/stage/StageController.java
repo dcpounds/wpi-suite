@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
@@ -113,8 +114,8 @@ public class StageController implements ActionListener{
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = new StageView(stage, workflowView);
 		workflowView.addStageView(stageView);
-		this.syncTaskViews(stage, stageView);
 		workflowModel.addStage(stage);
+		this.syncTaskViews(stage, stageView);
 	}
 	
 	/**
@@ -137,21 +138,19 @@ public class StageController implements ActionListener{
 	 * @param stage - the stageView to add the taskViews to
 	 */
 	public void syncTaskViews(StageModel stageModel, StageView stage){
-		for( TaskModel task : stageModel.getTaskModelList().values() ){
-			//Skip if the task is archived
-			boolean matched = false;
-			//go through all the taskModels aand look for the taskView
-			TaskView taskView = stage.getTaskViewList().get(task.getID());
+		HashMap<Integer, TaskModel> taskModelList = stageModel.getTaskModelList();
+		HashMap<Integer, TaskView> taskViewList = stage.getTaskViewList();
+			
+		for( TaskModel task : taskModelList.values() ){
+			TaskView taskView = taskViewList.get(task.getID());
+			//If we found a matching taskView...
 			if(taskView != null){
 				taskView.setContents(task);
-				matched = true;
 				break;
-			}
-			if(!matched){
+			} else{
 				//If we found no match, add the task to the stageView
 				TaskView newTaskView = new TaskView(task, stage);
 				stage.addTaskView(newTaskView);
-				newTaskView.getPreferredSize();
 			}
 		}
 	}

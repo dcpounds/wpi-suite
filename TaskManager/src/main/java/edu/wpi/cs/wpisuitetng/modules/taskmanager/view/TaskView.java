@@ -86,7 +86,8 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.add(statusButton, "cell 0 0");
 		
 		//Sets the title of the task
-		lblNewTask = new JLabel();
+		lblNewTask = new JLabel(taskModel.getTitle());
+		lblNewTask.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
 		
@@ -153,6 +154,7 @@ public class TaskView extends DragTaskPanel{
 		
 		//Set up the close button to remove the task
 		JButton closeButton = new JButton("\u2716");
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		TaskView tv = this;
 		closeButton.addActionListener(new ActionListener(){
@@ -190,6 +192,7 @@ public class TaskView extends DragTaskPanel{
 		else{	
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
 			Dimension parentSize = parent.getSize();
+			truncateTitle(parentSize.width);
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
 				return new Dimension(parentSize.width,openSize);	
@@ -267,23 +270,27 @@ public class TaskView extends DragTaskPanel{
 	}
 	
 	/**
+	 * Truncates the task title if it is too long
+	 * @param title
+	 * @return
+	 */
+	public void truncateTitle(int width){
+		int numChars = (int) Math.pow(width, 1.6)/500;
+		String truncatedTitle;
+		if(taskModel.getTitle().length() >= numChars)
+			truncatedTitle =  taskModel.getTitle().substring(0,numChars) + "...";
+		else
+			truncatedTitle = taskModel.getTitle();
+		lblNewTask.setText(truncatedTitle);
+	}
+	
+	/**
 	 * Updates the contents of the taskView when given a new task model
 	 * @param newTaskModel
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
-		
-		if (task.getTitle().length()<=16)
-		{
-			
-			this.lblNewTask.setText(task.getTitle());
-		}
-		else
-		{
-			this.lblNewTask.setText("...");
-		}
 		this.taskModel.setTitle(task.getTitle());
-		
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
