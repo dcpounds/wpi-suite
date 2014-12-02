@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 
 /**
@@ -85,7 +86,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 
 	public NewTaskTab(TaskModel model) {
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 0 0");
 		this.workflowModel = WorkflowController.getWorkflowModel();
@@ -116,7 +117,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Let the user decide where to put the task
 		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "cell 1 0, pad 0 5 0 0");
+		add(stageLabel, "cell 1 0, pad 0 5 0 50");
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
@@ -127,21 +128,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 		      }
 		});
-		
-		//Let the user specify the number of critical days before due
-		JLabel daysUntilLabel = new JLabel("Critical days before Deadline");
-		add(daysUntilLabel, "flowx, cell 1 0, alignx right, pad 0 0 0 50");
-		daysUntilError = new JLabel("Must specify number of days");
-		daysUntilError.setForeground(Color.red);
-		add(daysUntilError, "flowx,cell 1 0, alignx right, pad 0 0 0 50");
-		daysUntilError.setVisible(false);
-		
-		daysUntilField = new JTextField();
-		daysUntilField.setText(Integer.toString(this.taskModel.getTimeThreshold()));
-		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
-		add(daysUntilField, "flowx,cell 1 1, gap 100");
-		daysUntilField.setColumns(10);
-		daysUntilField.addKeyListener(this);
 		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
@@ -167,32 +153,34 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
-		add(estEffortLabel, "flowx,cell 1 4");
+		add(estEffortLabel, "flowx,cell 1 4, pad 0 5 0 100");
 		estEffortError = new JLabel("Must specify a valid effort");
 		estEffortError.setForeground(Color.red);
-		add(estEffortError, "flowx,cell 1 4");
+		add(estEffortError, "flowx,cell 1 4, pad 0 5 0 100");
 		estEffortError.setVisible(false);
 		
 		//Set the estimated effort
 		estEffortField = new JTextField();
+		estEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		estEffortField.setText(Integer.toString(this.taskModel.getEstimatedEffort()));
-		add(estEffortField, "flowx,cell 1 5,alignx left");
+		add(estEffortField, "flowx,cell 1 5,alignx left, pad 0 5 0 0");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
 		
 		//Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
-		add(actEffortLabel, "flowx,cell 1 6");
+		add(actEffortLabel, "flowx,pad 0 5 0 100,cell 1 10");
 		actEffortField = new JTextField();
+		actEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		actEffortField.setText(Integer.toString(this.taskModel.getActualEffort()));
-		add(actEffortField, "flowx,cell 1 7,alignx left");
+		add(actEffortField, "flowx,pad 0 5 0 0,cell 1 11,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
 		
 		//Warn if users put an invalid actual effort
 		actEffortError = new JLabel("Must specify a valid effort");
 		actEffortError.setForeground(Color.red);
-		add(actEffortError, "flowx,cell 1 6");
+		add(actEffortError, "flowx,pad 0 5 0 100,cell 1 10");
 		actEffortError.setVisible(false);
 		
 		//The submit button
@@ -205,7 +193,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 				TabController.getInstance().removeTab(thisTab);
 			}	
 		});
-		add(sbmtTaskButton, "cell 0 7");		
+		add(sbmtTaskButton, "flowx,cell 0 11");		
 		sbmtTaskButton.setEnabled(false);
 		
 		/*
@@ -215,7 +203,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		 * in MM-dd-YYYY
 		 */
 		dateDue = new JLabel("Due Date:(*)");
-		add(dateDue, "cell 0 4");
+		add(dateDue, "flowx,cell 0 4");
 		
 		dateNotAddedError = new JLabel("Task Needs A Due Date");
 		dateNotAddedError.setForeground(Color.red);
@@ -237,10 +225,27 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		p.put("text.year", "Year");
 	    datePanel = new JDatePanelImpl(dateModel, p);
 	    datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		add(datePicker, "cell 0 5");
+		add(datePicker, "flowx,cell 0 5");
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
+		
+		daysUntilField = new JTextField();
+		daysUntilField.setHorizontalAlignment(SwingConstants.RIGHT);
+		daysUntilField.setText(Integer.toString(this.taskModel.getTimeThreshold()));
+		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
+		add(daysUntilField, "pad 0 50 0 0,cell 0 5,alignx right");
+		daysUntilField.setColumns(10);
+		daysUntilField.addKeyListener(this);
+		
+		//Let the user specify the number of critical days before due
+		JLabel daysUntilLabel = new JLabel("Critical days before deadline");
+		add(daysUntilLabel, "pad 0 0 0 50,cell 0 5,alignx left");
+		daysUntilError = new JLabel("Must specify number of days");
+		daysUntilError.setHorizontalAlignment(SwingConstants.RIGHT);
+		daysUntilError.setForeground(Color.red);
+		add(daysUntilError, "pad 0 175 0 0,cell 0 4,alignx right");
+		daysUntilError.setVisible(false);
 		
 		checkForErrors();
 	}
