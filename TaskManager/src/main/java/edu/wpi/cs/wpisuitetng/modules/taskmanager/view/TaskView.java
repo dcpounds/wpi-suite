@@ -59,6 +59,7 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
+	private JLabel label;
 	
 	public TaskView(TaskModel taskModel, StageView stageView) {
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
@@ -76,13 +77,17 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 0 4 1,alignx center,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[grow][]", "[]"));
+		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
+		
+		label = new JLabel("!!!!");
+		label.setFont(new Font("Tahoma", Font.BOLD, 15));
+		titlePanel.add(label, "cell 0 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel();
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 0 0,alignx left,aligny top");
+		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
