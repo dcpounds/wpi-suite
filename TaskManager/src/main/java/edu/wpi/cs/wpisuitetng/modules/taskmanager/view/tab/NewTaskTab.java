@@ -244,7 +244,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		daysUntilError = new JLabel("Must specify number of days");
 		daysUntilError.setHorizontalAlignment(SwingConstants.RIGHT);
 		daysUntilError.setForeground(Color.red);
-		add(daysUntilError, "pad 0 175 0 0,cell 0 4,alignx right");
+		add(daysUntilError, "cell 0 4,alignx right,pad 0 47 0 70");
 		daysUntilError.setVisible(false);
 		
 		checkForErrors();
