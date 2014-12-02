@@ -62,15 +62,7 @@ public class StageView extends DragStagePanel {
 		this.workflowView = workflowView;
 		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
-		
-		if (title.length()<=30)
-		{
-			this.lblStageTitle = new JLabel(title);
-		}
-		else
-		{
-			this.lblStageTitle = new JLabel("...");
-		}
+		lblStageTitle = new JLabel();
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -112,6 +104,7 @@ public class StageView extends DragStagePanel {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
 			int stageCount = workflowView.getStageViewList().size();
 			int stageWidth = (int) parentSize.width/( stageCount < 4 ? stageCount : 4);
+			truncateTitle(stageWidth);
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
 			return new Dimension( stageWidth, parentSize.height );
 		}
@@ -202,18 +195,27 @@ public class StageView extends DragStagePanel {
 	 * Updates the current stage by passing in new stages
 	 * @param newStageModel - the stageModel to replace the current stage with
 	 */
-	public void updateContents(StageModel newStageModel){
-		if (newStageModel.getTitle().length()<=30)
-		{
-			this.lblStageTitle.setText(newStageModel.getTitle());
-		}
-		else
-		{
-			this.lblStageTitle.setText("...");
-		}
+	public void updateContents(StageModel newStageModel){		
 		this.closable = newStageModel.getClosable();
 		this.stageModel = newStageModel;
 		btnClose.setEnabled(newStageModel.getClosable());
 		this.redrawStage();
+	}
+	
+	
+	/**
+	 * Truncates the stage title if it is too long
+	 * @param title
+	 * @return
+	 */
+	public void truncateTitle(int width){
+		int numChars = width/10;
+		String truncatedTitle;
+		if(stageModel.getTitle().length() >= numChars)
+			truncatedTitle =  title.substring(0,numChars) + "...";
+		else
+			truncatedTitle = title;
+		
+		lblStageTitle.setText(truncatedTitle);
 	}
 }
