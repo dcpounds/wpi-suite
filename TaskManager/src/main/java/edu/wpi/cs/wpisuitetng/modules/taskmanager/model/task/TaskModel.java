@@ -27,7 +27,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private boolean isExpanded;
 	private boolean editState;
 	private boolean isArchived;
-	private boolean toggleColor;
+	private static boolean toggleColor;
 	public Color color;
 	
 	/** The default constructor for a Task **/
@@ -243,7 +243,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return color;
 	}
 	
-	public void toggleColor(){
+	public static void toggleColor(){
 		if(toggleColor){
 			toggleColor = false;
 		}else{

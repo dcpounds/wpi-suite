@@ -33,7 +33,6 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.text.ParseException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
@@ -60,7 +59,7 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
-	private JLabel statusLabel;
+	private JButton statusButton;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
@@ -81,9 +80,10 @@ public class TaskView extends DragTaskPanel{
 		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
 		
-		statusLabel = new JLabel("!!");//taskModel.getStatusLabel();
-		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-		titlePanel.add(statusLabel, "cell 0 0");
+		statusButton = new JButton("!!");//taskModel.getStatusLabel();
+		statusButton.setFont(new Font("Tahoma", Font.BOLD, 15));
+		statusButton.setMargin(new Insets(0,1,-2,1));
+		titlePanel.add(statusButton, "cell 0 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel();
@@ -298,10 +298,10 @@ public class TaskView extends DragTaskPanel{
 		this.setBackground(task.updateColor());
 		this.addAssignedUsers(task);
 		if(this.taskModel.getToggleColor()){
-			statusLabel.setVisible(true);
+			statusButton.setVisible(false);
 		}else{
-			statusLabel.setForeground(this.taskModel.color);
-			statusLabel.setVisible(true);
+			statusButton.setForeground(this.taskModel.color);
+			statusButton.setVisible(true);
 		}
 		revalidate();
 		repaint();
