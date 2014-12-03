@@ -1,6 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
@@ -39,7 +42,25 @@ public class TabController {
     	switch(tabType){
     		case TASK:
 	    		if(model != null){
-	    			tabName =  ("Edit " + model.getTitle() + "   ");
+	    			tabName = model.getTitle();
+	    			
+	    			//Get ready to abbreviate if necessary
+	    			AffineTransform affineTransform = new AffineTransform();
+	    			FontRenderContext frc = new FontRenderContext(affineTransform,true,true);
+	    			Font font = new Font("Tahoma", Font.PLAIN, 12);
+	    			int nameWidth = (int)(font.getStringBounds(tabName,frc).getWidth());
+	    			int ellipsisLength = (int)(font.getStringBounds("...", frc).getWidth());
+	    			int editLength = (int)(font.getStringBounds("Edit ", frc).getWidth());
+	    			
+	    			if (nameWidth > 222) {    // Abbreviate if too long
+	    				while ((int)(font.getStringBounds(tabName, frc).getWidth()) > 222 - ellipsisLength - editLength) {
+	    					tabName = tabName.substring(0,tabName.length()-2);
+	    				}
+	    				
+	    				tabName = "Edit " +tabName + "...   ";
+	    			} else {
+	    				tabName = tabName + "   ";
+	    			}
 	    		}else{
 	    			tabName = "New Task   ";
 	    		}
