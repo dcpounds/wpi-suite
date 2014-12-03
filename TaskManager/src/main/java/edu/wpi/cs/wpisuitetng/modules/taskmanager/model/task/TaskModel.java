@@ -229,11 +229,14 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @return returns the color of the task relative to its due date
 	 */
 	public Color getColor(){
-		color = new Color(00,204,00);
+		//Green
+		color = new Color(51,199,72);
 		if(daysUntilDue() == 0){
-			color = new Color(221,00,00);
+			//Yellow
+			color = new Color(253,188,64);
 		}else if(daysUntilDue() <= timeThreshold){
-			color = new Color(255,204,00);
+			//Red
+			color = new Color(252,87,83);
 		}
 		return color;
 	}
