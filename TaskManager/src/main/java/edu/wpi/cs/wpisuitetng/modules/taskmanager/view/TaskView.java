@@ -81,25 +81,27 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 1 5 1,growx,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[30.00][17.00,grow][][grow][]", "[][grow]"));
+		add(titlePanel, "cell 0 0 5 1,growx,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[30.00][10.00,grow][][grow][][]", "[][grow]"));
 		
 		catPanel = new JPanel();
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		titlePanel.add(catPanel, "cell 0 0,grow");
 		catPanel.setBackground(Color.LIGHT_GRAY);
 		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
 		
-		statusLabel = new JLabel("!!");
-		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+
+		statusLabel = new JLabel("!!!");
+		statusLabel.setFont(new Font("Impact", Font.BOLD, 18));
 		titlePanel.add(statusLabel, "cell 1 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
 		lblNewTask.putClientProperty("html.disable", Boolean.TRUE);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 2 0,alignx center,aligny top");
+		titlePanel.add(lblNewTask, "cell 2 0,alignx leading,aligny top");
+		
+		
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
@@ -161,21 +163,7 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
-		
-		
-		//Set up the close button to remove the task
-		JButton closeButton = new JButton("\u2716");
-		closeButton.setMargin(new Insets(0, 0, 0, 0));
-		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		TaskView tv = this;
-		closeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				StageController.deleteTask(tv);
-			}
-		});
-		
-		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
-		add(closeButton, "cell 2 1,alignx trailing");
 		this.setContents(taskModel);
 		this.add(taskContentPane, "cell 0 2 3 2,grow");
 		
@@ -190,6 +178,22 @@ public class TaskView extends DragTaskPanel{
 		});
 		add(btnEdit, "cell 2 4");
 
+		
+		
+		//Set up the close button to remove the task
+				JButton closeButton = new JButton("\u2716");
+				titlePanel.add(closeButton, "cell 4 0,alignx center,aligny top");
+				closeButton.setMargin(new Insets(0, 0, 0, 0));
+				closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+				closeButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						StageController.deleteTask(tv);
+					}
+				});
+				
+				closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+				
+		
 		//Set up the activities button
 		btnActivities = new JButton("Activities");
 		btnActivities.addActionListener( new ActionListener(){
@@ -349,11 +353,11 @@ public class TaskView extends DragTaskPanel{
 	
 	public void toggleTaskViewColor(Color color){
 		if(WorkflowController.getWorkflowModel().getToggleColor()){
-			statusLabel.setForeground(color);
-			statusLabel.setVisible(true);
+			statusLabel.setVisible(false);
 			this.setBackground(color);
 		}else{
-			statusLabel.setVisible(false);
+			statusLabel.setVisible(true);
+			statusLabel.setForeground(color);
 			this.setBackground(Color.LIGHT_GRAY);
 		}
 	}

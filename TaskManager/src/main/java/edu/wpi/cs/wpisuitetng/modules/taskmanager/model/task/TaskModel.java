@@ -237,7 +237,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		if(daysUntilDue() > timeThreshold){
 			//Green
 			color = new Color(51,199,72);
-		}else if(daysUntilDue() < timeThreshold && daysUntilDue() > 0){
+		}else if(daysUntilDue() <= timeThreshold && daysUntilDue() > 0){
 			//Yellow
 			color = new Color(253,188,64);
 		}else{
