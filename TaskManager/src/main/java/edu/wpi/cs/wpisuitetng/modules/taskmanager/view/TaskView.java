@@ -82,8 +82,8 @@ public class TaskView extends DragTaskPanel{
 		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
 		
-		statusLabel = new JLabel("!!");
-		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		statusLabel = new JLabel("!!!");
+		statusLabel.setFont(new Font("Impact", Font.BOLD, 18));
 		titlePanel.add(statusLabel, "cell 0 0");
 		
 		//Sets the title of the task
@@ -330,11 +330,11 @@ public class TaskView extends DragTaskPanel{
 	
 	public void toggleTaskViewColor(Color color){
 		if(WorkflowController.getWorkflowModel().getToggleColor()){
-			statusLabel.setForeground(color);
-			statusLabel.setVisible(true);
+			statusLabel.setVisible(false);
 			this.setBackground(color);
 		}else{
-			statusLabel.setVisible(false);
+			statusLabel.setVisible(true);
+			statusLabel.setForeground(color);
 			this.setBackground(Color.LIGHT_GRAY);
 		}
 	}
