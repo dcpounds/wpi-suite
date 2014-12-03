@@ -81,6 +81,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private AssignUsersView assignUsersView;
 	private ActionType action;
 	private boolean isBeingEdited;
+	private JLabel colorTitle;
+	private ColorComboBox colorBox;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -89,7 +91,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 
 	public NewTaskTab(TaskModel model) {
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 0 0");
 		this.workflowModel = WorkflowController.getWorkflowModel();
@@ -172,20 +174,23 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
 		
+		colorTitle = new JLabel("Select Category");
+		add(colorTitle, "cell 0 9");
+		
 		//Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
-		add(actEffortLabel, "flowx,pad 0 5 0 100,cell 1 10");
+		add(actEffortLabel, "flowx,pad 0 5 0 100,cell 1 11");
 		actEffortField = new JTextField();
 		actEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		actEffortField.setText(Integer.toString(this.taskModel.getActualEffort()));
-		add(actEffortField, "flowx,pad 0 5 0 0,cell 1 11,alignx left");
+		add(actEffortField, "flowx,pad 0 5 0 0,cell 1 12,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
 		
 		//Warn if users put an invalid actual effort
 		actEffortError = new JLabel("Must specify a valid effort");
 		actEffortError.setForeground(Color.red);
-		add(actEffortError, "flowx,pad 0 5 0 100,cell 1 10");
+		add(actEffortError, "flowx,pad 0 5 0 100,cell 1 11");
 		actEffortError.setVisible(false);
 		
 		//The submit button
@@ -198,7 +203,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 				TabController.getInstance().removeTab(thisTab);
 			}	
 		});
-		add(sbmtTaskButton, "flowx,cell 0 11");		
+		add(sbmtTaskButton, "flowx,cell 0 12");		
 		sbmtTaskButton.setEnabled(false);
 		
 		/*
@@ -234,6 +239,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
+		
+		colorTitle = new JLabel("                  ");
+		add(colorTitle, "cell 1 0");
+		
+		//Colorcombobox is a custom jcombobox that allows color section visible
+		colorBox = new ColorComboBox();
+		add(colorBox,"cell 0 10");
+		colorBox.setBounds(100,20,140,30); 
+		colorBox.setToolTipText("Select a Category Color");
+		
 		
 		daysUntilField = new JTextField();
 		daysUntilField.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -288,6 +303,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setEditState(false);
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
+		taskModel.setCatColor(colorBox.getSelectedColor());
 		ActivityModel message;
 		if(isBeingEdited){
 			message = new ActivityModel("Updated the task");

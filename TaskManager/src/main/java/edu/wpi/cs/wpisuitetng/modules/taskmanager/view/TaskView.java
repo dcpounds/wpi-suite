@@ -37,6 +37,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
+import java.awt.FlowLayout;
 
 /**
  * @author Alec
@@ -62,9 +63,10 @@ public class TaskView extends DragTaskPanel{
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
 	private JLabel statusLabel;
+	private JPanel catPanel;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
-		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
+		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -79,19 +81,25 @@ public class TaskView extends DragTaskPanel{
 		titlePanel.setBackground(Color.LIGHT_GRAY);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
-		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
+		add(titlePanel, "cell 0 1 5 1,growx,aligny top");
+		titlePanel.setLayout(new MigLayout("", "[30.00][17.00,grow][][grow][]", "[][grow]"));
+		
+		catPanel = new JPanel();
+		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		titlePanel.add(catPanel, "cell 0 0,grow");
+		catPanel.setBackground(Color.LIGHT_GRAY);
+		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
 		
 		statusLabel = new JLabel("!!");
 		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
-		titlePanel.add(statusLabel, "cell 0 0");
+		titlePanel.add(statusLabel, "cell 1 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
 		lblNewTask.putClientProperty("html.disable", Boolean.TRUE);
-		lblNewTask.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
+		titlePanel.add(lblNewTask, "cell 2 0,alignx center,aligny top");
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
@@ -167,9 +175,9 @@ public class TaskView extends DragTaskPanel{
 		});
 		
 		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
-		add(closeButton, "cell 2 0,alignx trailing");
+		add(closeButton, "cell 2 1,alignx trailing");
 		this.setContents(taskModel);
-		this.add(taskContentPane, "cell 0 1 3 2,grow");
+		this.add(taskContentPane, "cell 0 2 3 2,grow");
 		
 		//Set up the edit button
 		btnEdit = new JButton("Edit");
@@ -180,7 +188,7 @@ public class TaskView extends DragTaskPanel{
 					TabController.getInstance().addTab(TabType.TASK, taskModel);
 			}
 		});
-		add(btnEdit, "cell 2 3");
+		add(btnEdit, "cell 2 4");
 
 		//Set up the activities button
 		btnActivities = new JButton("Activities");
@@ -192,7 +200,7 @@ public class TaskView extends DragTaskPanel{
 				}
 			}
 		});
-		add(btnActivities, "cell 0 3");
+		add(btnActivities, "cell 0 4");
 	}
 	
 	/**
@@ -273,6 +281,14 @@ public class TaskView extends DragTaskPanel{
 	public void setStageView(StageView stageView){
 		this.stageView = stageView;
 	}
+	/**
+	 * sets the categorypanel color with paramter color
+	 * @param color
+	 * @return 
+	 */
+	public void setCategoryColor(Color color){
+		catPanel.setBackground(color);
+	}
 	
 	/**
 	 * @return the scrollPane that holds the task contents
@@ -317,6 +333,9 @@ public class TaskView extends DragTaskPanel{
 		
 		this.taskModel.setDescription(task.getDescription());
 		this.descriptionField.setText(task.getDescription());
+		
+		this.setCategoryColor(task.getCatColor());
+		taskModel.setCatColor(task.getCatColor());
 		
 		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());

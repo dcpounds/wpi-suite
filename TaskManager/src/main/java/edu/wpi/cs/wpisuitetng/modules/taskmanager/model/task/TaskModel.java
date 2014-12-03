@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.awt.Color;
 
 import com.google.gson.Gson;
 
@@ -31,6 +32,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private boolean activitiesOpened;
 	private boolean isArchived;
 	private Color color;
+	private Color CatColor;
 	private ActivityListModel activities;
 	
 	/** The default constructor for a Task **/
@@ -423,6 +425,12 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 */
 	public void addActivity(ActivityModel activity){
 		activities.addActivity(activity);
+	}
+	public Color getCatColor(){
+		return this.CatColor;
+	}
+	public void setCatColor(Color catColor){
+		this.CatColor =  catColor;
 	}
 	
 }
