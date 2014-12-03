@@ -52,8 +52,11 @@ public class StageController implements ActionListener{
 				sendUpdateRequest(stage);
 				break;
 			case DELETE:
-				sendDeleteRequest(stage);	
-				break;
+				{
+					sendDeleteRequest(stage);	
+					locallyUpdateAllStages();
+					break;
+				}
 			case GET:
 				sendGetRequest(stage);
 				break;
@@ -85,6 +88,11 @@ public class StageController implements ActionListener{
 		request.setBody(stage.toJson()); // put the new stage in the body of the request
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
+		for(StageModel stage2 : workflowModel.getStageModelList().values())
+		{
+			stage2.setClosable(false);
+			sendUpdateRequest(stage2);
+		}
 	}
 	
 	/**
@@ -129,6 +137,7 @@ public class StageController implements ActionListener{
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		this.syncTaskViews(stage, stageView);
 		stageView.updateContents(stage);
+
 	}
 	
 	/**
