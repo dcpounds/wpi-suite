@@ -215,9 +215,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 			Date due = (Date) format.stringToValue(getDueDate());
 			Calendar dueTime = Calendar.getInstance();
 			dueTime.setTime(due);
-			if(dueTime.after(currentTime)){
-				days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS) + 1);
-			}
+			days = (int)(((dueTime.getTimeInMillis() - currentTime.getTimeInMillis())/ DAY_IN_MILLIS) + 1);
 		}catch(ParseException e){
 			e.printStackTrace();
 			System.out.println("I FAILED to parse date");
@@ -229,12 +227,13 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @return returns the color of the task relative to its due date
 	 */
 	public Color getColor(){
-		//Green
-		color = new Color(51,199,72);
-		if(daysUntilDue() == 0){
+		if(daysUntilDue() > timeThreshold){
+			//Green
+			color = new Color(51,199,72);
+		}else if(daysUntilDue() < timeThreshold && daysUntilDue() > 0){
 			//Yellow
 			color = new Color(253,188,64);
-		}else if(daysUntilDue() <= timeThreshold){
+		}else{
 			//Red
 			color = new Color(252,87,83);
 		}
