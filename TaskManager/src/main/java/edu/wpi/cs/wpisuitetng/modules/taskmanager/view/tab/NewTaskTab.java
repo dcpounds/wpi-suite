@@ -34,6 +34,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
@@ -79,6 +80,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
 	private ActionType action;
+	private boolean isBeingEdited;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -97,10 +99,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		if(model == null){
 			this.taskModel = new TaskModel();
 			this.action = ActionType.CREATE;
+			this.isBeingEdited = false;
 		} else{
 			this.taskModel = model;
 			this.taskModel.setEditState(true);
 			this.action = ActionType.EDIT;
+			this.isBeingEdited = true;
 		}
 		
 		//Set an error if the task needs a title
@@ -283,8 +287,17 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setStageID( stageModel.getID() );
 		taskModel.setEditState(false);
 		taskModel.setTimeThreshold(getDaysUntil());
+		taskModel.setActivities(this.taskModel.getActivities());
+		ActivityModel message;
+		if(isBeingEdited){
+			message = new ActivityModel("Updated the task");
+		} else {
+			message = new ActivityModel("Created the task");
+		}
+		taskModel.addActivity(message);
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
+		
 	}
 	
 	/**

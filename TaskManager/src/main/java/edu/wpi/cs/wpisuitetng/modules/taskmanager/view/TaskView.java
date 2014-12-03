@@ -50,6 +50,7 @@ public class TaskView extends DragTaskPanel{
 	private JLabel lblNewTask;
 	private JScrollPane taskContentPane;
 	private JButton btnEdit;
+	private JButton btnActivities;
 	private JTextArea dateArea;
 	private JLabel lblEstimatedEffort;
 	private JLabel lblActualEffort;
@@ -180,6 +181,18 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 3");
+
+		//Set up the activities button
+		btnActivities = new JButton("Activities");
+		btnActivities.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!taskModel.isActivitiesOpened()){
+					TabController.getInstance().addTab(TabType.ACTIVITIES, taskModel);
+				}
+			}
+		});
+		add(btnActivities, "cell 0 3");
 	}
 	
 	/**
@@ -296,6 +309,7 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setEditState(task.getEditState());
+		this.taskModel.setActivitiesOpened(task.isActivitiesOpened());
 		this.taskModel.setTitle(task.getTitle());
 		
 		task.setDueDate(task.getDueDate());

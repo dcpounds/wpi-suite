@@ -9,8 +9,10 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -26,8 +28,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int timeThreshold;
 	private boolean isExpanded;
 	private boolean editState;
+	private boolean activitiesOpened;
 	private boolean isArchived;
-	public Color color;
+	private Color color;
+	private ActivityListModel activities;
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -43,26 +47,27 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
+		this.activities = new ActivityListModel();
 	}
 	
 	/** Copies the contents of updatedStage into this one
 	 * @param updatedTask the stage to copy from
 	 */
-	public void copyFrom(TaskModel updatedStage) {
-		this.id = updatedStage.id;
-		this.estimatedEffort = updatedStage.getEstimatedEffort();
-		this.actualEffort = updatedStage.getActualEffort();
-		this.title = updatedStage.title;
-		this.creatorName = updatedStage.getCreatorName();
-		this.description = updatedStage.getDescription();
-		creationDate = updatedStage.getCreationDate();
-		usersAssignedTo = updatedStage.getUsersAssignedTo();
-		dueDate = updatedStage.getDueDate();	
-		this.isExpanded = updatedStage.getIsExpanded();
-		this.stageID = updatedStage.getStageID();
-		this.isArchived = updatedStage.getIsArchived();
-		this.timeThreshold = updatedStage.getTimeThreshold();
-		this.color = updatedStage.getColor();
+	public void copyFrom(TaskModel updatedTask) {
+		this.id = updatedTask.id;
+		this.estimatedEffort = updatedTask.getEstimatedEffort();
+		this.actualEffort = updatedTask.getActualEffort();
+		this.title = updatedTask.title;
+		this.creatorName = updatedTask.getCreatorName();
+		this.description = updatedTask.getDescription();
+		creationDate = updatedTask.getCreationDate();
+		usersAssignedTo = updatedTask.getUsersAssignedTo();
+		dueDate = updatedTask.getDueDate();	
+		this.isExpanded = updatedTask.getIsExpanded();
+		this.stageID = updatedTask.getStageID();
+		this.isArchived = updatedTask.getIsArchived();
+		activities = updatedTask.getActivities();
+		this.color = updatedTask.getColor();
 	}
 	
 	
@@ -387,4 +392,37 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
         
         return this.id == other.getID();
 	}
+
+	/**
+	 * @return the activities
+	 */
+	public ActivityListModel getActivities() {
+		return activities;
+	}
+	
+	public void setActivities(ActivityListModel newActivities) {
+		this.activities = newActivities;
+	}
+
+	/**
+	 * @return the areActivitiesOpened
+	 */
+	public boolean isActivitiesOpened() {
+		return activitiesOpened;
+	}
+
+	/**
+	 * @param activitiesOpened the areActivitiesOpened to set
+	 */
+	public void setActivitiesOpened(boolean activitiesOpened) {
+		this.activitiesOpened = activitiesOpened;
+	}
+
+	/**
+	 * @param activity
+	 */
+	public void addActivity(ActivityModel activity){
+		activities.addActivity(activity);
+	}
+	
 }
