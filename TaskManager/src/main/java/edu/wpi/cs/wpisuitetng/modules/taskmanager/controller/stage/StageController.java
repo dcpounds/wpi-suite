@@ -125,7 +125,6 @@ public class StageController implements ActionListener{
 	public void updateStage(StageModel stage) {
 		boolean closable = TabController.getTabView().getWorkflowView().getStageViewList().size() <= 1 ? false : true;
 		stage.setClosable(closable);
-		System.out.println("Updating a stage with id " + stage.getID());
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		this.syncTaskViews(stage, stageView);
@@ -133,20 +132,35 @@ public class StageController implements ActionListener{
 	}
 	
 	/**
+	 * Refreshes all the stageViews on the local client
+	 * this method will not send any changes to the database
+	 */
+	public static void locallyUpdateAllStages(){
+		for(StageModel stage : workflowModel.getStageModelList().values()){
+			StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(stage.getID());
+			syncTaskViews(stage, stageView);
+		}
+	}
+	
+	/**
 	 * Given a stage, update/add all the task views
 	 * @param stageModel - the stageModel to sync the views of
 	 * @param stage - the stageView to add the taskViews to
 	 */
-	public void syncTaskViews(StageModel stageModel, StageView stage){
+	public static void syncTaskViews(StageModel stageModel, StageView stage){
 		HashMap<Integer, TaskModel> taskModelList = stageModel.getTaskModelList();
 		HashMap<Integer, TaskView> taskViewList = stage.getTaskViewList();
+		
+		if(taskViewList.size() != taskModelList.size()){
+			stage.clearAllStages();
+		}
 			
 		for( TaskModel task : taskModelList.values() ){
+			System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
 			TaskView taskView = taskViewList.get(task.getID());
 			//If we found a matching taskView...
 			if(taskView != null){
 				taskView.setContents(task);
-				break;
 			} else{
 				//If we found no match, add the task to the stageView
 				TaskView newTaskView = new TaskView(task, stage);
@@ -160,7 +174,8 @@ public class StageController implements ActionListener{
 	 * @param taskView - the taskView to delete 
 	 * @param stageView - the stageView to delete from
 	 */
-	public static void deleteTask(TaskView taskView, StageView stageView){
+	public static void deleteTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
 		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
 		try{
 			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
@@ -171,7 +186,8 @@ public class StageController implements ActionListener{
 			return;
 		} catch(Exception e){
 			System.out.println("Could not remove. Either the task could not be found"
-					+ " or the stage could not be found");
+					+ " or the stage could not be found.");
+			
 			e.printStackTrace();
 		}
 	}

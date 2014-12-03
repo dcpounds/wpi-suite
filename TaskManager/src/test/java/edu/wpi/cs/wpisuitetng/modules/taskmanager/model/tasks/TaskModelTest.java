@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.tasks;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -23,15 +24,16 @@ public class TaskModelTest {
 
 	/**
 	 * Test all methods in TaskModel
+	 * @throws ParseException 
 	 */
 	@Test
-	public void taskTest() {
+	public void taskTest() throws ParseException {
 		task.setID(5);
 		task.setTitle("Task");
 		task.setEstimatedEffort(16);
 		task.setActualEffort(20);
 		task.setDescription("Test Description");
-		task.setDueDate("01/15/2015");
+		task.setDueDate("11/30/2014");
 		task.setCreationDate(new Date());
 		task.setIsExpanded(true);
 		task.setExpanded(true);
@@ -51,7 +53,7 @@ public class TaskModelTest {
 		assertEquals(16,task.getEstimatedEffort());
 		assertEquals(20,task.getActualEffort());
 		assertTrue("Test Description".equals(task.getDescription()));
-		assertTrue("01/15/2015".equals(task.getDueDate()));
+		assertTrue("11/30/2014".equals(task.getDueDate()));
 		assertTrue(task.getIsExpanded());
 		assertTrue(task.identify(task1));
 		assertTrue(task.getEditState());
@@ -62,12 +64,13 @@ public class TaskModelTest {
 		assertFalse(task.equals(task4));
 		assertTrue(task.getUsersAssignedTo().equals(new ArrayList<String>()));
 		
+		task1.setDueDate("12-15-2015");
 		assertEquals(5,task1.getID());
 		assertTrue("Task".equals(task1.getTitle()));
 		assertEquals(16,task1.getEstimatedEffort());
 		assertEquals(20,task1.getActualEffort());
 		assertTrue("Test Description".equals(task1.getDescription()));
-		assertTrue("01/15/2015".equals(task1.getDueDate()));
+		assertTrue("12-15-2015".equals(task1.getDueDate()));
 		assertTrue(task1.getIsExpanded());
 	}
 	

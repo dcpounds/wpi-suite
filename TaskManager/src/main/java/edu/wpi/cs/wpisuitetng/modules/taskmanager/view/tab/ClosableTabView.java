@@ -40,6 +40,7 @@ public class ClosableTabView extends JPanel{
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.view = TabController.getTabView();
 		tabLabel = new JLabel(tabModel.getTabTitle());
+		tabLabel.putClientProperty("html.disable", Boolean.TRUE);
 		setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
 		setOpaque(false);
 		

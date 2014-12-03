@@ -9,8 +9,11 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+=======
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
+>>>>>>> database-persistence
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
@@ -30,8 +33,11 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private boolean editState;
 	private boolean activitiesOpened;
 	private boolean isArchived;
-	private Color color;
+<<<<<<< HEAD
 	private ActivityListModel activities;
+=======
+	public Color color;
+>>>>>>> database-persistence
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -53,21 +59,38 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	/** Copies the contents of updatedStage into this one
 	 * @param updatedTask the stage to copy from
 	 */
+<<<<<<< HEAD
 	public void copyFrom(TaskModel updatedTask) {
-		this.id = updatedTask.id;
-		this.estimatedEffort = updatedTask.getEstimatedEffort();
-		this.actualEffort = updatedTask.getActualEffort();
-		this.title = updatedTask.title;
-		this.creatorName = updatedTask.getCreatorName();
-		this.description = updatedTask.getDescription();
+		id = updatedTask.getID();
+		estimatedEffort = updatedTask.getEstimatedEffort();
+		actualEffort = updatedTask.getActualEffort();
+		title = updatedTask.getTitle();
+		creatorName = updatedTask.getCreatorName();
+		description = updatedTask.getDescription();
 		creationDate = updatedTask.getCreationDate();
 		usersAssignedTo = updatedTask.getUsersAssignedTo();
 		dueDate = updatedTask.getDueDate();	
-		this.isExpanded = updatedTask.getIsExpanded();
-		this.stageID = updatedTask.getStageID();
-		this.isArchived = updatedTask.getIsArchived();
+		isExpanded = updatedTask.getIsExpanded();
+		stageID = updatedTask.getStageID();
+		isArchived = updatedTask.getIsArchived();
 		activities = updatedTask.getActivities();
-		this.color = updatedTask.getColor();
+=======
+	public void copyFrom(TaskModel updatedStage) {
+		this.id = updatedStage.id;
+		this.estimatedEffort = updatedStage.getEstimatedEffort();
+		this.actualEffort = updatedStage.getActualEffort();
+		this.title = updatedStage.title;
+		this.creatorName = updatedStage.getCreatorName();
+		this.description = updatedStage.getDescription();
+		creationDate = updatedStage.getCreationDate();
+		usersAssignedTo = updatedStage.getUsersAssignedTo();
+		dueDate = updatedStage.getDueDate();	
+		this.isExpanded = updatedStage.getIsExpanded();
+		this.stageID = updatedStage.getStageID();
+		this.isArchived = updatedStage.getIsArchived();
+		this.timeThreshold = updatedStage.getTimeThreshold();
+		this.color = updatedStage.getColor();
+>>>>>>> database-persistence
 	}
 	
 	

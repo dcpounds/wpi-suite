@@ -15,12 +15,16 @@ public class DateLabelFormatter extends AbstractFormatter {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     @Override
-    public Object stringToValue(String text) throws ParseException {
-        return dateFormatter.parseObject(text);
+    public Object stringToValue(String text) throws ParseException{
+    	if(!"-".equals(text.substring(2, 3))){
+    		text = text.substring(0, 2) + "-" + text.substring(3, 5) + "-" + text.substring(6);
+    	}
+		return dateFormatter.parseObject(text);
+      
     }
 
     @Override
-    public String valueToString(Object value) throws ParseException {
+    public String valueToString(Object value) throws ParseException{
         if (value != null) {
             Calendar cal = (Calendar) value;
             return dateFormatter.format(cal.getTime());

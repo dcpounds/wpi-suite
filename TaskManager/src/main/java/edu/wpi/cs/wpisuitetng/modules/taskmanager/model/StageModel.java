@@ -88,11 +88,8 @@ public class StageModel extends AbstractModel {
 	 * @param task - the task to add to the list of taskModels
 	 * @return the updated list of taskModels
 	 */
-	public HashMap<Integer,TaskModel> addTaskModelAtIndex(TaskModel task){
+	public HashMap<Integer,TaskModel> addTaskModel(TaskModel task){
 		taskModelList.put(task.getID(), task);
-		StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(task.getStageID());
-		TaskView taskView = new TaskView(task, stageView);
-		stageView.addTaskViewAtIndex(index,taskView);
 		return taskModelList;
 	}
 	
@@ -102,6 +99,7 @@ public class StageModel extends AbstractModel {
 	 * @return - the updated list of tasks
 	 */
 	public HashMap<Integer,TaskModel> removeTask(TaskModel task){
+		System.out.println("Trying to remove task with from " + this.getTitle());
 		taskModelList.remove(task.getID());
 		return taskModelList;
 	}

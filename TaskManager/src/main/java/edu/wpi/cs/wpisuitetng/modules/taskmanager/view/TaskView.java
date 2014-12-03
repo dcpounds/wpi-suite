@@ -21,6 +21,7 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
@@ -60,11 +61,10 @@ public class TaskView extends DragTaskPanel{
 	private int id;
 	private static final int openSize = 250;
 	private static final int closeSize = 40;
-	private JLabel label;
+	private JLabel statusLabel;
 	
-	public TaskView(TaskModel taskModel, StageView stageView) {
+	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[grow][][]", "[][][grow][]"));
-		setBackground(Color.LIGHT_GRAY);
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -77,16 +77,18 @@ public class TaskView extends DragTaskPanel{
 		titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
 		add(titlePanel, "cell 0 0 4 1,growx,aligny top");
 		titlePanel.setLayout(new MigLayout("", "[][grow][]", "[]"));
 		
-		label = new JLabel("!!!");
-		label.setFont(new Font("Tahoma", Font.BOLD, 15));
-		titlePanel.add(label, "cell 0 0");
+		statusLabel = new JLabel("!!");
+		statusLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		titlePanel.add(statusLabel, "cell 0 0");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
+		lblNewTask.putClientProperty("html.disable", Boolean.TRUE);
 		lblNewTask.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		titlePanel.add(lblNewTask, "cell 1 0,alignx center,aligny top");
@@ -129,6 +131,7 @@ public class TaskView extends DragTaskPanel{
 		taskContents.add(lblDescription);
 		
 		this.descriptionField = new JTextArea();
+		descriptionField.putClientProperty("html.disable", Boolean.TRUE);
 		descriptionField.setWrapStyleWord(true);
 		descriptionField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		descriptionField.setLineWrap(true);
@@ -159,7 +162,7 @@ public class TaskView extends DragTaskPanel{
 		TaskView tv = this;
 		closeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				StageController.deleteTask(tv, stageView);
+				StageController.deleteTask(tv);
 			}
 		});
 		
@@ -267,6 +270,10 @@ public class TaskView extends DragTaskPanel{
 		return stageView;
 	}
 	
+	public void setStageView(StageView stageView){
+		this.stageView = stageView;
+	}
+	
 	/**
 	 * @return the scrollPane that holds the task contents
 	 */
@@ -315,10 +322,20 @@ public class TaskView extends DragTaskPanel{
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
-		
 		this.addAssignedUsers(task);
-		
+		toggleTaskViewColor(task.getColor());
 		revalidate();
 		repaint();
+	}
+	
+	public void toggleTaskViewColor(Color color){
+		if(WorkflowController.getWorkflowModel().getToggleColor()){
+			statusLabel.setForeground(color);
+			statusLabel.setVisible(true);
+			this.setBackground(color);
+		}else{
+			statusLabel.setVisible(false);
+			this.setBackground(Color.LIGHT_GRAY);
+		}
 	}
 }

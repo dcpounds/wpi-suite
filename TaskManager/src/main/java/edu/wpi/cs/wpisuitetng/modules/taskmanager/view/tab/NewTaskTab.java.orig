@@ -286,7 +286,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
 		taskModel.setEditState(false);
-		taskModel.setTimeThreshold(getDaysUntil());
+<<<<<<< HEAD
 		taskModel.setActivities(this.taskModel.getActivities());
 		ActivityModel message;
 		if(isBeingEdited){
@@ -295,6 +295,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			message = new ActivityModel("Created the task");
 		}
 		taskModel.addActivity(message);
+=======
+		taskModel.setTimeThreshold(getDaysUntil());
+>>>>>>> database-persistence
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 		
