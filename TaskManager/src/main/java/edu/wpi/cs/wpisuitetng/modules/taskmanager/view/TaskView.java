@@ -282,9 +282,16 @@ public class TaskView extends DragTaskPanel{
 		return stageView;
 	}
 	
+	
+	/**
+	 * 
+	 * @param stageView - sets the stageView of the taskView
+	 */
 	public void setStageView(StageView stageView){
 		this.stageView = stageView;
 	}
+	
+	
 	/**
 	 * sets the categorypanel color with paramter color
 	 * @param color
@@ -351,6 +358,10 @@ public class TaskView extends DragTaskPanel{
 		repaint();
 	}
 	
+	/**
+	 * - when the color toggle button is pressed, change the color of the stage
+	 * @param color - the color to set the stage to
+	 */
 	public void toggleTaskViewColor(Color color){
 		if(WorkflowController.getWorkflowModel().getToggleColor()){
 			statusLabel.setVisible(false);

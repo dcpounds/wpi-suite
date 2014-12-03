@@ -128,7 +128,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
-		//stageBox.setSelectedIndex(this.taskModel.getStageID());
+		
+		//Set the default selected value of the stage selection box
+		if(model != null)
+			stageBox.setSelectedItem( workflowModel.getStageModelList().get(model.getStageID()).getTitle());
+		
 		add(stageBox, "cell 1 1, pad 0 5 0 0");
 		stageBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
