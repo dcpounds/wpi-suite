@@ -61,7 +61,7 @@ public class TaskView extends DragTaskPanel{
 	private StageView stageView;
 	private int id;
 	private static final int openSize = 250;
-	private static final int closeSize = 40;
+	private static final int closeSize = 45;
 	private JLabel statusLabel;
 	private JPanel catPanel;
 	
@@ -86,14 +86,14 @@ public class TaskView extends DragTaskPanel{
 		
 		catPanel = new JPanel();
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		titlePanel.add(catPanel, "cell 0 0,grow");
+		titlePanel.add(catPanel, "cell 0 0,alignx left,aligny center");
 		catPanel.setBackground(Color.LIGHT_GRAY);
 		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
 		
 
 		statusLabel = new JLabel("!!!");
 		statusLabel.setFont(new Font("Impact", Font.BOLD, 18));
-		titlePanel.add(statusLabel, "cell 1 0");
+		titlePanel.add(statusLabel, "cell 1 0,alignx left,aligny top");
 		
 		//Sets the title of the task
 		lblNewTask = new JLabel(taskModel.getTitle());
