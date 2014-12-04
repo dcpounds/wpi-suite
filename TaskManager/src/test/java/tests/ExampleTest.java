@@ -26,6 +26,6 @@ public class ExampleTest {
 		//assertEquals(expected result, message to compare to)
 		//value to compare to is nearly always a function call
 		
-		assertEquals(9, exampleClass.addNumbers());
+		assertEquals(expectedResult, exampleClass.addNumbers());
 	}
 }
