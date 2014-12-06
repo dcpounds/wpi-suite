@@ -4,16 +4,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.awt.Color;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {

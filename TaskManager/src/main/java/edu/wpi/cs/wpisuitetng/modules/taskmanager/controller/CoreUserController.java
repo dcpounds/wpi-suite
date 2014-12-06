@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 

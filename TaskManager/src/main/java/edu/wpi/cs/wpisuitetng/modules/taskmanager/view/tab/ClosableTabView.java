@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /**
  * @author alec

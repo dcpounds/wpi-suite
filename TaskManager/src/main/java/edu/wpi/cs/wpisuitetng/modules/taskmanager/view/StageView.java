@@ -104,7 +104,7 @@ public class StageView extends DragStagePanel {
 		} else {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
 			int stageCount = workflowView.getStageViewList().size();
-			int stageWidth = (int) parentSize.width/( stageCount < 4 ? stageCount : 4);
+			int stageWidth = parentSize.width/( stageCount < 4 ? stageCount : 4);
 			truncateTitle(stageWidth);
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
 			return new Dimension( stageWidth, parentSize.height );

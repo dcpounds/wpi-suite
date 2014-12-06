@@ -15,7 +15,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageControll
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 public class DragStageController implements DropTargetListener, MouseListener, MouseMotionListener{
 

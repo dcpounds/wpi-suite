@@ -3,7 +3,6 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.swing.JPanel;

@@ -34,7 +34,7 @@ public class ColorComboBox extends JComboBox {
 	public void setSelectedItem(Object object){
 		super.setSelectedItem(object);
 	
-	selectedColor =(Color)colors.get(object);
+	selectedColor = colors.get(object);
 	setBackground(selectedColor);
 	setFont(new Font(Font.SERIF, Font.BOLD,15 ));
 	if(object.toString().equals("YELLOW")|object.toString().equals("WHITE")){

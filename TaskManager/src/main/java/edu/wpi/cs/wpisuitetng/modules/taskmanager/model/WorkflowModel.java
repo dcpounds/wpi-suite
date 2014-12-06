@@ -176,7 +176,7 @@ public class WorkflowModel extends AbstractModel {
         
         WorkflowModel other = (WorkflowModel) obj;
         
-        return this.name == other.getName();
+        return this.name.equals(other.getName());
 	}
 	
 	/* (non-Javadoc)

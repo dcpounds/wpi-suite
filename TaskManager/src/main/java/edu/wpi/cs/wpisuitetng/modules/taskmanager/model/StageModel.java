@@ -9,13 +9,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
- * Model for respresenting a stage that holds individual tasks
+ * Model for representing a stage that holds individual tasks
  *
  */
 public class StageModel extends AbstractModel {
@@ -165,7 +164,7 @@ public class StageModel extends AbstractModel {
         
         StageModel other = (StageModel) obj;
         
-        return this.title == other.getTitle();
+        return this.title.equals(other.getTitle());
 	}
 
 	@Override
