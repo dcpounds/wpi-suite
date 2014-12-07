@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
-public class ActivitiesTab extends JPanel {
+public class ActivitiesTab extends JPanel implements IHashableTab {
 	
 	private WorkflowModel workflowModel;
 	private TaskModel taskModel;
@@ -84,5 +84,16 @@ public class ActivitiesTab extends JPanel {
 	
 	public TaskModel getTaskModel(){
 		return taskModel;
+	}
+
+	@Override
+	public int getModelID() {
+		return taskModel.getID();
+	}
+
+	@Override
+	public TabType getTabType() {
+		// TODO Auto-generated method stub
+		return TabType.ACTIVITIES;
 	}
 }

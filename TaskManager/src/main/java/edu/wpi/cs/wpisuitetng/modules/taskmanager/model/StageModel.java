@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
  * Model for representing a stage that holds individual tasks
  *
  */
-public class StageModel extends AbstractModel {
+public class StageModel extends AbstractModel implements IDisplayModel {
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;

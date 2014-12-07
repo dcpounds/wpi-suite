@@ -37,7 +37,6 @@ public class TaskModelTest {
 		task.setCreationDate(new Date());
 		task.setIsExpanded(true);
 		task.setExpanded(true);
-		task.setEditState(true);
 		task.setIsArchived(true);
 		TaskModel task1 = new TaskModel();
 		StageModel stage = new StageModel();
@@ -56,7 +55,6 @@ public class TaskModelTest {
 		assertTrue("11/30/2014".equals(task.getDueDate()));
 		assertTrue(task.getIsExpanded());
 		assertTrue(task.identify(task1));
-		assertTrue(task.getEditState());
 		assertTrue(task.equals(task));
 		assertTrue(task.equals(task1));
 		assertTrue(task.getIsArchived());
