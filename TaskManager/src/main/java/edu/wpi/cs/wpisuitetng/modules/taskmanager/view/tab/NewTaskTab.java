@@ -31,14 +31,17 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssociatedRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -62,6 +65,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextField estEffortField;
 	private JTextField actEffortField;
 	private JComboBox<String> stageBox;
+	private JComboBox<String> requirementsBox;
 	private JTextField daysUntilField;
 	private JLabel taskDescriptionLabel;
 	private JTextArea taskDescriptionField;
@@ -79,10 +83,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel dateNotAddedError;
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
+	private AssociatedRequirementsView associatedRequirementsView;
 	private ActionType action;
 	private boolean isBeingEdited;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
+	private JTextField txtRequirement;
+	private JComboBox comboBox;
+	private JLabel lblRequirement;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -91,7 +99,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 
 	public NewTaskTab(TaskModel model) {
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][grow][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 0 0");
 		this.workflowModel = WorkflowController.getWorkflowModel();
@@ -140,6 +148,19 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		      }
 		});
 		
+		new RequirementsController().requestRequirementsList();
+		lblRequirement = new JLabel("Requirement:");
+		add(lblRequirement, "cell 1 9");
+		
+		requirementsBox = new JComboBox<String>();
+		requirementsBox.setModel(new DefaultComboBoxModel<String>( getRequirementsOptions() ));
+		add(requirementsBox, "cell 1 10,growx");
+		requirementsBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
+		      }
+		});
+		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
 		add(taskDescriptionLabel, "cell 0 2");
@@ -162,6 +183,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		assignUsersView = new AssignUsersView();
 		add(assignUsersView, "cell 1 3,grow");
 		
+		//Create a view where users can assign users to the task
+//		associatedRequirementsView = new AssociatedRequirementsView();
+//		add(associatedRequirementsView, "cell 1 3,grow");
+		
 		//Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
 		add(estEffortLabel, "flowx,cell 1 4, pad 0 7 0 100");
@@ -179,7 +204,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		estEffortField.addKeyListener(this);
 		
 		colorTitle = new JLabel("Select Category");
-		add(colorTitle, "cell 0 9");
+		add(colorTitle, "cell 0 9,alignx left");
+		
 		
 		//Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
@@ -274,6 +300,21 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		checkForErrors();
 	}
 	
+	private String[] getRequirementsOptions() {
+		ArrayList<String> requirementsOptions = new ArrayList<String>();
+		for( Requirement req : workflowModel.getRequirementsList() ){
+			requirementsOptions.add( req.getName() );
+		}
+		System.out.print("requirementsOptions");
+		System.out.println(requirementsOptions);
+		return requirementsOptions.toArray( new String[requirementsOptions.size() ]);
+	}
+	
+	public Requirement getRequirement(){
+		Requirement[] allReq = workflowModel.getRequirementsList();
+		return allReq[this.requirementsBox.getSelectedIndex()];
+	}
+
 	/**
 	 * Given the input that the user provided, construct the task
 	 * @return - the task that has been built with the fields that the user entered
@@ -308,6 +349,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
+		taskModel.setAssociatedRequirement(this.getRequirement());
 		ActivityModel message;
 		if(isBeingEdited){
 			message = new ActivityModel("Updated the task");

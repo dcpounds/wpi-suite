@@ -9,6 +9,7 @@ import java.awt.Color;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
@@ -23,6 +24,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private String title, description;
 	private String creatorName;
 	private ArrayList<String> usersAssignedTo;
+	private Requirement associatedRequirement;
 	private Date creationDate;
 	private String dueDate;
 	private int stageID;
@@ -50,6 +52,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = false;
 		this.isArchived = false;
 		this.activities = new ActivityListModel();
+		this.associatedRequirement = new Requirement();
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -70,9 +73,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isArchived = updatedTask.getIsArchived();
 		activities = updatedTask.getActivities();
 		this.color = updatedTask.getColor();
+		this.associatedRequirement = updatedTask.getAssociatedRequirement();
 	}
 	
-	
+
 	/**
 	 * @return the ID of this task
 	 */
@@ -433,4 +437,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.CatColor =  catColor;
 	}
 	
+	public void setAssociatedRequirement(Requirement req) {
+		this.associatedRequirement = req;
+	}
+	private Requirement getAssociatedRequirement() {
+		return associatedRequirement;
+	}
 }

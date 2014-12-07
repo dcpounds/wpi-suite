@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
@@ -20,6 +21,7 @@ public class WorkflowModel extends AbstractModel {
 	private HashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
+	private static ArrayList<Requirement> requirementsList;
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -31,6 +33,7 @@ public class WorkflowModel extends AbstractModel {
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
 		this.toggleColor = false;
+		this.requirementsList = new ArrayList<Requirement>();
 	}
 	
 	
@@ -87,6 +90,14 @@ public class WorkflowModel extends AbstractModel {
 		if(userList == null)
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
+	}
+	public Requirement[] getRequirementsList(){
+		if (requirementsList == null){
+			System.out.println("Theres no requirementsOptions");
+			return new Requirement[]{};
+			}
+		System.out.println("theres requirements");
+		return requirementsList.toArray(new Requirement[requirementsList.size()]);
 	}
 	
 	public void toggleColor(){
@@ -189,6 +200,14 @@ public class WorkflowModel extends AbstractModel {
 	
 	public void copyFrom(WorkflowModel other){
 		this.stageModelList = other.stageModelList;
+	}
+
+
+	public void setRequirementsList(Requirement[] requirements) {
+		// TODO Auto-generated method stub
+		WorkflowModel.requirementsList = new ArrayList<Requirement>(Arrays.asList(requirements));
+		System.out.print("requirements:");
+		System.out.println(requirementsList);
 	}
 
 }
