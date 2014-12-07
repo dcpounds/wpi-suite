@@ -98,7 +98,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 	
 	
 	public StageModel buildStage(){
-		StageModel stageModel = new StageModel(this.getStageTitle());
+		StageModel stageModel = new StageModel(this.getStageTitle(), workflowModel.getStageModelList().size());
 		return stageModel;
 	}
 

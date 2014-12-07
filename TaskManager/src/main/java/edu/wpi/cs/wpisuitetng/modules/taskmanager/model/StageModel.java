@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -17,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
  * Model for representing a stage that holds individual tasks
  *
  */
-public class StageModel extends AbstractModel {
+public class StageModel extends AbstractModel implements Comparable<StageModel> {
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
@@ -32,12 +33,12 @@ public class StageModel extends AbstractModel {
 	 * @param title - title of the stage
 	 * @param taskList - list of tasks to be added
 	 */
-	public StageModel(String title) {
+	public StageModel(String title, int index) {
 		this.title = title;
 		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
 		this.id = this.hashCode();
 		this.taskModelList = new HashMap<Integer, TaskModel>();
-		this.index = -1;
+		this.index = index;
 	}
 	
 	
@@ -243,6 +244,11 @@ public class StageModel extends AbstractModel {
 	public boolean getIsArchived(){
 		return this.isArchived;
 	}
-	
 
+
+	@Override
+	public int compareTo(StageModel other) {
+		return index < other.index ? -1 : index > other.index ? 1 : 0;
+	}
 }
+

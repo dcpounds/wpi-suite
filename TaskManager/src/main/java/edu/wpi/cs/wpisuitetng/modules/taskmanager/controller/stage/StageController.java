@@ -1,7 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
@@ -121,7 +125,7 @@ public class StageController implements ActionListener{
 	public void addStage(StageModel stage) {
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = new StageView(stage, workflowView);
-		workflowView.addStageView(stageView);
+		workflowView.addStageView(stage.getIndex(), stageView);
 		workflowModel.addStage(stage);
 		this.syncTaskViews(stage, stageView);
 	}
@@ -131,10 +135,17 @@ public class StageController implements ActionListener{
 	 * @param stage - the stage that just got updated in the database
 	 */
 	public void updateStage(StageModel stage) {
-		boolean closable = TabController.getTabView().getWorkflowView().getStageViewList().size() <= 1 ? false : true;
+		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
+		boolean closable = stageViewList.size() <= 1 ? false : true;
 		stage.setClosable(closable);
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
+		
+		if(workflowView.getStageAtIndex(stage.getIndex()).getID() != stage.getID()){
+			System.out.println("Moving stage " + stage.getTitle() + " to the right index");
+			workflowView.addStageView(stage.getIndex(), stageView);
+		}
+		
 		this.syncTaskViews(stage, stageView);
 		stageView.updateContents(stage);
 
@@ -205,8 +216,8 @@ public class StageController implements ActionListener{
 	 * Given a list of stageModels that are contained within the database, make sure that they are up to date in the local workflow
 	 * @param stages - the list of stages returned from the database
 	 */
-	public void syncStages(StageModel[] stages) {
-		if(stages.length == 0)
+	public void syncStages(ArrayList<StageModel> stages) {
+		if(stages.size() == 0)
 			saveBaseStages();
 		
 		for(StageModel stage : stages ){
@@ -237,6 +248,14 @@ public class StageController implements ActionListener{
 		StageView sv = workflowView.getStageViewByID(stage.getID());
 		workflowModel.removeStageModel(stage);
 		workflowView.removeStageView(sv);
+		
+		LinkedHashMap<Integer,StageModel> stageModelList = workflowModel.getStageModelList();
+		for(StageModel stageModel : stageModelList.values()){
+			if(stageModel.getIndex() >  stage.getIndex()){
+				stageModel.setIndex( stageModel.getIndex() - 1);
+				StageController.sendUpdateRequest(stageModel);
+			}
+		}
 	}
 	
 	
@@ -244,10 +263,10 @@ public class StageController implements ActionListener{
 	 * Puts the four base stages into the database. This should really only happen once
 	 */
 	public void saveBaseStages(){
-		StageModel newStage = new StageModel("New");
-		StageModel scheduledStage = new StageModel("Scheduled");
-		StageModel inProgressStage = new StageModel("In Progress");
-		StageModel completedStage = new StageModel("Completed");
+		StageModel newStage = new StageModel("New", 0);
+		StageModel scheduledStage = new StageModel("Scheduled", 1);
+		StageModel inProgressStage = new StageModel("In Progress", 2);
+		StageModel completedStage = new StageModel("Completed", 3);
 		
 		StageController.sendAddRequest(newStage);
 		StageController.sendAddRequest(scheduledStage);

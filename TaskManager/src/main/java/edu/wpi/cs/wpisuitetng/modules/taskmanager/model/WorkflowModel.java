@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.google.gson.Gson;
 
@@ -17,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	private HashMap<Integer,StageModel> stageModelList;
+	private LinkedHashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
 
@@ -26,7 +27,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param name - the name of the workflow (usually "main")
 	 * @param stageList
 	 */
-	public WorkflowModel(String name, HashMap<Integer,StageModel> stageList){
+	public WorkflowModel(String name, LinkedHashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
@@ -40,7 +41,7 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageModelList = new HashMap<Integer, StageModel>();
+		this.stageModelList = new LinkedHashMap<Integer, StageModel>();
 		this.toggleColor = false;
 	}
 	
@@ -56,7 +57,7 @@ public class WorkflowModel extends AbstractModel {
 	/**
 	 * @return a list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> getStageModelList() {
+	public LinkedHashMap<Integer, StageModel> getStageModelList() {
 		return stageModelList;
 	}
 	
@@ -65,7 +66,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> addStage(StageModel stage) {
+	public LinkedHashMap<Integer, StageModel> addStage(StageModel stage) {
 		stageModelList.put(stage.getID(),stage);
 		return stageModelList;
 	}
@@ -75,7 +76,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> removeStageModel(StageModel stage) {
+	public LinkedHashMap<Integer, StageModel> removeStageModel(StageModel stage) {
 		stageModelList.remove(stage.getID());
 		return stageModelList;
 	}

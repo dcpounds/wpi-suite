@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -9,6 +10,7 @@ import javax.swing.JScrollPane;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -23,7 +25,7 @@ import javax.swing.BoxLayout;
  */
 public class WorkflowView extends JPanel {
 	private static final long serialVersionUID = -3276090208342185552L;
-	private HashMap<Integer,StageView> stageViewList;
+	private LinkedHashMap<Integer,StageView> stageViewList;
 	private JPanel workflowPanel;
 	private JScrollPane scrollBar;
 	
@@ -41,10 +43,10 @@ public class WorkflowView extends JPanel {
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
-		stageViewList = new HashMap<Integer,StageView>();
+		stageViewList = new LinkedHashMap<Integer,StageView>();
 		for(StageModel stageModel : workflowModel.getStageModelList().values() ){
 			StageView stageToAdd = new StageView(stageModel, this);
-			addStageView( stageToAdd );
+			addStageView( stageModel.getIndex(), stageToAdd );
 		}
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));	
 	}
@@ -53,9 +55,9 @@ public class WorkflowView extends JPanel {
 	 * get the list of stage views in the workflow 
 	 * @return the list of StageViews in the workflow view
 	 */
-	public HashMap<Integer,StageView> getStageViewList() {
+	public LinkedHashMap<Integer,StageView> getStageViewList() {
 		if(stageViewList.size() == 0){
-			return new HashMap<Integer,StageView>();
+			return new LinkedHashMap<Integer,StageView>();
 		}
 		return this.stageViewList;
 	}
@@ -65,8 +67,19 @@ public class WorkflowView extends JPanel {
 	 * Adds a stage view to the work flow view based off of the given stage model
 	 * @param stageModel - model for which
 	 */
-	public void addStageView(StageView stageView){
-		workflowPanel.add(stageView);
+	public void addStageView(int index, StageView stageView){
+		System.out.println("Adding stage " + stageView.getTitle() + " to index " + index + " stage view size is " + stageViewList.size());
+		
+		if(index > (stageViewList.size())){
+			workflowPanel.add(stageView);
+			stageViewList.put(stageView.getID(),stageView);
+			revalidate();
+			repaint();
+			return;
+		}
+
+		
+		workflowPanel.add(stageView, index);
 		stageViewList.put(stageView.getID(),stageView);
 		revalidate();
 		repaint();
@@ -81,6 +94,23 @@ public class WorkflowView extends JPanel {
 		stageViewList.remove(stageView.getID());
 		revalidate();
 		repaint();
+	}
+	
+	/**
+	 * Gets the stageView at the given index
+	 * @param index
+	 * @return
+	 */
+	public StageView getStageAtIndex(int index){
+		if(index > stageViewList.size())
+			return null;
+		try{
+			return (StageView) workflowPanel.getComponent(index);
+		}catch(Exception e){
+			System.out.println("Component at this index is not a stageView");
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	
