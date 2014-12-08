@@ -56,7 +56,7 @@ public class SearchController implements ActionListener, KeyListener {
 					TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 					if (task.getTitle().contains(searchText) && searchText.length() > 0) {
 						//highlight dat shit
-						Border bueHighlight = BorderFactory.createLineBorder(Color.red, 3);
+						Border bueHighlight = BorderFactory.createLineBorder(Color.blue, 3);
 						taskView.setBorder(bueHighlight);
 					} else {
 						Border blackHighlight = BorderFactory.createLineBorder(Color.black);

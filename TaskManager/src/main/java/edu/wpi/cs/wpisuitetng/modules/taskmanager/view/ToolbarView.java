@@ -11,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -46,6 +47,7 @@ public class ToolbarView extends JPanel {
         
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        ImageIcon searchIcon = new ImageIcon("../TaskManager/src/main/resources/search.png");
         
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -89,7 +91,12 @@ public class ToolbarView extends JPanel {
         
         Component horizontalStrut2 = Box.createHorizontalStrut(20);
         add(horizontalStrut2);
-        searchBox= new JTextField("Search");
+        JLabel searchLabel = new JLabel();
+        searchLabel.setIcon(searchIcon);
+        
+        add(searchLabel);
+        
+        searchBox= new JTextField();
         add(searchBox);
         
         searchBox.addKeyListener(new SearchController(this));
