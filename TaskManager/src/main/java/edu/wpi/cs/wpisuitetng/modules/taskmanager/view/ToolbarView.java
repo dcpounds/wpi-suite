@@ -4,6 +4,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.Insets;
 
 import javax.swing.Box;
@@ -11,7 +12,9 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -31,6 +34,7 @@ public class ToolbarView extends JPanel {
     private final JButton newStageButton;
     private final JButton newTaskButton;
     private final WorkflowModel workflowModel;
+    private JTextField searchBox;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -82,10 +86,20 @@ public class ToolbarView extends JPanel {
      		}
         });
         add(toggleColor);
-       
+        
+        Component horizontalStrut2 = Box.createHorizontalStrut(20);
+        add(horizontalStrut2);
+        searchBox= new JTextField("Search");
+        add(searchBox);
+        
+        searchBox.addKeyListener(new SearchController(this));
     }
 
     static long getSerialversionuid() {
         return serialVersionUID;
+    }
+    
+    public JTextField getSearchBox(){
+    	return searchBox;
     }
 }
