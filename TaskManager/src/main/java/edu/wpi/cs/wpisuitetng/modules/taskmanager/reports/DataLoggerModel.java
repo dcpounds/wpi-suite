@@ -98,32 +98,32 @@ public class DataLoggerModel {
 		}
 		if (!(snap1.getColor().equals(snap2.getColor())))
 		{
-
+			
 		}
 		if (!(snap1.getCreationDate().equals(snap2.getCreationDate())))
 		{
-			changes++;
+			
 		}
 		if (!(snap1.getDescription().equals(snap2.getDescription())))
 		{
-			changes++;
+			changelog.add("Changed the description.");
 		}
 		if (!(snap1.getDueDate().equals(snap2.getDueDate())))
 		{
-			
 			changes++;
 		}
 		if (snap1.getEstimatedEffort()!=snap2.getEstimatedEffort())
 		{
-			changes++;
+			changelog.add("Changed estimated effort from " + snap1.getActualEffort() + " to " + snap2.getActualEffort()
+					+ ".");
 		}
 		if(snap1.getStageID()!=snap2.getStageID())
 		{
-			changes++;
+		
 		}
 		if(!(snap1.getTitle().equals(snap2.getTitle())))
 		{
-			changes++;
+			changelog.add("Changed the title from " + snap1.getTitle() + " to " + snap2.getTitle() + ".");
 		}
 
 		return changelog;
