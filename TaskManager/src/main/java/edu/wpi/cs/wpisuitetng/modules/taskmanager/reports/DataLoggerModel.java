@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.*;
+
 
 /**
  * @author Joe
@@ -14,7 +17,7 @@ import java.util.List;
 
 public class DataLoggerModel {
 	private int taskSnapID;
-	private ArrayList<TaskSnapshot> taskSnapList;
+	private List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
 	
 	public DataLoggerModel() {
 		taskSnapID = 0;
@@ -28,16 +31,44 @@ public class DataLoggerModel {
 		return taskSnapID;
 	}
 	
-	/** Returns the most recent snapshot associated with the task passed as an argument
+	public void addSnapshot(TaskModel taskmodel)
+	{
+		taskSnapList.add(new TaskSnapshot(taskmodel, taskSnapID));
+	}
+	
+	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
+	{
+		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
+			{
+				return taskSnapList.get(i-1);
+			}
+			System.out.print("Did a loop");
+		}
+		return null;
+
+
+	}
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
 	 * @param taskSnapshot the snapshot to find the most recent previous match for
 	 */
 	public TaskSnapshot returnPreviousSnapshot(TaskSnapshot taskSnapshot) {
 		//checks each task for an ID match, starting from the most recent tasks
-		for (int i=taskSnapID; i==0; i--) 
+		boolean firstTrip = true;
+		for (int i=taskSnapList.size(); i>=0; i=i-1) 
 		{
-			if (taskSnapList.get(i).getTaskID() == taskSnapshot.getTaskID())
+			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{
-				return taskSnapList.get(i);
+				if (firstTrip)
+				{
+					firstTrip = false;
+				}
+				else
+				{
+					return taskSnapList.get(i-1);
+				}
 			}
 		}
 		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
@@ -48,7 +79,7 @@ public class DataLoggerModel {
 	 * @param snap1, the first (older) snapshot
 	 * @param snap2, the second (newer) snapshot
 	 */
-	public int trackChanges(TaskSnapshot snap1, TaskSnapshot snap2) {
+	public List<String> trackChanges(TaskSnapshot snap1, TaskSnapshot snap2) {
 		int changes = 0;
 		
 		List<String> changelog = new LinkedList<String>();
@@ -60,14 +91,14 @@ public class DataLoggerModel {
 			changelog.add("Changed actual effort from " + snap1.getActualEffort() + " to " + snap2.getActualEffort()
 							+ ".");
 		}
-		if (!(snap1.getCatColor().equals(snap2.getCatColor())))
+		if (!(snap1.colorToString(snap1.getCatColor()).equals(snap2.colorToString(snap2.getCatColor()))))
 		{
 			changelog.add("Changed the category from " + snap1.colorToString(snap1.getCatColor()) + " to " + 
 							snap2.colorToString(snap2.getCatColor()) + ".");
 		}
 		if (!(snap1.getColor().equals(snap2.getColor())))
 		{
-			changes++;
+
 		}
 		if (!(snap1.getCreationDate().equals(snap2.getCreationDate())))
 		{
@@ -94,10 +125,8 @@ public class DataLoggerModel {
 		{
 			changes++;
 		}
-		
-		
 
-		return changes;
+		return changelog;
 		
 	}
 	

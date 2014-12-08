@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.TaskSnapshot;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -427,6 +429,15 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	public void setCatColor(Color catColor){
 		this.CatColor =  catColor;
+	}
+	
+	
+	public TaskSnapshot getCurrentSnapshot() {
+		return DataLoggerController.getDataModel().returnCurrentSnapshot(this);
+	}
+	
+	public TaskSnapshot getPreviousSnapshot() {
+		return DataLoggerController.getDataModel().returnPreviousSnapshot(getCurrentSnapshot());
 	}
 	
 }

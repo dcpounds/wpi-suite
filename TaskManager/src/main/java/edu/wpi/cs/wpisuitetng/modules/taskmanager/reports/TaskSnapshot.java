@@ -262,7 +262,7 @@ public class TaskSnapshot {
 	}
 	
 	public String getCatColorString() {
-		
+		return colorToString(this.CatColor);
 	}
 	
 	
@@ -278,6 +278,8 @@ public class TaskSnapshot {
 	public void setActivities(ActivityListModel activities) {
 		this.activities = activities;
 	}
+	
+
 	
 
 	

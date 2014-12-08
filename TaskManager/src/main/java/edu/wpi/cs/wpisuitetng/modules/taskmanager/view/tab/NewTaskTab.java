@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
@@ -298,6 +299,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			taskModel.setID( this.taskModel.getID() );
 		}
 
+
 		String creatorName = ConfigManager.getConfig().getUserName();
 		taskModel.setCreator( creatorName );
 		taskModel.setTitle(this.getTitleLabelText());
@@ -312,17 +314,34 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
+		
+		DataLoggerController.getDataModel().addSnapshot(taskModel);
+		
+		
 		ActivityModel message;
+		String messageString;
 		if(isBeingEdited){
-			message = new ActivityModel("Updated the task");
+			for (int i=0; i<DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
+					 taskModel.getCurrentSnapshot()).size(); i++)
+			{
+				messageString = DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
+															 taskModel.getCurrentSnapshot()).get(i);
+				message = new ActivityModel(messageString);
+				taskModel.addActivity(message);
+			}
+			
 		} else {
 			message = new ActivityModel("Created the task");
+			taskModel.addActivity(message);
 		}
-		taskModel.addActivity(message);
+
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 		
 	}
+	
+	
+
 	
 	/**
 	 * Checks that all the requirements for creating a new task are met and updates the correct fields
