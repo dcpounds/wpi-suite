@@ -292,8 +292,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			StageController.sendUpdateRequest(originalStage);
 		}
 		
-		TaskModel taskModel = new TaskModel();
-		taskModel.setID( this.taskModel.getID() );
+		if (isBeingEdited==false)
+		{
+			TaskModel taskModel = new TaskModel();
+			taskModel.setID( this.taskModel.getID() );
+		}
+
 		String creatorName = ConfigManager.getConfig().getUserName();
 		taskModel.setCreator( creatorName );
 		taskModel.setTitle(this.getTitleLabelText());
