@@ -41,12 +41,5 @@ public class TabView extends JTabbedPane{
 	public WorkflowView getWorkflowView(){
 		return workflowView;
 	}
-	
-	/**
-	 * @param workflowView - set the workflowView
-	 */
-	public void setWorkflowTab(WorkflowView workflowView) {
-		//this.setTabComponentAt(0, workflowView);
-	}
 
 }

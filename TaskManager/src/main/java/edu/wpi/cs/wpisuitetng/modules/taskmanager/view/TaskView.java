@@ -172,8 +172,7 @@ public class TaskView extends DragTaskPanel{
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!taskModel.getEditState())
-					TabController.getInstance().addTab(TabType.TASK, taskModel);
+				TabController.getInstance().addUniqueTab(TabType.TASK, taskModel);
 			}
 		});
 		add(btnEdit, "cell 2 4");
@@ -199,9 +198,7 @@ public class TaskView extends DragTaskPanel{
 		btnActivities.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!taskModel.isActivitiesOpened()){
-					TabController.getInstance().addTab(TabType.ACTIVITIES, taskModel);
-				}
+				TabController.getInstance().addUniqueTab(TabType.ACTIVITIES, taskModel);
 			}
 		});
 		add(btnActivities, "cell 0 4");
@@ -335,8 +332,6 @@ public class TaskView extends DragTaskPanel{
 	 * @param newTaskModel
 	 */
 	public void setContents(TaskModel task){
-		this.taskModel.setEditState(task.getEditState());
-		this.taskModel.setActivitiesOpened(task.isActivitiesOpened());
 		this.taskModel.setTitle(task.getTitle());
 		
 		task.setDueDate(task.getDueDate());

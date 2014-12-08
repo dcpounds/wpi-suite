@@ -17,4 +17,9 @@ public interface IDisplayModel {
 	 */
 	public void setTitle(String title);
 	
+	/**
+	 * Get the ID of the model
+	 */
+	public int getID();
+	
 }

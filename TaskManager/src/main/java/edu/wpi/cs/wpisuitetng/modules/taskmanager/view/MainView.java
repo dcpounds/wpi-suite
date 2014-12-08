@@ -31,8 +31,6 @@ public class MainView extends JPanel{
 		mainTabView = TabController.getTabView();
 		
 		setLayout(new BorderLayout());
-		WorkflowView view = new WorkflowView(workflowModel);
-		mainTabView.setWorkflowTab(view);
 		add(mainTabView, BorderLayout.CENTER);
 	}
 
