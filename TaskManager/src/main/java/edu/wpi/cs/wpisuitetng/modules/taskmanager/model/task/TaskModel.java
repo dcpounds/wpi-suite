@@ -26,6 +26,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private Date creationDate;
 	private String dueDate;
 	private int stageID;
+	private int catID;
 	private int timeThreshold;
 	private boolean isExpanded;
 	private boolean editState;
@@ -46,6 +47,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = "";
 		this.stageID = 0;
+		this.catID = 0;
 		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
@@ -67,6 +69,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		dueDate = updatedTask.getDueDate();	
 		this.isExpanded = updatedTask.getIsExpanded();
 		this.stageID = updatedTask.getStageID();
+		this.catID = updatedTask.getCatID();
 		this.isArchived = updatedTask.getIsArchived();
 		activities = updatedTask.getActivities();
 		this.color = updatedTask.getColor();
@@ -265,7 +268,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = status;
 	}
 	
-	
 	/**
 	 * @param dueDate - set the date that this task is due
 	 */
@@ -432,5 +434,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	public void setCatColor(Color catColor){
 		this.CatColor =  catColor;
 	}
-	
+	public int getCatID() {
+		return this.catID;
+	}
+
 }

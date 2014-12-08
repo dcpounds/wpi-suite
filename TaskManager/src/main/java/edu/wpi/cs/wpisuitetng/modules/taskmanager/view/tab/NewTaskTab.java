@@ -84,6 +84,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
 	
+	
 	/**
 	 * contructs a tab for creating tasks
 	 * 
@@ -361,22 +362,25 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void keyReleased(KeyEvent e) {
 		checkForErrors();
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		checkForErrors();
-		
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 	  
 	public int getEstimatedEffort(){
@@ -420,6 +424,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	
 	public int getStageSelectionIndex() {
 		return this.stageBox.getSelectedIndex();
+	}
+	
+	public int getCatSelectionIndex() {
+		return this.colorBox.getSelectedIndex();
 	}
 	
 	/**
@@ -468,26 +476,73 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		checkForErrors();
 		
 	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
+	}
+
+	public boolean hasBeenModified() {
+		boolean isTitleChanged = taskTitleField.getText().equals(this.taskModel.getTitle())? false: true;	
+	
+		boolean isDescriptionChanged = taskDescriptionField.getText().equals(this.taskModel.getDescription())? false: true;
+		
+		boolean isDateChanged = this.getDateText().equals(this.taskModel.getDueDate())? false: true;
+
+		boolean isEstEffortChanged = (this.getEstimatedEffort() == this.taskModel.getEstimatedEffort())? false: true;
+
+		boolean isActEffortChanged = this.getActualEffort() == this.taskModel.getActualEffort()? false: true;
+		
+		boolean isStageChanged = this.getStageSelectionIndex() == this.taskModel.getStageID()? false: true;
+		
+		boolean isCatChanged = this.getCatSelectionIndex() == this.taskModel.getCatID()? false: true;
+		
+		isAssignedUsersChanged();
+		
+		boolean hasItChanged = 
+					isTitleChanged ||
+					isDescriptionChanged || 
+					isDateChanged ||
+					isEstEffortChanged ||
+					isActEffortChanged ||
+					isStageChanged||
+					isCatChanged ||
+					isAssignedUsersChanged()?
+							true: false;
+		if(hasItChanged){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public boolean isAssignedUsersChanged(){
+	if(this.getAssignUserView().getAssignedUsers() == null && this.taskModel.getUsersAssignedTo() == null){
+		return true;}
+	else if(this.getAssignUserView().getAssignedUsers() == this.taskModel.getUsersAssignedTo()){
+		return true;}
+	else{
+		return false;
+	}
 	}
 	
 }

@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
-public class ActivitiesTab extends JPanel {
+public class ActivitiesTab extends AbstractTab {
 	
 	private WorkflowModel workflowModel;
 	private TaskModel taskModel;

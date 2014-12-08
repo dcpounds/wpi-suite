@@ -110,6 +110,7 @@ public class NewStageTab extends JPanel implements KeyListener{
 		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
 		sbmtStageButton.setEnabled(validTitle);
 		stageTitleError.setVisible(!validTitle);
+		hasBeenModified();
 	}
 
 	@Override
@@ -122,5 +123,14 @@ public class NewStageTab extends JPanel implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean hasBeenModified() {
+		if(stageTitleField.getText().length() > 0 && stageTitleField.getText() != null){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

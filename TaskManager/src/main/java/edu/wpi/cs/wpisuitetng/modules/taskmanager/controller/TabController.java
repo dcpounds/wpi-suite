@@ -96,7 +96,7 @@ public class TabController {
     	//Instantiate a new closable tab model
     	ClosableTabModel tabModel = new ClosableTabModel(tabTitle, index);
     	//Add the closable tab to the correct tab
-    	tabView.setTabComponentAt(index, new ClosableTabView(tabModel, pane, tabType));
+    	tabView.setTabComponentAt(index, new ClosableTabView(tabModel, pane, tabType, null));
     	tabView.setSelectedIndex(index);
     	
     }
