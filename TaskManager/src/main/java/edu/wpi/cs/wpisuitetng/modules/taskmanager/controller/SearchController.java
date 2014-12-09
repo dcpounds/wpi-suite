@@ -1,9 +1,14 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ * Contributors: Team What? We Thought This Was Bio!
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,31 +26,51 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
+/**
+ * @author Frick
+ * @author Jay
+ * @author Andrew
+ * @author Alec
+ * Manages the search bar's searching functionality.
+ */
+
 public class SearchController implements ActionListener, KeyListener {
-	private WorkflowModel workflowModel;
-	private JTextField searchBox;
-	private ToolbarView toolbarView;
+	private static WorkflowModel workflowModel;
+	private static JTextField searchBox;
+	private static ToolbarView toolbarView;
 	
 	public SearchController(ToolbarView toolbarView) {
-		this.toolbarView = toolbarView;
-		this.workflowModel = WorkflowController.getWorkflowModel();
+		SearchController.toolbarView = toolbarView;
+		SearchController.workflowModel = WorkflowController.getWorkflowModel();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-	
+		// Intentionally left empty
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		// Intentionally left empty
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		this.searchBox = toolbarView.getSearchBox();
+		search();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// Intentionally left empty		
+	}
+	
+	/**
+	 * search()
+	 * Searches tasks for string in search box, highlighting matches
+	 */
+	public static void search() {
+		searchBox = toolbarView.getSearchBox();
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		String searchText = searchBox.getText();
 		System.out.println("string " + searchText);
@@ -55,9 +80,8 @@ public class SearchController implements ActionListener, KeyListener {
 					int taskID = task.getID();
 					TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 					if (task.getTitle().contains(searchText) && searchText.length() > 0) {
-						//highlight dat shit
-						Border bueHighlight = BorderFactory.createLineBorder(Color.blue, 3);
-						taskView.setBorder(bueHighlight);
+						Border blueHighlight = BorderFactory.createLineBorder(Color.blue, 3);
+						taskView.setBorder(blueHighlight);
 					} else {
 						Border blackHighlight = BorderFactory.createLineBorder(Color.black);
 						taskView.setBorder(blackHighlight);
@@ -65,11 +89,5 @@ public class SearchController implements ActionListener, KeyListener {
 				}
 			}
 		}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

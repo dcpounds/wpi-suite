@@ -5,6 +5,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.Box;
@@ -96,7 +98,12 @@ public class ToolbarView extends JPanel {
         
         add(searchLabel);
         
-        searchBox= new JTextField();
+        searchBox = new JTextField();
+        searchBox.setMaximumSize(new Dimension(300, 38));
+        
+        Font searchFont = new Font("Tahoma",Font.PLAIN,17);
+        
+        searchBox.setFont(searchFont);
         add(searchBox);
         
         searchBox.addKeyListener(new SearchController(this));
