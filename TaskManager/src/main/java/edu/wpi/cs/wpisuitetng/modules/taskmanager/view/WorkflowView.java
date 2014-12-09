@@ -70,7 +70,7 @@ public class WorkflowView extends JPanel {
 	public void addStageView(int index, StageView stageView){
 		//System.out.println("Adding stage " + stageView.getTitle() + " to index " + index + " stage view size is " + stageViewList.size());
 		
-		if(index > (stageViewList.size())){
+		if(index > stageViewList.size() ){
 			workflowPanel.add(stageView);
 			stageViewList.put(stageView.getID(),stageView);
 			revalidate();
@@ -78,11 +78,14 @@ public class WorkflowView extends JPanel {
 			return;
 		}
 
-		
-		workflowPanel.add(stageView, index);
-		stageViewList.put(stageView.getID(),stageView);
-		revalidate();
-		repaint();
+		try{
+			workflowPanel.add(stageView, index);
+			stageViewList.put(stageView.getID(),stageView);
+			revalidate();
+			repaint();
+		}catch(Exception e){
+			System.out.println("Failed to add stage to index " + index);
+		}
 	}
 	
 	

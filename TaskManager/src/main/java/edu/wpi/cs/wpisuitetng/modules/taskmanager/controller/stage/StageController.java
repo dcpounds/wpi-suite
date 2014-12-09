@@ -251,10 +251,9 @@ public class StageController implements ActionListener{
 		StageView sv = workflowView.getStageViewByID(stage.getID());
 		workflowModel.removeStageModel(stage);
 		workflowView.removeStageView(sv);
-		int index = stage.getIndex();
 		
+		int index = stage.getIndex();
 		for(StageModel otherStage : workflowModel.getStageModelList().values()){
-			
 			if(otherStage.getIndex() > index ){
 				otherStage.setIndex( otherStage.getIndex() - 1);
 				StageController.sendUpdateRequest(otherStage);
