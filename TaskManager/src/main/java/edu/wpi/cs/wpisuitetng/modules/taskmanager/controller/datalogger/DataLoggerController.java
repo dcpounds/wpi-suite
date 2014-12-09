@@ -90,6 +90,24 @@ public class DataLoggerController {
 		request.send();
 	}
 	
+	public static void sendUpdateRequest(DataLoggerModel dataLoggerModel){
+		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.POST); // POST == update
+		request.setBody(dataLoggerModel.toJson()); // put the new stage in the body of the request
+		request.addObserver(updateObserver); // add an observer to process the response
+		request.send();
+	}
+	
+	/**
+	 * @param stage - the stage to archive in the database
+	 */
+	public static void sendDeleteRequest(DataLoggerModel dataLoggerModel){
+		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.POST); // POST == update
+		request.setBody(dataLoggerModel.toJson()); // put the new data logger in the body of the request
+		request.addObserver(deleteObserver); // add an observer to process the response
+		request.send();
+
+	}
+	
 	
 
 }
