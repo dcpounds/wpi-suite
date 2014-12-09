@@ -14,8 +14,9 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 
-public class DataLoggerEntityManager implements EntityManager<StageModel> {
+public class DataLoggerEntityManager implements EntityManager<DataLoggerModel> {
 	
 	private Data db;
 
@@ -27,66 +28,66 @@ public class DataLoggerEntityManager implements EntityManager<StageModel> {
 	 * 
 	 */
 	@Override
-	public StageModel makeEntity(Session s, String content)
+	public DataLoggerModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		final StageModel newStageModel = StageModel.fromJson( content );
+		final DataLoggerModel newDataLoggerModel = DataLoggerModel.fromJson( content );
 		
-		if( !db.save(newStageModel, s.getProject())){
+		if( !db.save(newDataLoggerModel, s.getProject())){
 			throw new WPISuiteException();
 		}
 		// TODO Auto-generated method stub
-		return newStageModel;
+		return newDataLoggerModel;
 	}
 
 	/**
-	 * Gets a list of stagemodels with the given ID
+	 * Gets a list of DataLoggermodels with the given ID
 	 */
 	@Override
-	public StageModel[] getEntity(Session s, String id)
+	public DataLoggerModel[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		StageModel[] stageModels = null;
+		DataLoggerModel[] DataLoggerModels = null;
 		try{
-			stageModels = db.retrieve(StageModel.class, "id", s.getProject()).toArray(new StageModel[0]);
+			DataLoggerModels = db.retrieve(DataLoggerModel.class, "db_id", s.getProject()).toArray(new DataLoggerModel[0]);
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
-		if( stageModels.length < 1 || stageModels[0] == null){
+		if( DataLoggerModels.length < 1 || DataLoggerModels[0] == null){
 			throw new NotFoundException();
 		}
 		// TODO Auto-generated method stub
-		return stageModels;
+		return DataLoggerModels;
 	}
 
 	@Override
 	/**
-	 * Gets all of the database entitys that are stageModels
+	 * Gets all of the database entitys that are DataLoggerModels
 	 */
-	public StageModel[] getAll(Session s) throws WPISuiteException {
-		List<Model> stages = db.retrieveAll(new StageModel(), s.getProject());
-		return stages.toArray(new StageModel[0]);
+	public DataLoggerModel[] getAll(Session s) throws WPISuiteException {
+		List<Model> DataLoggers = db.retrieveAll(new DataLoggerModel(), s.getProject());
+		return DataLoggers.toArray(new DataLoggerModel[0]);
 	}
 
 	/**
-	 * Updates the given stagemodel in the database
+	 * Updates the given DataLoggermodel in the database
 	 */
 	@Override
-	public StageModel update(Session s, String content) throws WPISuiteException {
-		StageModel updatedStage = StageModel.fromJson(content);
-		List<Model> oldStages = db.retrieve(StageModel.class, "id", updatedStage.getID(), s.getProject());
-		if( oldStages.size() < 1 || oldStages.get(0) == null) {
-			throw new BadRequestException("Stage with ID does not exist.");
+	public DataLoggerModel update(Session s, String content) throws WPISuiteException {
+		DataLoggerModel updatedDataLogger = DataLoggerModel.fromJson(content);
+		List<Model> oldDataLoggers = db.retrieve(DataLoggerModel.class, "db_id", updatedDataLogger.getDb_id(), s.getProject());
+		if( oldDataLoggers.size() < 1 || oldDataLoggers.get(0) == null) {
+			throw new BadRequestException("DataLogger with ID does not exist.");
 		}
-		StageModel existingStage = (StageModel)oldStages.get(0);
-		existingStage.copyFrom(updatedStage);
+		DataLoggerModel existingDataLogger = (DataLoggerModel)oldDataLoggers.get(0);
+		existingDataLogger.copyFrom(updatedDataLogger);
 		
-		if(!db.save(existingStage, s.getProject() )){
+		if(!db.save(existingDataLogger, s.getProject() )){
 			throw new WPISuiteException();
 		}
-		return existingStage;
+		return existingDataLogger;
 	}
 
 	@Override
-	public void save(Session s, StageModel model) throws WPISuiteException {
+	public void save(Session s, DataLoggerModel model) throws WPISuiteException {
 		db.save(model);
 		// TODO Auto-generated method stub
 		
@@ -140,5 +141,8 @@ public class DataLoggerEntityManager implements EntityManager<StageModel> {
 			throw new UnauthorizedException();
 		}
 	}
+
+
+
 
 }

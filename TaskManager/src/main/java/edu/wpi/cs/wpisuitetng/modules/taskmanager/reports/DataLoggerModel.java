@@ -10,6 +10,9 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.*;
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 
 /**
@@ -18,14 +21,63 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.*;
  * cannot be derived from simply reading the current list of taskModels
  */
 
-public class DataLoggerModel {
+public class DataLoggerModel extends AbstractModel 
+	{
 	private int taskSnapID;
+	private int db_id;
 	private List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
 	
 	public DataLoggerModel() {
 		taskSnapID = 0;
+		this.db_id=this.hashCode();
 	}
 	
+	/**
+	 * Updates a data logger model based on more recent values pulled from the database
+	 */
+	public void copyFrom(DataLoggerModel updatedDataLogger)
+	{
+		this.taskSnapID = updatedDataLogger.getTaskSnapID();
+		this.db_id = updatedDataLogger.getDb_id();
+		this.taskSnapList = updatedDataLogger.getTaskSnapList();
+		
+	}
+	
+	/**
+	 * @return the db_id
+	 */
+	public int getDb_id() {
+		return db_id;
+	}
+
+	/**
+	 * @param db_id the db_id to set
+	 */
+	public void setDb_id(int db_id) {
+		this.db_id = db_id;
+	}
+
+	/**
+	 * @return the taskSnapList
+	 */
+	public List<TaskSnapshot> getTaskSnapList() {
+		return taskSnapList;
+	}
+
+	/**
+	 * @param taskSnapList the taskSnapList to set
+	 */
+	public void setTaskSnapList(List<TaskSnapshot> taskSnapList) {
+		this.taskSnapList = taskSnapList;
+	}
+
+	/**
+	 * @param taskSnapID the taskSnapID to set
+	 */
+	public void setTaskSnapID(int taskSnapID) {
+		this.taskSnapID = taskSnapID;
+	}
+
 	public void incrementTaskSnapID(){
 		taskSnapID++;
 	}
@@ -181,6 +233,24 @@ public class DataLoggerModel {
 	public static DataLoggerModel[] fromJsonArray(String json) {
 	        return new Gson().fromJson(json, DataLoggerModel[].class);
 	    }
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean identify(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 
