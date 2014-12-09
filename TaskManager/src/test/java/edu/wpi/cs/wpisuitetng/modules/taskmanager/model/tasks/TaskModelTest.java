@@ -14,10 +14,7 @@ import static org.junit.Assert.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.junit.Test;
-
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 

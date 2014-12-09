@@ -46,14 +46,12 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	
 	@Override
 	public void dragEnter(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void dragExit(DropTargetEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	/* (non-Javadoc)
@@ -101,8 +99,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	 */
 	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
@@ -129,26 +126,22 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
@@ -156,9 +149,6 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		mouseX = e.getX();
 		mouseY = e.getY();
 		this.initialXPos = targetXPos = stage.getLocation().x;
-		
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -167,12 +157,5 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		stage.setLocation(targetXPos, stage.getLocation().y);
 		initialXPos = stage.getX();
 		StageController.sendUpdateRequest(stageModel);
-		
-		// TODO Auto-generated method stub
-		
 	}
-	
-	
-	
-
 }
