@@ -54,7 +54,7 @@ import javax.swing.SwingConstants;
  * 		Authors  Guillermo, Ashton;
  *		
  */
-public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
+public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener, IHashableTab{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TaskModel taskModel;
@@ -80,7 +80,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
 	private ActionType action;
-	private boolean isBeingEdited;
+	private boolean isEditingTask;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
 	
@@ -101,12 +101,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		if(model == null){
 			this.taskModel = new TaskModel();
 			this.action = ActionType.CREATE;
-			this.isBeingEdited = false;
+			this.isEditingTask = false;
 		} else{
 			this.taskModel = model;
-			this.taskModel.setEditState(true);
 			this.action = ActionType.EDIT;
-			this.isBeingEdited = true;
+			this.isEditingTask = true;
 		}
 		
 		//Set an error if the task needs a title
@@ -304,12 +303,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
-		taskModel.setEditState(false);
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
 		ActivityModel message;
-		if(isBeingEdited){
+		if(isEditingTask){
 			message = new ActivityModel("Updated the task");
 		} else {
 			message = new ActivityModel("Created the task");
@@ -488,6 +486,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
+	}
+
+	@Override
+	public int getModelID() {
+		return taskModel.getID();
+	}
+
+	@Override
+	public TabType getTabType() {
+		return TabType.TASK;
 	}
 	
 }

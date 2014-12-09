@@ -24,8 +24,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int stageID;
 	private int timeThreshold;
 	private boolean isExpanded;
-	private boolean editState;
-	private boolean activitiesOpened;
 	private boolean isArchived;
 	private Color color;
 	private Color CatColor;
@@ -269,22 +267,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.dueDate = dueDate;
 	}
 	
-	
-	/**
-	 * @return- get whether the tab is being edited
-	 */
-	public boolean getEditState() {
-		return this.editState;	
-	}
-	
-	
-	/**
-	 * @param creator - set the user that created this task
-	 */
-	public void setEditState(boolean editState) {
-		this.editState = editState;
-	}
-	
 	/**
 	 * @param archiveStatus - set the task to archived (true) or active (false)
 	 */
@@ -400,20 +382,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	public void setActivities(ActivityListModel newActivities) {
 		this.activities = newActivities;
-	}
-
-	/**
-	 * @return the areActivitiesOpened
-	 */
-	public boolean isActivitiesOpened() {
-		return activitiesOpened;
-	}
-
-	/**
-	 * @param activitiesOpened the areActivitiesOpened to set
-	 */
-	public void setActivitiesOpened(boolean activitiesOpened) {
-		this.activitiesOpened = activitiesOpened;
 	}
 
 	/**

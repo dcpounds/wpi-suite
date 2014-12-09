@@ -27,7 +27,7 @@ import javax.swing.SwingConstants;
  * this is a tab for creating stages
  *
  */
-public class NewStageTab extends JPanel implements KeyListener{
+public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	private static final long serialVersionUID = 7394421664708095366L;
 	
 	private JLabel titleLabel;
@@ -122,5 +122,15 @@ public class NewStageTab extends JPanel implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getModelID() {
+		return model.getID();
+	}
+
+	@Override
+	public TabType getTabType() {
+		return TabType.STAGE;
 	}
 }
