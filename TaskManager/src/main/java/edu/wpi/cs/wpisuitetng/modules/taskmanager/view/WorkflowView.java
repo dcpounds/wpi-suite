@@ -68,7 +68,7 @@ public class WorkflowView extends JPanel {
 	 * @param stageModel - model for which
 	 */
 	public void addStageView(int index, StageView stageView){
-		System.out.println("Adding stage " + stageView.getTitle() + " to index " + index + " stage view size is " + stageViewList.size());
+		//System.out.println("Adding stage " + stageView.getTitle() + " to index " + index + " stage view size is " + stageViewList.size());
 		
 		if(index > (stageViewList.size())){
 			workflowPanel.add(stageView);

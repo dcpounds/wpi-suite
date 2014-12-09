@@ -62,6 +62,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 		this.id = updatedStage.getID();
 		this.taskModelList = updatedStage.taskModelList;
 		this.isArchived = updatedStage.isArchived;
+		this.index = updatedStage.getIndex();
 	}
 	
 	/**

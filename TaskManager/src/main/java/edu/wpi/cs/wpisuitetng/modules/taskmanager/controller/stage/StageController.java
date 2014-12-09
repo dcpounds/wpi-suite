@@ -135,11 +135,17 @@ public class StageController implements ActionListener{
 	 * @param stage - the stage that just got updated in the database
 	 */
 	public void updateStage(StageModel stage) {
+		if(workflowModel.getIsDraggingStage())
+			return;
+		
+		System.out.println("Stage " + stage.getTitle() + " has index " + stage.getIndex());
 		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
 		boolean closable = stageViewList.size() <= 1 ? false : true;
 		stage.setClosable(closable);
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
+		
+		workflowView.addStageView(stage.getIndex(), stageView);
 		
 		if(!stage.getIsArchived() && stageView != null){
 			this.syncTaskViews(stage, stageView);
@@ -173,7 +179,7 @@ public class StageController implements ActionListener{
 		}
 			
 		for( TaskModel task : taskModelList.values() ){
-			System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
+			//System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
 			TaskView taskView = taskViewList.get(task.getID());
 			//If we found a matching taskView...
 			if(taskView != null){

@@ -21,6 +21,7 @@ public class WorkflowModel extends AbstractModel {
 	private LinkedHashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
+	private static boolean isDraggingStage;
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -30,8 +31,9 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name, LinkedHashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
-		this.userList = new ArrayList<User>();
-		this.toggleColor = false;
+		WorkflowModel.userList = new ArrayList<User>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
 	}
 	
 	
@@ -42,7 +44,8 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageModelList = new LinkedHashMap<Integer, StageModel>();
-		this.toggleColor = false;
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
 	}
 	
 	
@@ -100,6 +103,14 @@ public class WorkflowModel extends AbstractModel {
 	
 	public boolean getToggleColor(){
 		return WorkflowModel.toggleColor;
+	}
+	
+	public void setIsDraggingTask(boolean bool){
+		WorkflowModel.isDraggingStage = bool;
+	}
+	
+	public boolean getIsDraggingStage(){
+		return WorkflowModel.isDraggingStage;
 	}
 	
 	
