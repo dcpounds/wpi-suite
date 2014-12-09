@@ -94,7 +94,7 @@ public class WorkflowModel extends AbstractModel {
 	public String[] getRequirementsList(){
 		if (requirementsList == null){
 			System.out.println("Theres no requirementsOptions");
-			return null;
+			return new String[]{};
 			}
 		System.out.println("theres requirements");
 		return requirementsList.toArray(new String[requirementsList.size()]);

@@ -21,12 +21,12 @@ public class ColorComboBox extends JComboBox {
 	while(colorNames.hasMoreElements()){
 		String tString = colorNames.nextElement().toString();
 		cbModel.addElement(tString);
-		System.out.println("colors"+tString);
+		//System.out.println("colors"+tString);
 	}
 	setModel(cbModel);  
 	setRenderer(new ColorRenderer());  
 	this.setOpaque(true);  
-	this.setSelectedIndex(0);  
+	this.setSelectedIndex(8);  
 	}  
 	
 	

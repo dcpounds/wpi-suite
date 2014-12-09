@@ -8,8 +8,11 @@ import static org.junit.Assert.assertTrue;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.network.Network;
 
 public class RequirementsTests {
 	
@@ -21,16 +24,13 @@ public class RequirementsTests {
 	Requirement requirement2 = new Requirement(31, "snickerdoodle", "I am a cookie");
 	Requirement requirement3 = new Requirement(14, "mocha", "I am a latte");
 	Requirement[] listOfRequirements1 = new Requirement[]{requirement1, requirement2, requirement3};
-	
+	StageModel stage1 = new StageModel("Favorite Things");
+	WorkflowModel workflow = new WorkflowModel("basic");
 	
 	//method name should be "testMethodName"
 	//add similar methods for each method of the class being tested
 	@Test
-	public void testMakeReqirementsController() {
-		
-		//assertEquals is of the following form:
-		//assertEquals(expected result, message to compare to)
-		//value to compare to is nearly always a function call
+	public void testSetAssociatedRequirement() {
 		
 		RequirementsController controller = new RequirementsController();
 		//controller.requestRequirementsList();
@@ -39,19 +39,14 @@ public class RequirementsTests {
 		testtask.setDescription("I like coffee");
 		testtask.setDueDate("12/13/14");
 		testtask.setAssociatedRequirement(requirement3.getName());
-		NewTaskTab testtasktab = new NewTaskTab(testtask);
-		testtasktab.buildTask();
+		assertTrue(testtask.getAssociatedRequirement().equals(requirement3.getName()));
 		
-		assertTrue(1==1);
-		/*
-		String[] test = observer.requirementsToStrings(listOfRequirements1);
-		String[] expected = new String[]{"thisismyname", "snickerdoodle", "mocha"};
-		*/
-		//System.out.println(test[1]);
-		//System.out.println(expected[1]);
-//		assertTrue(test[0].equals(expected[0]));
-//		assertTrue(test[1].equals(expected[1]));
-//		assertTrue(test[2].equals(expected[2]));
-//		assertTrue(test.equals(expected));
 	}
+	
+	@Test
+	public void testGetRequirementsNone(){
+		//workflow.addStage(stage1);
+		assertTrue(workflow.getRequirementsList().equals(new String[]{}));
+	}
+	
 }

@@ -39,22 +39,21 @@ public class RequirementsRequestObserver implements RequestObserver {
         //controller.addRequirementsToList(requirements);
     }
     
-    /**
-     * Converts the list of requirements into a list of the names of the requirements
-	 * @param requirements - list of requirements
-	 */
-    public String[] requirementsToStrings(Requirement[] requirements) {
-		// TODO Auto-generated method stub
-    	System.out.println(requirements[1].getName());
-    	System.out.println(requirements.length);
-    	String[] reqStrings = new String[requirements.length];
-    	for (int i = 0; i<=requirements.length; i++){
-    		reqStrings[i] = requirements[i].getName();
-    		System.out.println(reqStrings[i]);
-    	}
-    	System.out.println("made requirements into strings");
-		return reqStrings;
-	}
+//    /**
+//     * Converts the list of requirements into a list of the names of the requirements
+//	 * @param requirements - list of requirements
+//	 */
+//    public String[] requirementsToStrings(Requirement[] requirements) {
+//		// TODO Auto-generated method stub
+//    	System.out.println(requirements.length);
+//    	String[] reqStrings = new String[requirements.length];
+//    	for (int i = 0; i<=requirements.length; i++){
+//    		reqStrings[i] = requirements[i].getName();
+//    		System.out.println(reqStrings[i]);
+//    	}
+//    	System.out.println("made requirements into strings");
+//		return reqStrings;
+//	}
 
 	/*
      * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)

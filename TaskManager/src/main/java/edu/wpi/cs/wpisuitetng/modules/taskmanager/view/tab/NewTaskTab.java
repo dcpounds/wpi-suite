@@ -164,9 +164,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		//Set the default requirement
 		//Set the default selected value of the stage selection box
 		if(model != null){
-			System.out.println(model.getAssociatedRequirement());
+			System.out.println("my requirement is" + model.getAssociatedRequirement());
 			for( String req : this.getRequirementsOptions() ){
-				if (model.getAssociatedRequirement().equals(req))
+				if (taskModel.getAssociatedRequirement().equals(req))
 					requirementsBox.setSelectedItem(req);
 			}
 		}
