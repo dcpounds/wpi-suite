@@ -1,9 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.reports;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Hashtable;
 
 import com.google.gson.Gson;
 
@@ -248,6 +250,61 @@ public class DataLoggerModel extends AbstractModel
 
 		return changelog;
 		
+	}
+	
+	public Hashtable exportAllCategories()
+	{
+		Hashtable<String, Integer> output = new Hashtable();
+		output.put("GRAY", 0);
+		output.put("WHITE", 0);
+		output.put("BROWN", 0);
+		output.put("RED", 0);
+		output.put("PINK", 0);
+		output.put("ORANGE", 0);
+		output.put("YELLOW", 0);
+		output.put("GREEN", 0);
+		output.put("BLUE", 0);
+		output.put("PURPLE", 0);		
+		
+		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		{
+
+			switch (taskSnapList.get(i-1).getCatColorString()) {
+			case "GRAY":
+				output.replace("GRAY", output.get("GRAY")+1);
+				break;
+			case "WHITE":
+				output.replace("WHITE", output.get("WHITE")+1);
+				break;
+			case "BROWN":
+				output.replace("BROWN", output.get("BROWN")+1);
+				break;
+			case "RED":
+				output.replace("RED", output.get("RED")+1);
+				break;
+			case "PINK":
+				output.replace("PINK", output.get("PINK")+1);
+				break;
+			case "ORANGE":
+				output.replace("ORANGE", output.get("ORANGE")+1);
+				break;
+			case "YELLOW":
+				output.replace("YELLOW", output.get("YELLOW")+1);
+				break;
+			case "GREEN":
+				output.replace("GREEN", output.get("GREEN")+1);
+				break;
+			case "BLUE":
+				output.replace("BLUE", output.get("BLUE")+1);
+				break;
+			case "PURPLE":
+				output.replace("PURPLE", output.get("PURPLE")+1);
+				break;
+			
+			}
+		}
+		
+		return output;
 	}
 	
 	
