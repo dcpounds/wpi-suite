@@ -32,6 +32,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private Color color;
 	private Color CatColor;
 	private ActivityListModel activities;
+	private Color[] urgencyArray = {new Color(51,199,72),new Color(51,199,72),new Color(51,199,72)};
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -48,6 +49,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = false;
 		this.isArchived = false;
 		this.activities = new ActivityListModel();
+
 	}
 	
 	/** Copies the contents of updatedStage into this one

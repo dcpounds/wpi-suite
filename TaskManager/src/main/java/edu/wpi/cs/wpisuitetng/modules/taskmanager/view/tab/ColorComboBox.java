@@ -64,6 +64,7 @@ public class ColorComboBox extends JComboBox {
 		
 		return colors;
 	}
+
 	
 	class ColorRenderer extends JLabel implements javax.swing.ListCellRenderer{
 		public ColorRenderer(){

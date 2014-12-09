@@ -16,6 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageControlle
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
 import javax.swing.JLabel;
@@ -88,6 +89,8 @@ public class StageView extends DragStagePanel {
 		DragStageController dragController = new DragStageController(this);
 		this.addMouseListener(dragController);
 		this.addMouseMotionListener(dragController);
+		
+		
 	}
 	
 	

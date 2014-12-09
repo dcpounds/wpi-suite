@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.*;
 
 
@@ -110,7 +113,7 @@ public class DataLoggerModel {
 		}
 		if (!(snap1.getDueDate().equals(snap2.getDueDate())))
 		{
-			changes++;
+			changelog.add("Changed the due date from " + snap1.getDueDate() + " to " + snap2.getDueDate()+ ".");
 		}
 		if (snap1.getEstimatedEffort()!=snap2.getEstimatedEffort())
 		{
@@ -119,7 +122,8 @@ public class DataLoggerModel {
 		}
 		if(snap1.getStageID()!=snap2.getStageID())
 		{
-		
+			changelog.add("Moved from " + WorkflowController.getWorkflowModel().getStageModelByID(snap1.getStageID()).getTitle() +
+							" to " + WorkflowController.getWorkflowModel().getStageModelByID(snap2.getStageID()).getTitle() + ".");
 		}
 		if(!(snap1.getTitle().equals(snap2.getTitle())))
 		{
@@ -130,6 +134,53 @@ public class DataLoggerModel {
 		
 	}
 	
+	
+	public String formatDateString(String date)
+	{
+		return (date.substring(0, 1)+"/"+date.substring(2,3)+"/"+date.substring(4,7));
+	}
+
+	/**
+	 * Converts the task to a JSON string
+	 * @return a JSON string representation of the task 
+	 */
+	public String toJson() {
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, DataLoggerModel.class);
+		return json;
+	}
+	
+	
+	/**
+	 * Converts the given list of tasks to a JSON string
+	 * @param taskList -  a list of tasks
+	 * @return a string in JSON representing the list of tasks
+	 */
+	public static String toJSON(DataLoggerModel[] dataLoggerList) {
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(dataLoggerList, TaskModel.class);
+		return json;
+	}
+	
+	/**
+	 * @param json - the json obejct to convert back to a TaskModel
+	 * @return
+	 */
+	public static DataLoggerModel fromJson(String json) {
+        final Gson parser = new Gson();
+        return parser.fromJson(json, DataLoggerModel.class);
+	}
+	
+	
+	   /**
+	 * @param json - the json to deserialize
+	 * @return - the list of deserialized tasks
+	 */
+	public static DataLoggerModel[] fromJsonArray(String json) {
+	        return new Gson().fromJson(json, DataLoggerModel[].class);
+	    }
 	
 	
 
