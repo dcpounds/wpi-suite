@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssociatedRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
@@ -53,7 +52,7 @@ import javax.swing.SwingConstants;
 /**
  * This is a tab for creating new tasks
  *
- *  11/16 Further Progress on utilizing this class for editting functionality aswell.
+ *  11/16 Further Progress on utilizing this class for editting functionality as well.
  * 		Authors  Guillermo, Ashton;
  *		
  */
@@ -83,7 +82,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JLabel dateNotAddedError;
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
-	private AssociatedRequirementsView associatedRequirementsView;
 	private ActionType action;
 	private boolean isBeingEdited;
 	private JLabel colorTitle;
@@ -99,6 +97,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	 */
 
 	public NewTaskTab(TaskModel model) {
+		// get the requirements from the database
+		new RequirementsController().requestRequirementsList();
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][grow][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 0 0");
@@ -148,18 +148,29 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		      }
 		});
 		
-		new RequirementsController().requestRequirementsList();
+		
+		// Make a label for the requirements combo box
 		lblRequirement = new JLabel("Requirement:");
 		add(lblRequirement, "cell 1 9");
-		
+			
+		//Make the requirements combo box. 
 		requirementsBox = new JComboBox<String>();
-		requirementsBox.setModel(new DefaultComboBoxModel<String>( getRequirementsOptions() ));
-		add(requirementsBox, "cell 1 10,growx");
+		requirementsBox.setModel(new DefaultComboBoxModel<String>( this.getRequirementsOptions() ));
 		requirementsBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 		      }
 		});
+		//Set the default requirement
+		//Set the default selected value of the stage selection box
+		if(model != null){
+			System.out.println(model.getAssociatedRequirement());
+			for( String req : this.getRequirementsOptions() ){
+				if (model.getAssociatedRequirement().equals(req))
+					requirementsBox.setSelectedItem(req);
+			}
+		}
+		add(requirementsBox, "cell 1 10,growx");
 		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
@@ -302,17 +313,25 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	
 	private String[] getRequirementsOptions() {
 		ArrayList<String> requirementsOptions = new ArrayList<String>();
-		for( Requirement req : workflowModel.getRequirementsList() ){
-			requirementsOptions.add( req.getName() );
+		for( String req : workflowModel.getRequirementsList() ){
+			requirementsOptions.add( req );
 		}
 		System.out.print("requirementsOptions");
 		System.out.println(requirementsOptions);
 		return requirementsOptions.toArray( new String[requirementsOptions.size() ]);
 	}
 	
-	public Requirement getRequirement(){
-		Requirement[] allReq = workflowModel.getRequirementsList();
-		return allReq[this.requirementsBox.getSelectedIndex()];
+	public String getRequirement(){
+//		Requirement[] allReq = workflowModel.getRequirementsList();
+//		System.out.println("you selected requirement:");
+//		System.out.println(this.requirementsBox.getSelectedIndex());
+//		return allReq[this.requirementsBox.getSelectedIndex()];
+
+		for (String req : workflowModel.getRequirementsList()){
+			if (req.equals(requirementsBox.getSelectedItem()))
+				return req;
+		}
+		return "";
 	}
 
 	/**
@@ -325,6 +344,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			if(stage.getTitle() == stageBox.getSelectedItem())
 				stageModel = stage;
 		}
+		
 		
 		//If the task has moved to a different stage, make sure to remove it from the original stage before moving it
 		if(taskModel.getStageID()!= 0 && taskModel.getStageID() != stageModel.getID()){

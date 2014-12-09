@@ -21,7 +21,7 @@ public class WorkflowModel extends AbstractModel {
 	private HashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
-	private static ArrayList<Requirement> requirementsList;
+	private static ArrayList<String> requirementsList;
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -33,7 +33,7 @@ public class WorkflowModel extends AbstractModel {
 		this.stageModelList = stageList;
 		this.userList = new ArrayList<User>();
 		this.toggleColor = false;
-		this.requirementsList = new ArrayList<Requirement>();
+		this.requirementsList = new ArrayList<String>();
 	}
 	
 	
@@ -91,13 +91,13 @@ public class WorkflowModel extends AbstractModel {
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
 	}
-	public Requirement[] getRequirementsList(){
+	public String[] getRequirementsList(){
 		if (requirementsList == null){
 			System.out.println("Theres no requirementsOptions");
-			return new Requirement[]{};
+			return null;
 			}
 		System.out.println("theres requirements");
-		return requirementsList.toArray(new Requirement[requirementsList.size()]);
+		return requirementsList.toArray(new String[requirementsList.size()]);
 	}
 	
 	public void toggleColor(){
@@ -205,7 +205,9 @@ public class WorkflowModel extends AbstractModel {
 
 	public void setRequirementsList(Requirement[] requirements) {
 		// TODO Auto-generated method stub
-		WorkflowModel.requirementsList = new ArrayList<Requirement>(Arrays.asList(requirements));
+		WorkflowModel.requirementsList = new ArrayList<String>();
+		for (Requirement req : requirements)
+			requirementsList.add(req.getName());
 		System.out.print("requirements:");
 		System.out.println(requirementsList);
 	}

@@ -8,8 +8,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 
 /**
- * Responsible for listening for db requests from the CoreUserController
- * used to fetch the list of core users from the database
+ * Responsible for listening for db requests from the RequirementsController
+ * used to fetch the list of requirements from the database
  */
 public class RequirementsRequestObserver implements RequestObserver {
     
@@ -23,25 +23,26 @@ public class RequirementsRequestObserver implements RequestObserver {
      * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
      */
     
+    
+    /**
+	 * Recieves the requirements from the database and adds them to the workflow model
+	 * @param iReq - request
+	 */
     @Override
     public void responseSuccess(IRequest iReq) {
     	System.out.println("recieving requirements");
         Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
     	System.out.println(requirements[1].getName());
+    	System.out.println(requirements.length);
         WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
         workflowModel.setRequirementsList(requirements);
         //controller.addRequirementsToList(requirements);
     }
     
-//    @Override
-//    public void responseSuccessString(IRequest iReq) {
-//        Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
-//        WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
-//        String[] requirementStrings = this.requirementsToStrings(requirements);
-//        workflowModel.setRequirementsList(requirementStrings);
-//        controller.addRequirementsToList(requirementStrings);
-//    }
-    
+    /**
+     * Converts the list of requirements into a list of the names of the requirements
+	 * @param requirements - list of requirements
+	 */
     public String[] requirementsToStrings(Requirement[] requirements) {
 		// TODO Auto-generated method stub
     	System.out.println(requirements[1].getName());

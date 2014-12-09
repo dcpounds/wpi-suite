@@ -24,7 +24,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private String title, description;
 	private String creatorName;
 	private ArrayList<String> usersAssignedTo;
-	private Requirement associatedRequirement;
+	private String associatedRequirement;
 	private Date creationDate;
 	private String dueDate;
 	private int stageID;
@@ -52,7 +52,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.isExpanded = false;
 		this.isArchived = false;
 		this.activities = new ActivityListModel();
-		this.associatedRequirement = new Requirement();
+		this.associatedRequirement = "";
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -437,10 +437,11 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.CatColor =  catColor;
 	}
 	
-	public void setAssociatedRequirement(Requirement req) {
+	public void setAssociatedRequirement(String req) {
 		this.associatedRequirement = req;
 	}
-	private Requirement getAssociatedRequirement() {
+	public String getAssociatedRequirement() {
 		return associatedRequirement;
 	}
+
 }
