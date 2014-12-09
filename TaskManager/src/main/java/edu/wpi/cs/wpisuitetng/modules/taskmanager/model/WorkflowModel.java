@@ -77,7 +77,11 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the updated list of stages in the workflow
 	 */
 	public LinkedHashMap<Integer, StageModel> removeStageModel(StageModel stage) {
-		stageModelList.remove(stage.getID());
+		if(stageModelList.remove(stage.getID()) == null){
+			System.out.println("Failed to remove stage " + stage.getTitle() + " from stageModelList");
+		} else{
+			System.out.println("Successfully removed stage " + stage.getTitle() + " from stageModelList");
+		}
 		return stageModelList;
 	}
 	

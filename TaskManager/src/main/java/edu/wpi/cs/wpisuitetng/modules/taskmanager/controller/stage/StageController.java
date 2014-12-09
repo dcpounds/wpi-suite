@@ -141,13 +141,10 @@ public class StageController implements ActionListener{
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		
-		if(workflowView.getStageAtIndex(stage.getIndex()).getID() != stage.getID()){
-			System.out.println("Moving stage " + stage.getTitle() + " to the right index");
-			workflowView.addStageView(stage.getIndex(), stageView);
+		if(!stage.getIsArchived() && stageView != null){
+			this.syncTaskViews(stage, stageView);
+			stageView.updateContents(stage);
 		}
-		
-		this.syncTaskViews(stage, stageView);
-		stageView.updateContents(stage);
 
 	}
 	
@@ -248,12 +245,13 @@ public class StageController implements ActionListener{
 		StageView sv = workflowView.getStageViewByID(stage.getID());
 		workflowModel.removeStageModel(stage);
 		workflowView.removeStageView(sv);
+		int index = stage.getIndex();
 		
-		LinkedHashMap<Integer,StageModel> stageModelList = workflowModel.getStageModelList();
-		for(StageModel stageModel : stageModelList.values()){
-			if(stageModel.getIndex() >  stage.getIndex()){
-				stageModel.setIndex( stageModel.getIndex() - 1);
-				StageController.sendUpdateRequest(stageModel);
+		for(StageModel otherStage : workflowModel.getStageModelList().values()){
+			
+			if(otherStage.getIndex() > index ){
+				otherStage.setIndex( otherStage.getIndex() - 1);
+				StageController.sendUpdateRequest(otherStage);
 			}
 		}
 	}

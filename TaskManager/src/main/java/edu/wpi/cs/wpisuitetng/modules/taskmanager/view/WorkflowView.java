@@ -90,27 +90,17 @@ public class WorkflowView extends JPanel {
 	 * @param stageView - the view to add to the list
 	 */
 	public void removeStageView(StageView stageView){
+		
+		if( stageViewList.remove(stageView.getID()) == null){
+			System.out.println("Failed to remove stageView " + stageView.getTitle() + " from stageViewList");
+		} else{
+			System.out.println("Successfully removed stageView " + stageView.getTitle() + " from stageViewList");
+		}
+		
 		workflowPanel.remove(stageView);
-		stageViewList.remove(stageView.getID());
+		
 		revalidate();
 		repaint();
-	}
-	
-	/**
-	 * Gets the stageView at the given index
-	 * @param index
-	 * @return
-	 */
-	public StageView getStageAtIndex(int index){
-		if(index > stageViewList.size())
-			return null;
-		try{
-			return (StageView) workflowPanel.getComponent(index);
-		}catch(Exception e){
-			System.out.println("Component at this index is not a stageView");
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	
