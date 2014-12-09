@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.text.ParseException;
@@ -5,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
-/*
- * This formats the date to be set up in the correct format, and then it sets the calendar to the 
+
+/**
+ * @author Will Manning
+ *  * This formats the date to be set up in the correct format, and then it sets the calendar to the 
  * correct view. It also formats the date here, so that it can be used later.
  */
 public class DateLabelFormatter extends AbstractFormatter {

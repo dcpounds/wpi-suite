@@ -1,8 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
 import java.awt.Point;
 import java.awt.dnd.DropTarget;
-
 import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -11,10 +19,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+
+/**
+ * @author Alec
+ * An extendable class that provides drag/drop functionality to stages
+ */
 public class DragStagePanel extends JPanel{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6616674170936811473L;
 
 	/**
