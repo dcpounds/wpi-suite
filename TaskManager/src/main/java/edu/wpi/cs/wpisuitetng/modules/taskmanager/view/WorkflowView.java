@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -19,9 +28,7 @@ import javax.swing.BoxLayout;
 
 
 /**
- * This class is used to display a workflow in the GUI. Right now the stages are hard-coded in,
- *  but in the future we will be able to dynamically add and remove them through
- *
+ * This class is used to display a workflow in the GUI.
  */
 public class WorkflowView extends JPanel {
 	private static final long serialVersionUID = -3276090208342185552L;

@@ -1,11 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 
 /**
- * @author alec
+ * @author Alec
  * This is the panel that goes inside a tab to make it closable
  */
 public class ClosableTabView extends JPanel{
