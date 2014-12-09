@@ -9,6 +9,10 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
+/**
+ * @author Alec
+ * An enumeration for creating, editing, deleting, and getting entities from the database
+ */
 public enum ActionType {
 	CREATE, EDIT, DELETE, GET
 }

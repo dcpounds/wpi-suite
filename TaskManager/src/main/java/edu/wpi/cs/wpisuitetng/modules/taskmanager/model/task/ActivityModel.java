@@ -20,8 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
  * Model to contain a single activity for the activity list
- * 
- * Code was base on postboard message code
+ * Code was based on postboard message code
  */
 public class ActivityModel extends AbstractModel {
     

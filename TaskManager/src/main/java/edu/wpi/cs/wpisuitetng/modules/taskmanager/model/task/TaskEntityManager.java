@@ -23,6 +23,10 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
+/**
+ * @author Alec
+ * This is an entity manager that allows tasks to be stored in the database
+ */
 public class TaskEntityManager implements EntityManager<TaskModel> {
 	
 	private Data db;

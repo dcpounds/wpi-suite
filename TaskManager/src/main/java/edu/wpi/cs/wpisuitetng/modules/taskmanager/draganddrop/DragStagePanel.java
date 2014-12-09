@@ -11,7 +11,6 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
 import java.awt.Point;
 import java.awt.dnd.DropTarget;
-
 import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -20,10 +19,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+
+/**
+ * @author Alec
+ * An extendable class that provides drag/drop functionality to stages
+ */
 public class DragStagePanel extends JPanel{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6616674170936811473L;
 
 	/**

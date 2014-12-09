@@ -16,6 +16,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 
+/**
+ * @author Alec
+ * This class is responsible for handling drag and drop for tasks.
+ * It allows tasks to be dragged into different stages
+ */
 public class DragTaskController extends MouseAdapter{
 	JPanel taskPanel;
 	

@@ -14,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
-/*
- * This formats the date to be set up in the correct format, and then it sets the calendar to the 
+
+/**
+ * @author Will Manning
+ *  * This formats the date to be set up in the correct format, and then it sets the calendar to the 
  * correct view. It also formats the date here, so that it can be used later.
  */
 public class DateLabelFormatter extends AbstractFormatter {

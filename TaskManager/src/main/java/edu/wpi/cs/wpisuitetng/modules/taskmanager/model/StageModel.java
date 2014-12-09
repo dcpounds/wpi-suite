@@ -21,7 +21,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
  * Model for representing a stage that holds individual tasks
- *
  */
 public class StageModel extends AbstractModel implements IDisplayModel {
 	

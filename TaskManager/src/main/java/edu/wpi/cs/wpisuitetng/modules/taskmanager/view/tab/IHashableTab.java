@@ -9,6 +9,10 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
+/**
+ * @author ??
+ * This interface allows tabs to be hashed
+ */
 public interface IHashableTab {
 	
 	/**

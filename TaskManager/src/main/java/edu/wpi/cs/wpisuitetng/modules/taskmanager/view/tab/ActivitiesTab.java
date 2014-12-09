@@ -30,6 +30,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * @author Dave
+ * This tab view displays the activities log that each task contains. 
+ */
 public class ActivitiesTab extends JPanel implements IHashableTab {
 	
 	private WorkflowModel workflowModel;

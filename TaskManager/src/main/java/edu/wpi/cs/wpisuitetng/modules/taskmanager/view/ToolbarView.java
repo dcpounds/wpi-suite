@@ -32,7 +32,6 @@ import java.awt.Component;
 
 /**
  * Class representing the view of the toolbar at the top of the gui
- *
  */
 public class ToolbarView extends JPanel {
     

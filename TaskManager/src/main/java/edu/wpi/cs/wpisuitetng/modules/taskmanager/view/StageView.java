@@ -31,7 +31,6 @@ import javax.swing.JButton;
 
 /**
  * This view is responsible for rendering a stage that can be placed inside a workflow.
- *
  */
 public class StageView extends DragStagePanel {
 	private static final long serialVersionUID = 7765491802045400161L;

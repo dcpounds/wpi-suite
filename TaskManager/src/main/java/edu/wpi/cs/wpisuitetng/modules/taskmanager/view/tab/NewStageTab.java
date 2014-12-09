@@ -34,7 +34,6 @@ import javax.swing.SwingConstants;
 
 /**
  * this is a tab for creating stages
- *
  */
 public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	private static final long serialVersionUID = 7394421664708095366L;

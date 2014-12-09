@@ -9,4 +9,8 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
+/**
+ * @author Alec
+ * An enumeration that allows users to be assigned/unassigned
+ */
 public enum AssignRemoveEnum {ASSIGN, UNASSIGN}

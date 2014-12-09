@@ -18,10 +18,11 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+/**
+ * @author Alec
+ * Sets up the transfer handler that allows tasks to be dragged and dropped between stages
+ */
 public class TaskTransferHandler extends TransferHandler {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7864499109197001974L;
 	private static DataFlavor flavor;
 	

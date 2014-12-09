@@ -22,7 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 /**
  * the main model representing the workflow. 
  * contains all the stages where tasks are moved around in
- *
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;

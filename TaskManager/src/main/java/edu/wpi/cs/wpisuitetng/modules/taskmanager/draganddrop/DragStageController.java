@@ -25,6 +25,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
+/**
+ * @author Alec
+ * This class is responsible for handling drag and drop.
+ * It allows stages to be rearranged and allows tasks to be dragged into different stages
+ */
 public class DragStageController implements DropTargetListener, MouseListener, MouseMotionListener{
 
 	private DragStagePanel stage;
@@ -102,6 +107,9 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		//Intentionally left empty
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		e.translatePoint(e.getComponent().getX() - mouseX, 0);
@@ -144,6 +152,9 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		//Intentionally left empty
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseX = e.getX();
@@ -151,6 +162,9 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		this.initialXPos = targetXPos = stage.getLocation().x;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		this.stageModel = WorkflowController.getWorkflowModel().getStageModelByID(stageID);

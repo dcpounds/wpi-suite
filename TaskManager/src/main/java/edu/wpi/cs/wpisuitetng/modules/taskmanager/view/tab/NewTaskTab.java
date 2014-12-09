@@ -61,7 +61,6 @@ import javax.swing.SwingConstants;
  *
  *  11/16 Further Progress on utilizing this class for editting functionality aswell.
  * 		Authors  Guillermo, Ashton;
- *		
  */
 public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener, IHashableTab{
 	

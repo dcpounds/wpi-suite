@@ -16,6 +16,10 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
+/**
+ * @author Alec
+ * An extendable class that provides drag and drop functionality to tasks
+ */
 public class DragTaskPanel extends JPanel implements Transferable{
 
 	private static final long serialVersionUID = -1882518314940259111L;

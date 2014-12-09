@@ -24,6 +24,10 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
+/**
+ * @author Alec
+ * This is an entity manager that allows stages to be stored within the database
+ */
 public class StageEntityManager implements EntityManager<StageModel> {
 	
 	private Data db;

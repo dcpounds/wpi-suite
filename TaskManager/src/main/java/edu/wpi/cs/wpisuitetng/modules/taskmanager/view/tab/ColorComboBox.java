@@ -17,8 +17,14 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 
+/**
+ * @author Ashton
+ * This class provides a combobox that allows task categories to be set
+ */
 public class ColorComboBox extends JComboBox {
 	
+	private static final long serialVersionUID = 7202220072831533595L;
+
 	static Hashtable <String, Color> colors;
 	
 	private Color selectedColor= Color.WHITE;

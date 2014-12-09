@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 
 /**
- * @author alec
+ * @author Alec
  * This is the panel that goes inside a tab to make it closable
  */
 public class ClosableTabView extends JPanel{

@@ -26,9 +26,7 @@ import javax.swing.BoxLayout;
 
 
 /**
- * This class is used to display a workflow in the GUI. Right now the stages are hard-coded in,
- *  but in the future we will be able to dynamically add and remove them through
- *
+ * This class is used to display a workflow in the GUI.
  */
 public class WorkflowView extends JPanel {
 	private static final long serialVersionUID = -3276090208342185552L;
