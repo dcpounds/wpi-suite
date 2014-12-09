@@ -85,6 +85,7 @@ public class WorkflowView extends JPanel {
 			repaint();
 		}catch(Exception e){
 			System.out.println("Failed to add stage to index " + index);
+			e.printStackTrace();
 		}
 	}
 	
