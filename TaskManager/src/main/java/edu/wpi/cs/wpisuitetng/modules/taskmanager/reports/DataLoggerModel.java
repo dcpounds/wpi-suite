@@ -169,7 +169,7 @@ public class DataLoggerModel extends AbstractModel
 		}
 		if (snap1.getEstimatedEffort()!=snap2.getEstimatedEffort())
 		{
-			changelog.add("Changed estimated effort from " + snap1.getActualEffort() + " to " + snap2.getActualEffort()
+			changelog.add("Changed estimated effort from " + snap1.getEstimatedEffort() + " to " + snap2.getEstimatedEffort()
 					+ ".");
 		}
 		if(snap1.getStageID()!=snap2.getStageID())
@@ -180,6 +180,70 @@ public class DataLoggerModel extends AbstractModel
 		if(!(snap1.getTitle().equals(snap2.getTitle())))
 		{
 			changelog.add("Changed the title from " + snap1.getTitle() + " to " + snap2.getTitle() + ".");
+		}
+		if(!(snap1.getUsersAssignedTo().equals(snap2.getUsersAssignedTo())))
+		{
+			ArrayList<String> addList;
+			String addString = null;
+			ArrayList<String> removeList;
+			String removeString = null;
+			
+			addList = snap2.getUsersAssignedTo();
+			addList.removeAll(snap1.getUsersAssignedTo());
+			if (addList.size()>=0)
+			{
+				for(int i=0;i<addList.size();i++)
+				{
+					addString+=addList.get(i);
+					if (i==addList.size()-2)
+					{
+						addString+=", and ";
+					}
+					else if (i==addList.size()-1)
+					{
+						addString+=".";
+					}
+					else
+					{
+						addString+=", ";
+					}
+				}
+				
+				
+			}
+			
+			
+			removeList = snap1.getUsersAssignedTo();
+			removeList.removeAll(snap2.getUsersAssignedTo());
+			if (removeList.size()>=0)
+			{
+				for(int i=0;i<removeList.size();i++)
+				{
+					removeString+=removeList.get(i);
+					if (i==removeList.size()-2)
+					{
+						removeString+=", and ";
+					}
+					else if (i==removeList.size()-1)
+					{
+						removeString+=".";
+					}
+					else
+					{
+						removeString+=", ";
+					}
+				}
+			}
+			
+			
+			if (!addList.isEmpty())
+			{
+				changelog.add("Added " + addList + " to this task.");
+			}
+			if (!removeList.isEmpty())
+			{
+				changelog.add("Removed " + removeList + " from this task.");
+			}
 		}
 
 		return changelog;

@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -13,7 +14,7 @@ public class UpdateDataLoggerRequestObserver implements RequestObserver{
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
-        StageModel stage = StageModel.fromJson(iReq.getResponse().getBody());
+        DataLoggerModel stage = DataLoggerModel.fromJson(iReq.getResponse().getBody());
         //controller.updateStage(stage);
 		
 	}
