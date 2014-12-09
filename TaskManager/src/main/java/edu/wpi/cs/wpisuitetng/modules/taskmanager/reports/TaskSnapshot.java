@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Hashtable;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 

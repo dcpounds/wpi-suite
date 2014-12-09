@@ -8,9 +8,9 @@ import java.util.Date;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.TaskSnapshot;
 
 /** Model to represent a task **/

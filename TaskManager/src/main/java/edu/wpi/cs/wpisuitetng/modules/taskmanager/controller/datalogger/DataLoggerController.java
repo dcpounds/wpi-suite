@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.reports;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.DeleteStageRequestObserver;
@@ -6,6 +6,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.GetStageReque
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.UpdateStageRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -19,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class DataLoggerController {
 	private static DataLoggerController instance = new DataLoggerController();
 	private static DataLoggerModel dataLoggerModel;
-	
+	private ActionType action;
 	private static AddDataLoggerRequestObserver addObserver;
 	private static GetDataLoggerRequestObserver getObserver;
 	private static UpdateDataLoggerRequestObserver updateObserver;
@@ -30,28 +32,57 @@ public class DataLoggerController {
 	
 	public DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
-		StageController.addObserver = new AddStageRequestObserver(this);
-		StageController.updateObserver = new UpdateStageRequestObserver(this);
-		StageController.deleteObserver = new DeleteStageRequestObserver(this);
-		StageController.getObserver = new GetStageRequestObserver(this);
+		this.action = action;
+		DataLoggerController.addObserver = new AddDataLoggerRequestObserver(this);
+		DataLoggerController.updateObserver = new UpdateDataLoggerRequestObserver(this);
+		DataLoggerController.getObserver = new GetDataLoggerRequestObserver(this);
+		DataLoggerController.deleteObserver = new DeleteDataLoggerRequestObserver(this);
 	}
+	
+	/**
+	 * Depending on the specified action, either create, edit, delete, or get stageModel(s) from the database
+	 */
+	public void act(){
+		switch(action){
+			case CREATE: 
+				sendAddRequest(dataLoggerModel);
+				break;
+			case EDIT:
+				sendUpdateRequest(dataLoggerModel);
+				break;
+			case DELETE:
+				{
+					sendDeleteRequest(dataLoggerModel);	
+					break;
+				}
+			case GET:
+				sendGetRequest(dataLoggerModel);
+				break;
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	public static DataLoggerModel getDataModel() {
 		return dataLoggerModel;
 	}
 	
 	/**
-	 * @param stageModel - the stage to add to the database
+	 * @param DataLoggerModel - the DataLogger to add to the database
 	 */
 	public static void sendAddRequest(DataLoggerModel dataLoggerModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.PUT); // PUT == create
-		request.setBody(dataLoggerModel.toJson()); // put the new stage in the body of the request
+		request.setBody(dataLoggerModel.toJson()); // put the new DataLogger in the body of the request
 		request.addObserver(addObserver); // add an observer to process the response
 		request.send();
 	}
 	
 	/**
-	 * get a list of all stages from the database
+	 * get a list of all DataLoggers from the database
 	 */
 	public static void sendGetRequest (DataLoggerModel dataLoggerModel) {
 		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
