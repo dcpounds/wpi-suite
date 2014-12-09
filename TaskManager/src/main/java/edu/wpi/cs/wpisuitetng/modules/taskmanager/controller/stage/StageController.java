@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
@@ -178,10 +179,10 @@ public class StageController implements ActionListener{
 		}
 	}
 	
+	
 	/**
 	 * Removes a task from a stage
-	 * @param taskView - the taskView to delete 
-	 * @param stageView - the stageView to delete from
+	 * @param taskView - the taskView to delete
 	 */
 	public static void deleteTask(TaskView taskView){
 		StageView stageView = taskView.getStageView();
@@ -195,6 +196,52 @@ public class StageController implements ActionListener{
 			return;
 		} catch(Exception e){
 			System.out.println("Could not remove. Either the task could not be found"
+					+ " or the stage could not be found.");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Archives a task
+	 * @param taskView - the taskView to archive
+	 */
+	public static void archiveTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
+		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
+		try{
+			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
+			task.setIsArchived(true);
+			if(!ArchiveController.getIsPressed()){
+				taskView.setVisible(false);
+			}
+			StageController.sendUpdateRequest(stageModel);
+			stageView.repaint();
+			return;
+		} catch(Exception e){
+			System.out.println("Could not archive. Either the task could not be found"
+					+ " or the stage could not be found.");
+			
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Dearchives a task
+	 * @param taskView - the taskView to dearchive 
+	 */
+	public static void dearchiveTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
+		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
+		try{
+			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
+			task.setIsArchived(false);
+			taskView.setVisible(true);
+			StageController.sendUpdateRequest(stageModel);
+			stageView.repaint();
+			return;
+		} catch(Exception e){
+			System.out.println("Could not dearchive. Either the task could not be found"
 					+ " or the stage could not be found.");
 			
 			e.printStackTrace();

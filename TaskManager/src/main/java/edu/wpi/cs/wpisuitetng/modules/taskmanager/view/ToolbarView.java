@@ -11,7 +11,9 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -30,6 +32,7 @@ public class ToolbarView extends JPanel {
     private static final long serialVersionUID = 6568533963473785570L;
     private final JButton newStageButton;
     private final JButton newTaskButton;
+    private final JToggleButton archiveButton;
     private final WorkflowModel workflowModel;
    
     /**
@@ -42,7 +45,7 @@ public class ToolbarView extends JPanel {
         
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
-        
+        ImageIcon archiveIcon = new ImageIcon("../TaskManager/src/main/resources/recycle_bin.png");
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -83,6 +86,12 @@ public class ToolbarView extends JPanel {
         });
         add(toggleColor);
        
+        archiveButton = new JToggleButton("View Archives", archiveIcon);
+        archiveButton.addChangeListener(ArchiveController.getInstance());
+        archiveButton.setMargin(new Insets(0,0,0,0));
+        add(Box.createHorizontalStrut(20));
+        add(archiveButton);
+        
     }
 
     static long getSerialversionuid() {
