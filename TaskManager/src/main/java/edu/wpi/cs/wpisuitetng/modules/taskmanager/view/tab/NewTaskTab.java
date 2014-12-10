@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -95,8 +96,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private boolean isEditingTask;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
-	private JTextField txtRequirement;
-	private JComboBox comboBox;
 	private JLabel lblRequirement;
 	private JLabel daysUntilLabel2;
 	private DefaultComboBoxModel<String> requirementsComboModel;
@@ -144,6 +143,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		JLabel stageLabel = new JLabel("Stage");
 		add(stageLabel, "pad 0 10 0 50,cell 3 0");
 		stageBox = new JComboBox<String>();
+		stageBox.setPreferredSize(new Dimension(125,10));
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>(getStatusOptions()));
 
@@ -244,6 +244,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		requirementsComboModel.addElement("None");
 		new RequirementsController(this).requestRequirementsList();
 		requirementsBox = new JComboBox<String>();
+		requirementsBox.setPreferredSize(new Dimension(125,10));
 		requirementsBox.setModel(requirementsComboModel);
 		requirementsBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -313,6 +314,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.setToolTipText("The task will become urgent this many days before the due date");
 		add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
+		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
 		daysUntilLabel2 = new JLabel(" day(s) before it is due");
@@ -398,28 +400,24 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	
 
 
+	/**
+	 * Sets the requirement box based on the value of the given taskModel
+	 */
 	public void setTaskRequirementBox() {
 		// Set the requirement box
-		boolean found = false;
 		for (int index = 0; index < requirementsBox.getItemCount(); index++) {
 			String requirement = requirementsBox.getItemAt(index);
 			if (taskModel.getAssociatedRequirement().equals(requirement)) {
 				requirementsBox.setSelectedItem(requirement);
-				System.out
-						.println("foundddddddd "
-								+ taskModel.getAssociatedRequirement()
-								+ " in combobox");
-				found = true;
 			}
 		}
-
-		if (!found)
-			System.out
-					.println("Not foundddddddd "
-							+ taskModel.getAssociatedRequirement()
-							+ " Not in combobox");
 	}
 
+
+	public void setDaysUntilField() {
+		daysUntilField.setText( "" + taskModel.getTimeThreshold() );
+	}
+	
 	/**
 	 * Checks that all the requirements for creating a new task are met and
 	 * updates the correct fields indicating what if anything still needs to be
