@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -47,8 +48,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
@@ -56,7 +55,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageControll
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
 import javax.swing.SpringLayout;
 
 
@@ -100,6 +98,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JComboBox comboBox;
 	private JLabel lblRequirement;
 	private JLabel daysUntilLabel2;
+	private DefaultComboBoxModel<String> requirementsComboModel;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -109,7 +108,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 
 	public NewTaskTab(TaskModel model) {
 		// get the requirements from the database
-		new RequirementsController().requestRequirementsList();
 		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][][][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
 		add(taskTitleLabel, "flowx,cell 1 0");
@@ -157,15 +155,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 		      }
 		});
-		//Set the default requirement
-		//Set the default selected value of the stage selection box
-		if(model != null){
-			System.out.println("my requirement is" + model.getAssociatedRequirement());
-			for( String req : this.getRequirementsOptions() ){
-				if (taskModel.getAssociatedRequirement().equals(req))
-					requirementsBox.setSelectedItem(req);
-			}
-		}
 		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
@@ -188,10 +177,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		//Create a view where users can assign users to the task
 		assignUsersView = new AssignUsersView();
 		add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
-		
-		//Create a view where users can assign users to the task
-//		associatedRequirementsView = new AssociatedRequirementsView();
-//		add(associatedRequirementsView, "cell 1 3,grow");
 		
 		//Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
@@ -238,11 +223,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		colorTitle = new JLabel("Select Category");
 		add(colorTitle, "cell 1 12,alignx left");
 		
-		
-		// Make a label for the requirements combo box
-		lblRequirement = new JLabel("Requirement:");
-		add(lblRequirement, "pad 0 10 0 0,cell 3 12");
-		
 		//Colorcombobox is a custom jcombobox that allows color section visible
 		colorBox = new ColorComboBox();
 		add(colorBox,"cell 1 13");
@@ -251,15 +231,25 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		colorTitle = new JLabel("                  ");
 		add(colorTitle, "cell 3 0");
 		
+		// Make a label for the requirements combo box
+		lblRequirement = new JLabel("Requirement:");
+		add(lblRequirement, "pad 0 10 0 0,cell 3 12");
+	
+		
 		//Make the requirements combo box. 
+		this.requirementsComboModel = new DefaultComboBoxModel<String>();
+		requirementsComboModel.addElement("None");
+		new RequirementsController(this).requestRequirementsList();
 		requirementsBox = new JComboBox<String>();
-		requirementsBox.setModel(new DefaultComboBoxModel<String>( this.getRequirementsOptions() ));
+		requirementsBox.setModel(requirementsComboModel);
 		requirementsBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 		      }
 		});
+
 		add(requirementsBox, "pad 0 10 0 0,cell 3 13");
+		
 		add(sbmtTaskButton, "flowx,cell 1 17");		
 		sbmtTaskButton.setEnabled(false);
 		
@@ -321,32 +311,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		daysUntilLabel2 = new JLabel(" day(s) before it is due");
 		add(daysUntilLabel2, "cell 1 9");
+
 		
 		checkForErrors();
 	}
 	
-	private String[] getRequirementsOptions() {
-		ArrayList<String> requirementsOptions = new ArrayList<String>();
-		for( String req : workflowModel.getRequirementsList() ){
-			requirementsOptions.add( req );
-		}
-		System.out.print("requirementsOptions");
-		System.out.println(requirementsOptions);
-		return requirementsOptions.toArray( new String[requirementsOptions.size() ]);
-	}
-	
-	public String getRequirement(){
-//		Requirement[] allReq = workflowModel.getRequirementsList();
-//		System.out.println("you selected requirement:");
-//		System.out.println(this.requirementsBox.getSelectedIndex());
-//		return allReq[this.requirementsBox.getSelectedIndex()];
-
-		for (String req : workflowModel.getRequirementsList()){
-			if (req.equals(requirementsBox.getSelectedItem()))
-				return req;
-		}
-		return "";
-	}
+	public DefaultComboBoxModel<String> getRequirementsComboModel() {
+		return requirementsComboModel;
+	}	
 
 	/**
 	 * Given the input that the user provided, construct the task
@@ -355,7 +327,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public void buildTask() {
 		StageModel stageModel = null;
 		for(StageModel stage : workflowModel.getStageModelList().values()){
-			if(stage.getTitle() == stageBox.getSelectedItem())
+			if(stage.getTitle().equals(stageBox.getSelectedItem()))
 				stageModel = stage;
 		}
 		
@@ -382,7 +354,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
-		taskModel.setAssociatedRequirement(this.getRequirement());
+		taskModel.setAssociatedRequirement( (String) requirementsBox.getSelectedItem() );
+		System.out.println("Added requirement " + requirementsBox.getSelectedItem());
 		ActivityModel message;
 		if(isEditingTask){
 			message = new ActivityModel("Updated the task");
@@ -393,6 +366,22 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 		
+	}
+	
+	public void setTaskRequirementBox(){
+		//Set the requirement box 
+		boolean found = false;
+		for(int index = 0; index < requirementsBox.getItemCount(); index++){
+			String requirement = requirementsBox.getItemAt(index); 
+			if (taskModel.getAssociatedRequirement().equals(requirement)){
+				requirementsBox.setSelectedItem(requirement);
+				System.out.println("foundddddddd " + taskModel.getAssociatedRequirement() + " in combobox");
+				found = true;
+			}
+		}
+		
+		if(!found)
+			System.out.println("Not foundddddddd " + taskModel.getAssociatedRequirement() + " Not in combobox");
 	}
 	
 	/**

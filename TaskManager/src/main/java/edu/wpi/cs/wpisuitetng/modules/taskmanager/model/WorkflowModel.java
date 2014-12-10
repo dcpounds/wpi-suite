@@ -39,9 +39,9 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name, HashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
-		this.userList = new ArrayList<User>();
-		this.toggleColor = false;
-		this.requirementsList = new ArrayList<String>();
+		WorkflowModel.userList = new ArrayList<User>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.requirementsList = new ArrayList<String>();
 	}
 	
 	
@@ -52,7 +52,8 @@ public class WorkflowModel extends AbstractModel {
 	public WorkflowModel(String name){
 		this.name = name;
 		this.stageModelList = new HashMap<Integer, StageModel>();
-		this.toggleColor = false;
+		WorkflowModel.requirementsList = new ArrayList<String>();
+		WorkflowModel.toggleColor = false;
 	}
 	
 	
@@ -208,16 +209,6 @@ public class WorkflowModel extends AbstractModel {
 	
 	public void copyFrom(WorkflowModel other){
 		this.stageModelList = other.stageModelList;
-	}
-
-
-	public void setRequirementsList(Requirement[] requirements) {
-		// TODO Auto-generated method stub
-		WorkflowModel.requirementsList = new ArrayList<String>();
-		for (Requirement req : requirements)
-			requirementsList.add(req.getName());
-		System.out.print("requirements:");
-		System.out.println(requirementsList);
 	}
 
 }
