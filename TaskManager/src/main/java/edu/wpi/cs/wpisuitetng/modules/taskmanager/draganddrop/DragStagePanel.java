@@ -11,11 +11,15 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
 import java.awt.Point;
 import java.awt.dnd.DropTarget;
+
 import javax.swing.JPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
@@ -64,6 +68,21 @@ public class DragStagePanel extends JPanel{
 		
 	
 		StageController.sendUpdateRequest(newStageModel);
+		
+		//Generate an activity reflecting the change
+		DataLoggerController.getDataModel().addSnapshot(taskModel);
+		
+		ActivityModel message;
+		String messageString;
+		
+		for (int i=0; i<DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
+				 taskModel.getCurrentSnapshot()).size(); i++)
+		{
+			messageString = DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
+														 taskModel.getCurrentSnapshot()).get(i);
+			message = new ActivityModel(messageString);
+			taskModel.addActivity(message);
+		}
 
 	}
 }
