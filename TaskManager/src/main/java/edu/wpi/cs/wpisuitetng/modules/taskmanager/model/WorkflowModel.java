@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
@@ -30,6 +31,8 @@ public class WorkflowModel extends AbstractModel {
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
 	private static boolean isDraggingStage;
+	private static ArrayList<String> requirementsList;
+	
 
 	/**
 	 * construct the main workflow based off a given list of stages
@@ -42,6 +45,7 @@ public class WorkflowModel extends AbstractModel {
 		WorkflowModel.userList = new ArrayList<User>();
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
+		WorkflowModel.requirementsList = new ArrayList<String>();
 	}
 	
 	
@@ -103,6 +107,14 @@ public class WorkflowModel extends AbstractModel {
 		if(userList == null)
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
+	}
+	public String[] getRequirementsList(){
+		if (requirementsList == null){
+			System.out.println("Theres no requirementsOptions");
+			return new String[]{};
+			}
+		System.out.println("theres requirements");
+		return requirementsList.toArray(new String[requirementsList.size()]);
 	}
 	
 	public void toggleColor(){

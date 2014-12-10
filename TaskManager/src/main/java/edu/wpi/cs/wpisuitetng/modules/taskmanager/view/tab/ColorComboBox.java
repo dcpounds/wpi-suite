@@ -16,54 +16,56 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.*;
 
-
 /**
- * @author Ashton
- * This class provides a combobox that allows task categories to be set
+ * @author Ashton This class provides a combobox that allows task categories to
+ *         be set
  */
 public class ColorComboBox extends JComboBox {
-	
+
 	private static final long serialVersionUID = 7202220072831533595L;
 
-	static Hashtable <String, Color> colors;
-	
-	private Color selectedColor= Color.WHITE;
+	static Hashtable<String, Color> colors;
+
+	private Color selectedColor = Color.WHITE;
 
 	public ColorComboBox() {
-	super();
-	DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
-	Enumeration colorNames = addColors().keys();
-	while(colorNames.hasMoreElements()){
-		String tString = colorNames.nextElement().toString();
-		cbModel.addElement(tString);
-		System.out.println("colors"+tString);
+		super();
+		DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+		Enumeration colorNames = addColors().keys();
+		while (colorNames.hasMoreElements()) {
+			String tString = colorNames.nextElement().toString();
+			cbModel.addElement(tString);
+			// System.out.println("colors"+tString);
+		}
+		setModel(cbModel);
+		setRenderer(new ColorRenderer());
+		this.setOpaque(true);
+		this.setSelectedIndex(8);
 	}
-	setModel(cbModel);  
-	setRenderer(new ColorRenderer());  
-	this.setOpaque(true);  
-	this.setSelectedIndex(0);  
-	}  
-	
-	
+
 	@Override
-	public void setSelectedItem(Object object){
+	public void setSelectedItem(Object object) {
 		super.setSelectedItem(object);
-	
-	selectedColor = colors.get(object);
-	setBackground(selectedColor);
-	setFont(new Font(Font.SERIF, Font.BOLD,15 ));
-	if(object.toString().equals("YELLOW")|object.toString().equals("WHITE")){
+
+		selectedColor = colors.get(object);
+		setBackground(selectedColor);
+		setFont(new Font(Font.SERIF, Font.BOLD, 15));
+		if (object.toString().equals("YELLOW")
+				| object.toString().equals("WHITE")) {
 			setForeground(Color.black);
+		} else
+			setForeground(Color.white);
+
 	}
-	else setForeground(Color.white);
-	
+
+	/**
+	 * @return the selected color of the box
+	 */
+	public Color getSelectedColor() {
+		return this.getBackground();
 	}
-	
-	public Color getSelectedColor(){
-	return this.getBackground();
-	}
-	
-	private Hashtable addColors(){
+
+	private Hashtable addColors() {
 		colors = new<String, Color> Hashtable();
 		colors.put("GRAY", Color.LIGHT_GRAY);
 		colors.put("WHITE", Color.WHITE);
@@ -75,46 +77,41 @@ public class ColorComboBox extends JComboBox {
 		colors.put("GREEN", new Color(0x82CA9D));
 		colors.put("BLUE", new Color(0x8493CA));
 		colors.put("PURPLE", new Color(0xA187BE));
-		
-		
+
 		return colors;
 	}
-	
-	class ColorRenderer extends JLabel implements javax.swing.ListCellRenderer{
-		public ColorRenderer(){
+
+	class ColorRenderer extends JLabel implements javax.swing.ListCellRenderer {
+		public ColorRenderer() {
 			this.setOpaque(true);
 		}
-		public Component getListCellRendererComponent(JList list, Object key, int index,
-				boolean isSelected, boolean isFocused){
+
+		public Component getListCellRendererComponent(JList list, Object key,
+				int index, boolean isSelected, boolean isFocused) {
 			Color color = colors.get(key);
 			String name = key.toString();
-		
+
 			list.setSelectionBackground(null);
 			list.setSelectionForeground(null);
-			
-			if(isSelected){
+
+			if (isSelected) {
 				setBorder(BorderFactory.createEtchedBorder());
-			}
-			else setBorder(null);
-			
-			setFont(new Font(Font.SERIF, Font.BOLD,15 ));
+			} else
+				setBorder(null);
+
+			setFont(new Font(Font.SERIF, Font.BOLD, 15));
 			setBackground(color);
 			setText(name);
 			setForeground(Color.black);
-			if(key.toString().equals("YELLOW")|key.toString().equals("WHITE")){
+			if (key.toString().equals("YELLOW")
+					| key.toString().equals("WHITE")) {
 				setForeground(Color.black);
-			}
-			else setForeground(Color.white);
-		
-			
-			
+			} else
+				setForeground(Color.white);
+
 			return this;
-				
-				
-		
+
 		}
 	}
-	
-	
-	
+
 }
