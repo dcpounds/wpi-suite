@@ -452,7 +452,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public String[] getStatusOptions(){
 		ArrayList<String> statusOptions = new ArrayList<String>();
 		for( StageModel stage : workflowModel.getStageModelList().values() ){
-			statusOptions.add( stage.getTitle() );
+			String truncatedTitle;
+			if(stage.getTitle().length() >= 21)
+				truncatedTitle =  stage.getTitle().substring(0,21) + "...";
+			else
+				truncatedTitle = stage.getTitle();
+			statusOptions.add( truncatedTitle );
 		}
 		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
