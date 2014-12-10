@@ -234,7 +234,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		// Make a label for the requirements combo box
 		lblRequirement = new JLabel("Requirement:");
-		add(lblRequirement, "pad 0 10 0 0,cell 3 12");
+		add(lblRequirement, "pad 0 10 0 0,cell 3 12, pad 0 9 0 50");
 
 		// Make the requirements combo box.
 		this.requirementsComboModel = new DefaultComboBoxModel<String>();
