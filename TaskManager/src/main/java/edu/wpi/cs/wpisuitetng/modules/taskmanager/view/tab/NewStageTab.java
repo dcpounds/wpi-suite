@@ -111,8 +111,6 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	}
 
 	
-	
-	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
@@ -134,14 +132,13 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	}
 
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#hasBeenModified()
+	 */
 	public boolean hasBeenModified() {
-		if(stageTitleField.getText().length() > 0 && stageTitleField.getText() != null){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return (stageTitleField.getText().length() > 0 && stageTitleField.getText() != null);
 	}
+	
 	@Override
 	public int getModelID() {
 		return model.getID();

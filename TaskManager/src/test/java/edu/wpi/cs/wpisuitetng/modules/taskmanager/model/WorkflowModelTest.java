@@ -10,7 +10,6 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import static org.junit.Assert.*;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
