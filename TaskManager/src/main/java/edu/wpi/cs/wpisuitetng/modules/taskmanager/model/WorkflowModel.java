@@ -12,11 +12,13 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
@@ -25,20 +27,25 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	private HashMap<Integer,StageModel> stageModelList;
+	private LinkedHashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
+	private static boolean isDraggingStage;
+	private static ArrayList<String> requirementsList;
+	
 
 	/**
 	 * construct the main workflow based off a given list of stages
 	 * @param name - the name of the workflow (usually "main")
 	 * @param stageList
 	 */
-	public WorkflowModel(String name, HashMap<Integer,StageModel> stageList){
+	public WorkflowModel(String name, LinkedHashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
-		this.userList = new ArrayList<User>();
-		this.toggleColor = false;
+		WorkflowModel.userList = new ArrayList<User>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
+		WorkflowModel.requirementsList = new ArrayList<String>();
 	}
 	
 	
@@ -48,8 +55,9 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageModelList = new HashMap<Integer, StageModel>();
-		this.toggleColor = false;
+		this.stageModelList = new LinkedHashMap<Integer, StageModel>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
 	}
 	
 	
@@ -64,7 +72,7 @@ public class WorkflowModel extends AbstractModel {
 	/**
 	 * @return a list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> getStageModelList() {
+	public LinkedHashMap<Integer, StageModel> getStageModelList() {
 		return stageModelList;
 	}
 	
@@ -73,7 +81,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> addStage(StageModel stage) {
+	public LinkedHashMap<Integer, StageModel> addStage(StageModel stage) {
 		stageModelList.put(stage.getID(),stage);
 		return stageModelList;
 	}
@@ -83,8 +91,12 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> removeStageModel(StageModel stage) {
-		stageModelList.remove(stage.getID());
+	public LinkedHashMap<Integer, StageModel> removeStageModel(StageModel stage) {
+		if(stageModelList.remove(stage.getID()) == null){
+			System.out.println("Failed to remove stage " + stage.getTitle() + " from stageModelList");
+		} else{
+			System.out.println("Successfully removed stage " + stage.getTitle() + " from stageModelList");
+		}
 		return stageModelList;
 	}
 	
@@ -96,6 +108,14 @@ public class WorkflowModel extends AbstractModel {
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
 	}
+	public String[] getRequirementsList(){
+		if (requirementsList == null){
+			System.out.println("Theres no requirementsOptions");
+			return new String[]{};
+			}
+		System.out.println("theres requirements");
+		return requirementsList.toArray(new String[requirementsList.size()]);
+	}
 	
 	public void toggleColor(){
 		WorkflowModel.toggleColor = !WorkflowModel.toggleColor;
@@ -103,6 +123,14 @@ public class WorkflowModel extends AbstractModel {
 	
 	public boolean getToggleColor(){
 		return WorkflowModel.toggleColor;
+	}
+	
+	public void setIsDraggingTask(boolean bool){
+		WorkflowModel.isDraggingStage = bool;
+	}
+	
+	public boolean getIsDraggingStage(){
+		return WorkflowModel.isDraggingStage;
 	}
 	
 	

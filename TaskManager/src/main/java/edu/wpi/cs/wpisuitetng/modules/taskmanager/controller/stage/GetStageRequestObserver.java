@@ -9,6 +9,10 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -23,7 +27,9 @@ public class GetStageRequestObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		StageModel stages[] = StageModel.fromJsonArray(iReq.getResponse().getBody());
-        controller.syncStages(stages);
+		ArrayList<StageModel> stageArrayList = new ArrayList<StageModel>(Arrays.asList(stages));
+		Collections.sort(stageArrayList);
+        controller.syncStages(stageArrayList);
 		
 	}
 

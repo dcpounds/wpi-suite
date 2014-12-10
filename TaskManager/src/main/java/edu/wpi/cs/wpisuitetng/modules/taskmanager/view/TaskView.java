@@ -342,6 +342,7 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setTitle(task.getTitle());
+		this.taskModel.setAssociatedRequirement(task.getAssociatedRequirement());
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
