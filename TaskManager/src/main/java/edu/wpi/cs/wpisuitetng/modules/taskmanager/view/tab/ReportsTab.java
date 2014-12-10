@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -13,6 +14,26 @@ import javax.swing.JScrollPane;
 
 
 
+
+import java.awt.Color;
+import java.awt.Paint;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.TextAnchor;
 
 
 
@@ -30,6 +51,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -69,6 +91,17 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         return setDataCategory();
         
     }
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
     
     /**
      * @return the dataSet based upon the statuses of all requirements
@@ -111,15 +144,85 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
                 false
                 );
         
+        
+        
+        
         chart.setBackgroundPaint(Color.white);
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setDomainGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.white);
+
         
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
+        // disable bar outlines...
+        final BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setDrawBarOutline(false);
+        
+        // set up gradient paints for series...
+        final GradientPaint gray = new GradientPaint(
+            0.0f, 0.0f, Color.gray, 
+            0.0f, 0.0f, Color.white
+        );
+        final GradientPaint white = new GradientPaint(
+            0.0f, 0.0f, Color.white, 
+            0.0f, 0.0f, Color.white
+        );
+        final GradientPaint brown = new GradientPaint(
+            0.0f, 0.0f, new Color(0xA67C52), 
+            0.0f, 0.0f, Color.white
+        );
+        final GradientPaint red = new GradientPaint(
+                0.0f, 0.0f, Color.red, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint pink = new GradientPaint(
+                0.0f, 0.0f, Color.pink, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint orange = new GradientPaint(
+                0.0f, 0.0f, Color.orange, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint yellow = new GradientPaint(
+                0.0f, 0.0f, Color.yellow, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint green = new GradientPaint(
+                0.0f, 0.0f, Color.green, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint blue = new GradientPaint(
+                0.0f, 0.0f, Color.blue, 
+                0.0f, 0.0f, Color.white
+            );
+        final GradientPaint purple = new GradientPaint(
+                0.0f, 0.0f,  new Color(0xA187BE), 
+                0.0f, 0.0f, Color.white
+            );
+        
+        renderer.setSeriesPaint(0, gray);
+        renderer.setSeriesPaint(1, white);
+        renderer.setSeriesPaint(2, brown);
+        renderer.setSeriesPaint(3, red);
+        renderer.setSeriesPaint(4, pink);
+        renderer.setSeriesPaint(5, orange);
+        renderer.setSeriesPaint(6, yellow);
+        renderer.setSeriesPaint(7, green);
+        renderer.setSeriesPaint(8, blue);
+        renderer.setSeriesPaint(9, purple);
+        
+        
+        
+        
+
+        
+        
+        
+        
         
         return chart;
     }
