@@ -92,17 +92,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         
     }
     
-
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
+ 
     /**
      * @return the dataSet based upon the statuses of all requirements
      */
@@ -214,15 +204,6 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         renderer.setSeriesPaint(7, green);
         renderer.setSeriesPaint(8, blue);
         renderer.setSeriesPaint(9, purple);
-        
-        
-        
-        
-
-        
-        
-        
-        
         
         return chart;
     }
