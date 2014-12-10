@@ -266,44 +266,46 @@ public class DataLoggerModel extends AbstractModel
 		output.put("BLUE", 0);
 		output.put("PURPLE", 0);		
 		
-		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		if (taskSnapList.size()>0)
 		{
-
-			switch (taskSnapList.get(i-1).getCatColorString()) {
-			case "GRAY":
-				output.replace("GRAY", output.get("GRAY")+1);
-				break;
-			case "WHITE":
-				output.replace("WHITE", output.get("WHITE")+1);
-				break;
-			case "BROWN":
-				output.replace("BROWN", output.get("BROWN")+1);
-				break;
-			case "RED":
-				output.replace("RED", output.get("RED")+1);
-				break;
-			case "PINK":
-				output.replace("PINK", output.get("PINK")+1);
-				break;
-			case "ORANGE":
-				output.replace("ORANGE", output.get("ORANGE")+1);
-				break;
-			case "YELLOW":
-				output.replace("YELLOW", output.get("YELLOW")+1);
-				break;
-			case "GREEN":
-				output.replace("GREEN", output.get("GREEN")+1);
-				break;
-			case "BLUE":
-				output.replace("BLUE", output.get("BLUE")+1);
-				break;
-			case "PURPLE":
-				output.replace("PURPLE", output.get("PURPLE")+1);
-				break;
-			
+			for (int i = taskSnapList.size(); i>0; i=i-1)
+			{
+	
+				switch (taskSnapList.get(i-1).getCatColorString()) {
+				case "GRAY":
+					output.replace("GRAY", output.get("GRAY")+1);
+					break;
+				case "WHITE":
+					output.replace("WHITE", output.get("WHITE")+1);
+					break;
+				case "BROWN":
+					output.replace("BROWN", output.get("BROWN")+1);
+					break;
+				case "RED":
+					output.replace("RED", output.get("RED")+1);
+					break;
+				case "PINK":
+					output.replace("PINK", output.get("PINK")+1);
+					break;
+				case "ORANGE":
+					output.replace("ORANGE", output.get("ORANGE")+1);
+					break;
+				case "YELLOW":
+					output.replace("YELLOW", output.get("YELLOW")+1);
+					break;
+				case "GREEN":
+					output.replace("GREEN", output.get("GREEN")+1);
+					break;
+				case "BLUE":
+					output.replace("BLUE", output.get("BLUE")+1);
+					break;
+				case "PURPLE":
+					output.replace("PURPLE", output.get("PURPLE")+1);
+					break;
+				
+				}
 			}
 		}
-		
 		return output;
 	}
 	

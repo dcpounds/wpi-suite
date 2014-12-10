@@ -30,6 +30,7 @@ public class ToolbarView extends JPanel {
     private static final long serialVersionUID = 6568533963473785570L;
     private final JButton newStageButton;
     private final JButton newTaskButton;
+    private final JButton reportsButton;
     private final WorkflowModel workflowModel;
    
     /**
@@ -42,6 +43,7 @@ public class ToolbarView extends JPanel {
         
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        ImageIcon reportsIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
         
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -56,6 +58,8 @@ public class ToolbarView extends JPanel {
         newStageButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
+        
+        
 		
 		newTaskButton = new JButton("New Task", taskIcon);
         newTaskButton.addActionListener( new ActionListener(){
@@ -68,6 +72,23 @@ public class ToolbarView extends JPanel {
         
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
+        
+        
+        
+        
+        
+        
+        reportsButton = new JButton("Reports", taskIcon);
+        reportsButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().addTab(TabType.REPORTS, null);
+			}
+		});
+        reportsButton.setMargin(new Insets(0,0,0,0));
+        
+        add(Box.createHorizontalStrut(20));
+        add(reportsButton);
         
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);

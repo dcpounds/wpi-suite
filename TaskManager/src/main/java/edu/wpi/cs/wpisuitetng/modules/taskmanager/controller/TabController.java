@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ReportsTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
@@ -74,9 +75,38 @@ public class TabController {
     			tabName =  (model.getTitle() + " Activities   ");
 	        	newTab = new ActivitiesTab((TaskModel) model);
     			break;
+    		case REPORTS:
+    			tabName = "Reports";
+    			newTab = new ReportsTab("Reports");
         }
     	addTabHelper(tabName, newTab);
     }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     public void removeTab(Component tabComponent){
     	tabView.remove(tabComponent);
