@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.Color;
@@ -53,9 +62,8 @@ import javax.swing.SwingConstants;
  *
  *  11/16 Further Progress on utilizing this class for editting functionality aswell.
  * 		Authors  Guillermo, Ashton;
- *		
  */
-public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
+public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener, IHashableTab{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TaskModel taskModel;
@@ -81,7 +89,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
 	private ActionType action;
-	private boolean isBeingEdited;
+	private boolean isEditingTask;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
 	
@@ -102,12 +110,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		if(model == null){
 			this.taskModel = new TaskModel();
 			this.action = ActionType.CREATE;
-			this.isBeingEdited = false;
+			this.isEditingTask = false;
 		} else{
 			this.taskModel = model;
-			this.taskModel.setEditState(true);
 			this.action = ActionType.EDIT;
-			this.isBeingEdited = true;
+			this.isEditingTask = true;
 		}
 		
 		//Set an error if the task needs a title
@@ -293,7 +300,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 			StageController.sendUpdateRequest(originalStage);
 		}
 		
-		if (isBeingEdited==false)
+		if (isEditingTask==false)
 		{
 			TaskModel taskModel = new TaskModel();
 			taskModel.setID( this.taskModel.getID() );
@@ -310,7 +317,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
-		taskModel.setEditState(false);
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
@@ -320,7 +326,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		ActivityModel message;
 		String messageString;
-		if(isBeingEdited){
+		if(isEditingTask){
 			for (int i=0; i<DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
 					 taskModel.getCurrentSnapshot()).size(); i++)
 			{
@@ -469,7 +475,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public String[] getStatusOptions(){
 		ArrayList<String> statusOptions = new ArrayList<String>();
 		for( StageModel stage : workflowModel.getStageModelList().values() ){
-			statusOptions.add( stage.getTitle() );
+			String truncatedTitle;
+			if(stage.getTitle().length() >= 21)
+				truncatedTitle =  stage.getTitle().substring(0,21) + "...";
+			else
+				truncatedTitle = stage.getTitle();
+			statusOptions.add( truncatedTitle );
 		}
 		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
@@ -511,6 +522,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
+	}
+
+	@Override
+	public int getModelID() {
+		return taskModel.getID();
+	}
+
+	@Override
+	public TabType getTabType() {
+		return TabType.TASK;
 	}
 	
 }
