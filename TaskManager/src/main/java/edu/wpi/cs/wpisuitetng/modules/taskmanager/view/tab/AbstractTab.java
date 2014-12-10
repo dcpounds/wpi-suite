@@ -11,9 +11,18 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import javax.swing.JPanel;
 
+/**
+ * @author ??
+ * An abstract class for tabs that forces tabs to implement has been modified
+ *
+ */
 public abstract class AbstractTab extends JPanel{
 	private static final long serialVersionUID = -7630763480349080421L;
 
+	/**
+	 * By default, the tab has been modified. Specific tabs will override this depending on the implementation
+	 * @return
+	 */
 	public boolean hasBeenModified(){
 		return true;
 	}

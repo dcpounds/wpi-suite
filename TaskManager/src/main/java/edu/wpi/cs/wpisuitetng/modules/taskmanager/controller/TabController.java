@@ -84,6 +84,11 @@ public class TabController {
 	}
 	
 	
+    /**
+     * Adds a tab
+     * @param tabType - the type of tab
+     * @param model - the model of the item to pass to the tab view
+     */
     public void addTab(TabType tabType, IDisplayModel model) {
     	String tabTitle = generateTabTitle(tabType, model);
     	Component pane = generateTab(tabType, model);
@@ -101,6 +106,10 @@ public class TabController {
     
 
     
+    /**
+     * Remove a tab 
+     * @param tabComponent
+     */
     public void removeTab(IHashableTab tabComponent){
     	String tabKey = generateTabKey(tabComponent.getTabType(), tabComponent.getModelID());
     	if(uniqueTabs.containsKey(tabKey)){
@@ -109,6 +118,12 @@ public class TabController {
     	tabView.remove((Component) tabComponent);
     }
     
+    /**
+     * Generate a new tab given a tab type and an IDisplayModel
+     * @param tabType
+     * @param model
+     * @return
+     */
     private Component generateTab(TabType tabType, IDisplayModel model){
     	Component newTab = null;
     	switch(tabType){
@@ -128,6 +143,13 @@ public class TabController {
     	return newTab;
     }
     
+    /**
+     * Truncate the tab title if necessary
+     * Format the tab title with a brief description of the tab (Edit, activities, etc)
+     * @param tabType
+     * @param model
+     * @return the tab name string
+     */
     private String generateTabTitle(TabType tabType, IDisplayModel model){
     	String tabName = null;
     	Component newTab = null;
@@ -175,6 +197,12 @@ public class TabController {
     }
     
     
+    /**
+     * Generates a unique tab identifier value
+     * @param tabType
+     * @param ID
+     * @return the tab key
+     */
     private String generateTabKey(TabType tabType, int ID){
     	return tabType.toString() + ID;
     }

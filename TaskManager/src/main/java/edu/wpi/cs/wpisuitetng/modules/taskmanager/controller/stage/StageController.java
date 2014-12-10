@@ -75,7 +75,10 @@ public class StageController implements ActionListener{
 				break;
 		}
 	}
-
+	
+	/**
+	 * If called not statically, this method will determine the correct request to send based on the action that the controller is given
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		act();

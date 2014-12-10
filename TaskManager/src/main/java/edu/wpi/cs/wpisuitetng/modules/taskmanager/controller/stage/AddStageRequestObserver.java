@@ -13,6 +13,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * @author Alec
+ * Listens for add stage requests to the db
+ */
 public class AddStageRequestObserver implements RequestObserver{
 
 	StageController controller;

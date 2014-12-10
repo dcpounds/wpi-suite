@@ -238,6 +238,9 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
 		return TabType.REPORTS;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#hasBeenModified()
+	 */
 	@Override
 	public boolean hasBeenModified() {
 		return false;

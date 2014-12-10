@@ -89,19 +89,35 @@ public class DataLoggerModel extends AbstractModel
 		this.taskSnapID = taskSnapID;
 	}
 
+	/**
+	 * Increment the task snapshot ID
+	 */
 	public void incrementTaskSnapID(){
 		taskSnapID++;
 	}
 	
+	/**
+	 * @return the task snapshot ID
+	 */
 	public int getTaskSnapID() {
 		return taskSnapID;
 	}
 	
+	/**
+	 * Add a new snapshot given a taskModel
+	 * @param taskmodel
+	 */
 	public void addSnapshot(TaskModel taskmodel)
 	{
 		taskSnapList.add(new TaskSnapshot(taskmodel, taskSnapID));
 	}
 	
+	
+	/**
+	 * Return the current task snapshot
+	 * @param taskModel
+	 * @return
+	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
 		for (int i = taskSnapList.size(); i>=0; i=i-1)
@@ -219,8 +235,6 @@ public class DataLoggerModel extends AbstractModel
 						addString+=", ";
 					}
 				}
-				
-				
 			}
 			
 			
@@ -261,6 +275,10 @@ public class DataLoggerModel extends AbstractModel
 		
 	}
 	
+	/**
+	 * Export all categories as a hashtable
+	 * @return
+	 */
 	public Hashtable exportAllCategories()
 	{
 		Hashtable<String, Integer> output = new Hashtable();
@@ -319,6 +337,11 @@ public class DataLoggerModel extends AbstractModel
 	}
 	
 	
+	/**
+	 * Format the provided date into a string
+	 * @param date
+	 * @return
+	 */
 	public String formatDateString(String date)
 	{
 		return (date.substring(0, 1)+"/"+date.substring(2,3)+"/"+date.substring(4,7));

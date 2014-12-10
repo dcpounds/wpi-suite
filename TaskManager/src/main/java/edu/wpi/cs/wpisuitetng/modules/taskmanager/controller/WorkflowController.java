@@ -40,10 +40,18 @@ public class WorkflowController {
 		thread.start();
 	}
 
+	/**
+	 * Gets the current instance of the workflow controller
+	 * @return
+	 */
 	public static WorkflowController getInstance(){
 		return instance;
 	}
 
+	
+	/**
+	 * @return the singleton workflow model
+	 */
 	public static WorkflowModel getWorkflowModel(){
 		return model;
 	}

@@ -456,6 +456,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		sbmtTaskButton.setEnabled(shouldSubmitBeEnabled);
 	}
 
+	/**
+	 * @return the view that is responsible for adding/removing users
+	 */
 	public AssignUsersView getAssignUserView() {
 		return assignUsersView;
 	}
@@ -525,17 +528,22 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 	/**
 	 * get the current string in the title field
-	 * 
 	 * @return
 	 */
 	public String getTitleLabelText() {
 		return taskTitleField.getText();
 	};
 
+	/**
+	 * @return the selected index in the stage selection box
+	 */
 	public int getStageSelectionIndex() {
 		return this.stageBox.getSelectedIndex();
 	}
 
+	/**
+	 * @return the selected index for category color
+	 */
 	public int getCatSelectionIndex() {
 		return this.colorBox.getSelectedIndex();
 	}

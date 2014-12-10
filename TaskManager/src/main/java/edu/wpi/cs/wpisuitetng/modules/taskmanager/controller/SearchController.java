@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * @author Alec
  * Manages the search bar's searching functionality.
  */
-
 public class SearchController implements ActionListener, KeyListener {
 	private static WorkflowModel workflowModel;
 	private static JTextField searchBox;

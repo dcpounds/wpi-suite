@@ -90,11 +90,6 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
         
-        
-        
-        
-        
-        
         reportsButton = new JButton("Reports", taskIcon);
         reportsButton.addActionListener( new ActionListener(){
 			@Override
@@ -144,6 +139,10 @@ public class ToolbarView extends JPanel {
         return serialVersionUID;
     }
     
+    /**
+     * Retrieve the searchbox component
+     * @return
+     */
     public JTextField getSearchBox(){
     	return searchBox;
     }

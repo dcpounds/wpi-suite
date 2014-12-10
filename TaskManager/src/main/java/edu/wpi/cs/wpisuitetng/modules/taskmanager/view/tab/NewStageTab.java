@@ -96,15 +96,24 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 		add(stageTitleError, "cell 0 1,alignx left,aligny top");
 	}
 	
+	/**
+	 * @return the workflowModel passed in
+	 */
 	public WorkflowModel getWorkflowModel() {
         return this.workflowModel;
     }
 	
+	/**
+	 * @return the stage title the user entered
+	 */
 	public String getStageTitle(){
 		return stageTitleField.getText();
 	}
 	
 	
+	/** Given the user inputs, construct the stage model
+	 * @return - the constructed stage
+	 */
 	public StageModel buildStage(){
 		StageModel stageModel = new StageModel(this.getStageTitle(), workflowModel.getStageModelList().size());
 		return stageModel;
@@ -113,6 +122,11 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		//Intentionally left blank
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
 		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
 		sbmtStageButton.setEnabled(validTitle);
 		stageTitleError.setVisible(!validTitle);
@@ -120,15 +134,8 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left blank	
 	}
 
 
