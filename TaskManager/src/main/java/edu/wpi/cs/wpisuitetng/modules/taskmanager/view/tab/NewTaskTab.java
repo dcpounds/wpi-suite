@@ -56,6 +56,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageControll
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
+import javax.swing.SpringLayout;
 
 
 /**
@@ -97,6 +99,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JTextField txtRequirement;
 	private JComboBox comboBox;
 	private JLabel lblRequirement;
+	private JLabel daysUntilLabel2;
 	
 	/**
 	 * contructs a tab for creating tasks
@@ -107,9 +110,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public NewTaskTab(TaskModel model) {
 		// get the requirements from the database
 		new RequirementsController().requestRequirementsList();
-		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][grow][][][]"));
+		setLayout(new MigLayout("", "[][][][grow]", "[][][][][][][][][][][][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
-		add(taskTitleLabel, "flowx,cell 0 0");
+		add(taskTitleLabel, "flowx,cell 1 0");
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		
 		
@@ -127,19 +130,19 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		//Set an error if the task needs a title
 		titleEmptyError = new JLabel("Task Needs A Title");
 		titleEmptyError.setForeground(Color.red);
-		add(titleEmptyError, "flowx,cell 0 0");
+		add(titleEmptyError, "flowx,cell 1 0");
 		titleEmptyError.setVisible(false);
 		
 		//Set the task title
 		taskTitleField = new JTextField();
 		taskTitleField.setText(this.taskModel.getTitle());
-		add(taskTitleField, "flowx,cell 0 1,alignx left");
-		taskTitleField.setColumns(35);
+		add(taskTitleField, "flowx,cell 1 1,alignx left");
+		taskTitleField.setColumns(45);
 		taskTitleField.addKeyListener(this);
 		
 		//Let the user decide where to put the task
 		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "cell 1 0, pad 0 7 0 50");
+		add(stageLabel, "pad 0 10 0 50,cell 3 0");
 		stageBox = new JComboBox<String>();
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>( getStatusOptions() ));
@@ -148,22 +151,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		if(model != null)
 			stageBox.setSelectedItem( workflowModel.getStageModelList().get(model.getStageID()).getTitle());
 		
-		add(stageBox, "cell 1 1, pad 0 7 0 0");
+		add(stageBox, "pad 0 10 0 0,cell 3 1");
 		stageBox.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
-		      }
-		});
-		
-		
-		// Make a label for the requirements combo box
-		lblRequirement = new JLabel("Requirement:");
-		add(lblRequirement, "cell 1 9");
-			
-		//Make the requirements combo box. 
-		requirementsBox = new JComboBox<String>();
-		requirementsBox.setModel(new DefaultComboBoxModel<String>( this.getRequirementsOptions() ));
-		requirementsBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 		      }
@@ -177,19 +166,18 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 					requirementsBox.setSelectedItem(req);
 			}
 		}
-		add(requirementsBox, "cell 1 10,growx");
 		
 		//Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
-		add(taskDescriptionLabel, "cell 0 2");
+		add(taskDescriptionLabel, "cell 1 2");
 		
 		//Warn if the user has not put in a description
 		descriptionEmptyError = new JLabel("Task Needs A Description");
 		descriptionEmptyError.setForeground(Color.red);
-		add(descriptionEmptyError, "cell 0 2");
+		add(descriptionEmptyError, "cell 1 2");
 		descriptionEmptyError.setVisible(false);
 		descriptionScrollPane = new JScrollPane();
-		add(descriptionScrollPane, "cell 0 3,grow");
+		add(descriptionScrollPane, "cell 1 3,grow");
 		taskDescriptionField = new JTextArea(this.taskModel.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
@@ -199,7 +187,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Create a view where users can assign users to the task
 		assignUsersView = new AssignUsersView();
-		add(assignUsersView, "cell 1 3,grow");
+		add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
 		
 		//Create a view where users can assign users to the task
 //		associatedRequirementsView = new AssociatedRequirementsView();
@@ -207,39 +195,34 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		
 		//Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
-		add(estEffortLabel, "flowx,cell 1 4, pad 0 7 0 100");
+		add(estEffortLabel, "flowx,pad 0 10 0 100,cell 3 6");
 		estEffortError = new JLabel("Must specify a valid effort");
 		estEffortError.setForeground(Color.red);
-		add(estEffortError, "flowx,cell 1 4, pad 0 5 0 100");
+		add(estEffortError, "flowx,pad 0 5 0 100,cell 3 6");
 		estEffortError.setVisible(false);
 		
 		//Set the estimated effort
 		estEffortField = new JTextField();
 		estEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		estEffortField.setText(Integer.toString(this.taskModel.getEstimatedEffort()));
-		add(estEffortField, "flowx,cell 1 5,alignx left, pad 0 7 0 0");
+		add(estEffortField, "flowx,pad 0 10 0 0,cell 3 7,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
-		
-		colorTitle = new JLabel("Select Category");
-		add(colorTitle, "cell 0 9,alignx left");
 		
 		
 		//Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
-		add(actEffortLabel, "flowx,pad 0 7 0 100,cell 1 11");
+		add(actEffortLabel, "flowx,pad 0 10 0 100,cell 3 8");
+		
+		//Let the user specify the number of critical days before due
+		JLabel daysUntilLabel = new JLabel("Task will become urgent ");
+		add(daysUntilLabel, "flowx,pad 0 0 0 0,cell 1 9,alignx left");
 		actEffortField = new JTextField();
 		actEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		actEffortField.setText(Integer.toString(this.taskModel.getActualEffort()));
-		add(actEffortField, "flowx,pad 0 7 0 0,cell 1 12,alignx left");
+		add(actEffortField, "flowx,pad 0 10 0 0,cell 3 9,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
-		
-		//Warn if users put an invalid actual effort
-		actEffortError = new JLabel("Must specify a valid effort");
-		actEffortError.setForeground(Color.red);
-		add(actEffortError, "flowx,pad 0 5 0 100,cell 1 11");
-		actEffortError.setVisible(false);
 		
 		//The submit button
 		sbmtTaskButton = new JButton("Submit");
@@ -251,7 +234,33 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 				TabController.getInstance().removeTab(thisTab);
 			}	
 		});
-		add(sbmtTaskButton, "flowx,cell 0 12");		
+		
+		colorTitle = new JLabel("Select Category");
+		add(colorTitle, "cell 1 12,alignx left");
+		
+		
+		// Make a label for the requirements combo box
+		lblRequirement = new JLabel("Requirement:");
+		add(lblRequirement, "pad 0 10 0 0,cell 3 12");
+		
+		//Colorcombobox is a custom jcombobox that allows color section visible
+		colorBox = new ColorComboBox();
+		add(colorBox,"cell 1 13");
+		colorBox.setBounds(100,20,140,30); 
+		colorBox.setToolTipText("Select a Category Color");
+		colorTitle = new JLabel("                  ");
+		add(colorTitle, "cell 3 0");
+		
+		//Make the requirements combo box. 
+		requirementsBox = new JComboBox<String>();
+		requirementsBox.setModel(new DefaultComboBoxModel<String>( this.getRequirementsOptions() ));
+		requirementsBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+		        int selected = ((JComboBox) e.getSource()).getSelectedIndex();
+		      }
+		});
+		add(requirementsBox, "pad 0 10 0 0,cell 3 13");
+		add(sbmtTaskButton, "flowx,cell 1 17");		
 		sbmtTaskButton.setEnabled(false);
 		
 		/*
@@ -261,11 +270,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		 * in MM-dd-YYYY
 		 */
 		dateDue = new JLabel("Due Date:(*)");
-		add(dateDue, "flowx,cell 0 4");
-		
+		add(dateDue, "flowx,cell 1 6");
 		dateNotAddedError = new JLabel("Task Needs A Due Date");
 		dateNotAddedError.setForeground(Color.red);
-		add(dateNotAddedError, "cell 0 4");
+		add(dateNotAddedError, "cell 1 6");
 		dateNotAddedError.setVisible(false);
 		
 		dateModel = new UtilDateModel();
@@ -283,37 +291,36 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		p.put("text.year", "Year");
 	    datePanel = new JDatePanelImpl(dateModel, p);
 	    datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		add(datePicker, "flowx,cell 0 5");
+	  
+	    SpringLayout springLayout = (SpringLayout) datePicker.getLayout();
+	    springLayout.putConstraint(SpringLayout.SOUTH, datePicker.getJFormattedTextField(), 0, SpringLayout.SOUTH, datePicker);
+		add(datePicker, "flowx,cell 1 7");
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
 		
-		colorTitle = new JLabel("                  ");
-		add(colorTitle, "cell 1 0");
-		
-		//Colorcombobox is a custom jcombobox that allows color section visible
-		colorBox = new ColorComboBox();
-		add(colorBox,"cell 0 10");
-		colorBox.setBounds(100,20,140,30); 
-		colorBox.setToolTipText("Select a Category Color");
+		//Warn if users put an invalid actual effort
+		actEffortError = new JLabel("Must specify a valid effort");
+		actEffortError.setForeground(Color.red);
+		add(actEffortError, "pad 0 5 0 100,cell 3 8");
+		actEffortError.setVisible(false);
 		
 		
+		daysUntilError = new JLabel("Must specify valid number of days");
+		daysUntilError.setHorizontalAlignment(SwingConstants.LEFT);
+		daysUntilError.setForeground(Color.red);
+		add(daysUntilError, "pad 0 0 0 70,cell 1 8,alignx left");
+		daysUntilError.setVisible(false);
 		daysUntilField = new JTextField();
-		daysUntilField.setHorizontalAlignment(SwingConstants.RIGHT);
+		daysUntilField.setHorizontalAlignment(SwingConstants.CENTER);
 		daysUntilField.setText(Integer.toString(this.taskModel.getTimeThreshold()));
-		daysUntilField.setToolTipText("Number of days task will display Yellow before due date");
-		add(daysUntilField, "pad 0 50 0 0,cell 0 5,alignx right");
-		daysUntilField.setColumns(10);
+		daysUntilField.setToolTipText("The task will become urgent this many days before the due date");
+		add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
+		daysUntilField.setColumns(5);
 		daysUntilField.addKeyListener(this);
 		
-		//Let the user specify the number of critical days before due
-		JLabel daysUntilLabel = new JLabel("Critical days before deadline");
-		add(daysUntilLabel, "pad 0 0 0 50,cell 0 5,alignx left");
-		daysUntilError = new JLabel("Must specify number of days");
-		daysUntilError.setHorizontalAlignment(SwingConstants.RIGHT);
-		daysUntilError.setForeground(Color.red);
-		add(daysUntilError, "cell 0 4,alignx right,pad 0 47 0 70");
-		daysUntilError.setVisible(false);
+		daysUntilLabel2 = new JLabel(" day(s) before it is due");
+		add(daysUntilLabel2, "cell 1 9");
 		
 		checkForErrors();
 	}
