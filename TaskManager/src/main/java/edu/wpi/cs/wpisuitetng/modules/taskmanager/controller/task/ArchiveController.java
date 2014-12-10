@@ -7,11 +7,12 @@
 *
 * Contributors: Team What? We Thought This Was Bio!
 *******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;

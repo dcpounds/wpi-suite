@@ -29,10 +29,10 @@ import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
