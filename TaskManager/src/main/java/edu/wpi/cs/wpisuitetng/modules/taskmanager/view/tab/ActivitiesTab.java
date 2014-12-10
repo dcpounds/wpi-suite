@@ -73,7 +73,8 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 		btnSubmit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addActivity();
+				if(!newCommentTxt.getText().equals("Enter a comment here.") && !newCommentTxt.getText().equals(""))
+					addActivity();
 			}
 		});
         //btnSubmit.addActionListener(new AddCommentController());
