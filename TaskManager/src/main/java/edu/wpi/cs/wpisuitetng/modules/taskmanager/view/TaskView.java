@@ -192,22 +192,6 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
-
-		
-		
-		//Set up the close button to remove the task
-		closeButton = new JButton("\u2716");
-		titlePanel.add(closeButton, "cell 4 0,alignx center, flowx, aligny top");
-		closeButton.setMargin(new Insets(0, 0, 0, 0));
-		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-		closeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				activateArchiveView();
-				StageController.archiveTask(tv);
-			}
-		});
-
-		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 				
 		
 		//Set up the activities button
@@ -223,14 +207,30 @@ public class TaskView extends DragTaskPanel{
 		
 		btnRestore = new JButton("Restore");
 		btnRestore.setMargin(new Insets(0, 0, 0, 0));
-		btnRestore.setFont(closeButton.getFont().deriveFont((float) 8));
 		btnRestore.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				deactivateArchiveView();
 				StageController.dearchiveTask(tv);
 			}
 		});
-		titlePanel.add(btnRestore, "cell 4 0, alignx center, flowx, aligny top");
+		titlePanel.add(btnRestore, "flowx,cell 4 0,alignx center,aligny top");
+		
+				
+				
+				//Set up the close button to remove the task
+				closeButton = new JButton("\u2716");
+				titlePanel.add(closeButton, "cell 4 0,alignx center,aligny top");
+				closeButton.setMargin(new Insets(0, 0, 0, 0));
+				closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+				closeButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						activateArchiveView();
+						StageController.archiveTask(tv);
+					}
+				});
+				
+						closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+						btnRestore.setFont(closeButton.getFont().deriveFont((float) 8));
 		btnRestore.setVisible(false);
 		
 		if(taskModel.getIsArchived()){
