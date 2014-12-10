@@ -1,40 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
-
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
-
 import javax.swing.JLabel;
-
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.JButton;
 
 /**
  * This view is responsible for rendering a stage that can be placed inside a workflow.
- *
  */
 public class StageView extends DragStagePanel {
 	private static final long serialVersionUID = 7765491802045400161L;
@@ -104,7 +100,7 @@ public class StageView extends DragStagePanel {
 		} else {
 			int stagePreferredHeight = stagePane.getPreferredSize().height;
 			int stageCount = workflowView.getStageViewList().size();
-			int stageWidth = (int) parentSize.width/( stageCount < 4 ? stageCount : 4);
+			int stageWidth = parentSize.width/( stageCount < 4 ? stageCount : 4);
 			truncateTitle(stageWidth);
 			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
 			return new Dimension( stageWidth, parentSize.height );

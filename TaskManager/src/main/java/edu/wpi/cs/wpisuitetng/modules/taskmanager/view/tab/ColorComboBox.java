@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.Color;
@@ -8,8 +17,14 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 
+/**
+ * @author Ashton
+ * This class provides a combobox that allows task categories to be set
+ */
 public class ColorComboBox extends JComboBox {
 	
+	private static final long serialVersionUID = 7202220072831533595L;
+
 	static Hashtable <String, Color> colors;
 	
 	private Color selectedColor= Color.WHITE;
@@ -34,7 +49,7 @@ public class ColorComboBox extends JComboBox {
 	public void setSelectedItem(Object object){
 		super.setSelectedItem(object);
 	
-	selectedColor =(Color)colors.get(object);
+	selectedColor = colors.get(object);
 	setBackground(selectedColor);
 	setFont(new Font(Font.SERIF, Font.BOLD,15 ));
 	if(object.toString().equals("YELLOW")|object.toString().equals("WHITE")){

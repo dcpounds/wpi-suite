@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
@@ -14,7 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 /**
  * the main model representing the workflow. 
  * contains all the stages where tasks are moved around in
- *
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
@@ -187,7 +195,7 @@ public class WorkflowModel extends AbstractModel {
         
         WorkflowModel other = (WorkflowModel) obj;
         
-        return this.name == other.getName();
+        return this.name.equals(other.getName());
 	}
 	
 	/* (non-Javadoc)
