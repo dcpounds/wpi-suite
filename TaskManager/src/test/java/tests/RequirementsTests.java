@@ -32,7 +32,7 @@ public class RequirementsTests {
 	@Test
 	public void testSetAssociatedRequirement() {
 		
-		RequirementsController controller = new RequirementsController();
+		//RequirementsController controller = new RequirementsController();
 		//controller.requestRequirementsList();
 		TaskModel testtask = new TaskModel();
 		testtask.setTitle("Make Coffee");
