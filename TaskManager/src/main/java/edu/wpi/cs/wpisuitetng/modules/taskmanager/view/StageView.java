@@ -92,7 +92,7 @@ public class StageView extends DragStagePanel {
 			} 
 		});
 		btnResize.setEnabled(closable);
-		add(btnResize, "cell 0 0,aligny center");
+		add(btnResize, "cell 0 0,aligny center, alignx right");
 		
 		scrollPane = new JScrollPane(stagePane);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
