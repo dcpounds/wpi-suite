@@ -10,10 +10,15 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -71,7 +76,10 @@ public class StageController implements ActionListener{
 				break;
 		}
 	}
-
+	
+	/**
+	 * If called not statically, this method will determine the correct request to send based on the action that the controller is given
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		act();
@@ -130,7 +138,7 @@ public class StageController implements ActionListener{
 	public void addStage(StageModel stage) {
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = new StageView(stage, workflowView);
-		workflowView.addStageView(stageView);
+		workflowView.addStageView(stage.getIndex(), stageView);
 		workflowModel.addStage(stage);
 		this.syncTaskViews(stage, stageView);
 	}
@@ -140,12 +148,22 @@ public class StageController implements ActionListener{
 	 * @param stage - the stage that just got updated in the database
 	 */
 	public void updateStage(StageModel stage) {
-		boolean closable = TabController.getTabView().getWorkflowView().getStageViewList().size() <= 1 ? false : true;
+		if(workflowModel.getIsDraggingStage())
+			return;
+		
+		System.out.println("Stage " + stage.getTitle() + " has index " + stage.getIndex());
+		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
+		boolean closable = stageViewList.size() <= 1 ? false : true;
 		stage.setClosable(closable);
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
-		this.syncTaskViews(stage, stageView);
-		stageView.updateContents(stage);
+		
+		workflowView.addStageView(stage.getIndex(), stageView);
+		
+		if(!stage.getIsArchived() && stageView != null){
+			this.syncTaskViews(stage, stageView);
+			stageView.updateContents(stage);
+		}
 
 	}
 	
@@ -174,7 +192,7 @@ public class StageController implements ActionListener{
 		}
 			
 		for( TaskModel task : taskModelList.values() ){
-			System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
+			//System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
 			TaskView taskView = taskViewList.get(task.getID());
 			//If we found a matching taskView...
 			if(taskView != null){
@@ -187,10 +205,10 @@ public class StageController implements ActionListener{
 		}
 	}
 	
+	
 	/**
 	 * Removes a task from a stage
-	 * @param taskView - the taskView to delete 
-	 * @param stageView - the stageView to delete from
+	 * @param taskView - the taskView to delete
 	 */
 	public static void deleteTask(TaskView taskView){
 		StageView stageView = taskView.getStageView();
@@ -205,6 +223,52 @@ public class StageController implements ActionListener{
 		} catch(Exception e){
 			System.out.println("Could not remove. Either the task could not be found"
 					+ " or the stage could not be found.");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Archives a task
+	 * @param taskView - the taskView to archive
+	 */
+	public static void archiveTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
+		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
+		try{
+			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
+			task.setIsArchived(true);
+			if(!ArchiveController.getIsPressed()){
+				taskView.setVisible(false);
+			}
+			StageController.sendUpdateRequest(stageModel);
+			stageView.repaint();
+			return;
+		} catch(Exception e){
+			System.out.println("Could not archive. Either the task could not be found"
+					+ " or the stage could not be found.");
+			
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Dearchives a task
+	 * @param taskView - the taskView to dearchive 
+	 */
+	public static void dearchiveTask(TaskView taskView){
+		StageView stageView = taskView.getStageView();
+		StageModel stageModel = workflowModel.getStageModelByID(stageView.getID());
+		try{
+			TaskModel task = stageModel.getTaskModelList().get(taskView.getID());
+			task.setIsArchived(false);
+			taskView.setVisible(true);
+			StageController.sendUpdateRequest(stageModel);
+			stageView.repaint();
+			return;
+		} catch(Exception e){
+			System.out.println("Could not dearchive. Either the task could not be found"
+					+ " or the stage could not be found.");
 			
 			e.printStackTrace();
 		}
@@ -214,8 +278,8 @@ public class StageController implements ActionListener{
 	 * Given a list of stageModels that are contained within the database, make sure that they are up to date in the local workflow
 	 * @param stages - the list of stages returned from the database
 	 */
-	public void syncStages(StageModel[] stages) {
-		if(stages.length == 0)
+	public void syncStages(ArrayList<StageModel> stages) {
+		if(stages.size() == 0)
 			saveBaseStages();
 		
 		for(StageModel stage : stages ){
@@ -246,6 +310,14 @@ public class StageController implements ActionListener{
 		StageView sv = workflowView.getStageViewByID(stage.getID());
 		workflowModel.removeStageModel(stage);
 		workflowView.removeStageView(sv);
+		
+		int index = stage.getIndex();
+		for(StageModel otherStage : workflowModel.getStageModelList().values()){
+			if(otherStage.getIndex() > index ){
+				otherStage.setIndex( otherStage.getIndex() - 1);
+				StageController.sendUpdateRequest(otherStage);
+			}
+		}
 	}
 	
 	
@@ -253,10 +325,10 @@ public class StageController implements ActionListener{
 	 * Puts the four base stages into the database. This should really only happen once
 	 */
 	public void saveBaseStages(){
-		StageModel newStage = new StageModel("New");
-		StageModel scheduledStage = new StageModel("Scheduled");
-		StageModel inProgressStage = new StageModel("In Progress");
-		StageModel completedStage = new StageModel("Completed");
+		StageModel newStage = new StageModel("New", 0);
+		StageModel scheduledStage = new StageModel("Scheduled", 1);
+		StageModel inProgressStage = new StageModel("In Progress", 2);
+		StageModel completedStage = new StageModel("Completed", 3);
 		
 		StageController.sendAddRequest(newStage);
 		StageController.sendAddRequest(scheduledStage);

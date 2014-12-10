@@ -7,45 +7,37 @@
  *
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * @author Alec
- * Listens for stage requests to the DB
+ * @author Joe
+ * Used to remove a data logger from the database
  */
-public class GetStageRequestObserver implements RequestObserver{
+public class DeleteDataLoggerRequestObserver implements RequestObserver{
 
-	StageController controller;
+	DataLoggerController controller;
 	
-	public GetStageRequestObserver(StageController controller){
+	public DeleteDataLoggerRequestObserver(DataLoggerController controller){
 		this.controller = controller;
 	}
+	
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		StageModel stages[] = StageModel.fromJsonArray(iReq.getResponse().getBody());
-		ArrayList<StageModel> stageArrayList = new ArrayList<StageModel>(Arrays.asList(stages));
-		Collections.sort(stageArrayList);
-        controller.syncStages(stageArrayList);
-		
+        DataLoggerModel stage = DataLoggerModel.fromJson(iReq.getResponse().getBody());		
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		// TODO Auto-generated method stub
+		//Left blank for now
 		
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		// TODO Auto-generated method stub
+		//Left blank for now
 		
 	}
 

@@ -52,18 +52,15 @@ public class AssignUsersView extends JPanel{
 		new CoreUserController(this).requestUserList();
 		this.workflowModel = WorkflowController.getWorkflowModel();
 		this.userList = workflowModel.getUserList();
-		setLayout(new MigLayout("", "[][][]", "[][][grow][]"));
-		
-		JLabel lblAssignUsers = new JLabel("Assign Users To This Task");
-		add(lblAssignUsers, "cell 0 0 5 1,alignx left,aligny top");
+		setLayout(new MigLayout("insets 0", "[][][]", "[][][grow][]"));
 		
 		JLabel lblUsersNotAssigned = new JLabel("Users not assigned:");
-		lblUsersNotAssigned.setHorizontalAlignment(SwingConstants.LEFT);
-		add(lblUsersNotAssigned, "cell 0 1");
+		lblUsersNotAssigned.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblUsersNotAssigned, "cell 0 1,alignx center");
 		
 		JLabel lblUsersAssigned = new JLabel("Users assigned");
-		lblUsersAssigned.setHorizontalAlignment(SwingConstants.LEFT);
-		add(lblUsersAssigned, "cell 4 1");
+		lblUsersAssigned.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblUsersAssigned, "cell 2 1,alignx center");
 		
 		JScrollPane unassignedScrollPane = new JScrollPane();
 		add(unassignedScrollPane, "cell 0 2,growy");
@@ -75,7 +72,7 @@ public class AssignUsersView extends JPanel{
 		unassignedScrollPane.setViewportView(unassignedListComponent);
 		
 		JScrollPane assignedScrollPane = new JScrollPane();
-		add(assignedScrollPane, "cell 4 2,growy");
+		add(assignedScrollPane, "cell 2 2,growy");
 		
 		//List of assigned users
 		assignedListModel = new DefaultListModel<String>();
@@ -89,7 +86,7 @@ public class AssignUsersView extends JPanel{
 		
 		JButton buttonUnassign = new JButton("<< Unassign");
 		buttonUnassign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.UNASSIGN) );
-		add(buttonUnassign, "cell 4 3,alignx center");
+		add(buttonUnassign, "cell 2 3,alignx center");
 	
 	}
 	
@@ -151,18 +148,32 @@ public class AssignUsersView extends JPanel{
 		return assignedUsers;
 	}
 	
+	/**
+	 * Get the JList list of assigned users
+	 * @return the list of assigned users
+	 */
 	public JList<String> getAssignedListComponent() {
 		return assignedListComponent;
 	}
 	
+	/** 
+	 * Get the JList of unassigned users
+	 * @return the list of unassigned users
+	 */
 	public JList<String> getUnssignedListComponent() {
 		return unassignedListComponent;
 	}
 	
+	/**
+	 * @return the listModel of assigned users
+	 */
 	public DefaultListModel<String> getAssignedListModel() {
 		return assignedListModel;
 	}
 	
+	/**
+	 * @return the listModel of unassigned users
+	 */
 	public DefaultListModel<String> getUnassignedListModel() {
 		return unassignedListModel;
 	}	

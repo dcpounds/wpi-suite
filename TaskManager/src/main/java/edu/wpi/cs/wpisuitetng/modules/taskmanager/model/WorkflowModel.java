@@ -11,10 +11,8 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-
+import java.util.LinkedHashMap;
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -25,20 +23,25 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
  */
 public class WorkflowModel extends AbstractModel {
 	final private String name;
-	private HashMap<Integer,StageModel> stageModelList;
+	private LinkedHashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
+	private static boolean isDraggingStage;
+	private static ArrayList<String> requirementsList;
+	
 
 	/**
 	 * construct the main workflow based off a given list of stages
 	 * @param name - the name of the workflow (usually "main")
 	 * @param stageList
 	 */
-	public WorkflowModel(String name, HashMap<Integer,StageModel> stageList){
+	public WorkflowModel(String name, LinkedHashMap<Integer,StageModel> stageList){
 		this.name = name;
 		this.stageModelList = stageList;
-		this.userList = new ArrayList<User>();
-		this.toggleColor = false;
+		WorkflowModel.userList = new ArrayList<User>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
+		WorkflowModel.requirementsList = new ArrayList<String>();
 	}
 	
 	
@@ -48,8 +51,9 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageModelList = new HashMap<Integer, StageModel>();
-		this.toggleColor = false;
+		this.stageModelList = new LinkedHashMap<Integer, StageModel>();
+		WorkflowModel.toggleColor = false;
+		WorkflowModel.isDraggingStage = false;
 	}
 	
 	
@@ -64,7 +68,7 @@ public class WorkflowModel extends AbstractModel {
 	/**
 	 * @return a list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> getStageModelList() {
+	public LinkedHashMap<Integer, StageModel> getStageModelList() {
 		return stageModelList;
 	}
 	
@@ -73,7 +77,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> addStage(StageModel stage) {
+	public LinkedHashMap<Integer, StageModel> addStage(StageModel stage) {
 		stageModelList.put(stage.getID(),stage);
 		return stageModelList;
 	}
@@ -83,8 +87,12 @@ public class WorkflowModel extends AbstractModel {
 	 * @param stage - a StageModel to add to the workflow
 	 * @return the updated list of stages in the workflow
 	 */
-	public HashMap<Integer, StageModel> removeStageModel(StageModel stage) {
-		stageModelList.remove(stage.getID());
+	public LinkedHashMap<Integer, StageModel> removeStageModel(StageModel stage) {
+		if(stageModelList.remove(stage.getID()) == null){
+			System.out.println("Failed to remove stage " + stage.getTitle() + " from stageModelList");
+		} else{
+			System.out.println("Successfully removed stage " + stage.getTitle() + " from stageModelList");
+		}
 		return stageModelList;
 	}
 	
@@ -97,14 +105,38 @@ public class WorkflowModel extends AbstractModel {
 		return userList.toArray(new User[userList.size()]);
 	}
 	
+	
+	/**
+	 * Toggles the value of the urgency view button
+	 */
 	public void toggleColor(){
 		WorkflowModel.toggleColor = !WorkflowModel.toggleColor;
 	}
 	
+	/**
+	 * Gets the current value of the urgency color button
+	 * @return true if toggled on, false otherwise
+	 */
 	public boolean getToggleColor(){
 		return WorkflowModel.toggleColor;
 	}
 	
+	/**
+	 * Sets the flag to indicate that the user is dragging a task.
+	 * We should not update a stage while this is happening
+	 * @param bool
+	 */
+	public void setIsDraggingTask(boolean bool){
+		WorkflowModel.isDraggingStage = bool;
+	}
+	
+	/**
+	 * Get whether or not a user is dragging a stage
+	 * @return true if dragging, false otherwise
+	 */
+	public boolean getIsDraggingStage(){
+		return WorkflowModel.isDraggingStage;
+	}
 	
 	/**
 	 * @param userList - the list of assignable users to set within the workflow
@@ -112,7 +144,6 @@ public class WorkflowModel extends AbstractModel {
 	public void setUserList(User[] userList){
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
-	
 	
 	/**
 	 * @param id - id of the task to look for

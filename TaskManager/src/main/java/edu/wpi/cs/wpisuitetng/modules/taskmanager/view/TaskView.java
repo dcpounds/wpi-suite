@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -46,11 +47,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
+
 import java.awt.FlowLayout;
 
 /**
  * @author Alec
  * An accordian style expandable task view that can be inserted into the stages
+ */
+/**
+ * @author dave
+ *
  */
 public class TaskView extends DragTaskPanel{
 	private static final long serialVersionUID = 6517799529927334536L;
@@ -73,6 +79,8 @@ public class TaskView extends DragTaskPanel{
 	private static final int closeSize = 45;
 	private JLabel statusLabel;
 	private JPanel catPanel;
+	private JButton btnRestore;
+	private JButton closeButton;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -173,7 +181,6 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
 		TaskView tv = this;
-		this.setContents(taskModel);
 		this.add(taskContentPane, "cell 0 2 3 2,grow");
 		
 		//Set up the edit button
@@ -189,17 +196,18 @@ public class TaskView extends DragTaskPanel{
 		
 		
 		//Set up the close button to remove the task
-				JButton closeButton = new JButton("\u2716");
-				titlePanel.add(closeButton, "cell 4 0,alignx center,aligny top");
-				closeButton.setMargin(new Insets(0, 0, 0, 0));
-				closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-				closeButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e) {
-						StageController.deleteTask(tv);
-					}
-				});
-				
-				closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		closeButton = new JButton("\u2716");
+		titlePanel.add(closeButton, "cell 4 0,alignx center, flowx, aligny top");
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				activateArchiveView();
+				StageController.archiveTask(tv);
+			}
+		});
+
+		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
 				
 		
 		//Set up the activities button
@@ -211,7 +219,54 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnActivities, "cell 0 4");
+		
+		
+		btnRestore = new JButton("Restore");
+		btnRestore.setMargin(new Insets(0, 0, 0, 0));
+		btnRestore.setFont(closeButton.getFont().deriveFont((float) 8));
+		btnRestore.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				deactivateArchiveView();
+				StageController.dearchiveTask(tv);
+			}
+		});
+		titlePanel.add(btnRestore, "cell 4 0, alignx center, flowx, aligny top");
+		btnRestore.setVisible(false);
+		
+		if(taskModel.getIsArchived()){
+			activateArchiveView();
+			setVisible(false);
+		}
+		
+
+		this.setContents(taskModel);
 	}
+	
+	/**
+	 * activates the archive view mode of a task view
+	 * 
+	 */
+	public void activateArchiveView(){
+		setBorder(BorderFactory.createLineBorder(Color.red, 3));
+		closeButton.setVisible(false);
+		btnRestore.setVisible(true);
+		btnActivities.setEnabled(false);
+		btnEdit.setEnabled(false);
+	}
+	
+	
+	/**
+	 * deactivates the archive view mode of a task view
+	 * 
+	 */
+	public void deactivateArchiveView(){
+		setBorder(BorderFactory.createLineBorder(Color.black));
+		closeButton.setVisible(true);
+		btnRestore.setVisible(false);
+		btnActivities.setEnabled(true);
+		btnEdit.setEnabled(true);
+	}
+	
 	
 	/**
 	 * This method will override the default getPreferredSize and resize the task based on the size of its parent
@@ -313,6 +368,15 @@ public class TaskView extends DragTaskPanel{
 	public JScrollPane getScrollPane(){
 		return taskContentPane;
 	}
+
+	/**
+	 * returns whether or not the corresponding task model to this taskview has been archived
+	 * 
+	 * @return
+	 */
+	public boolean isTaskModelArchived(){
+		return taskModel.getIsArchived();
+	}
 	
 	/**
 	 * @return the ID of this task
@@ -342,6 +406,7 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setTitle(task.getTitle());
+		this.taskModel.setAssociatedRequirement(task.getAssociatedRequirement());
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
@@ -351,12 +416,20 @@ public class TaskView extends DragTaskPanel{
 		
 		this.setCategoryColor(task.getCatColor());
 		taskModel.setCatColor(task.getCatColor());
+		taskModel.setCatID(task.getCatID());
 		
 		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
+		
+		if(task.getIsArchived()){
+			activateArchiveView();
+		} else {
+			deactivateArchiveView();
+		}
+		
 		toggleTaskViewColor(task.getColor());
 		revalidate();
 		repaint();

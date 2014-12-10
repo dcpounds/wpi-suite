@@ -15,13 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
@@ -30,11 +27,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
+
 /**
  * @author Dave
  * This tab view displays the activities log that each task contains. 
  */
-public class ActivitiesTab extends JPanel implements IHashableTab {
+public class ActivitiesTab extends AbstractTab implements IHashableTab {
+
 	
 	private WorkflowModel workflowModel;
 	private TaskModel taskModel;
@@ -71,7 +70,8 @@ public class ActivitiesTab extends JPanel implements IHashableTab {
 		btnSubmit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addActivity();
+				if(!newCommentTxt.getText().equals("Enter a comment here.") && !newCommentTxt.getText().equals(""))
+					addActivity();
 			}
 		});
         //btnSubmit.addActionListener(new AddCommentController());
@@ -95,15 +95,24 @@ public class ActivitiesTab extends JPanel implements IHashableTab {
 		StageController.sendUpdateRequest(stageModel);
 	}
 	
+	/**
+	 * @return the taskModel that was passed in
+	 */
 	public TaskModel getTaskModel(){
 		return taskModel;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
+	 */
 	@Override
 	public int getModelID() {
 		return taskModel.getID();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
+	 */
 	@Override
 	public TabType getTabType() {
 		// TODO Auto-generated method stub

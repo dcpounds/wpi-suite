@@ -17,8 +17,10 @@ import java.util.Date;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.TaskSnapshot;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -28,15 +30,18 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private String title, description;
 	private String creatorName;
 	private ArrayList<String> usersAssignedTo;
+	private String associatedRequirement;
 	private Date creationDate;
 	private String dueDate;
 	private int stageID;
+	private int catID;
 	private int timeThreshold;
 	private boolean isExpanded;
 	private boolean isArchived;
 	private Color color;
 	private Color CatColor;
 	private ActivityListModel activities;
+	private Color[] urgencyArray = {new Color(51,199,72),new Color(51,199,72),new Color(51,199,72)};
 	
 	/** The default constructor for a Task **/
 	public TaskModel(){
@@ -49,10 +54,12 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = "";
 		this.stageID = 0;
+		this.catID = 0;
 		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
 		this.activities = new ActivityListModel();
+		this.associatedRequirement = "";
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -66,16 +73,18 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = updatedTask.getCreatorName();
 		this.description = updatedTask.getDescription();
 		creationDate = updatedTask.getCreationDate();
-		usersAssignedTo = updatedTask.getUsersAssignedTo();
+		this.usersAssignedTo = updatedTask.getUsersAssignedTo();
 		dueDate = updatedTask.getDueDate();	
 		this.isExpanded = updatedTask.getIsExpanded();
 		this.stageID = updatedTask.getStageID();
+		this.catID = updatedTask.getCatID();
 		this.isArchived = updatedTask.getIsArchived();
 		activities = updatedTask.getActivities();
 		this.color = updatedTask.getColor();
+		this.associatedRequirement = updatedTask.getAssociatedRequirement();
 	}
 	
-	
+
 	/**
 	 * @return the ID of this task
 	 */
@@ -83,6 +92,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return id;
 	}
 	
+	/**
+	 * Sets the id of the task
+	 * @param id
+	 */
 	public void setID(int id){
 		this.id = id;
 	}
@@ -250,24 +263,37 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return color;
 	}
 	
+	/**
+	 * Get days before due date until this task becomes urgent
+	 * @return
+	 */
 	public int getTimeThreshold(){
 		return timeThreshold;
 	}
 	
+	/**
+	 * Set days before due date until this task becomes urgent
+	 * @param days
+	 */
 	public void setTimeThreshold(int days){
 		this.timeThreshold = days;
 	}
 	
 	
+	/**
+	 * @return whether or not the task is expanded or collapsed
+	 */
 	public boolean getIsExpanded(){
 		return isExpanded;
 	}
 	
 	
+	/**
+	 * @param status - set the task as expanded or collapsed
+	 */
 	public void setIsExpanded(boolean status){
 		this.isExpanded = status;
 	}
-	
 	
 	/**
 	 * @param dueDate - set the date that this task is due
@@ -284,7 +310,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	
 	/**
-	 * @return
+	 * @return true if archived, false otherwise
 	 */
 	public boolean getIsArchived(){
 		return this.isArchived;
@@ -389,21 +415,86 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return activities;
 	}
 	
+	/**
+	 * Set the activities for this task
+	 * @param newActivities
+	 */
 	public void setActivities(ActivityListModel newActivities) {
 		this.activities = newActivities;
 	}
 
 	/**
+	 * Add an activity to the task
 	 * @param activity
 	 */
 	public void addActivity(ActivityModel activity){
 		activities.addActivity(activity);
 	}
+	
+	/**
+	 * 
+	 * @return the category color of the task
+	 */
 	public Color getCatColor(){
 		return this.CatColor;
 	}
+	
+	
+	/**
+	 * set the category color of the task
+	 * @param catColor
+	 */
 	public void setCatColor(Color catColor){
 		this.CatColor =  catColor;
 	}
 	
+	/**
+	 * get the category color index selection that the user made
+	 * @return the selected color index
+	 */
+	public int getCatID() {
+		return this.catID;
+	}
+	
+	/**
+	 * set the category color index selection that the user made
+	 * @param index
+	 */
+	public void setCatID(int index) {
+		this.catID  = index;
+	}
+	
+	/**
+	 * Get the current task snapshot. Used for statistic logging
+	 * @return the snapshot of this task
+	 */
+	public TaskSnapshot getCurrentSnapshot() {
+		return DataLoggerController.getDataModel().returnCurrentSnapshot(this);
+	}
+	
+	/**
+	 * Get the previous snapshot of this task
+	 * @return
+	 */
+	public TaskSnapshot getPreviousSnapshot() {
+		return DataLoggerController.getDataModel().returnPreviousSnapshot(getCurrentSnapshot());
+	}
+	
+	/**
+	 * Set the associated requirement of this task
+	 * @param req
+	 */
+	public void setAssociatedRequirement(String req) {
+		this.associatedRequirement = req;
+	}
+	
+	
+	/**
+	 * Get the associated requirement of this task
+	 * @return the string name of the requirement
+	 */
+	public String getAssociatedRequirement() {
+		return associatedRequirement;
+	}
+
 }

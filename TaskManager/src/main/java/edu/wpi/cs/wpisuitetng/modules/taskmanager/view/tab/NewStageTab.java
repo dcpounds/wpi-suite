@@ -96,42 +96,56 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 		add(stageTitleError, "cell 0 1,alignx left,aligny top");
 	}
 	
+	/**
+	 * @return the workflowModel passed in
+	 */
 	public WorkflowModel getWorkflowModel() {
         return this.workflowModel;
     }
 	
+	/**
+	 * @return the stage title the user entered
+	 */
 	public String getStageTitle(){
 		return stageTitleField.getText();
 	}
 	
 	
+	/** Given the user inputs, construct the stage model
+	 * @return - the constructed stage
+	 */
 	public StageModel buildStage(){
-		StageModel stageModel = new StageModel(this.getStageTitle());
+		StageModel stageModel = new StageModel(this.getStageTitle(), workflowModel.getStageModelList().size());
 		return stageModel;
 	}
 
 	
-	
-	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
-		sbmtStageButton.setEnabled(validTitle);
-		stageTitleError.setVisible(!validTitle);
+		//Intentionally left blank
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
+		sbmtStageButton.setEnabled(validTitle);
+		stageTitleError.setVisible(!validTitle);
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left blank	
 	}
 
+
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#hasBeenModified()
+	 */
+	public boolean hasBeenModified() {
+		return (stageTitleField.getText().length() > 0 && stageTitleField.getText() != null);
+	}
+	
 	@Override
 	public int getModelID() {
 		return model.getID();

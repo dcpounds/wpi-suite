@@ -8,21 +8,24 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
+/**
+ * @author Team 4
+ * The workflow controller is responsible for polling the database and managing the workflow model
+ */
 public class WorkflowController {
 	private static WorkflowController instance = new WorkflowController();
 	private static WorkflowModel model;
 	
 	private WorkflowController () {
-		model = new WorkflowModel("main");
-		
+		model = new WorkflowModel("main");		
 		Thread thread = new Thread() {
 			public void run() {
+			
 				while (true) {
 					try {
 						sleep(4000);
@@ -33,16 +36,22 @@ public class WorkflowController {
 				}
 			}
 		};
-		
-		thread.setName("poll");
 		thread.setDaemon(true);
 		thread.start();
 	}
 
+	/**
+	 * Gets the current instance of the workflow controller
+	 * @return
+	 */
 	public static WorkflowController getInstance(){
 		return instance;
 	}
 
+	
+	/**
+	 * @return the singleton workflow model
+	 */
 	public static WorkflowModel getWorkflowModel(){
 		return model;
 	}

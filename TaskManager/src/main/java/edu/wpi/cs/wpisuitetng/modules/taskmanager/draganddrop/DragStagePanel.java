@@ -52,7 +52,7 @@ public class DragStagePanel extends JPanel{
 		originalStageView.removeTaskView(taskView);
 		StageController.sendUpdateRequest(originalStageModel);
 		
-		//Update the task that
+		//Add the stage to the new spot
 		StageView newStageView = (StageView)this;
 		StageModel newStageModel = workflowModel.getStageModelByID(newStageView.getID());
 		newStageModel.addTaskModel(taskModel);

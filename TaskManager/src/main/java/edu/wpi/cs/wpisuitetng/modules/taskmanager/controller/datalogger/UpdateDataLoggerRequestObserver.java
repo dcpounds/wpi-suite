@@ -7,33 +7,26 @@
  *
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * @author Alec
- * Listens for stage requests to the DB
+ * @author Joe
+ * A request observer for updating the data logger in the database
  */
-public class GetStageRequestObserver implements RequestObserver{
+public class UpdateDataLoggerRequestObserver implements RequestObserver{
 
-	StageController controller;
+	DataLoggerController controller;
 	
-	public GetStageRequestObserver(StageController controller){
-		this.controller = controller;
+	public UpdateDataLoggerRequestObserver(DataLoggerController dataLoggerController){
+		this.controller = dataLoggerController;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		StageModel stages[] = StageModel.fromJsonArray(iReq.getResponse().getBody());
-		ArrayList<StageModel> stageArrayList = new ArrayList<StageModel>(Arrays.asList(stages));
-		Collections.sort(stageArrayList);
-        controller.syncStages(stageArrayList);
+        DataLoggerModel stage = DataLoggerModel.fromJson(iReq.getResponse().getBody());
+        //controller.updateStage(stage);
 		
 	}
 

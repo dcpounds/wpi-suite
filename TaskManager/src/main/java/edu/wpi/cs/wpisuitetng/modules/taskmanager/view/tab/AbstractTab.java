@@ -9,25 +9,21 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
+import javax.swing.JPanel;
+
 /**
- * @author Dave
- * This interface allows tabs to be hashed
+ * @author ??
+ * An abstract class for tabs that forces tabs to implement has been modified
+ *
  */
-public interface IHashableTab {
-	
+public abstract class AbstractTab extends JPanel{
+	private static final long serialVersionUID = -7630763480349080421L;
+
 	/**
-	 * get the id of the model for the current tab
-	 * 
+	 * By default, the tab has been modified. Specific tabs will override this depending on the implementation
 	 * @return
 	 */
-	public int getModelID();
-	
-	/**
-	 * get the tab type for the current tab
-	 * 
-	 * @return
-	 */
-	public TabType getTabType();
-	
-	public boolean hasBeenModified();
+	public boolean hasBeenModified(){
+		return true;
+	}
 }

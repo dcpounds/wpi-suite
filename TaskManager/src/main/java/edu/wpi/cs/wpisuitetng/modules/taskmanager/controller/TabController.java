@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -26,12 +27,19 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ReportsTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
+/**
+ * @author Team 4
+ * This class is responsible for handling tab behavior
+ * It is used for adding and removing tabs and truncating long tab titles
+ */
 public class TabController {
 	private static TabController instance = new TabController();
 	private static TabView tabView;
+	private TabType tabType;
 	private static Map<String, Component> uniqueTabs;
 
 	private TabController () {
@@ -76,6 +84,11 @@ public class TabController {
 	}
 	
 	
+    /**
+     * Adds a tab
+     * @param tabType - the type of tab
+     * @param model - the model of the item to pass to the tab view
+     */
     public void addTab(TabType tabType, IDisplayModel model) {
     	String tabTitle = generateTabTitle(tabType, model);
     	Component pane = generateTab(tabType, model);
@@ -91,9 +104,12 @@ public class TabController {
     	tabView.setSelectedIndex(index);
     }
     
+
     
-    
-    
+    /**
+     * Remove a tab 
+     * @param tabComponent
+     */
     public void removeTab(IHashableTab tabComponent){
     	String tabKey = generateTabKey(tabComponent.getTabType(), tabComponent.getModelID());
     	if(uniqueTabs.containsKey(tabKey)){
@@ -102,6 +118,12 @@ public class TabController {
     	tabView.remove((Component) tabComponent);
     }
     
+    /**
+     * Generate a new tab given a tab type and an IDisplayModel
+     * @param tabType
+     * @param model
+     * @return
+     */
     private Component generateTab(TabType tabType, IDisplayModel model){
     	Component newTab = null;
     	switch(tabType){
@@ -114,12 +136,24 @@ public class TabController {
     		case ACTIVITIES:
 	        	newTab = new ActivitiesTab((TaskModel) model);
     			break;
+    		case REPORTS:
+    			newTab = new ReportsTab("Reports");
+    			break;
         }
     	return newTab;
     }
     
+    /**
+     * Truncate the tab title if necessary
+     * Format the tab title with a brief description of the tab (Edit, activities, etc)
+     * @param tabType
+     * @param model
+     * @return the tab name string
+     */
     private String generateTabTitle(TabType tabType, IDisplayModel model){
     	String tabName = null;
+    	Component newTab = null;
+    	this.tabType = tabType;
     	switch(tabType){
     		case TASK:
 	    		if(model != null){
@@ -140,7 +174,7 @@ public class TabController {
 	    				
 	    				tabName = "Edit " + tabName + "...   ";
 	    			} else {
-	    				tabName = tabName + "   ";
+	    				tabName = "Edit " + tabName + "   ";
 	    			}
 	    		}else{
 	    			tabName = "New Task   ";
@@ -150,25 +184,27 @@ public class TabController {
     			tabName = "New Stage   ";
     			break;
     		case ACTIVITIES:
-    			tabName =  (model.getTitle() + " Activities   ");
+    			if(model.getTitle().length() > 34)
+    				tabName =  (model.getTitle().substring(0,34) + "... Activities   ");
+    			else
+    				tabName = (model.getTitle() + " Activities   ");
+    			break;
+    		case REPORTS:
+    			tabName = "Reports	";
     			break;
         }
     	return tabName;
     }
     
     
+    /**
+     * Generates a unique tab identifier value
+     * @param tabType
+     * @param ID
+     * @return the tab key
+     */
     private String generateTabKey(TabType tabType, int ID){
     	return tabType.toString() + ID;
     }
-    /**
-     * helper function for adding tab
-     * 
-     * @param tabTitle -name of tab
-     * @param pane -
-     */
-    private void addTabHelper(String tabTitle, TabType tabType, Component pane) {
-    	
-    }
-
     
 }
