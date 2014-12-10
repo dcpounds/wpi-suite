@@ -31,6 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ReportsTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
+/**
+ * @author Team 4
+ * This class is responsible for handling tab behavior
+ * It is used for adding and removing tabs and truncating long tab titles
+ */
 public class TabController {
 	private static TabController instance = new TabController();
 	private static TabView tabView;

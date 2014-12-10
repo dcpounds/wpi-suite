@@ -46,10 +46,4 @@ public class RequirementsTests {
 		
 	}
 	
-	@Test
-	public void testGetRequirementsNone(){
-		//workflow.addStage(stage1);
-		assertTrue(workflow.getRequirementsList().equals(new String[]{}));
-	}
-	
 }

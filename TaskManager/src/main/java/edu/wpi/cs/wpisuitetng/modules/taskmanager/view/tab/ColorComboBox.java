@@ -82,6 +82,10 @@ public class ColorComboBox extends JComboBox {
 	}
 
 	
+	/**
+	 * @author Ashton
+	 * A helper class for handling the color combo box
+	 */
 	class ColorRenderer extends JLabel implements javax.swing.ListCellRenderer {
 		public ColorRenderer() {
 			this.setOpaque(true);

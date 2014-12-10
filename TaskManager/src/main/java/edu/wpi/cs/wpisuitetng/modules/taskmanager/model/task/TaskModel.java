@@ -92,6 +92,10 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return id;
 	}
 	
+	/**
+	 * Sets the id of the task
+	 * @param id
+	 */
 	public void setID(int id){
 		this.id = id;
 	}
@@ -259,20 +263,34 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return color;
 	}
 	
+	/**
+	 * Get days before due date until this task becomes urgent
+	 * @return
+	 */
 	public int getTimeThreshold(){
 		return timeThreshold;
 	}
 	
+	/**
+	 * Set days before due date until this task becomes urgent
+	 * @param days
+	 */
 	public void setTimeThreshold(int days){
 		this.timeThreshold = days;
 	}
 	
 	
+	/**
+	 * @return whether or not the task is expanded or collapsed
+	 */
 	public boolean getIsExpanded(){
 		return isExpanded;
 	}
 	
 	
+	/**
+	 * @param status - set the task as expanded or collapsed
+	 */
 	public void setIsExpanded(boolean status){
 		this.isExpanded = status;
 	}
@@ -292,7 +310,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	}
 	
 	/**
-	 * @return
+	 * @return true if archived, false otherwise
 	 */
 	public boolean getIsArchived(){
 		return this.isArchived;

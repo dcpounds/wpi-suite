@@ -11,6 +11,11 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 import org.jfree.chart.renderer.category.BarRenderer;
 import java.awt.Paint;
 
+/**
+ * @author Joe
+ * This class is used to render the bars for the statistics report
+ *
+ */
 public class CustomRenderer extends BarRenderer {
 	
 	private static final long serialVersionUID = 3531998166389518654L;

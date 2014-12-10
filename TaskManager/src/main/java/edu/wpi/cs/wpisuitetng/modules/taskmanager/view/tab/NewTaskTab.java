@@ -103,7 +103,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @param taskManagerTabView
 	 *            - the main view that holds tabs
 	 */
-
 	public NewTaskTab(TaskModel model) {
 		// get the requirements from the database
 		setLayout(new MigLayout("", "[][][][grow]",
@@ -321,6 +320,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		checkForErrors();
 	}
 
+	/**
+	 * @return the comboBoxModel used for the requirements box
+	 */
 	public DefaultComboBoxModel<String> getRequirementsComboModel() {
 		return requirementsComboModel;
 	}
@@ -373,8 +375,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.getSelectedItem() );
 		DataLoggerController.getDataModel().addSnapshot(taskModel);
 		
-
-		
 		ActivityModel message;
 		String messageString;
 		if (isEditingTask) {
@@ -393,12 +393,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		}
 
 		stageModel.addUpdateTaskModel(taskModel);
-
 	}
 	
 	
-
-
 	/**
 	 * Sets the requirement box based on the value of the given taskModel
 	 */
@@ -418,7 +415,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	public void setCategoryColorBox() {
 		colorBox.setSelectedIndex(taskModel.getCatID());
 	}
-
 
 	/**
 	 * Set the days until urgent field based on the taskModel
@@ -467,23 +463,30 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	@Override
 	public void keyReleased(KeyEvent e) {
 		checkForErrors();
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+		//Intentionally left blank
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		//Intentionally left blank
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		checkForErrors();
 		hasBeenModified();
 	}
 
+	/**
+	 * @return the info entered in estimated effort
+	 */
 	public int getEstimatedEffort() {
 		int effort;
 		try {
@@ -494,6 +497,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		return effort;
 	}
 
+	/**
+	 * @return the info entered in actual effort
+	 */
 	public int getActualEffort() {
 		int effort;
 		try {
@@ -504,6 +510,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		return effort;
 	}
 
+	/**
+	 * @return the number of days before the due date that the task should become urgent
+	 */
 	public int getDaysUntil() {
 		int days;
 		try {
@@ -598,6 +607,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		//Intentionally left blank
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
@@ -630,11 +642,17 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
+	 */
 	@Override
 	public int getModelID() {
 		return taskModel.getID();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
+	 */
 	@Override
 	public TabType getTabType() {
 		return TabType.TASK;

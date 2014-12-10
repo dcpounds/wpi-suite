@@ -12,6 +12,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * @author Joe
+ * A request observer for updating the data logger in the database
+ */
 public class UpdateDataLoggerRequestObserver implements RequestObserver{
 
 	DataLoggerController controller;

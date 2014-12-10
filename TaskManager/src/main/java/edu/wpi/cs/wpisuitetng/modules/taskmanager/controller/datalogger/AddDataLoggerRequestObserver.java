@@ -12,6 +12,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * @author Joe
+ * the controller to add data loggers to the database
+ */
 public class AddDataLoggerRequestObserver implements RequestObserver{
 
 	DataLoggerController controller;

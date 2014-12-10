@@ -13,6 +13,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 
+/**
+ * @author Team 4
+ * The workflow controller is responsible for polling the database and managing the workflow model
+ */
 public class WorkflowController {
 	private static WorkflowController instance = new WorkflowController();
 	private static WorkflowModel model;

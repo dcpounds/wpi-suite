@@ -104,31 +104,39 @@ public class WorkflowModel extends AbstractModel {
 			return new User[]{};
 		return userList.toArray(new User[userList.size()]);
 	}
-	public String[] getRequirementsList(){
-		if (requirementsList == null){
-			System.out.println("Theres no requirementsOptions");
-			return new String[]{};
-			}
-		System.out.println("theres requirements");
-		return requirementsList.toArray(new String[requirementsList.size()]);
-	}
 	
+	
+	/**
+	 * Toggles the value of the urgency view button
+	 */
 	public void toggleColor(){
 		WorkflowModel.toggleColor = !WorkflowModel.toggleColor;
 	}
 	
+	/**
+	 * Gets the current value of the urgency color button
+	 * @return true if toggled on, false otherwise
+	 */
 	public boolean getToggleColor(){
 		return WorkflowModel.toggleColor;
 	}
 	
+	/**
+	 * Sets the flag to indicate that the user is dragging a task.
+	 * We should not update a stage while this is happening
+	 * @param bool
+	 */
 	public void setIsDraggingTask(boolean bool){
 		WorkflowModel.isDraggingStage = bool;
 	}
 	
+	/**
+	 * Get whether or not a user is dragging a stage
+	 * @return true if dragging, false otherwise
+	 */
 	public boolean getIsDraggingStage(){
 		return WorkflowModel.isDraggingStage;
 	}
-	
 	
 	/**
 	 * @param userList - the list of assignable users to set within the workflow
@@ -136,7 +144,6 @@ public class WorkflowModel extends AbstractModel {
 	public void setUserList(User[] userList){
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
-	
 	
 	/**
 	 * @param id - id of the task to look for

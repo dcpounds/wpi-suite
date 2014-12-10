@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLogg
 
 /**
  * @author joe
+ * The view that contains task reports
  */
 public class ReportsTab extends JScrollPane implements IHashableTab {
     static final long serialVersionUID = 2930864775768057902L;
@@ -40,7 +41,6 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
    
     /**
      * Constructor for NewBarChartPanel.
-     * 
      * @param title String
      */
     public ReportsTab(String title) {
@@ -57,8 +57,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
      *         status or iteration
      */
     private CategoryDataset setData() {
-        return setDataCategory();
-        
+        return setDataCategory();   
     }
     
  

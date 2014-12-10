@@ -94,15 +94,24 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 		StageController.sendUpdateRequest(stageModel);
 	}
 	
+	/**
+	 * @return the taskModel that was passed in
+	 */
 	public TaskModel getTaskModel(){
 		return taskModel;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
+	 */
 	@Override
 	public int getModelID() {
 		return taskModel.getID();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
+	 */
 	@Override
 	public TabType getTabType() {
 		// TODO Auto-generated method stub
