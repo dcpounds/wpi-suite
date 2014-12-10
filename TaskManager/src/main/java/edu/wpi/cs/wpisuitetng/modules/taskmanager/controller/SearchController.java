@@ -18,6 +18,7 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -79,13 +80,26 @@ public class SearchController implements ActionListener, KeyListener {
 				int stageID = stage.getID();
 				int taskID = task.getID();
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
+				if(taskView == null)
+					continue;
 				if (task.getTitle().contains(searchText) && searchText.length() > 0) {
-					Border blueHighlight = BorderFactory.createLineBorder(Color.blue, 3);
+					if(task.getIsArchived()){
+						taskView.setBorder(new CompoundBorder(
+							BorderFactory.createLineBorder(Color.BLUE,2),
+							BorderFactory.createLineBorder(Color.RED,2)));
+							foundResult = true;
+							continue;
+						}
+					Border blueHighlight = BorderFactory.createLineBorder(Color.blue, 2);
 					taskView.setBorder(blueHighlight);
 					foundResult = true;
 				} else {
-					Border blackHighlight = BorderFactory.createLineBorder(Color.black);
-					taskView.setBorder(blackHighlight);
+					Border normalHighlight;
+					if(!task.getIsArchived())
+						normalHighlight = BorderFactory.createLineBorder(Color.black);
+					else
+						normalHighlight = BorderFactory.createLineBorder(Color.red,2);
+					taskView.setBorder(normalHighlight);
 				}
 			}
 		}

@@ -99,7 +99,7 @@ public class TaskView extends DragTaskPanel{
 		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
 		add(titlePanel, "cell 0 0 5 1,growx,aligny top");
-		titlePanel.setLayout(new MigLayout("", "[30.00][10.00,grow][][grow][][]", "[][grow]"));
+		titlePanel.setLayout(new MigLayout("insets 0 5 5 5", "[][grow][][grow][][]", "[][grow]"));
 		
 		catPanel = new JPanel();
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -247,7 +247,7 @@ public class TaskView extends DragTaskPanel{
 	 * 
 	 */
 	public void activateArchiveView(){
-		setBorder(BorderFactory.createLineBorder(Color.red, 3));
+		setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		closeButton.setVisible(false);
 		btnRestore.setVisible(true);
 		btnActivities.setEnabled(false);
