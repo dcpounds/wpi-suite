@@ -35,6 +35,12 @@ public class AssignUnassignUserController implements ActionListener {
 		this.action = action;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	/**
+	 * This is responsible for moving users between the assigned and unnassigned lists
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		int selectedIndex;

@@ -32,12 +32,20 @@ public class CoreUserController implements ActionListener {
 		this.view = view;
 	}
 
+	/**
+	 * Request all users from the db
+	 */
 	public void requestUserList() {
 		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // PUT == create
 		request.addObserver(observer); // add an observer to process the response
 		request.send();	
 	}
 	
+	/**
+	 * Add users to the list of users in the new task view
+	 * called by request observer
+	 * @param users
+	 */
 	public void addUsersToList(User[] users) {
 		DefaultListModel<String> unassignedList = view.getUnassignedListModel();
 		for( User user: users)

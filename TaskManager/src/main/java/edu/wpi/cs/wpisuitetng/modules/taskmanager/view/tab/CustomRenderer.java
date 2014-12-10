@@ -8,31 +8,17 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
-
-import org.jfree.*;
 import org.jfree.chart.renderer.category.BarRenderer;
-import java.awt.Color;
 import java.awt.Paint;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.TextAnchor;
-
+/**
+ * @author Joe
+ * This class is used to render the bars for the statistics report
+ *
+ */
 public class CustomRenderer extends BarRenderer {
 	
+	private static final long serialVersionUID = 3531998166389518654L;
 	/** The colors. */
     private Paint[] colors;
 

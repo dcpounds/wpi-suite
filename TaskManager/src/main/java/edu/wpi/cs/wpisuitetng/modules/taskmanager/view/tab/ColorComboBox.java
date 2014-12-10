@@ -65,6 +65,10 @@ public class ColorComboBox extends JComboBox {
 		return this.getBackground();
 	}
 
+	/**
+	 * Add colors to the color combo box
+	 * @return
+	 */
 	private Hashtable addColors() {
 		colors = new<String, Color> Hashtable();
 		colors.put("GRAY", Color.LIGHT_GRAY);
@@ -82,11 +86,18 @@ public class ColorComboBox extends JComboBox {
 	}
 
 	
+	/**
+	 * @author Ashton
+	 * A helper class for handling the color combo box
+	 */
 	class ColorRenderer extends JLabel implements javax.swing.ListCellRenderer {
 		public ColorRenderer() {
 			this.setOpaque(true);
 		}
 
+		/* (non-Javadoc)
+		 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+		 */
 		public Component getListCellRendererComponent(JList list, Object key,
 				int index, boolean isSelected, boolean isFocused) {
 			Color color = colors.get(key);

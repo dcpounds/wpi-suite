@@ -13,62 +13,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
-
-
-import java.awt.Color;
-import java.awt.Paint;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.TextAnchor;
-
-
-
-
-
-
-
-
-
-
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 
 
 /**
  * @author joe
+ * The view that contains task reports
  */
 public class ReportsTab extends JScrollPane implements IHashableTab {
     static final long serialVersionUID = 2930864775768057902L;
@@ -76,11 +38,9 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
     private String title;
     private ChartPanel barChart;
     
-    
-    
+   
     /**
      * Constructor for NewBarChartPanel.
-     * 
      * @param title String
      */
     public ReportsTab(String title) {
@@ -97,21 +57,10 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
      *         status or iteration
      */
     private CategoryDataset setData() {
-        return setDataCategory();
-        
+        return setDataCategory();   
     }
     
-
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
+ 
     /**
      * @return the dataSet based upon the statuses of all requirements
      */
@@ -125,7 +74,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         dataSet.setValue(data.get("WHITE"), "White", "Category");
         dataSet.setValue(data.get("BROWN"), "Brown", "Category");
         dataSet.setValue(data.get("RED"), "Red", "Category");
-        dataSet.setValue(data.get("PINK"), "PINK", "Category");
+        dataSet.setValue(data.get("PINK"), "Pink", "Category");
         dataSet.setValue(data.get("ORANGE"), "Orange", "Category");
         dataSet.setValue(data.get("YELLOW"), "Yellow", "Category");
         dataSet.setValue(data.get("GREEN"), "Green", "Category");
@@ -224,15 +173,6 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         renderer.setSeriesPaint(8, blue);
         renderer.setSeriesPaint(9, purple);
         
-        
-        
-        
-
-        
-        
-        
-        
-        
         return chart;
     }
     
@@ -296,5 +236,13 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
 	public TabType getTabType() {
 		// TODO Auto-generated method stub
 		return TabType.REPORTS;
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#hasBeenModified()
+	 */
+	@Override
+	public boolean hasBeenModified() {
+		return false;
 	}
 }

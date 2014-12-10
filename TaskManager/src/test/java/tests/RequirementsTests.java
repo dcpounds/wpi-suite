@@ -11,17 +11,11 @@ package tests;
 
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
-import edu.wpi.cs.wpisuitetng.network.Network;
 
 public class RequirementsTests {
 	
@@ -50,12 +44,6 @@ public class RequirementsTests {
 		testtask.setAssociatedRequirement(requirement3.getName());
 		assertTrue(testtask.getAssociatedRequirement().equals(requirement3.getName()));
 		
-	}
-	
-	@Test
-	public void testGetRequirementsNone(){
-		//workflow.addStage(stage1);
-		assertTrue(workflow.getRequirementsList().equals(new String[]{}));
 	}
 	
 }

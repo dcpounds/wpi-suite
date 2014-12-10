@@ -36,9 +36,7 @@ public class DataLoggerController {
 	private static UpdateDataLoggerRequestObserver updateObserver;
 	private static DeleteDataLoggerRequestObserver deleteObserver;
 	
-	
 
-	
 	public DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
 		this.action = action;
@@ -70,12 +68,11 @@ public class DataLoggerController {
 		}
 	}
 	
+
 	
-	
-	
-	
-	
-	
+	/**
+	 * @return the dataLogger model that was passed in
+	 */
 	public static DataLoggerModel getDataModel() {
 		return dataLoggerModel;
 	}
@@ -99,6 +96,10 @@ public class DataLoggerController {
 		request.send();
 	}
 	
+	/**
+	 * Send a request to update the data logger in the db
+	 * @param dataLoggerModel
+	 */
 	public static void sendUpdateRequest(DataLoggerModel dataLoggerModel){
 		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.POST); // POST == update
 		request.setBody(dataLoggerModel.toJson()); // put the new stage in the body of the request
@@ -116,7 +117,5 @@ public class DataLoggerController {
 		request.send();
 
 	}
-	
-	
 
 }

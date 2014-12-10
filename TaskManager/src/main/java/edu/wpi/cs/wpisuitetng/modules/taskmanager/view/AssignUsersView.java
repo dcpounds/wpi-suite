@@ -148,18 +148,32 @@ public class AssignUsersView extends JPanel{
 		return assignedUsers;
 	}
 	
+	/**
+	 * Get the JList list of assigned users
+	 * @return the list of assigned users
+	 */
 	public JList<String> getAssignedListComponent() {
 		return assignedListComponent;
 	}
 	
+	/** 
+	 * Get the JList of unassigned users
+	 * @return the list of unassigned users
+	 */
 	public JList<String> getUnssignedListComponent() {
 		return unassignedListComponent;
 	}
 	
+	/**
+	 * @return the listModel of assigned users
+	 */
 	public DefaultListModel<String> getAssignedListModel() {
 		return assignedListModel;
 	}
 	
+	/**
+	 * @return the listModel of unassigned users
+	 */
 	public DefaultListModel<String> getUnassignedListModel() {
 		return unassignedListModel;
 	}	

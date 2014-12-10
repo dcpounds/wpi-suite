@@ -13,8 +13,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -42,11 +40,7 @@ public class TaskSnapshot {
 	
 	static Hashtable <Color, String> colors;
 	
-	
 
-	
-	
-	
 	/** The default constructor for a Task Snapshot **/
 	public TaskSnapshot(TaskModel task, int id)
 	{
@@ -82,11 +76,14 @@ public class TaskSnapshot {
 		colors.put(new Color(0x82CA9D), "GREEN");
 		colors.put(new Color(0x8493CA), "BLUE");
 		colors.put(new Color(0xA187BE), "PURPLE");
-		
-		
 		return colors;
 	}
 	
+	/**
+	 * Converts the color value to the appropriate name
+	 * @param color
+	 * @return
+	 */
 	public String colorToString(Color color)
 	{
 		addColors();
@@ -94,22 +91,37 @@ public class TaskSnapshot {
 	}
 	
 	
-	
+	/**
+	 * Setss the id of the task snapshot
+	 * @param id
+	 */
 	public void setID(long id)
 	{
 		this.id=id;
 	}
 	
+	/**
+	 * Gets the id of the task snapshot
+	 * @return id
+	 */
 	public long getID()
 	{
 		return id;
 	}
 	
+	/**
+	 * Sets the task id
+	 * @param id
+	 */
 	public void setTaskID(int id)
 	{
 		this.taskID = id;
 	}
 	
+	/**
+	 * Get the task id
+	 * @return
+	 */
 	public int getTaskID()
 	{
 		return taskID;
@@ -288,10 +300,6 @@ public class TaskSnapshot {
 	public void setActivities(ActivityListModel activities) {
 		this.activities = activities;
 	}
-	
-
-	
-
 	
 
 }

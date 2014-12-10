@@ -416,6 +416,7 @@ public class TaskView extends DragTaskPanel{
 		
 		this.setCategoryColor(task.getCatColor());
 		taskModel.setCatColor(task.getCatColor());
+		taskModel.setCatID(task.getCatID());
 		
 		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());

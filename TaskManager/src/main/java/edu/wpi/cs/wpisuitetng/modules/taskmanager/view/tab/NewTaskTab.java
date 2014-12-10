@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -26,8 +27,6 @@ import java.util.Properties;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -41,7 +40,6 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -95,8 +93,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private boolean isEditingTask;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
-	private JTextField txtRequirement;
-	private JComboBox comboBox;
 	private JLabel lblRequirement;
 	private JLabel daysUntilLabel2;
 	private DefaultComboBoxModel<String> requirementsComboModel;
@@ -107,7 +103,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @param taskManagerTabView
 	 *            - the main view that holds tabs
 	 */
-
 	public NewTaskTab(TaskModel model) {
 		// get the requirements from the database
 		setLayout(new MigLayout("", "[][][][grow]",
@@ -144,6 +139,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		JLabel stageLabel = new JLabel("Stage");
 		add(stageLabel, "pad 0 10 0 50,cell 3 0");
 		stageBox = new JComboBox<String>();
+		stageBox.setPreferredSize(new Dimension(125,10));
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>(getStatusOptions()));
 
@@ -233,6 +229,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		colorBox.setBounds(100, 20, 140, 30);
 		colorBox.setToolTipText("Select a Category Color");
 		colorTitle = new JLabel("                  ");
+		setCategoryColorBox();
 		add(colorTitle, "cell 3 0");
 
 		// Make a label for the requirements combo box
@@ -244,6 +241,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		requirementsComboModel.addElement("None");
 		new RequirementsController(this).requestRequirementsList();
 		requirementsBox = new JComboBox<String>();
+		requirementsBox.setPreferredSize(new Dimension(125,10));
 		requirementsBox.setModel(requirementsComboModel);
 		requirementsBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -313,6 +311,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.setToolTipText("The task will become urgent this many days before the due date");
 		add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
+		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
 		daysUntilLabel2 = new JLabel(" day(s) before it is due");
@@ -321,6 +320,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		checkForErrors();
 	}
 
+	/**
+	 * @return the comboBoxModel used for the requirements box
+	 */
 	public DefaultComboBoxModel<String> getRequirementsComboModel() {
 		return requirementsComboModel;
 	}
@@ -348,7 +350,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			StageController.sendUpdateRequest(originalStage);
 		}
 
-		if (isEditingTask==false)
+		if (!isEditingTask)
 		{
 			TaskModel taskModel = new TaskModel();
 			taskModel.setID( this.taskModel.getID() );
@@ -368,11 +370,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
+		taskModel.setCatID(colorBox.getSelectedIndex());
 		taskModel.setAssociatedRequirement((String) requirementsBox
 				.getSelectedItem() );
 		DataLoggerController.getDataModel().addSnapshot(taskModel);
-		
-
 		
 		ActivityModel message;
 		String messageString;
@@ -392,34 +393,36 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		}
 
 		stageModel.addUpdateTaskModel(taskModel);
-
 	}
 	
 	
-
-
+	/**
+	 * Sets the requirement box based on the value of the given taskModel
+	 */
 	public void setTaskRequirementBox() {
 		// Set the requirement box
-		boolean found = false;
 		for (int index = 0; index < requirementsBox.getItemCount(); index++) {
 			String requirement = requirementsBox.getItemAt(index);
 			if (taskModel.getAssociatedRequirement().equals(requirement)) {
 				requirementsBox.setSelectedItem(requirement);
-				System.out
-						.println("foundddddddd "
-								+ taskModel.getAssociatedRequirement()
-								+ " in combobox");
-				found = true;
 			}
 		}
-
-		if (!found)
-			System.out
-					.println("Not foundddddddd "
-							+ taskModel.getAssociatedRequirement()
-							+ " Not in combobox");
+	}
+	
+	/**
+	 * Sets the category color box based on the taskModel's value
+	 */
+	public void setCategoryColorBox() {
+		colorBox.setSelectedIndex(taskModel.getCatID());
 	}
 
+	/**
+	 * Set the days until urgent field based on the taskModel
+	 */
+	public void setDaysUntilField() {
+		daysUntilField.setText( "" + taskModel.getTimeThreshold() );
+	}
+	
 	/**
 	 * Checks that all the requirements for creating a new task are met and
 	 * updates the correct fields indicating what if anything still needs to be
@@ -453,6 +456,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		sbmtTaskButton.setEnabled(shouldSubmitBeEnabled);
 	}
 
+	/**
+	 * @return the view that is responsible for adding/removing users
+	 */
 	public AssignUsersView getAssignUserView() {
 		return assignUsersView;
 	}
@@ -464,20 +470,26 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		checkForErrors();
-
+		//Intentionally left blank
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		checkForErrors();
+		//Intentionally left blank
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
 	}
 
+	/**
+	 * @return the info entered in estimated effort
+	 */
 	public int getEstimatedEffort() {
 		int effort;
 		try {
@@ -488,6 +500,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		return effort;
 	}
 
+	/**
+	 * @return the info entered in actual effort
+	 */
 	public int getActualEffort() {
 		int effort;
 		try {
@@ -498,6 +513,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		return effort;
 	}
 
+	/**
+	 * @return the number of days before the due date that the task should become urgent
+	 */
 	public int getDaysUntil() {
 		int days;
 		try {
@@ -510,17 +528,26 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 	/**
 	 * get the current string in the title field
-	 * 
 	 * @return
 	 */
 	public String getTitleLabelText() {
 		return taskTitleField.getText();
 	};
 
+	/**
+	 * @return the selected index in the stage selection box
+	 */
 	public int getStageSelectionIndex() {
 		return this.stageBox.getSelectedIndex();
 	}
 
+	/**
+	 * @return the selected index for category color
+	 */
+	public int getCatSelectionIndex() {
+		return this.colorBox.getSelectedIndex();
+	}
+	
 	/**
 	 * get the current string in the description field
 	 * 
@@ -570,40 +597,74 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		checkForErrors();
+		//Intentionally left blank
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		checkForErrors();
-
+		//Intentionally left blank
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		checkForErrors();
-
+		//Intentionally left blank
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		checkForErrors();
-
+		//Intentionally left blank
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		checkForErrors();
+		hasBeenModified();
+	}
+/**
+ * Determines if any field has been modified. If any part of the field in newtask has
+ * been modified, then it will return true. 
+ * @return
+ */
+	public boolean hasBeenModified() {
+		if(!taskTitleField.getText().equals(this.taskModel.getTitle()))
+			return true;
+	
+		if(!taskDescriptionField.getText().equals(this.taskModel.getDescription()))
+			return true;
+		
+		if(!this.getDateText().equals(this.taskModel.getDueDate()))
+			return true;
+
+		if(!(this.getEstimatedEffort() == this.taskModel.getEstimatedEffort()))
+			return true;
+
+		if(!(this.getActualEffort() == this.taskModel.getActualEffort()))
+			return true;
+
+		if(!(this.getCatSelectionIndex() == this.taskModel.getCatID()))
+			return true;
+		
+		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
+	 */
 	@Override
 	public int getModelID() {
 		return taskModel.getID();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
+	 */
 	@Override
 	public TabType getTabType() {
 		return TabType.TASK;
 	}
+
 
 }

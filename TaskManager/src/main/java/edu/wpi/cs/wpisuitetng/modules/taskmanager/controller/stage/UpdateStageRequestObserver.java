@@ -13,6 +13,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * @author Alec
+ * This is a request observer for updating stages
+ *
+ */
 public class UpdateStageRequestObserver implements RequestObserver{
 
 	StageController controller;

@@ -8,12 +8,14 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
-
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * @author Joe
+ * responsible for getting all of the dataloggers from the database
+ */
 public class GetDataLoggerRequestObserver implements RequestObserver{
 
 	DataLoggerController controller;

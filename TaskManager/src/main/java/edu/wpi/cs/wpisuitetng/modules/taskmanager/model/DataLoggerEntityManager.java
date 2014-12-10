@@ -34,7 +34,6 @@ public class DataLoggerEntityManager implements EntityManager<DataLoggerModel> {
 	}
 
 	/** Creates a new entity for saving in the database
-	 * 
 	 */
 	@Override
 	public DataLoggerModel makeEntity(Session s, String content)
