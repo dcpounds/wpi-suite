@@ -13,57 +13,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
-
-
-import java.awt.Color;
-import java.awt.Paint;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.TextAnchor;
-
-
-
-
-
-
-
-
-
-
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 
 
@@ -76,8 +37,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
     private String title;
     private ChartPanel barChart;
     
-    
-    
+   
     /**
      * Constructor for NewBarChartPanel.
      * 
@@ -115,7 +75,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         dataSet.setValue(data.get("WHITE"), "White", "Category");
         dataSet.setValue(data.get("BROWN"), "Brown", "Category");
         dataSet.setValue(data.get("RED"), "Red", "Category");
-        dataSet.setValue(data.get("PINK"), "PINK", "Category");
+        dataSet.setValue(data.get("PINK"), "Pink", "Category");
         dataSet.setValue(data.get("ORANGE"), "Orange", "Category");
         dataSet.setValue(data.get("YELLOW"), "Yellow", "Category");
         dataSet.setValue(data.get("GREEN"), "Green", "Category");
