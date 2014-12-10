@@ -58,6 +58,7 @@ public class ToolbarView extends JPanel {
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
         ImageIcon searchIcon = new ImageIcon("../TaskManager/src/main/resources/search.png");
+        ImageIcon urgencyIcon = new ImageIcon("../TaskManager/src/main/resources/urgent.png");
         
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -88,7 +89,7 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Urgency Coloring", new ImageIcon("../TaskManager/src/main/resources/urgent.png"));
+        JButton toggleColor = new JButton("Toggle Urgency Coloring", urgencyIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
         	 @Override
@@ -108,6 +109,7 @@ public class ToolbarView extends JPanel {
         
         searchBox = new JTextField();
         searchBox.setMaximumSize(new Dimension(300, 38));
+        searchBox.setOpaque(true);
         
         Font searchFont = new Font("Tahoma",Font.PLAIN,17);
         
