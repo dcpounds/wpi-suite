@@ -181,7 +181,6 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
 		TaskView tv = this;
-		this.setContents(taskModel);
 		this.add(taskContentPane, "cell 0 2 3 2,grow");
 		
 		//Set up the edit button
@@ -238,6 +237,9 @@ public class TaskView extends DragTaskPanel{
 			activateArchiveView();
 			setVisible(false);
 		}
+		
+
+		this.setContents(taskModel);
 	}
 	
 	/**
@@ -419,6 +421,13 @@ public class TaskView extends DragTaskPanel{
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
+		
+		if(task.getIsArchived()){
+			activateArchiveView();
+		} else {
+			deactivateArchiveView();
+		}
+		
 		toggleTaskViewColor(task.getColor());
 		revalidate();
 		repaint();

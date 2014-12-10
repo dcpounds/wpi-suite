@@ -57,7 +57,7 @@ public class ArchiveController implements ChangeListener {
 			makeArchiveViewsVisible();
 		} else {
 			isPressed = false;
-			ArchiveViewsInvisible();
+			makeArchiveViewsInvisible();
 		}
 		
 	}
@@ -88,7 +88,7 @@ public class ArchiveController implements ChangeListener {
 	/**
 	 * makes all the archived views invisible
 	 */
-	private static void ArchiveViewsInvisible() {
+	private static void makeArchiveViewsInvisible() {
 		for(StageView stageView : workflowView.getStageViewList().values()){
 			for(TaskView taskView : stageView.getTaskViewList().values()){
 				if(taskView.isTaskModelArchived()){
