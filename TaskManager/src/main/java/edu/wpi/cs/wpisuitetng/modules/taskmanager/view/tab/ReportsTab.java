@@ -7,8 +7,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+
+
 
 
 
@@ -35,11 +39,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLogg
 /**
  * @author joe
  */
-public class ReportsTab extends JScrollPane {
+public class ReportsTab extends JScrollPane implements IHashableTab {
     static final long serialVersionUID = 2930864775768057902L;
     
     private String title;
     private ChartPanel barChart;
+    
+    
     
     /**
      * Constructor for NewBarChartPanel.
@@ -167,4 +173,16 @@ public class ReportsTab extends JScrollPane {
     void setTitle(String title) {
         this.title = title;
     }
+
+	@Override
+	public int getModelID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public TabType getTabType() {
+		// TODO Auto-generated method stub
+		return TabType.REPORTS;
+	}
 }

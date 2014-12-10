@@ -116,6 +116,9 @@ public class TabController {
     		case ACTIVITIES:
 	        	newTab = new ActivitiesTab((TaskModel) model);
     			break;
+    		case REPORTS:
+    			newTab = new ReportsTab("Reports");
+    			break;
         }
     	return newTab;
     }
@@ -157,8 +160,8 @@ public class TabController {
     			tabName =  (model.getTitle() + " Activities   ");
     			break;
     		case REPORTS:
-    			tabName = "Reports";
-    			newTab = new ReportsTab("Reports");
+    			tabName = "Reports	";
+    			break;
         }
     	return tabName;
     }
