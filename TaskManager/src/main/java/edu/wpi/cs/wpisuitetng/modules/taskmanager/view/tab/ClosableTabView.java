@@ -106,6 +106,9 @@ public class ClosableTabView extends JPanel{
 				else if(tabType == TabType.ACTIVITIES){
 					TabController.getInstance().removeTab(paneComponent);
 				}
+				else if(tabType == TabType.REPORTS){
+					TabController.getInstance().removeTab(paneComponent);
+				}
 				}
 				});
 		this.add(tabLabel);
