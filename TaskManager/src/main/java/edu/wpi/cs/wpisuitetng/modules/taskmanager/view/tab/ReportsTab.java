@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -18,16 +19,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewBarButton;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
+
 
 /**
- * @author justinhess
- * @version $Revision: 1.0 $
+ * @author joe
  */
 public class ReportsTab extends JScrollPane {
     static final long serialVersionUID = 2930864775768057902L;
@@ -44,9 +40,7 @@ public class ReportsTab extends JScrollPane {
         this.title = title;//title of the chart, either status or iteration
         JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
-        OverviewBarButton buttons = new OverviewBarButton();
         panel.add(barChart, BorderLayout.CENTER);
-        panel.add(buttons, BorderLayout.SOUTH);
         
         this.setViewportView(panel);
     }
@@ -56,115 +50,33 @@ public class ReportsTab extends JScrollPane {
      *         status or iteration
      */
     private CategoryDataset setData() {
-        if (title.equals("Iteration")) {
-            return setDataIteration();
-        } else if (title.equals("Status")) {
-            return setDataStatus();
-        } else {
-            return setDataAssignTo();
-        }
+        return setDataCategory();
         
     }
     
     /**
-     * @return the dataset based upon the statuses of all requirements
+     * @return the dataSet based upon the statuses of all requirements
      */
-    private static CategoryDataset setDataStatus() {
-        int numStatusNew = 0;
-        int numStatusDeleted = 0;
-        int numStatusInprogress = 0;
-        int numStatusComplete = 0;
-        int numStatusOpen = 0;
+    private static CategoryDataset setDataCategory() {
+
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        List<Requirement> requirements = RequirementModel.getInstance().getRequirements();// list of requirements
-        for (int i = 0; i < requirements.size(); i++) {
-            if (requirements.get(i).getStatus() == RequirementStatus.NEW) {
-                numStatusNew += 1;
-            } else if (requirements.get(i).getStatus() == RequirementStatus.DELETED) {
-                numStatusDeleted += 1;
-            } else if (requirements.get(i).getStatus() == RequirementStatus.INPROGRESS) {
-                numStatusInprogress += 1;
-            } else if (requirements.get(i).getStatus() == RequirementStatus.COMPLETE) {
-                numStatusComplete += 1;
-            } else {
-                numStatusOpen += 1;
-            }
-        }
-        dataSet.setValue(numStatusNew, "New", "Status");
-        dataSet.setValue(numStatusDeleted, "Deleted", "Status");
-        dataSet.setValue(numStatusInprogress, "In Progress", "Status");
-        dataSet.setValue(numStatusComplete, "Complete", "Status");
-        dataSet.setValue(numStatusOpen, "Open", "Status");
-        return dataSet;
-    }
-    
-    /**
-     * @return the data of iterations to be displayed by the bar chart
-     */
-    private static CategoryDataset setDataIteration() {
-        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        List<Iteration> iterations = IterationModel.getInstance()
-                .getIterations();// list of iterations
-        List<Requirement> requirements = RequirementModel.getInstance()
-                .getRequirements();// list of requirements
-        int[] iterationNum = new int[iterations.size()];
-        for (int i = 0; i < iterations.size(); i++) {
-            for (int j = 0; j < requirements.size(); j++) {
-                if (requirements.get(j).getIteration().toString()
-                        .equals(iterations.get(i).toString())) {
-                    iterationNum[i]++;// increments the number if the requiremet
-                                      // belongs to the given iteration
-                }
-            }
-        }
-        for (int k = 0; k < iterationNum.length; k++) {
-            dataSet.setValue(iterationNum[k], iterations.get(k).toString(), "Iteration");// sets
-            // the
-            // data
-        }
-        return dataSet;
-    }
-    
-    /**
-     * @return the data of the number of requirements a user has assigned to
-     *         them
-     */
-    private static CategoryDataset setDataAssignTo() {
-        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        ArrayList<String> userNames = new ArrayList<String>();
+        Hashtable<String, Integer> data = DataLoggerController.getDataModel().exportAllCategories();
+
         
-        List<Requirement> requirements = RequirementModel.getInstance()
-                .getRequirements();// list of requirements
-        for (int i = 0; i < requirements.size(); i++) {
-            List<String> users = requirements.get(i).getAssignedTo();// list of
-                                                                     // users
-                                                                     // for
-                                                                     // specific
-                                                                     // requirement
-            for (int j = 0; j < users.size(); j++) {
-                if (!userNames.contains(users.get(j))) {
-                    userNames.add(users.get(j));// populate a list of all users
-                }
-            }
-            
-        }
-        int[] numReqAssigned = new int[userNames.size()];
-        for (int i = 0; i < requirements.size(); i++) {
-            List<String> users = requirements.get(i).getAssignedTo();
-            for (int j = 0; j < userNames.size(); j++) {
-                if (users.contains(userNames.get(j))) {
-                    numReqAssigned[j]++;// count the number of requirements a
-                                        // user has assigned to them
-                }
-            }
-        }
-        for (int k = 0; k < userNames.size(); k++) {
-            dataSet.setValue(numReqAssigned[k], userNames.get(k), "Assigned To");// populate
-            // bar chart
-            // data
-        }
+        dataSet.setValue(data.get("GRAY"), "Gray", "Category");
+        dataSet.setValue(data.get("WHITE"), "White", "Category");
+        dataSet.setValue(data.get("BROWN"), "Brown", "Category");
+        dataSet.setValue(data.get("RED"), "Red", "Category");
+        dataSet.setValue(data.get("PINK"), "PINK", "Category");
+        dataSet.setValue(data.get("ORANGE"), "Orange", "Category");
+        dataSet.setValue(data.get("YELLOW"), "Yellow", "Category");
+        dataSet.setValue(data.get("GREEN"), "Green", "Category");
+        dataSet.setValue(data.get("BLUE"), "Blue", "Category");
+        dataSet.setValue(data.get("PURPLE"), "Purple", "Category");
+
         return dataSet;
     }
+
     
     /**
      * @param dataset the data to be shown by the chart
