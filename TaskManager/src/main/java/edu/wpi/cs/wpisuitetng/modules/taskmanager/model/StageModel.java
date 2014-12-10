@@ -216,7 +216,40 @@ public class StageModel extends AbstractModel implements IDisplayModel {
         final Gson parser = new Gson();
         return parser.fromJson(json, StageModel[].class);
     }
+    
+    /**
+     * expands all taskViews in stage pane
+     */
+    public void expandAll(){
+    	for(TaskModel task: taskModelList.values()){
+    		task.setExpanded(true);
+    	}
+    }
+    
+    /**
+     * collapses all taskViews in stage pane
+     */
+    public void collapseAll(){
+    	for(TaskModel task: taskModelList.values()){
+    		task.setExpanded(false);
+    	}
+    }
+    
+    public boolean anyCollapsed(){
+    	for(TaskModel task: taskModelList.values()){
+    		if(!task.getIsExpanded())
+    			return true;
+    	}
+    	return false;
+    }
 
+    public void resize(){
+    	if(anyCollapsed()){
+    		expandAll();
+    	}else{
+    		collapseAll();
+    	}
+    }
     
 	/**
 	 * @return whether or not the stage can be closed
