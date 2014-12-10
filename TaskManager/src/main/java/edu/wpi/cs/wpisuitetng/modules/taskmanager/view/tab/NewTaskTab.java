@@ -48,9 +48,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+
+
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -324,6 +327,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		//Adds the task to the stageModel if it is new, or updataes it if it already exists
 		stageModel.addUpdateTaskModel(taskModel);
 		
+		SearchController.search();
 	}
 	
 	/**

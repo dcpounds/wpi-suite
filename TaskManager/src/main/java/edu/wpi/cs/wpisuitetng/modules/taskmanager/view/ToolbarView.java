@@ -13,14 +13,20 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -39,6 +45,7 @@ public class ToolbarView extends JPanel {
     private final JButton newStageButton;
     private final JButton newTaskButton;
     private final WorkflowModel workflowModel;
+    private JTextField searchBox;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -50,6 +57,8 @@ public class ToolbarView extends JPanel {
         
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        ImageIcon searchIcon = new ImageIcon("../TaskManager/src/main/resources/search.png");
+        ImageIcon urgencyIcon = new ImageIcon("../TaskManager/src/main/resources/urgent.png");
         
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -80,7 +89,7 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Urgency Coloring", new ImageIcon("../TaskManager/src/main/resources/urgent.png"));
+        JButton toggleColor = new JButton("Toggle Urgency Coloring", urgencyIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
         	 @Override
@@ -90,10 +99,31 @@ public class ToolbarView extends JPanel {
      		}
         });
         add(toggleColor);
-       
+        
+        Component horizontalStrut2 = Box.createHorizontalStrut(20);
+        add(horizontalStrut2);
+        JLabel searchLabel = new JLabel();
+        searchLabel.setIcon(searchIcon);
+        
+        add(searchLabel);
+        
+        searchBox = new JTextField();
+        searchBox.setMaximumSize(new Dimension(300, 38));
+        searchBox.setOpaque(true);
+        
+        Font searchFont = new Font("Tahoma",Font.PLAIN,17);
+        
+        searchBox.setFont(searchFont);
+        add(searchBox);
+        
+        searchBox.addKeyListener(new SearchController(this));
     }
 
     static long getSerialversionuid() {
         return serialVersionUID;
+    }
+    
+    public JTextField getSearchBox(){
+    	return searchBox;
     }
 }
