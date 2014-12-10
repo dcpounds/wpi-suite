@@ -83,6 +83,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private boolean isBeingEdited;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
+	private StageModel stageModel;
 	
 	
 	/**
@@ -511,38 +512,28 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		boolean isEstEffortChanged = (this.getEstimatedEffort() == this.taskModel.getEstimatedEffort())? false: true;
 
 		boolean isActEffortChanged = this.getActualEffort() == this.taskModel.getActualEffort()? false: true;
-		
-		boolean isStageChanged = this.getStageSelectionIndex() == this.taskModel.getStageID()? false: true;
-		
+
+		boolean isStageChanged = workflowModel.getStageModelByID( taskModel.getStageID() ).getTitle()
+				.equals(stageBox.getSelectedItem()) ? false : true;
+
 		boolean isCatChanged = this.getCatSelectionIndex() == this.taskModel.getCatID()? false: true;
 		
-		isAssignedUsersChanged();
-		
 		boolean hasItChanged = 
-					isTitleChanged ||
-					isDescriptionChanged || 
-					isDateChanged ||
-					isEstEffortChanged ||
-					isActEffortChanged ||
-					isStageChanged||
-					isCatChanged ||
-					isAssignedUsersChanged()?
+					!isTitleChanged &&
+					!isDescriptionChanged && 
+					!isDateChanged &&
+					!isEstEffortChanged &&
+					!isActEffortChanged &&
+					!isStageChanged	&&
+					!isCatChanged?
 							true: false;
-		if(hasItChanged){
+		if(!hasItChanged){
 			return true;
 		}
 		else{
 			return false;
 		}
 	}
-	public boolean isAssignedUsersChanged(){
-	if(this.getAssignUserView().getAssignedUsers() == null && this.taskModel.getUsersAssignedTo() == null){
-		return true;}
-	else if(this.getAssignUserView().getAssignedUsers() == this.taskModel.getUsersAssignedTo()){
-		return true;}
-	else{
-		return false;
-	}
-	}
+
 	
 }

@@ -65,7 +65,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.creatorName = updatedTask.getCreatorName();
 		this.description = updatedTask.getDescription();
 		creationDate = updatedTask.getCreationDate();
-		usersAssignedTo = updatedTask.getUsersAssignedTo();
+		this.usersAssignedTo = updatedTask.getUsersAssignedTo();
 		dueDate = updatedTask.getDueDate();	
 		this.isExpanded = updatedTask.getIsExpanded();
 		this.stageID = updatedTask.getStageID();
