@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
 import static org.junit.Assert.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
@@ -18,7 +19,7 @@ public class WorkflowModelTest {
 
 	@Test
 	public void test() {
-		WorkflowModel workflow = new WorkflowModel("workflow",new HashMap<Integer,StageModel>());
+		WorkflowModel workflow = new WorkflowModel("workflow",new LinkedHashMap<Integer,StageModel>());
 		WorkflowModel workflow1 = new WorkflowModel("workflow1");
 		
 		assertTrue("workflow".equals(workflow.getName()));
@@ -29,11 +30,11 @@ public class WorkflowModelTest {
 	
 	@Test
 	public void getStageModelByIDTest(){
-		WorkflowModel workflow = new WorkflowModel("workflow",new HashMap<Integer,StageModel>());
-		StageModel stageModel = new StageModel("Test");
-		StageModel stageModel2 = new StageModel("Test2");
-		StageModel stageModel3 = new StageModel("Test3");
-		StageModel stageModel4 = new StageModel("Test4");
+		WorkflowModel workflow = new WorkflowModel("workflow",new LinkedHashMap<Integer,StageModel>());
+		StageModel stageModel = new StageModel("Test", 0);
+		StageModel stageModel2 = new StageModel("Test2", 0);
+		StageModel stageModel3 = new StageModel("Test3", 0);
+		StageModel stageModel4 = new StageModel("Test4", 0);
 
 		workflow.addStage(stageModel);
 		workflow.addStage(stageModel2);
@@ -54,11 +55,11 @@ public class WorkflowModelTest {
 	
 	@Test
 	public void getTaskModelByIDTest(){
-		WorkflowModel workflow = new WorkflowModel("workflow",new HashMap<Integer,StageModel>());
-		StageModel stageModel = new StageModel("Test");
-		StageModel stageModel2 = new StageModel("Test2");
-		StageModel stageModel3 = new StageModel("Test3");
-		StageModel stageModel4 = new StageModel("Test4");
+		WorkflowModel workflow = new WorkflowModel("workflow",new LinkedHashMap<Integer,StageModel>());
+		StageModel stageModel = new StageModel("Test", 0);
+		StageModel stageModel2 = new StageModel("Test2", 0);
+		StageModel stageModel3 = new StageModel("Test3", 0);
+		StageModel stageModel4 = new StageModel("Test4", 0);
 		
 		TaskModel taskModel = new TaskModel();
 		TaskModel taskModel2 = new TaskModel();
