@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task;
 
 import java.awt.event.MouseEvent;
@@ -22,7 +31,7 @@ public class ExpandTaskController implements MouseListener{
 	public void mouseClicked(MouseEvent arg0) {
 		boolean isExpanded = taskModel.getIsExpanded();
 		System.out.println("Toggled expanded state of task view, expanded view set to " + isExpanded);
-		if(isExpanded == true)
+		if(isExpanded)
 			taskContainerView.hideDetails();
 		else
 			taskContainerView.showDetails();

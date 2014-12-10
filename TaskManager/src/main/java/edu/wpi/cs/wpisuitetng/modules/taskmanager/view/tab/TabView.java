@@ -1,8 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
@@ -41,13 +49,6 @@ public class TabView extends JTabbedPane{
 	 */
 	public WorkflowView getWorkflowView(){
 		return workflowView;
-	}
-	
-	/**
-	 * @param workflowView - set the workflowView
-	 */
-	public void setWorkflowTab(WorkflowView workflowView) {
-		//this.setTabComponentAt(0, workflowView);
 	}
 
 }

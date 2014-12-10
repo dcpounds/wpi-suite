@@ -10,9 +10,24 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 /**
- * @author Alec
- * An enumeration for creating, editing, deleting, and getting entities from the database
+ * @author ??
+ * This interface allows tabs to be hashed
  */
-public enum ActionType {
-	CREATE, EDIT, DELETE, GET
+public interface IHashableTab {
+	
+	/**
+	 * get the id of the model for the current tab
+	 * 
+	 * @return
+	 */
+	public int getModelID();
+	
+	/**
+	 * get the tab type for the current tab
+	 * 
+	 * @return
+	 */
+	public TabType getTabType();
+	
+	public boolean hasBeenModified();
 }

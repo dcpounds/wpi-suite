@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
 import java.awt.Color;
@@ -52,9 +61,8 @@ import javax.swing.SwingConstants;
  *
  *  11/16 Further Progress on utilizing this class for editting functionality aswell.
  * 		Authors  Guillermo, Ashton;
- *		
  */
-public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener{
+public class NewTaskTab extends JPanel implements KeyListener, MouseListener, ActionListener, IHashableTab{
 	
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TaskModel taskModel;
@@ -80,7 +88,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	private JScrollPane descriptionScrollPane;
 	private AssignUsersView assignUsersView;
 	private ActionType action;
-	private boolean isBeingEdited;
+	private boolean isEditingTask;
 	private JLabel colorTitle;
 	private ColorComboBox colorBox;
 	private StageModel stageModel;
@@ -103,12 +111,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		if(model == null){
 			this.taskModel = new TaskModel();
 			this.action = ActionType.CREATE;
-			this.isBeingEdited = false;
+			this.isEditingTask = false;
 		} else{
 			this.taskModel = model;
-			this.taskModel.setEditState(true);
 			this.action = ActionType.EDIT;
-			this.isBeingEdited = true;
+			this.isEditingTask = true;
 		}
 		
 		//Set an error if the task needs a title
@@ -306,12 +313,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
 		taskModel.setStageID( stageModel.getID() );
-		taskModel.setEditState(false);
 		taskModel.setTimeThreshold(getDaysUntil());
 		taskModel.setActivities(this.taskModel.getActivities());
 		taskModel.setCatColor(colorBox.getSelectedColor());
 		ActivityModel message;
-		if(isBeingEdited){
+		if(isEditingTask){
 			message = new ActivityModel("Updated the task");
 		} else {
 			message = new ActivityModel("Created the task");
@@ -363,7 +369,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	@Override
 	public void keyReleased(KeyEvent e) {
 		checkForErrors();
-		hasBeenModified();
+		
 	}
 
 	@Override
@@ -455,7 +461,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 	public String[] getStatusOptions(){
 		ArrayList<String> statusOptions = new ArrayList<String>();
 		for( StageModel stage : workflowModel.getStageModelList().values() ){
-			statusOptions.add( stage.getTitle() );
+			String truncatedTitle;
+			if(stage.getTitle().length() >= 21)
+				truncatedTitle =  stage.getTitle().substring(0,21) + "...";
+			else
+				truncatedTitle = stage.getTitle();
+			statusOptions.add( truncatedTitle );
 		}
 		return statusOptions.toArray( new String[statusOptions.size() ]);
 	}
@@ -501,7 +512,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		checkForErrors();
 		hasBeenModified();
 	}
-
+/**
+ * Determines if any field has been modified. If any part of the field in newtask has
+ * been modified, then it will return true. 
+ * @return
+ */
 	public boolean hasBeenModified() {
 		boolean isTitleChanged = taskTitleField.getText().equals(this.taskModel.getTitle())? false: true;	
 	
@@ -513,9 +528,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 
 		boolean isActEffortChanged = this.getActualEffort() == this.taskModel.getActualEffort()? false: true;
 
-		boolean isStageChanged = workflowModel.getStageModelByID( taskModel.getStageID() ).getTitle()
-				.equals(stageBox.getSelectedItem()) ? false : true;
-
 		boolean isCatChanged = this.getCatSelectionIndex() == this.taskModel.getCatID()? false: true;
 		
 		boolean hasItChanged = 
@@ -524,7 +536,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 					!isDateChanged &&
 					!isEstEffortChanged &&
 					!isActEffortChanged &&
-					!isStageChanged	&&
 					!isCatChanged?
 							true: false;
 		if(!hasItChanged){
@@ -533,6 +544,16 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener, Ac
 		else{
 			return false;
 		}
+	}
+
+	@Override
+	public int getModelID() {
+		return taskModel.getID();
+	}
+
+	@Override
+	public TabType getTabType() {
+		return TabType.TASK;
 	}
 
 	

@@ -1,11 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab;
 
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,8 +27,9 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
+
 /**
- * @author alec
+ * @author Alec
  * This is the panel that goes inside a tab to make it closable
  */
 public class ClosableTabView extends JPanel{
@@ -41,7 +49,8 @@ public class ClosableTabView extends JPanel{
 	 * @param tabModel - the tab's model
 	 * @param paneComponent - the child component that this tab is attached to
 	 */
-	public ClosableTabView(ClosableTabModel tabModel, Component paneComponent, TabType tabType, TaskModel oldTask){
+
+	public ClosableTabView(ClosableTabModel tabModel, IHashableTab paneComponent, TabType tabType){
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.view = TabController.getTabView();
 		tabLabel = new JLabel(tabModel.getTabTitle());
@@ -53,6 +62,12 @@ public class ClosableTabView extends JPanel{
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.addActionListener( new ActionListener(){
+			/**
+			 * This action listener finds out what type of tab the tab is, and then checks all fields 
+			 * to see if any of them have changed, if so a pop up window will show up to 
+			 * say that there are unsaved changes. The user then says yes and the tab closes
+			 * or no and the tab does not.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				if(tabType == TabType.TASK){
 					if(((NewTaskTab)paneComponent).hasBeenModified()){
@@ -71,7 +86,7 @@ public class ClosableTabView extends JPanel{
 					TabController.getInstance().removeTab(paneComponent);
 					}
 				}
-				if(tabType == TabType.STAGE){
+				else if(tabType == TabType.STAGE){
 					if(((NewStageTab)paneComponent).hasBeenModified()){
 						Object[] options = { "YES", "NO" };
 						int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
@@ -88,8 +103,7 @@ public class ClosableTabView extends JPanel{
 						TabController.getInstance().removeTab(paneComponent);
 					}
 				}
-				if(tabType == TabType.ACTIVITIES){
-					((ActivitiesTab)paneComponent).getTaskModel().setActivitiesOpened(false);
+				else if(tabType == TabType.ACTIVITIES){
 					TabController.getInstance().removeTab(paneComponent);
 				}
 				}

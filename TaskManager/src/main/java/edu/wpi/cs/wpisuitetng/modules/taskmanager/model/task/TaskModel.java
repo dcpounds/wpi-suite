@@ -1,19 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task;
 import java.awt.Color;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.awt.Color;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 
 /** Model to represent a task **/
 public class TaskModel extends AbstractModel implements IDisplayModel {
@@ -29,8 +34,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private int catID;
 	private int timeThreshold;
 	private boolean isExpanded;
-	private boolean editState;
-	private boolean activitiesOpened;
 	private boolean isArchived;
 	private Color color;
 	private Color CatColor;
@@ -275,22 +278,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.dueDate = dueDate;
 	}
 	
-	
-	/**
-	 * @return- get whether the tab is being edited
-	 */
-	public boolean getEditState() {
-		return this.editState;	
-	}
-	
-	
-	/**
-	 * @param creator - set the user that created this task
-	 */
-	public void setEditState(boolean editState) {
-		this.editState = editState;
-	}
-	
 	/**
 	 * @param archiveStatus - set the task to archived (true) or active (false)
 	 */
@@ -406,20 +393,6 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	
 	public void setActivities(ActivityListModel newActivities) {
 		this.activities = newActivities;
-	}
-
-	/**
-	 * @return the areActivitiesOpened
-	 */
-	public boolean isActivitiesOpened() {
-		return activitiesOpened;
-	}
-
-	/**
-	 * @param activitiesOpened the areActivitiesOpened to set
-	 */
-	public void setActivitiesOpened(boolean activitiesOpened) {
-		this.activitiesOpened = activitiesOpened;
 	}
 
 	/**

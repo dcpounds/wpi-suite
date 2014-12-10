@@ -1,24 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 
 /**
- * Model for respresenting a stage that holds individual tasks
- *
+ * Model for representing a stage that holds individual tasks
  */
-public class StageModel extends AbstractModel {
+public class StageModel extends AbstractModel implements IDisplayModel {
 	
 	private static final long serialVersionUID = 7869886695945683209L;
 	private String title;
@@ -165,7 +169,7 @@ public class StageModel extends AbstractModel {
         
         StageModel other = (StageModel) obj;
         
-        return this.title == other.getTitle();
+        return this.title.equals(other.getTitle());
 	}
 
 	@Override
