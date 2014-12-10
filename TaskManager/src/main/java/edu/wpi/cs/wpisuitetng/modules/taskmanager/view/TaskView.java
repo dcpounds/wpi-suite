@@ -342,6 +342,7 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setContents(TaskModel task){
 		this.taskModel.setTitle(task.getTitle());
+		this.taskModel.setAssociatedRequirement(task.getAssociatedRequirement());
 		
 		task.setDueDate(task.getDueDate());
 		this.lblDue.setText("Due: " + task.getDueDate());
@@ -351,6 +352,7 @@ public class TaskView extends DragTaskPanel{
 		
 		this.setCategoryColor(task.getCatColor());
 		taskModel.setCatColor(task.getCatColor());
+		taskModel.setCatID(task.getCatID());
 		
 		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
 		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());

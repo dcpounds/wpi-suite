@@ -34,7 +34,7 @@ public class StageModelTest {
 		stage.setID(2);
 		stage.setIsArchived(true);
 		
-		StageModel stage1 = new StageModel("stage1");
+		StageModel stage1 = new StageModel("stage1", 0);
 		stage1.copyFrom(stage);
 		
 		assertTrue("Stage".equals(stage.getTitle()));
