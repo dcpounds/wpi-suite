@@ -147,7 +147,7 @@ public class TabController {
 	    				
 	    				tabName = "Edit " + tabName + "...   ";
 	    			} else {
-	    				tabName = tabName + "   ";
+	    				tabName = "Edit " + tabName + "   ";
 	    			}
 	    		}else{
 	    			tabName = "New Task   ";
@@ -157,7 +157,10 @@ public class TabController {
     			tabName = "New Stage   ";
     			break;
     		case ACTIVITIES:
-    			tabName =  (model.getTitle() + " Activities   ");
+    			if(model.getTitle().length() > 34)
+    				tabName =  (model.getTitle().substring(0,34) + "... Activities   ");
+    			else
+    				tabName = (model.getTitle() + " Activities   ");
     			break;
     		case REPORTS:
     			tabName = "Reports	";
