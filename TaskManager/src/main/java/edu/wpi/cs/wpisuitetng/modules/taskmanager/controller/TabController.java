@@ -26,12 +26,14 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ReportsTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabView;
 
 public class TabController {
 	private static TabController instance = new TabController();
 	private static TabView tabView;
+	private TabType tabType;
 	private static Map<String, Component> uniqueTabs;
 
 	private TabController () {
@@ -114,12 +116,17 @@ public class TabController {
     		case ACTIVITIES:
 	        	newTab = new ActivitiesTab((TaskModel) model);
     			break;
+    		case REPORTS:
+    			newTab = new ReportsTab("Reports");
+    			break;
         }
     	return newTab;
     }
     
     private String generateTabTitle(TabType tabType, IDisplayModel model){
     	String tabName = null;
+    	Component newTab = null;
+    	this.tabType = tabType;
     	switch(tabType){
     		case TASK:
 	    		if(model != null){
@@ -152,9 +159,38 @@ public class TabController {
     		case ACTIVITIES:
     			tabName =  (model.getTitle() + " Activities   ");
     			break;
+    		case REPORTS:
+    			tabName = "Reports	";
+    			break;
         }
     	return tabName;
     }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     private String generateTabKey(TabType tabType, int ID){

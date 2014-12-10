@@ -13,15 +13,21 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -41,7 +47,9 @@ public class ToolbarView extends JPanel {
     private final JButton newStageButton;
     private final JButton newTaskButton;
     private final JToggleButton archiveButton;
+    private final JButton reportsButton;
     private final WorkflowModel workflowModel;
+    private JTextField searchBox;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -54,6 +62,9 @@ public class ToolbarView extends JPanel {
         ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
         ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
         ImageIcon archiveIcon = new ImageIcon("../TaskManager/src/main/resources/recycle_bin.png");
+        ImageIcon reportsIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
+        ImageIcon urgencyIcon = new ImageIcon("../TaskManager/src/main/resources/urgent.png");
+        ImageIcon searchIcon = new ImageIcon("../TaskManager/src/main/resources/search.png");
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -67,6 +78,8 @@ public class ToolbarView extends JPanel {
         newStageButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(newStageButton);
+        
+        
 		
 		newTaskButton = new JButton("New Task", taskIcon);
         newTaskButton.addActionListener( new ActionListener(){
@@ -80,10 +93,27 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
         
+        
+        
+        
+        
+        
+        reportsButton = new JButton("Reports", taskIcon);
+        reportsButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().addTab(TabType.REPORTS, null);
+			}
+		});
+        reportsButton.setMargin(new Insets(0,0,0,0));
+        
+        add(Box.createHorizontalStrut(20));
+        add(reportsButton);
+        
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Urgency Coloring", new ImageIcon("../TaskManager/src/main/resources/urgent.png"));
+        JButton toggleColor = new JButton("Toggle Urgency Coloring", urgencyIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
         	 @Override
@@ -93,16 +123,37 @@ public class ToolbarView extends JPanel {
      		}
         });
         add(toggleColor);
-       
+        
         archiveButton = new JToggleButton("View Archives", archiveIcon);
         archiveButton.addChangeListener(ArchiveController.getInstance());
         archiveButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(archiveButton);
         
+        Component horizontalStrut2 = Box.createHorizontalStrut(20);
+        add(horizontalStrut2);
+        JLabel searchLabel = new JLabel();
+        searchLabel.setIcon(searchIcon);
+        
+        add(searchLabel);
+        
+        searchBox = new JTextField();
+        searchBox.setMaximumSize(new Dimension(300, 38));
+        searchBox.setOpaque(true);
+        
+        Font searchFont = new Font("Tahoma",Font.PLAIN,17);
+        
+        searchBox.setFont(searchFont);
+        add(searchBox);
+        
+        searchBox.addKeyListener(new SearchController(this));
     }
 
     static long getSerialversionuid() {
         return serialVersionUID;
+    }
+    
+    public JTextField getSearchBox(){
+    	return searchBox;
     }
 }
