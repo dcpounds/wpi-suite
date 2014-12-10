@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
 import java.awt.datatransfer.Transferable;
@@ -16,6 +25,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
+/**
+ * @author Alec
+ * This class is responsible for handling drag and drop.
+ * It allows stages to be rearranged and allows tasks to be dragged into different stages
+ */
 public class DragStageController implements DropTargetListener, MouseListener, MouseMotionListener{
 
 	private DragStagePanel stage;
@@ -37,14 +51,12 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	
 	@Override
 	public void dragEnter(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void dragExit(DropTargetEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	/* (non-Javadoc)
@@ -92,10 +104,12 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	 */
 	@Override
 	public void dropActionChanged(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		e.translatePoint(e.getComponent().getX() - mouseX, 0);
@@ -120,50 +134,42 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left empty
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
 		this.initialXPos = targetXPos = stage.getLocation().x;
-		
-		// TODO Auto-generated method stub
-		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		this.stageModel = WorkflowController.getWorkflowModel().getStageModelByID(stageID);
 		stage.setLocation(targetXPos, stage.getLocation().y);
 		initialXPos = stage.getX();
 		StageController.sendUpdateRequest(stageModel);
-		
-		// TODO Auto-generated method stub
-		
 	}
-	
-	
-	
-
 }
