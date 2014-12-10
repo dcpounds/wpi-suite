@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
@@ -164,7 +165,7 @@ public class StageController implements ActionListener{
 			this.syncTaskViews(stage, stageView);
 			stageView.updateContents(stage);
 		}
-
+		SearchController.search();
 	}
 	
 	/**
