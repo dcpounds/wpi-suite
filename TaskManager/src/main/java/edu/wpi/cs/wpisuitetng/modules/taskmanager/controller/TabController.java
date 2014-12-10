@@ -1,9 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team What? We Thought This Was Bio!
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
@@ -12,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ReportsTab;
