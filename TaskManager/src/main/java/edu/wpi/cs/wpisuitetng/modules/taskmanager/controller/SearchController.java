@@ -73,7 +73,7 @@ public class SearchController implements ActionListener, KeyListener {
 		boolean foundResult = false;
 		searchBox = toolbarView.getSearchBox();
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		String searchText = searchBox.getText();
+		String searchText = searchBox.getText().toLowerCase();
 
 		for (StageModel stage : workflowModel.getStageModelList().values()) {
 			for(TaskModel task : stage.getTaskModelList().values()){
@@ -82,7 +82,7 @@ public class SearchController implements ActionListener, KeyListener {
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (task.getTitle().contains(searchText) && searchText.length() > 0) {
+				if (task.getTitle().toLowerCase().contains(searchText) && searchText.length() > 0) {
 					if(task.getIsArchived()){
 						taskView.setBorder(new CompoundBorder(
 							BorderFactory.createLineBorder(Color.BLUE,2),
