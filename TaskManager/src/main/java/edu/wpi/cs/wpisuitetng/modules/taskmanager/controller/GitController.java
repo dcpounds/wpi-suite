@@ -28,8 +28,10 @@ public class GitController implements ActionListener {
 			client.setCredentials(gitTab.getUsernameField().getText(), gitTab.getPassField().getText());
 		}catch(Exception e){
 			e.printStackTrace();
+			setSuccessMessage("Invalid username or password provided");
+			return null;
 		}
-		System.out.println("Successfully created client");
+		setSuccessMessage("Successfully connected to repository!");
 		return client;
 	}
 	
@@ -42,11 +44,21 @@ public class GitController implements ActionListener {
 		GitHubClient client = null;
 		String urlText = gitTab.getRepositoryURL().getText();
 		if(!urlText.isEmpty()){
-			URL parsedUrl = new URL(urlText);
-			client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
+			try{
+				URL parsedUrl = new URL(urlText);
+				client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
+			}catch(Exception e){
+				setSuccessMessage("Please enter a valid URL.");
+				e.printStackTrace();
+			}
 		} else
 			client = new GitHubClient();
 		return authenticate(client);
+	}
+	
+	private void setSuccessMessage(String message){
+		gitTab.getLblVerification().setVisible(true);
+		gitTab.getLblVerification().setText(message);
 	}
 
 	@Override

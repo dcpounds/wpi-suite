@@ -15,20 +15,19 @@ import javax.swing.JButton;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.GitController;
 
 import java.awt.Font;
+import java.awt.Color;
 
 public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 	private JTextField repositoryURL;
 	private JTextField usernameField;
 	private JTextField passField;
+	private JLabel lblVerification;
 	public GitLinkTab() {
-		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][]"));
-		
-		JLabel label = new JLabel("");
-		add(label, "flowx,cell 0 0");
+		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][][]"));
 		
 		JLabel lblTitle = new JLabel("Link With A Github Repository");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
-		add(lblTitle, "cell 1 0");
+		add(lblTitle, "cell 0 0");
 		
 		JLabel lblRepository = new JLabel("Repository");
 		add(lblRepository, "cell 0 1");
@@ -54,10 +53,24 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		GitController controller = new GitController(this);
 		JButton linkButton = new JButton("Link");
 		linkButton.addActionListener(controller);
-		add(linkButton, "cell 0 7");
+		add(linkButton, "flowx,cell 0 7");
 		
 		JButton unlinkButton = new JButton("Unlink");
-		add(unlinkButton, "cell 2 7");
+		add(unlinkButton, "cell 0 7");
+		
+		lblVerification = new JLabel("Verification");
+		lblVerification.setForeground(Color.RED);
+		lblVerification.setFont(new Font("Tahoma", Font.BOLD, 12));
+		add(lblVerification, "cell 0 8");
+		lblVerification.setVisible(false);
+	}
+
+	public JLabel getLblVerification() {
+		return lblVerification;
+	}
+
+	public void setLblVerificationText(String text) {
+		this.lblVerification.setText(text);
 	}
 
 	public JTextField getRepositoryURL() {
