@@ -229,7 +229,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		colorBox.setBounds(100, 20, 140, 30);
 		colorBox.setToolTipText("Select a Category Color");
 		colorTitle = new JLabel("                  ");
+		if(model!=null)
 		setCategoryColorBox();
+		else colorBox.setSelectedIndex(1);
+		
 		add(colorTitle, "cell 3 0");
 
 		// Make a label for the requirements combo box
@@ -413,7 +416,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * Sets the category color box based on the taskModel's value
 	 */
 	public void setCategoryColorBox() {
+		
 		colorBox.setSelectedIndex(taskModel.getCatID());
+		
 	}
 
 	/**
