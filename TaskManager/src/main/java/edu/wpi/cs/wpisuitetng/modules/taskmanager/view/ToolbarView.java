@@ -59,12 +59,12 @@ public class ToolbarView extends JPanel {
     public ToolbarView() {
         this.workflowModel = WorkflowController.getWorkflowModel();
         
-        ImageIcon stageIcon = new ImageIcon("../TaskManager/src/main/resources/new_req.png");
-        ImageIcon taskIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
-        ImageIcon archiveIcon = new ImageIcon("../TaskManager/src/main/resources/recycle_bin.png");
-        ImageIcon reportsIcon = new ImageIcon("../TaskManager/src/main/resources/new_itt.png");
-        ImageIcon urgencyIcon = new ImageIcon("../TaskManager/src/main/resources/urgent.png");
-        ImageIcon searchIcon = new ImageIcon("../TaskManager/src/main/resources/search.png");
+        ImageIcon taskIcon = new ImageIcon(this.getClass().getResource("new_itt.png"));
+        ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
+        ImageIcon stageIcon = new ImageIcon(this.getClass().getResource("new_req.png"));
+        ImageIcon reportsIcon = new ImageIcon(this.getClass().getResource("new_itt.png"));
+        ImageIcon urgencyIcon = new ImageIcon(this.getClass().getResource("urgent.png"));
+        ImageIcon searchIcon = new ImageIcon(this.getClass().getResource("search.png"));
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -81,7 +81,8 @@ public class ToolbarView extends JPanel {
         
         
 		
-		newTaskButton = new JButton("New Task", taskIcon);
+		newTaskButton = new JButton("New Task");
+		newTaskButton.setIcon(taskIcon);
         newTaskButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,7 +94,8 @@ public class ToolbarView extends JPanel {
         add(Box.createHorizontalStrut(20));
         add(newTaskButton);
         
-        reportsButton = new JButton("Reports", taskIcon);
+        reportsButton = new JButton("Reports");
+        reportsButton.setIcon(reportsIcon);
         reportsButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +110,8 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Urgency Coloring", urgencyIcon);
+        JButton toggleColor = new JButton("Toggle Urgency Coloring");
+        toggleColor.setIcon(urgencyIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
         	 @Override
@@ -119,7 +122,8 @@ public class ToolbarView extends JPanel {
         });
         add(toggleColor);
         
-        archiveButton = new JToggleButton("View Archives", archiveIcon);
+        archiveButton = new JToggleButton("View Archives");
+        archiveButton.setIcon(archiveIcon);
         archiveButton.addChangeListener(ArchiveController.getInstance());
         archiveButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
