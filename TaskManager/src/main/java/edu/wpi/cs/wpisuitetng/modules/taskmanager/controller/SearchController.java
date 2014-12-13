@@ -82,24 +82,14 @@ public class SearchController implements ActionListener, KeyListener {
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (task.getTitle().toLowerCase().contains(searchText) && searchText.length() > 0) {
-					if(task.getIsArchived()){
-						taskView.setBorder(new CompoundBorder(
-							BorderFactory.createLineBorder(Color.BLUE,2),
-							BorderFactory.createLineBorder(Color.RED,2)));
-							foundResult = true;
-							continue;
-						}
-					Border blueHighlight = BorderFactory.createLineBorder(Color.blue, 2);
-					taskView.setBorder(blueHighlight);
+				if (searchText.isEmpty()) {
+					taskView.setVisible(true);
+				}
+				else if (task.getTitle().toLowerCase().contains(searchText)) {
+					taskView.setVisible(true);
 					foundResult = true;
 				} else {
-					Border normalHighlight;
-					if(!task.getIsArchived())
-						normalHighlight = BorderFactory.createLineBorder(Color.black);
-					else
-						normalHighlight = BorderFactory.createLineBorder(Color.red,2);
-					taskView.setBorder(normalHighlight);
+					taskView.setVisible(false);
 				}
 			}
 		}
