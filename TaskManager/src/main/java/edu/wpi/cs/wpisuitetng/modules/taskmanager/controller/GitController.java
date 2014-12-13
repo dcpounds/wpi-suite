@@ -140,8 +140,14 @@ public class GitController extends GitHubService implements ActionListener {
 	 * @param issue
 	 */
 	public void createTask(Issue issue){
+		String tag = "{TM}";
+		
+		//Return if the task is not tagged
+		if(!issue.getTitle().contains(tag))
+			return;
+		
 		TaskModel task = new TaskModel();
-		task.setTitle(issue.getTitle());
+		task.setTitle(issue.getTitle().replace(tag,""));
 		task.setDescription(issue.getBody());
 		task.setID(new BigDecimal(issue.getId()).intValueExact());
 		task.setCreator(issue.getUser().getName());
