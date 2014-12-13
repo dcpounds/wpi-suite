@@ -18,50 +18,54 @@ import java.awt.Font;
 import java.awt.Color;
 
 public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
-	private JTextField repositoryName;
+	private JTextField repositoryURL;
 	private JTextField usernameField;
 	private JTextField passField;
 	private JLabel lblVerification;
 	public GitLinkTab() {
-		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][][]"));
+		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][][][]"));
 		
 		JLabel lblTitle = new JLabel("Link With A Github Repository");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTitle, "cell 0 0");
 		
-		JLabel lblRepository = new JLabel("Repository Name");
+		JLabel lblRepository = new JLabel("Repository");
+		lblRepository.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(lblRepository, "cell 0 1");
 		
-		repositoryName = new JTextField();
-		add(repositoryName, "cell 0 2");
-		repositoryName.setColumns(10);
+		JLabel lblHttpgithubcom = new JLabel("http://github.com/");
+		add(lblHttpgithubcom, "flowx,cell 0 2");
 		
-		JLabel lblUsername = new JLabel("Username:");
-		add(lblUsername, "cell 0 3");
-		
-		usernameField = new JTextField();
-		add(usernameField, "cell 0 4");
-		usernameField.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Password");
-		add(lblPassword, "cell 0 5");
-		
-		passField = new JPasswordField();
-		add(passField, "cell 0 6");
-		passField.setColumns(10);
+		repositoryURL = new JTextField();
+		add(repositoryURL, "cell 0 2");
+		repositoryURL.setColumns(10);
 		
 		GitController controller = new GitController(this);
 		JButton linkButton = new JButton("Link");
 		linkButton.addActionListener(controller);
-		add(linkButton, "flowx,cell 0 7");
 		
-		JButton unlinkButton = new JButton("Unlink");
-		add(unlinkButton, "cell 0 7");
+		JLabel lblUsername = new JLabel("Username:");
+		add(lblUsername, "cell 0 4");
+		
+		usernameField = new JTextField();
+		add(usernameField, "cell 0 5");
+		usernameField.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password");
+		add(lblPassword, "cell 0 6");
+		
+		passField = new JPasswordField();
+		add(passField, "cell 0 7");
+		passField.setColumns(10);
+		add(linkButton, "flowx,cell 0 8");
 		
 		lblVerification = new JLabel("Verification");
 		lblVerification.setForeground(Color.RED);
 		lblVerification.setFont(new Font("Tahoma", Font.BOLD, 12));
-		add(lblVerification, "cell 0 8");
+		add(lblVerification, "cell 0 9");
+		
+		JButton unlinkButton = new JButton("Unlink");
+		add(unlinkButton, "cell 0 8");
 		lblVerification.setVisible(false);
 	}
 
@@ -73,12 +77,12 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		this.lblVerification.setText(text);
 	}
 
-	public JTextField getRepositoryName() {
-		return repositoryName;
+	public JTextField getRepositoryURL() {
+		return repositoryURL;
 	}
 
-	public void setRepositoryName(JTextField repositoryURL) {
-		this.repositoryName = repositoryURL;
+	public void setRepositoryURL(JTextField repositoryURL) {
+		this.repositoryURL = repositoryURL;
 	}
 
 	public JTextField getUsernameField() {

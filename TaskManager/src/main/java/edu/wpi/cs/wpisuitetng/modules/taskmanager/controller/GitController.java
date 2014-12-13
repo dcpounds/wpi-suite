@@ -4,64 +4,81 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.client.GitHubRequest;
+import org.eclipse.egit.github.core.client.PageIterator;
+import org.eclipse.egit.github.core.client.PagedRequest;
+import org.eclipse.egit.github.core.service.GitHubService;
 
+import com.google.gson.reflect.TypeToken;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_ISSUES;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS;
+import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
+import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 
 /**
  * @author Alec
  * Integrates github with TaskManager
  */
-public class GitController implements ActionListener {
+/**
+ * @author Alec
+ *
+ */
+public class GitController extends GitHubService implements ActionListener {
 	private GitLinkTab gitTab;
 
 	public GitController(GitLinkTab gitTab){
 		this.gitTab = gitTab;
 	}
 	
-	public void getIssuesFromRepo(GitHubClient client, String repo){
-		List<Issue> issues = new ArrayList<Issue>();
-		IssueService issueService = new IssueService(client);
-		try {
-			issues = issueService.getIssues(client.getUser(), repo, null);
-		} catch (IOException e) {
-			System.out.println("Error getting issues");
-			e.printStackTrace();
-		}
-		
-		System.out.println("\n\nRepo is " + repo);
-		System.out.println("Got issues:");
-		for(Issue issue : issues){
-			System.out.println(issue.getTitle());
-		}
-	}
-	
-	public void editIssue(GitHubClient client, String title, String body, String state) throws IOException {
-		IssueService issueService = new IssueService(client);
-		Issue issue = new Issue();
-		issue.setNumber(1);
-		issue.setTitle(title);
-		issue.setBody(body);
-		issue.setState(state);
-		issueService.editIssue(client.getUser(), gitTab.getRepositoryName().getText(), issue);
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(IssueService.FIELD_TITLE, title);
-		params.put(IssueService.FIELD_BODY, body);
-		params.put(IssueService.FILTER_STATE, state);
+	/**
+	 * Get a specific issue from github
+	 * @param issueNumber
+	 * @return
+	 * @throws IOException
+	 */
+	private Issue getIssue(String issueNumber) throws IOException {
+		if (issueNumber == null)
+			throw new IllegalArgumentException("Issue number cannot be null"); //$NON-NLS-1$
+		if (issueNumber.length() == 0)
+			throw new IllegalArgumentException("Issue number cannot be empty"); //$NON-NLS-1$
+
+		StringBuilder uri = new StringBuilder(SEGMENT_REPOS);
+		//We need to append the path to the repository that the user provided
+		uri.append('/').append(gitTab.getRepositoryURL().getText());
+		uri.append(SEGMENT_ISSUES);
+		uri.append('/').append(issueNumber);
+		GitHubRequest request = createRequest();
+		request.setUri(uri);
+		request.setType(Issue.class);
+		Issue result = (Issue) client.get(request).getBody();
+		return (Issue) client.get(request).getBody();
 	}
 	
 	/**
-	 * Create the connection using the provided credentials
+	 * Retrieves all issues from the github repository
+	 * @return a list of repositoryIssues
+	 * @throws IOException
+	 */
+	public List<RepositoryIssue> getAllIssues(GitHubClient client) throws IOException {
+		System.out.println("Got all issues");
+		List<RepositoryIssue> issues = super.getAll(this.pageIssues(client));
+		for(RepositoryIssue issue : issues){
+			System.out.println(issue.getTitle());
+		}
+		return issues;
+	}
+	
+	/**
+	 * Log the client in using the provided credentials
+	 * @throws IOException 
 	 */
 	private GitHubClient authenticate(GitHubClient client){
-		String repoName = gitTab.getRepositoryName().getText();
 		try{
 			client.setCredentials(gitTab.getUsernameField().getText(), gitTab.getPassField().getText());
 		}catch(Exception e){
@@ -70,20 +87,38 @@ public class GitController implements ActionListener {
 			return null;
 		}
 		setSuccessMessage("Successfully connected to repository!");
-		getIssuesFromRepo(client, repoName);
-		//makeIssue(client, "Title", "Body", "State");
+		try {
+			getAllIssues(client);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return client;
 	}
 	
 	/**
-	 * Create a new github client using the provided repo url
+	 * This method is used to iterate through all of the issues and retrieve them all
+	 * @return a pageIterator for pageIssues
+	 */
+	public PageIterator<RepositoryIssue> pageIssues(GitHubClient client) {
+		PagedRequest<RepositoryIssue> request = createPagedRequest(PAGE_FIRST, PAGE_SIZE);
+		StringBuilder uri = new StringBuilder(SEGMENT_REPOS);
+		//We need to append the path to the repository that the user provided
+		uri.append('/').append(gitTab.getRepositoryURL().getText());
+		uri.append(SEGMENT_ISSUES);
+		request.setUri(uri);
+		request.setType(new TypeToken<List<RepositoryIssue>>() {
+		}.getType());
+		return createPageIterator(request);
+	}
+	
+	/**
+	 * Create a new github client using the provided credentials
 	 * @return the fully authenticated client
 	 * @throws IOException
 	 */
 	public GitHubClient createClient() throws IOException {
 		GitHubClient client = null;
-		String repoName = gitTab.getRepositoryName().getText();
-		if(!repoName.isEmpty()){
 			try{
 				URL parsedUrl = new URL("https://api.github.com");
 				client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
@@ -91,11 +126,13 @@ public class GitController implements ActionListener {
 				setSuccessMessage("Please enter a valid URL.");
 				e.printStackTrace();
 			}
-		} else
-			client = new GitHubClient();
 		return authenticate(client);
 	}
 	
+	/**
+	 * Set the success/failure messaage in the tab view
+	 * @param message
+	 */
 	private void setSuccessMessage(String message){
 		gitTab.getLblVerification().setVisible(true);
 		gitTab.getLblVerification().setText(message);
