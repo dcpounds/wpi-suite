@@ -145,6 +145,18 @@ public class StageController implements ActionListener{
 	}
 	
 	/**
+	 * Locates the stage that a task exists in, null otherwise
+	 * @param taskID
+	 * @return the stage the task exists in, null otherwise
+	 */
+	public static StageModel locateTaskStage(int taskID){
+		for(StageModel stageModel : workflowModel.getStageModelList().values())
+			if(stageModel.getTaskModelList().get(taskID) != null)
+				return stageModel;
+		return null;
+	}
+	
+	/**
 	 * The stage that was saved in the database
 	 * @param stage - the stage that just got updated in the database
 	 */

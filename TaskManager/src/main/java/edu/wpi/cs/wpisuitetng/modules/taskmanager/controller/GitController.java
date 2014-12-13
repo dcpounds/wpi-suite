@@ -149,14 +149,16 @@ public class GitController extends GitHubService implements ActionListener {
 		TaskModel task = new TaskModel();
 		task.setTitle(issue.getTitle().replace(tag,""));
 		task.setDescription(issue.getBody());
-		task.setID(new BigDecimal(issue.getId()).intValueExact());
+		int issueID = new BigDecimal(issue.getId()).intValueExact();
+		task.setID(issueID);
 		task.setCreator(issue.getUser().getName());
 		
 		Format formatter = new SimpleDateFormat("MM/dd/yyyy");
 		task.setDueDate(formatter.format(issue.getCreatedAt()));
 		
 		HashMap<Integer,StageModel> stageList = WorkflowController.getWorkflowModel().getStageModelList();
-		StageModel stage = (StageModel) stageList.values().toArray()[0];
+		StageModel stage = StageController.locateTaskStage(issueID);
+		stage = stage == null ? (StageModel) stageList.values().toArray()[0] : stage;
 		task.setStageID(stage.getID());
 		task.setCatColor(Color.WHITE);
 		stage.addTaskModel(task);
