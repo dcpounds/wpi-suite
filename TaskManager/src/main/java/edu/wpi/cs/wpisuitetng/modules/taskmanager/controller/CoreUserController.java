@@ -49,7 +49,8 @@ public class CoreUserController implements ActionListener {
 	public void addUsersToList(User[] users) {
 		DefaultListModel<String> unassignedList = view.getUnassignedListModel();
 		for( User user: users)
-			unassignedList.addElement( user.getName() );
+			if (!view.getAssignedListModel().contains(user.getUsername()))
+				unassignedList.addElement( user.getUsername() );
 		view.revalidate();
 		view.repaint();
 	}

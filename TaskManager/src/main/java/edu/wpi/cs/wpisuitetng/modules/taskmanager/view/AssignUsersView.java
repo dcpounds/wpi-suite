@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AssignUnassignUserC
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
  * @author Alec
@@ -44,9 +45,12 @@ public class AssignUsersView extends JPanel{
 	private JList<String> assignedListComponent;
 	private DefaultListModel<String> unassignedListModel;
 	private DefaultListModel<String> assignedListModel;
+	private TaskModel taskModel;
 	
-	public AssignUsersView() {
-		
+
+	
+public AssignUsersView(TaskModel taskModel) {
+		this.taskModel = taskModel;
 		//Call the controller responsible for making 
 		//the call to the database for fetching core users
 		new CoreUserController(this).requestUserList();
@@ -65,12 +69,6 @@ public class AssignUsersView extends JPanel{
 		JScrollPane unassignedScrollPane = new JScrollPane();
 		add(unassignedScrollPane, "cell 0 2,growy");
 		
-		//List of unassigned users
-		unassignedListModel = new DefaultListModel<String>();
-		unassignedListComponent = new JList<String>( unassignedListModel );
-		unassignedListComponent.setFixedCellWidth(150);
-		unassignedScrollPane.setViewportView(unassignedListComponent);
-		
 		JScrollPane assignedScrollPane = new JScrollPane();
 		add(assignedScrollPane, "cell 2 2,growy");
 		
@@ -79,6 +77,12 @@ public class AssignUsersView extends JPanel{
 		assignedListComponent = new JList<String>( assignedListModel );
 		assignedListComponent.setFixedCellWidth(150);
 		assignedScrollPane.setViewportView(assignedListComponent);
+		
+		//List of unassigned users
+		unassignedListModel = new DefaultListModel<String>();
+		unassignedListComponent = new JList<String>( unassignedListModel );
+		unassignedListComponent.setFixedCellWidth(150);
+		unassignedScrollPane.setViewportView(unassignedListComponent);
 		
 		JButton btnAssign = new JButton("Assign >>");
 		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
@@ -162,6 +166,13 @@ public class AssignUsersView extends JPanel{
 	 */
 	public JList<String> getUnssignedListComponent() {
 		return unassignedListComponent;
+	}
+	
+	/**
+	 * @return the taskModel passed in
+	 */
+	public TaskModel getTaskModel(){
+		return taskModel;
 	}
 	
 	/**

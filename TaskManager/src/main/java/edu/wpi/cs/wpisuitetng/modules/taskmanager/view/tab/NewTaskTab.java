@@ -174,7 +174,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		taskDescriptionField.addKeyListener(this);
 
 		// Create a view where users can assign users to the task
-		assignUsersView = new AssignUsersView();
+		assignUsersView = new AssignUsersView(taskModel);
 		add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
 
 		// Warn if the users put in a bad estimated effort

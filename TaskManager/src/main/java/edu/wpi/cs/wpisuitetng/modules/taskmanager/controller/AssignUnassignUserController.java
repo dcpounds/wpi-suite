@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignRemoveEnum;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.AssignUsersView;
 
@@ -33,6 +36,7 @@ public class AssignUnassignUserController implements ActionListener {
 	public AssignUnassignUserController(AssignUsersView view, AssignRemoveEnum action){
 		this.view = view;
 		this.action = action;
+		addExistingUsers();
 	}
 
 	/* (non-Javadoc)
@@ -51,27 +55,44 @@ public class AssignUnassignUserController implements ActionListener {
 		this.assignedListComponent = view.getAssignedListComponent();
 		this.unassignedListComponent = view.getUnssignedListComponent();
 		
-		switch(action){		
+		
+		
+		switch(action){	
 			case ASSIGN:
-				selectedIndex = view.getUnassignedListSelectedIndex();
-				selectedName = view.getUnassignedListSelectedName();
-				
-				//don't add the user if already assigned
-				if(!assignedListModel.contains(selectedName) && selectedIndex >= 0 ){
-					unassignedListModel.remove(selectedIndex);
-					assignedListModel.addElement(selectedName);
-				}
-				break;
-			case UNASSIGN:
 				selectedIndex = view.getAssignedListSelectedIndex();
 				selectedName = view.getAssignedListSelectedName();
-				
-				//don't add the user if already unassigned
-				if(!unassignedListModel.contains(selectedName) && selectedIndex >= 0){
-					assignedListModel.remove(selectedIndex);
-					unassignedListModel.addElement(selectedName);
-				}
+				assignUser(selectedIndex, selectedName);
 				break;
+			case UNASSIGN:
+				selectedIndex = view.getUnassignedListSelectedIndex();
+				selectedName = view.getUnassignedListSelectedName();
+				unassignUser(selectedIndex, selectedName);
+				break;
+		}
+	}
+	
+	public void assignUser(int selectedIndex, String selectedName){		
+		//don't add the user if already assigned
+		if(!assignedListModel.contains(selectedName) && selectedIndex >= 0 ){
+			unassignedListModel.remove(selectedIndex);
+			assignedListModel.addElement(selectedName);
+		}
+	}
+	
+	public void unassignUser(int selectedIndex, String selectedName){
+		//don't add the user if already unassigned
+		if(!unassignedListModel.contains(selectedName) && selectedIndex >= 0){
+			assignedListModel.remove(selectedIndex);
+			unassignedListModel.addElement(selectedName);
+		}
+	}
+	
+	public void addExistingUsers(){
+		TaskModel taskModel = view.getTaskModel();
+		for (String assigneduser : taskModel.getUsersAssignedTo()){
+				if (!assignedListModel.contains(assigneduser)){
+					assignedListModel.addElement(assigneduser);
+			}
 		}
 	}
 
