@@ -36,20 +36,21 @@ public class GitController implements ActionListener {
 			e.printStackTrace();
 		}
 		
+		System.out.println("\n\nRepo is " + repo);
 		System.out.println("Got issues:");
 		for(Issue issue : issues){
 			System.out.println(issue.getTitle());
 		}
 	}
 	
-	public void makeIssue(GitHubClient client, String title, String body, String state) throws IOException {
+	public void editIssue(GitHubClient client, String title, String body, String state) throws IOException {
 		IssueService issueService = new IssueService(client);
 		Issue issue = new Issue();
 		issue.setNumber(1);
 		issue.setTitle(title);
 		issue.setBody(body);
 		issue.setState(state);
-		issueService.editIssue(client.getUser(), "HCIP4", issue);
+		issueService.editIssue(client.getUser(), gitTab.getRepositoryName().getText(), issue);
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(IssueService.FIELD_TITLE, title);
 		params.put(IssueService.FIELD_BODY, body);
@@ -60,6 +61,7 @@ public class GitController implements ActionListener {
 	 * Create the connection using the provided credentials
 	 */
 	private GitHubClient authenticate(GitHubClient client){
+		String repoName = gitTab.getRepositoryName().getText();
 		try{
 			client.setCredentials(gitTab.getUsernameField().getText(), gitTab.getPassField().getText());
 		}catch(Exception e){
@@ -68,12 +70,8 @@ public class GitController implements ActionListener {
 			return null;
 		}
 		setSuccessMessage("Successfully connected to repository!");
-		try {
-			makeIssue(client, "Title", "Body", "State");
-		} catch (IOException e) {
-			System.out.println("Failed to make issue");
-			e.printStackTrace();
-		}
+		getIssuesFromRepo(client, repoName);
+		//makeIssue(client, "Title", "Body", "State");
 		return client;
 	}
 	
@@ -84,10 +82,10 @@ public class GitController implements ActionListener {
 	 */
 	public GitHubClient createClient() throws IOException {
 		GitHubClient client = null;
-		String urlText = gitTab.getRepositoryURL().getText();
-		if(!urlText.isEmpty()){
+		String repoName = gitTab.getRepositoryName().getText();
+		if(!repoName.isEmpty()){
 			try{
-				URL parsedUrl = new URL(urlText);
+				URL parsedUrl = new URL("https://api.github.com");
 				client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
 			}catch(Exception e){
 				setSuccessMessage("Please enter a valid URL.");

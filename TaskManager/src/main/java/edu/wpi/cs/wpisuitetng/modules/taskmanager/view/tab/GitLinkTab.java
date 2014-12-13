@@ -18,7 +18,7 @@ import java.awt.Font;
 import java.awt.Color;
 
 public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
-	private JTextField repositoryURL;
+	private JTextField repositoryName;
 	private JTextField usernameField;
 	private JTextField passField;
 	private JLabel lblVerification;
@@ -29,12 +29,12 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTitle, "cell 0 0");
 		
-		JLabel lblRepository = new JLabel("Repository");
+		JLabel lblRepository = new JLabel("Repository Name");
 		add(lblRepository, "cell 0 1");
 		
-		repositoryURL = new JTextField();
-		add(repositoryURL, "cell 0 2");
-		repositoryURL.setColumns(10);
+		repositoryName = new JTextField();
+		add(repositoryName, "cell 0 2");
+		repositoryName.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		add(lblUsername, "cell 0 3");
@@ -73,12 +73,12 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		this.lblVerification.setText(text);
 	}
 
-	public JTextField getRepositoryURL() {
-		return repositoryURL;
+	public JTextField getRepositoryName() {
+		return repositoryName;
 	}
 
-	public void setRepositoryURL(JTextField repositoryURL) {
-		this.repositoryURL = repositoryURL;
+	public void setRepositoryName(JTextField repositoryURL) {
+		this.repositoryName = repositoryURL;
 	}
 
 	public JTextField getUsernameField() {
