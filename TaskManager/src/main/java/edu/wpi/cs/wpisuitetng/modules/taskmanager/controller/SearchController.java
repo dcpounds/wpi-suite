@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -77,15 +78,16 @@ public class SearchController implements ActionListener, KeyListener {
 
 		for (StageModel stage : workflowModel.getStageModelList().values()) {
 			for(TaskModel task : stage.getTaskModelList().values()){
+				boolean shouldShow = (ArchiveController.getIsPressed() || !task.getIsArchived() ? true: false);
 				int stageID = stage.getID();
 				int taskID = task.getID();
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (searchText.isEmpty()) {
+				if (searchText.isEmpty() && shouldShow) {
 					taskView.setVisible(true);
 				}
-				else if (task.getTitle().toLowerCase().contains(searchText)) {
+				else if (task.getTitle().toLowerCase().contains(searchText) && shouldShow) {
 					taskView.setVisible(true);
 					foundResult = true;
 				} else {
