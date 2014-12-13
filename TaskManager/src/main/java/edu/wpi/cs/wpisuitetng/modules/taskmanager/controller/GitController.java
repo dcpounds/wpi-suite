@@ -4,8 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.IssueService;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 
@@ -20,6 +26,36 @@ public class GitController implements ActionListener {
 		this.gitTab = gitTab;
 	}
 	
+	public void getIssuesFromRepo(GitHubClient client, String repo){
+		List<Issue> issues = new ArrayList<Issue>();
+		IssueService issueService = new IssueService(client);
+		try {
+			issues = issueService.getIssues(client.getUser(), repo, null);
+		} catch (IOException e) {
+			System.out.println("Error getting issues");
+			e.printStackTrace();
+		}
+		
+		System.out.println("Got issues:");
+		for(Issue issue : issues){
+			System.out.println(issue.getTitle());
+		}
+	}
+	
+	public void makeIssue(GitHubClient client, String title, String body, String state) throws IOException {
+		IssueService issueService = new IssueService(client);
+		Issue issue = new Issue();
+		issue.setNumber(1);
+		issue.setTitle(title);
+		issue.setBody(body);
+		issue.setState(state);
+		issueService.editIssue(client.getUser(), "HCIP4", issue);
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(IssueService.FIELD_TITLE, title);
+		params.put(IssueService.FIELD_BODY, body);
+		params.put(IssueService.FILTER_STATE, state);
+	}
+	
 	/**
 	 * Create the connection using the provided credentials
 	 */
@@ -32,6 +68,12 @@ public class GitController implements ActionListener {
 			return null;
 		}
 		setSuccessMessage("Successfully connected to repository!");
+		try {
+			makeIssue(client, "Title", "Body", "State");
+		} catch (IOException e) {
+			System.out.println("Failed to make issue");
+			e.printStackTrace();
+		}
 		return client;
 	}
 	
