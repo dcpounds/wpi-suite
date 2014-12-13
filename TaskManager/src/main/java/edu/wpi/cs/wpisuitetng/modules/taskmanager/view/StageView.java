@@ -13,21 +13,31 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
+
 import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JButton;
 
 /**
@@ -42,6 +52,7 @@ public class StageView extends DragStagePanel {
 	private HashMap<Integer,TaskView> taskViewList;
 	private JLabel lblStageTitle;
 	private JButton btnClose;
+	private JButton collapseAll;
 	private boolean closable;
 	private StageModel stageModel;
 	private int id;
@@ -65,6 +76,19 @@ public class StageView extends DragStagePanel {
 		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblStageTitle.putClientProperty("html.disable", Boolean.TRUE);
 		add(lblStageTitle, "cell 0 0,alignx center,aligny center");
+		
+		StageView thisStage = this;
+		collapseAll = new JButton("Collapse All");
+		collapseAll.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		collapseAll.setMargin(new Insets(0, 0, 0, 0));
+		collapseAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (TaskView taskView : thisStage.getTaskViewList().values()) {
+					taskView.hideDetails();
+				}
+			}
+		});
+		add(collapseAll);
 		
 		btnClose = new JButton("\u2716");
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
