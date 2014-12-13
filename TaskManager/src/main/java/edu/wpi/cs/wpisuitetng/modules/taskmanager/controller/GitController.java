@@ -1,11 +1,15 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
-
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -13,12 +17,14 @@ import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.GitHubService;
-
 import com.google.gson.reflect.TypeToken;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_ISSUES;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 
 /**
@@ -56,7 +62,6 @@ public class GitController extends GitHubService implements ActionListener {
 		GitHubRequest request = createRequest();
 		request.setUri(uri);
 		request.setType(Issue.class);
-		Issue result = (Issue) client.get(request).getBody();
 		return (Issue) client.get(request).getBody();
 	}
 	
@@ -70,6 +75,7 @@ public class GitController extends GitHubService implements ActionListener {
 		List<RepositoryIssue> issues = super.getAll(this.pageIssues(client));
 		for(RepositoryIssue issue : issues){
 			System.out.println(issue.getTitle());
+			createTask(issue);
 		}
 		return issues;
 	}
@@ -127,6 +133,28 @@ public class GitController extends GitHubService implements ActionListener {
 				e.printStackTrace();
 			}
 		return authenticate(client);
+	}
+	
+	/**
+	 * Create a task from an issue and add it to the workflow
+	 * @param issue
+	 */
+	public void createTask(Issue issue){
+		TaskModel task = new TaskModel();
+		task.setTitle(issue.getTitle());
+		task.setDescription(issue.getBody());
+		task.setID(new BigDecimal(issue.getId()).intValueExact());
+		task.setCreator(issue.getUser().getName());
+		
+		Format formatter = new SimpleDateFormat("MM/dd/yyyy");
+		task.setDueDate(formatter.format(issue.getCreatedAt()));
+		
+		HashMap<Integer,StageModel> stageList = WorkflowController.getWorkflowModel().getStageModelList();
+		StageModel stage = (StageModel) stageList.values().toArray()[0];
+		task.setStageID(stage.getID());
+		task.setCatColor(Color.WHITE);
+		stage.addTaskModel(task);
+		StageController.sendUpdateRequest(stage);
 	}
 	
 	/**
