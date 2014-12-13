@@ -142,18 +142,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		stageBox.setPreferredSize(new Dimension(125,10));
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>(getStatusOptions()));
-
-		// Set the default selected value of the stage selection box
-		if (model != null)
-			stageBox.setSelectedItem(workflowModel.getStageModelList()
-					.get(model.getStageID()).getTitle());
-
 		add(stageBox, "pad 0 10 0 0,cell 3 1");
 		stageBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selected = ((JComboBox) e.getSource()).getSelectedIndex();
 			}
 		});
+		this.setStageBox();
 
 		// Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
@@ -409,6 +404,20 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			if (taskModel.getAssociatedRequirement().equals(requirement)) {
 				requirementsBox.setSelectedItem(requirement);
 			}
+		}
+	}
+	
+	
+	/**
+	 * Set the default value for the stage box
+	 */
+	public void setStageBox() {
+		// Set the default selected value of the stage selection box
+		if (taskModel.getStageID() != 0){
+			String stageText = workflowModel.getStageModelList()
+					.get(taskModel.getStageID()).getTitle();
+			
+			stageBox.setSelectedItem(stageText);
 		}
 	}
 	
