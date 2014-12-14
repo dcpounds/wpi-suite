@@ -174,7 +174,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		taskDescriptionField.addKeyListener(this);
 
 		// Create a view where users can assign users to the task
-		assignUsersView = new AssignUsersView();
+		assignUsersView = new AssignUsersView(taskModel);
 		add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
 
 		// Warn if the users put in a bad estimated effort
@@ -229,12 +229,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		colorBox.setBounds(100, 20, 140, 30);
 		colorBox.setToolTipText("Select a Category Color");
 		colorTitle = new JLabel("                  ");
+		if(model!=null)
 		setCategoryColorBox();
+		else colorBox.setSelectedIndex(1);
+		
 		add(colorTitle, "cell 3 0");
 
 		// Make a label for the requirements combo box
 		lblRequirement = new JLabel("Requirement:");
-		add(lblRequirement, "pad 0 10 0 0,cell 3 12");
+		add(lblRequirement, "pad 0 10 0 0,cell 3 12, pad 0 9 0 50");
 
 		// Make the requirements combo box.
 		this.requirementsComboModel = new DefaultComboBoxModel<String>();
@@ -358,11 +361,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 
 		String creatorName = ConfigManager.getConfig().getUserName();
+		ArrayList<String> assignedUsers = assignUsersView.getAssignedUsers();
 		taskModel.setCreator(creatorName);
 		taskModel.setTitle(this.getTitleLabelText());
 		taskModel.setDescription(this.getDescriptionText());
 		taskModel.setDueDate(this.getDateText());
-		taskModel.setUsersAssignedTo(assignUsersView.getAssignedUsers());
+		taskModel.setUsersAssignedTo(assignedUsers);
 		taskModel.setEstimatedEffort(this.getEstimatedEffort());
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
@@ -413,7 +417,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * Sets the category color box based on the taskModel's value
 	 */
 	public void setCategoryColorBox() {
+		
 		colorBox.setSelectedIndex(taskModel.getCatID());
+		
 	}
 
 	/**

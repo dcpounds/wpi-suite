@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.AssignUnassignUserC
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.CoreUserController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
  * @author Alec
@@ -44,9 +45,12 @@ public class AssignUsersView extends JPanel{
 	private JList<String> assignedListComponent;
 	private DefaultListModel<String> unassignedListModel;
 	private DefaultListModel<String> assignedListModel;
+	private TaskModel taskModel;
 	
-	public AssignUsersView() {
-		
+
+	
+public AssignUsersView(TaskModel taskModel) {
+		this.taskModel = taskModel;
 		//Call the controller responsible for making 
 		//the call to the database for fetching core users
 		new CoreUserController(this).requestUserList();
@@ -62,23 +66,21 @@ public class AssignUsersView extends JPanel{
 		lblUsersAssigned.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblUsersAssigned, "cell 2 1,alignx center");
 		
-		JScrollPane unassignedScrollPane = new JScrollPane();
-		add(unassignedScrollPane, "cell 0 2,growy");
-		
 		//List of unassigned users
 		unassignedListModel = new DefaultListModel<String>();
 		unassignedListComponent = new JList<String>( unassignedListModel );
 		unassignedListComponent.setFixedCellWidth(150);
+		JScrollPane unassignedScrollPane = new JScrollPane();
 		unassignedScrollPane.setViewportView(unassignedListComponent);
-		
-		JScrollPane assignedScrollPane = new JScrollPane();
-		add(assignedScrollPane, "cell 2 2,growy");
+		add(unassignedScrollPane, "cell 0 2,growy");
 		
 		//List of assigned users
 		assignedListModel = new DefaultListModel<String>();
 		assignedListComponent = new JList<String>( assignedListModel );
 		assignedListComponent.setFixedCellWidth(150);
+		JScrollPane assignedScrollPane = new JScrollPane();
 		assignedScrollPane.setViewportView(assignedListComponent);
+		add(assignedScrollPane, "cell 2 2,growy");
 		
 		JButton btnAssign = new JButton("Assign >>");
 		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
@@ -87,21 +89,18 @@ public class AssignUsersView extends JPanel{
 		JButton buttonUnassign = new JButton("<< Unassign");
 		buttonUnassign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.UNASSIGN) );
 		add(buttonUnassign, "cell 2 3,alignx center");
-	
 	}
 	
-	/**
-	 * @return an array of userName strings from the provided list of userModels
-	 */	
-	private String[] getUsernameList() {
-		ArrayList<String> userNames = new ArrayList<String>();
-		for( User user : workflowModel.getUserList() ){
-			String userName = user.getUsername();
-			userNames.add(userName);
+	public void assignExistingUsers() {
+		for(String assignedUser : taskModel.getUsersAssignedTo()){
+			for(int index = 0; index < unassignedListModel.getSize(); index++){
+				if(assignedUser.equals(unassignedListModel.getElementAt(index)) ){
+					unassignedListModel.remove(index);
+					assignedListModel.addElement(assignedUser);
+				}	
+			}
 		}
-		return userNames.toArray(new String[userList.length]);
 	}
-	
 	
 	/**
 	 * 
