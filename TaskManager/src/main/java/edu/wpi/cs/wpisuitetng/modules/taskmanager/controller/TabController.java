@@ -119,6 +119,17 @@ public class TabController {
     }
     
     /**
+     * 
+     */
+    public void closeUniqueTab(TabType tabType, IDisplayModel model){
+    	String tabKey = generateTabKey(tabType, model.getID());
+    	if(uniqueTabs.containsKey(tabKey)){
+        	tabView.remove(uniqueTabs.get(tabKey));
+    		uniqueTabs.remove(tabKey);	
+    	}
+    }
+    
+    /**
      * Generate a new tab given a tab type and an IDisplayModel
      * @param tabType
      * @param model
