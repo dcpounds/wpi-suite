@@ -10,6 +10,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -17,7 +18,9 @@ import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.GitHubService;
+
 import com.google.gson.reflect.TypeToken;
+
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_ISSUES;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
@@ -25,6 +28,8 @@ import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 
 /**
@@ -73,10 +78,8 @@ public class GitController extends GitHubService implements ActionListener {
 	public List<RepositoryIssue> getAllIssues(GitHubClient client) throws IOException {
 		System.out.println("Got all issues");
 		List<RepositoryIssue> issues = super.getAll(this.pageIssues(client));
-		for(RepositoryIssue issue : issues){
-			System.out.println(issue.getTitle());
-			createTask(issue);
-		}
+		
+		createTasks(issues);
 		setSuccessMessage("Successfully imported issues from the repository!");
 		return issues;
 	}
@@ -138,30 +141,43 @@ public class GitController extends GitHubService implements ActionListener {
 	 * Create a task from an issue and add it to the workflow
 	 * @param issue
 	 */
-	public void createTask(Issue issue){
+	public void createTasks(List<RepositoryIssue> issues){
+		HashMap<Integer,StageModel> stageList = WorkflowController.getWorkflowModel().getStageModelList();
+		HashMap<Integer,StageModel> stagesToUpdate = new HashMap<Integer, StageModel>();
 		String tag = "{TM}";
 		
-		//Return if the task is not tagged
-		if(!issue.getTitle().contains(tag))
-			return;
+		for(RepositoryIssue issue : issues){
+			//Skip if the task is not tagged
+			if(!issue.getTitle().contains(tag))
+				continue;
+			
+			TaskModel task = new TaskModel();
+			task.setTitle(issue.getTitle().replace(tag,""));
+			task.setDescription(issue.getBody());
+			int issueID = new BigDecimal(issue.getId()).intValueExact();
+			task.setID(issueID);
+			task.setCreator(issue.getUser().getName());
+			
+			Format formatter = new SimpleDateFormat("MM/dd/yyyy");
+			task.setDueDate(formatter.format(issue.getCreatedAt()));
+			
+			StageModel stage = StageController.locateTaskStage(issueID);
+			stage = stage == null ? (StageModel) stageList.values().toArray()[0] : stage;			
+			
+			task.setStageID(stage.getID());
+			task.setCatColor(Color.WHITE);
+			
+			StageView stageView = TabController.getTabView().getWorkflowView().getStageViewList().get(stage.getID());
+			TaskView taskView = new TaskView(task, stageView);
+			stageView.addTaskView(taskView);
+			
+			stage.addTaskModel(task);
+			stagesToUpdate.put(stage.getID(), stage);
+		}
 		
-		TaskModel task = new TaskModel();
-		task.setTitle(issue.getTitle().replace(tag,""));
-		task.setDescription(issue.getBody());
-		int issueID = new BigDecimal(issue.getId()).intValueExact();
-		task.setID(issueID);
-		task.setCreator(issue.getUser().getName());
-		
-		Format formatter = new SimpleDateFormat("MM/dd/yyyy");
-		task.setDueDate(formatter.format(issue.getCreatedAt()));
-		
-		HashMap<Integer,StageModel> stageList = WorkflowController.getWorkflowModel().getStageModelList();
-		StageModel stage = StageController.locateTaskStage(issueID);
-		stage = stage == null ? (StageModel) stageList.values().toArray()[0] : stage;
-		task.setStageID(stage.getID());
-		task.setCatColor(Color.WHITE);
-		stage.addTaskModel(task);
-		StageController.sendUpdateRequest(stage);
+		for(StageModel stage : stagesToUpdate.values()){
+			StageController.sendUpdateRequest(stage);
+		}
 	}
 	
 	/**

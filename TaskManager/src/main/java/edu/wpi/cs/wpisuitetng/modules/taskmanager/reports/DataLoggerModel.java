@@ -139,7 +139,8 @@ public class DataLoggerModel extends AbstractModel
 	public TaskSnapshot returnPreviousSnapshot(TaskSnapshot taskSnapshot) {
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
-		for (int i=taskSnapList.size(); i>=0; i=i-1) 
+		
+		for (int i=taskSnapList.size(); i > 0; i=i--) 
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{
