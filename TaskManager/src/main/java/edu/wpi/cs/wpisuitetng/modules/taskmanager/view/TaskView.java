@@ -226,6 +226,7 @@ public class TaskView extends DragTaskPanel{
 					public void actionPerformed(ActionEvent e) {
 						activateArchiveView();
 						StageController.archiveTask(tv);
+						TabController.getInstance().closeUniqueTab(TabType.TASK,taskModel);
 					}
 				});
 				

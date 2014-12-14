@@ -37,6 +37,8 @@ public class ClosableTabView extends JPanel{
 	private final TabView view;
 	private final JButton closeButton;
 	private TaskModel oldTask;
+	private IHashableTab paneComponent;
+	private TabType tabType;
 	
 	/**
 	 * construct the panel to make a tab closable
@@ -48,6 +50,8 @@ public class ClosableTabView extends JPanel{
 	public ClosableTabView(ClosableTabModel tabModel, IHashableTab paneComponent, TabType tabType){
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.view = TabController.getTabView();
+		this.paneComponent = paneComponent;
+		this.tabType = tabType;
 		tabLabel = new JLabel(tabModel.getTabTitle());
 		tabLabel.putClientProperty("html.disable", Boolean.TRUE);
 		setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
@@ -64,52 +68,59 @@ public class ClosableTabView extends JPanel{
 			 * or no and the tab does not.
 			 */
 			public void actionPerformed(ActionEvent e) {
-				if(tabType == TabType.TASK){
-					if(((NewTaskTab)paneComponent).hasBeenModified()){
-						Object[] options = { "YES", "NO" };
-						int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-							null, options, options[0]);
-					if(choice == 0){
-					TabController.getInstance().removeTab(paneComponent);
-					}
-					else if (choice == 1){
-						//do nothing
-					}
-				}
-					else{
-					TabController.getInstance().removeTab(paneComponent);
-					}
-				}
-				else if(tabType == TabType.STAGE){
-					if(((NewStageTab)paneComponent).hasBeenModified()){
-						Object[] options = { "YES", "NO" };
-						int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-							null, options, options[0]);
-						if(choice == 0){
-							TabController.getInstance().removeTab(paneComponent);
-						}
-						else{
-							//do nothing
-						}
-					}
-					else{
-						TabController.getInstance().removeTab(paneComponent);
-					}
-				}
-				else if(tabType == TabType.ACTIVITIES){
-					TabController.getInstance().removeTab(paneComponent);
-				}
-				else if(tabType == TabType.REPORTS){
-					TabController.getInstance().removeTab(paneComponent);
-				}
-				}
-				});
+				closeTab();
+			}
+		});
 		this.add(tabLabel);
 		this.add(closeButton);
 	}
 
+	/**
+	 * Closes the tab when called
+	 */
+	public void closeTab(){
+		if(tabType == TabType.TASK){
+			if(((NewTaskTab)paneComponent).hasBeenModified()){
+				Object[] options = { "YES", "NO" };
+				int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[0]);
+			if(choice == 0){
+			TabController.getInstance().removeTab(paneComponent);
+			}
+			else if (choice == 1){
+				//do nothing
+			}
+		}
+			else{
+			TabController.getInstance().removeTab(paneComponent);
+			}
+		}
+		else if(tabType == TabType.STAGE){
+			if(((NewStageTab)paneComponent).hasBeenModified()){
+				Object[] options = { "YES", "NO" };
+				int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[0]);
+				if(choice == 0){
+					TabController.getInstance().removeTab(paneComponent);
+				}
+				else{
+					//do nothing
+				}
+			}
+			else{
+				TabController.getInstance().removeTab(paneComponent);
+			}
+		}
+		else if(tabType == TabType.ACTIVITIES){
+			TabController.getInstance().removeTab(paneComponent);
+		}
+		else if(tabType == TabType.REPORTS){
+			TabController.getInstance().removeTab(paneComponent);
+		}
+	}
+	
 	/**
 	 * get the model of the tab that can be closed
 	 * 
