@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -81,6 +82,11 @@ public class TaskView extends DragTaskPanel{
 	private JPanel catPanel;
 	private JButton btnRestore;
 	private JButton closeButton;
+	ImageIcon sign;
+	ImageIcon greenIcon = new ImageIcon(this.getClass().getResource("Green.png"));
+	ImageIcon yellowIcon = new ImageIcon(this.getClass().getResource("Yellow.png"));
+	ImageIcon redIcon = new ImageIcon(this.getClass().getResource("Red.png"));
+	ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -108,7 +114,7 @@ public class TaskView extends DragTaskPanel{
 		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
 		
 
-		statusLabel = new JLabel("!!!");
+		statusLabel = new JLabel();
 		statusLabel.setFont(new Font("Impact", Font.BOLD, 18));
 		titlePanel.add(statusLabel, "cell 1 0,alignx left,aligny top");
 		
@@ -226,6 +232,7 @@ public class TaskView extends DragTaskPanel{
 					public void actionPerformed(ActionEvent e) {
 						activateArchiveView();
 						StageController.archiveTask(tv);
+						TabController.getInstance().closeUniqueTab(TabType.TASK,taskModel);
 					}
 				});
 				
@@ -423,6 +430,7 @@ public class TaskView extends DragTaskPanel{
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
+		setSign(taskModel);
 		
 		if(task.getIsArchived()){
 			activateArchiveView();
@@ -436,6 +444,24 @@ public class TaskView extends DragTaskPanel{
 	}
 	
 	/**
+	 * @return returns the Icon of the task relative to its due date
+	 */
+	public void setSign(TaskModel taskModel){
+		if(taskModel.getIsArchived()){
+			statusLabel.setIcon(archiveIcon);
+		}else if(taskModel.daysUntilDue() > taskModel.getTimeThreshold()){
+			//Green
+			statusLabel.setIcon(greenIcon);
+		}else if(taskModel.daysUntilDue() <= taskModel.getTimeThreshold() && taskModel.daysUntilDue() > 0){
+			//Yellow
+			statusLabel.setIcon(yellowIcon);
+		}else{
+			//Red
+			statusLabel.setIcon(redIcon);
+		}
+	}
+	
+	/**
 	 * - when the color toggle button is pressed, change the color of the stage
 	 * @param color - the color to set the stage to
 	 */
@@ -445,7 +471,6 @@ public class TaskView extends DragTaskPanel{
 			this.setBackground(color);
 		}else{
 			statusLabel.setVisible(true);
-			statusLabel.setForeground(color);
 			this.setBackground(Color.LIGHT_GRAY);
 		}
 	}
