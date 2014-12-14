@@ -66,23 +66,21 @@ public AssignUsersView(TaskModel taskModel) {
 		lblUsersAssigned.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblUsersAssigned, "cell 2 1,alignx center");
 		
+		//List of unassigned users
+		unassignedListModel = new DefaultListModel<String>();
+		unassignedListComponent = new JList<String>( unassignedListModel );
+		unassignedListComponent.setFixedCellWidth(150);
 		JScrollPane unassignedScrollPane = new JScrollPane();
+		unassignedScrollPane.setViewportView(unassignedListComponent);
 		add(unassignedScrollPane, "cell 0 2,growy");
-		
-		JScrollPane assignedScrollPane = new JScrollPane();
-		add(assignedScrollPane, "cell 2 2,growy");
 		
 		//List of assigned users
 		assignedListModel = new DefaultListModel<String>();
 		assignedListComponent = new JList<String>( assignedListModel );
 		assignedListComponent.setFixedCellWidth(150);
+		JScrollPane assignedScrollPane = new JScrollPane();
 		assignedScrollPane.setViewportView(assignedListComponent);
-		
-		//List of unassigned users
-		unassignedListModel = new DefaultListModel<String>();
-		unassignedListComponent = new JList<String>( unassignedListModel );
-		unassignedListComponent.setFixedCellWidth(150);
-		unassignedScrollPane.setViewportView(unassignedListComponent);
+		add(assignedScrollPane, "cell 2 2,growy");
 		
 		JButton btnAssign = new JButton("Assign >>");
 		btnAssign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.ASSIGN) );
@@ -91,21 +89,18 @@ public AssignUsersView(TaskModel taskModel) {
 		JButton buttonUnassign = new JButton("<< Unassign");
 		buttonUnassign.addActionListener( new AssignUnassignUserController(this, AssignRemoveEnum.UNASSIGN) );
 		add(buttonUnassign, "cell 2 3,alignx center");
-	
 	}
 	
-	/**
-	 * @return an array of userName strings from the provided list of userModels
-	 */	
-	private String[] getUsernameList() {
-		ArrayList<String> userNames = new ArrayList<String>();
-		for( User user : workflowModel.getUserList() ){
-			String userName = user.getUsername();
-			userNames.add(userName);
+	public void assignExistingUsers() {
+		for(String assignedUser : taskModel.getUsersAssignedTo()){
+			for(int index = 0; index < unassignedListModel.getSize(); index++){
+				if(assignedUser.equals(unassignedListModel.getElementAt(index)) ){
+					unassignedListModel.remove(index);
+					assignedListModel.addElement(assignedUser);
+				}	
+			}
 		}
-		return userNames.toArray(new String[userList.length]);
 	}
-	
 	
 	/**
 	 * 
@@ -166,13 +161,6 @@ public AssignUsersView(TaskModel taskModel) {
 	 */
 	public JList<String> getUnssignedListComponent() {
 		return unassignedListComponent;
-	}
-	
-	/**
-	 * @return the taskModel passed in
-	 */
-	public TaskModel getTaskModel(){
-		return taskModel;
 	}
 	
 	/**

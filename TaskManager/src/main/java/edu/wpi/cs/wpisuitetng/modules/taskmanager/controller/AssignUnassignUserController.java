@@ -36,7 +36,7 @@ public class AssignUnassignUserController implements ActionListener {
 	public AssignUnassignUserController(AssignUsersView view, AssignRemoveEnum action){
 		this.view = view;
 		this.action = action;
-		addExistingUsers();
+
 	}
 
 	/* (non-Javadoc)
@@ -49,29 +49,26 @@ public class AssignUnassignUserController implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		int selectedIndex;
 		String selectedName;
-		
-		this.assignedListModel = view.getAssignedListModel();
-		this.unassignedListModel = view.getUnassignedListModel();
-		this.assignedListComponent = view.getAssignedListComponent();
-		this.unassignedListComponent = view.getUnssignedListComponent();
-		
-		
-		
 		switch(action){	
 			case ASSIGN:
-				selectedIndex = view.getAssignedListSelectedIndex();
-				selectedName = view.getAssignedListSelectedName();
+				selectedIndex = view.getUnassignedListSelectedIndex();
+				selectedName = view.getUnassignedListSelectedName();
 				assignUser(selectedIndex, selectedName);
 				break;
 			case UNASSIGN:
-				selectedIndex = view.getUnassignedListSelectedIndex();
-				selectedName = view.getUnassignedListSelectedName();
+				selectedIndex = view.getAssignedListSelectedIndex();
+				selectedName = view.getAssignedListSelectedName();
 				unassignUser(selectedIndex, selectedName);
 				break;
 		}
 	}
 	
-	public void assignUser(int selectedIndex, String selectedName){		
+	public void assignUser(int selectedIndex, String selectedName){	
+		this.unassignedListModel = view.getUnassignedListModel();
+		this.assignedListModel = view.getAssignedListModel();
+		this.assignedListComponent = view.getAssignedListComponent();
+		this.unassignedListComponent = view.getUnssignedListComponent();
+		
 		//don't add the user if already assigned
 		if(!assignedListModel.contains(selectedName) && selectedIndex >= 0 ){
 			unassignedListModel.remove(selectedIndex);
@@ -80,19 +77,15 @@ public class AssignUnassignUserController implements ActionListener {
 	}
 	
 	public void unassignUser(int selectedIndex, String selectedName){
+		this.unassignedListModel = view.getUnassignedListModel();
+		this.assignedListModel = view.getAssignedListModel();
+		this.assignedListComponent = view.getAssignedListComponent();
+		this.unassignedListComponent = view.getUnssignedListComponent();
+		
 		//don't add the user if already unassigned
 		if(!unassignedListModel.contains(selectedName) && selectedIndex >= 0){
 			assignedListModel.remove(selectedIndex);
 			unassignedListModel.addElement(selectedName);
-		}
-	}
-	
-	public void addExistingUsers(){
-		TaskModel taskModel = view.getTaskModel();
-		for (String assigneduser : taskModel.getUsersAssignedTo()){
-				if (!assignedListModel.contains(assigneduser)){
-					assignedListModel.addElement(assigneduser);
-			}
 		}
 	}
 

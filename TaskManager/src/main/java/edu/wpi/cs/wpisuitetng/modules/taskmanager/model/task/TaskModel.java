@@ -201,7 +201,8 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	 * @param arrayList - set the list of users that this task is assigned to
 	 */
 	public void setUsersAssignedTo(ArrayList<String> usernameList) {
-		this.usersAssignedTo = usernameList;
+		this.usersAssignedTo.clear();
+		this.usersAssignedTo.addAll(usernameList);
 	}
 	
 	/**

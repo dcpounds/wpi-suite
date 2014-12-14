@@ -361,11 +361,12 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 
 		String creatorName = ConfigManager.getConfig().getUserName();
+		ArrayList<String> assignedUsers = assignUsersView.getAssignedUsers();
 		taskModel.setCreator(creatorName);
 		taskModel.setTitle(this.getTitleLabelText());
 		taskModel.setDescription(this.getDescriptionText());
 		taskModel.setDueDate(this.getDateText());
-		taskModel.setUsersAssignedTo(assignUsersView.getAssignedUsers());
+		taskModel.setUsersAssignedTo(assignedUsers);
 		taskModel.setEstimatedEffort(this.getEstimatedEffort());
 		taskModel.setActualEffort(this.getActualEffort());
 		taskModel.setDueDate(this.getDateText());
