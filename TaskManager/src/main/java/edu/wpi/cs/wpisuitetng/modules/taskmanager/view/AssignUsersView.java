@@ -91,6 +91,9 @@ public AssignUsersView(TaskModel taskModel) {
 		add(buttonUnassign, "cell 2 3,alignx center");
 	}
 	
+	/**
+	 * Assigns existing users back in 
+	 */
 	public void assignExistingUsers() {
 		for(String assignedUser : taskModel.getUsersAssignedTo()){
 			for(int index = 0; index < unassignedListModel.getSize(); index++){
@@ -100,6 +103,18 @@ public AssignUsersView(TaskModel taskModel) {
 				}	
 			}
 		}
+	}
+	
+	/**
+	 * @return an array of userName strings from the provided list of userModels
+	 */	
+	private String[] getUsernameList() {
+		ArrayList<String> userNames = new ArrayList<String>();
+		for( User user : workflowModel.getUserList() ){
+			String userName = user.getUsername();
+			userNames.add(userName);
+		}
+		return userNames.toArray(new String[userList.length]);
 	}
 	
 	/**
