@@ -53,6 +53,7 @@ public class StageView extends DragStagePanel {
 	private JLabel lblStageTitle;
 	private JButton btnClose;
 	private JButton collapseAll;
+	private JButton expandAll;
 	private boolean closable;
 	private StageModel stageModel;
 	private int id;
@@ -70,15 +71,9 @@ public class StageView extends DragStagePanel {
 		this.workflowView = workflowView;
 		setLayout(new MigLayout("insets 0", "[grow][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
-		lblStageTitle = new JLabel();
-		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblStageTitle.putClientProperty("html.disable", Boolean.TRUE);
-		add(lblStageTitle, "cell 0 0,alignx center,aligny center");
 		
 		StageView thisStage = this;
-		collapseAll = new JButton("Collapse All");
+		collapseAll = new JButton("^");
 		collapseAll.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		collapseAll.setMargin(new Insets(0, 0, 0, 0));
 		collapseAll.addActionListener(new ActionListener() {
@@ -88,7 +83,28 @@ public class StageView extends DragStagePanel {
 				}
 			}
 		});
-		add(collapseAll);
+		add(collapseAll, "cell 0 0,alignx left, aligny center");
+		
+		expandAll = new JButton("v");
+		expandAll.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		expandAll.setMargin(new Insets(0, 0, 0, 0));
+		expandAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (TaskView taskView : thisStage.getTaskViewList().values()) {
+					taskView.showDetails();
+				}
+			}
+		});
+		add(expandAll, "cell 0 0,alignx left,aligny center");
+		
+		
+		lblStageTitle = new JLabel();
+		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStageTitle.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblStageTitle.putClientProperty("html.disable", Boolean.TRUE);
+		add(lblStageTitle, "cell 0 0,alignx center,aligny center");
+		
 		
 		btnClose = new JButton("\u2716");
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
