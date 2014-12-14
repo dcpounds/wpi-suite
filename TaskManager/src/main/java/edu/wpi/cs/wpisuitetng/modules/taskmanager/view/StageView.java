@@ -73,8 +73,8 @@ public class StageView extends DragStagePanel {
 		this.closable = stageModel.getClosable();
 		
 		StageView thisStage = this;
-		collapseAll = new JButton("^");
-		collapseAll.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		collapseAll = new JButton("+");
+		collapseAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		collapseAll.setMargin(new Insets(0, 0, 0, 0));
 		collapseAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,10 +83,10 @@ public class StageView extends DragStagePanel {
 				}
 			}
 		});
-		add(collapseAll, "cell 0 0,alignx left, aligny center");
+		add(collapseAll, "pad 5 2 0 2,cell 0 0,alignx left,aligny center");
 		
-		expandAll = new JButton("v");
-		expandAll.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		expandAll = new JButton(" - ");
+		expandAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		expandAll.setMargin(new Insets(0, 0, 0, 0));
 		expandAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +95,7 @@ public class StageView extends DragStagePanel {
 				}
 			}
 		});
-		add(expandAll, "cell 0 0,alignx left,aligny center");
+		add(expandAll, "pad 5 2 0 2,cell 0 0,alignx left,aligny center");
 		
 		
 		lblStageTitle = new JLabel();
@@ -111,7 +111,7 @@ public class StageView extends DragStagePanel {
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.addActionListener(new StageController(stageModel, ActionType.DELETE));
 		btnClose.setEnabled(closable);
-		add(btnClose, "cell 2 0,aligny center");
+		add(btnClose, "pad 5 -5 0 -5,cell 2 0,aligny center");
 		
 		scrollPane = new JScrollPane(stagePane);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
