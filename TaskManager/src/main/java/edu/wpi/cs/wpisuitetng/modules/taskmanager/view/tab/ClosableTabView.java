@@ -119,7 +119,11 @@ public class ClosableTabView extends JPanel{
 		else if(tabType == TabType.REPORTS){
 			TabController.getInstance().removeTab(paneComponent);
 		}
-	}
+		else if(tabType == TabType.GIT){
+			TabController.getInstance().removeTab(paneComponent);
+		}
+		
+	};
 	
 	/**
 	 * get the model of the tab that can be closed

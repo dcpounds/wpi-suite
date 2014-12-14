@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewStageTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
@@ -150,6 +151,9 @@ public class TabController {
     		case REPORTS:
     			newTab = new ReportsTab("Reports");
     			break;
+    		case GIT:
+    			newTab = new GitLinkTab();
+    			break;
         }
     	return newTab;
     }
@@ -203,6 +207,8 @@ public class TabController {
     		case REPORTS:
     			tabName = "Reports	";
     			break;
+    		case GIT:
+    			tabName = "Link ";
         }
     	return tabName;
     }

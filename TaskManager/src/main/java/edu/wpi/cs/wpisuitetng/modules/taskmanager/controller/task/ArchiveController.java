@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
@@ -55,9 +56,11 @@ public class ArchiveController implements ChangeListener {
 		if(!isPressed){
 			isPressed = true;
 			makeArchiveViewsVisible();
+			StageController.locallyUpdateAllStages();
 		} else {
 			isPressed = false;
 			makeArchiveViewsInvisible();
+			StageController.locallyUpdateAllStages();
 		}
 		
 	}
