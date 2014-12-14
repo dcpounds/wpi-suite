@@ -25,7 +25,7 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 	public GitLinkTab() {
 		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][][][]"));
 		
-		JLabel lblTitle = new JLabel("Link With A Github Repository");
+		JLabel lblTitle = new JLabel("Import Github Issues");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTitle, "cell 0 0");
 		
@@ -41,8 +41,9 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		repositoryURL.setColumns(10);
 		
 		GitController controller = new GitController(this);
-		JButton linkButton = new JButton("Link");
-		linkButton.addActionListener(controller);
+		JButton importButton = new JButton("Import");
+		importButton.addActionListener(controller);
+		add(importButton, "flowx,cell 0 8");
 		
 		JLabel lblUsername = new JLabel("Username:");
 		add(lblUsername, "cell 0 4");
@@ -57,15 +58,12 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		passField = new JPasswordField();
 		add(passField, "cell 0 7");
 		passField.setColumns(10);
-		add(linkButton, "flowx,cell 0 8");
 		
 		lblVerification = new JLabel("Verification");
 		lblVerification.setForeground(Color.RED);
 		lblVerification.setFont(new Font("Tahoma", Font.BOLD, 12));
 		add(lblVerification, "cell 0 9");
 		
-		JButton unlinkButton = new JButton("Unlink");
-		add(unlinkButton, "cell 0 8");
 		lblVerification.setVisible(false);
 	}
 

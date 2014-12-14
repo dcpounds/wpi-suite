@@ -77,6 +77,7 @@ public class GitController extends GitHubService implements ActionListener {
 			System.out.println(issue.getTitle());
 			createTask(issue);
 		}
+		setSuccessMessage("Successfully imported issues from the repository!");
 		return issues;
 	}
 	
@@ -89,14 +90,12 @@ public class GitController extends GitHubService implements ActionListener {
 			client.setCredentials(gitTab.getUsernameField().getText(), gitTab.getPassField().getText());
 		}catch(Exception e){
 			e.printStackTrace();
-			setSuccessMessage("Invalid username or password provided");
 			return null;
 		}
-		setSuccessMessage("Successfully connected to repository!");
 		try {
 			getAllIssues(client);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			setSuccessMessage("Failed to get issues from the repository. Make sure you entered a valid repository.");
 			e.printStackTrace();
 		}
 		return client;
@@ -129,7 +128,7 @@ public class GitController extends GitHubService implements ActionListener {
 				URL parsedUrl = new URL("https://api.github.com");
 				client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
 			}catch(Exception e){
-				setSuccessMessage("Please enter a valid URL.");
+				setSuccessMessage("Failed to create a client. I'm sorry Team 4.");
 				e.printStackTrace();
 			}
 		return authenticate(client);
