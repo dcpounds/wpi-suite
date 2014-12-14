@@ -32,7 +32,10 @@ public class TaskSnapshot {
 	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
+	private Date timeStamp;
 	private int stageID;
+
+	
 	private boolean isArchived;
 	private Color color;
 	private Color CatColor;
@@ -55,6 +58,7 @@ public class TaskSnapshot {
 		this.creationDate = task.getCreationDate();
 		this.usersAssignedTo = task.getUsersAssignedTo();
 		this.dueDate = task.getDueDate();
+		this.timeStamp = new Date();
 		this.stageID = task.getStageID();
 		this.isArchived = task.getIsArchived();
 		this.activities = task.getActivities();
@@ -300,6 +304,22 @@ public class TaskSnapshot {
 	public void setActivities(ActivityListModel activities) {
 		this.activities = activities;
 	}
+	
+	/**
+	 * @return the timeStamp
+	 */
+	public Date getTimeStamp() {
+		return timeStamp;
+	}
+
+
+	/**
+	 * @param timeStamp the timeStamp to set
+	 */
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+	
 	
 
 }

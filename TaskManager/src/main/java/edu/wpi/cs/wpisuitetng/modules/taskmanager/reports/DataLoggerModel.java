@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.reports;
 
 import java.awt.Color;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -126,7 +127,6 @@ public class DataLoggerModel extends AbstractModel
 			{
 				return taskSnapList.get(i-1);
 			}
-			System.out.print("Did a loop");
 		}
 		return null;
 
@@ -156,6 +156,76 @@ public class DataLoggerModel extends AbstractModel
 		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
 		return null;
 	}
+	
+	/** Returns the estimated effort at a certain date. If the task did not exist before the specified date,
+	 * the oldest estimated effort will be return. 
+	 * @param task, the task to perform the check on
+	 * @param date, the date to use as a comparison point
+	 */
+	public int estEffortAtDate(TaskModel task, Date date)
+	{
+		for (int i=taskSnapList.size(); i>=0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == task.getID())
+			{
+				
+				//get the most recent snapshot created before the given date
+				if (taskSnapList.get(i-1).getTimeStamp().before(date))
+				{
+					return (taskSnapList.get(i-1).getEstimatedEffort());
+				}
+			}
+		}
+		//only reached if it does not find a previous date. Returns the oldest valid snapshot of the task
+		TaskSnapshot bufferSnap = task.getCurrentSnapshot();
+		for (int i=taskSnapList.size(); i>=0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == task.getID())
+			{
+				bufferSnap = taskSnapList.get(i-1);
+			}
+		}
+		return bufferSnap.getEstimatedEffort();
+	}
+	
+	public boolean containsID(List<TaskSnapshot> list, TaskSnapshot task)
+	{
+		for (int i=list.size(); i>=0; i--)
+		{
+			if (list.get(i-1).getID() == task.getTaskID())
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public List<TaskSnapshot> filterSnapList (String criteria)
+	{
+		List<TaskSnapshot> filteredList = null;
+		if (criteria.equals("Estimated Effort"))
+		{
+			for (int i=taskSnapList.size(); i>=0; i--)
+			{
+				if (containsID(filteredList, taskSnapList.get(i-1)))
+				{
+					
+				}
+			}
+		}
+		return taskSnapList;
+	}
+	
+	
+	
+	
+	public int estEffortOverPeriod(date startDate, date endDate)
+	{
+		
+	}
+	
+	
 	
 	/** Returns a string array of changes made between two snapshots
 	 * @param snap1, the first (older) snapshot
