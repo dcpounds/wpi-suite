@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
+
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
@@ -263,6 +265,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		}
 		return color;
 	}
+	
 	
 	/**
 	 * Get days before due date until this task becomes urgent
