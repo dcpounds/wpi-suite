@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -73,33 +74,24 @@ public class SearchController implements ActionListener, KeyListener {
 		boolean foundResult = false;
 		searchBox = toolbarView.getSearchBox();
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		String searchText = searchBox.getText();
+		String searchText = searchBox.getText().toLowerCase();
 
 		for (StageModel stage : workflowModel.getStageModelList().values()) {
 			for(TaskModel task : stage.getTaskModelList().values()){
+				boolean shouldShow = (ArchiveController.getIsPressed() || !task.getIsArchived() ? true: false);
 				int stageID = stage.getID();
 				int taskID = task.getID();
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (task.getTitle().contains(searchText) && searchText.length() > 0) {
-					if(task.getIsArchived()){
-						taskView.setBorder(new CompoundBorder(
-							BorderFactory.createLineBorder(Color.BLUE,2),
-							BorderFactory.createLineBorder(Color.RED,2)));
-							foundResult = true;
-							continue;
-						}
-					Border blueHighlight = BorderFactory.createLineBorder(Color.blue, 2);
-					taskView.setBorder(blueHighlight);
+				if (searchText.isEmpty() && shouldShow) {
+					taskView.setVisible(true);
+				}
+				else if (task.getTitle().toLowerCase().contains(searchText) && shouldShow) {
+					taskView.setVisible(true);
 					foundResult = true;
 				} else {
-					Border normalHighlight;
-					if(!task.getIsArchived())
-						normalHighlight = BorderFactory.createLineBorder(Color.black);
-					else
-						normalHighlight = BorderFactory.createLineBorder(Color.red,2);
-					taskView.setBorder(normalHighlight);
+					taskView.setVisible(false);
 				}
 			}
 		}
