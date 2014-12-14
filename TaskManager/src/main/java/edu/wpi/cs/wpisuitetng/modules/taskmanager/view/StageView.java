@@ -120,7 +120,7 @@ public class StageView extends DragStagePanel {
 		add(scrollPane, "cell 0 1 3 1,grow");
 		setBackground(new Color(135, 206, 250));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
-		updatePreferredDimensions();
+		updateStageHeight();
 		
 		DragStageController dragController = new DragStageController(this);
 		this.addMouseListener(dragController);
@@ -133,6 +133,7 @@ public class StageView extends DragStagePanel {
 	/**
 	 * Overrides the getPreferredSize method to make task boxes scale dynamically
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		Component parent = this.getParent();
 		final Dimension parentSize = new Dimension( workflowView.getScrollPane().getViewport().getWidth() - 30,
@@ -145,7 +146,7 @@ public class StageView extends DragStagePanel {
 			int stageCount = workflowView.getStageViewList().size();
 			int stageWidth = parentSize.width/( stageCount < 4 ? stageCount : 4);
 			truncateTitle(stageWidth);
-			stagePane.setPreferredSize(new Dimension(this.getWidth(), stagePreferredHeight));
+			stagePane.setPreferredSize(new Dimension(stageWidth, stagePreferredHeight));
 			return new Dimension( stageWidth, parentSize.height );
 		}
 	}
@@ -154,7 +155,7 @@ public class StageView extends DragStagePanel {
 	/**
 	 * Updates the preferred dimensions of the panel that houses the task views
 	 */
-	public void updatePreferredDimensions() {
+	public void updateStageHeight() {
 		int heightNeeded = 0;
 		
 		//Go through each component in the stageView
@@ -190,7 +191,7 @@ public class StageView extends DragStagePanel {
 		if(taskViewList.get(taskView.getID()) == null)
 			stagePane.add(taskView);
 		taskViewList.put(taskView.getID(),taskView);
-		updatePreferredDimensions();
+		updateStageHeight();
 		redrawStage();
 	}
 	
@@ -206,7 +207,7 @@ public class StageView extends DragStagePanel {
 	public void removeTaskView(TaskView taskView) {
 		stagePane.remove(taskView);
 		this.getTaskViewList().remove(taskView.getID());
-		updatePreferredDimensions();	
+		updateStageHeight();	
 		redrawStage();
 	}
 	

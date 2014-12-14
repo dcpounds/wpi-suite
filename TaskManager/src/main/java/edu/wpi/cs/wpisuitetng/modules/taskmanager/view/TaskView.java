@@ -316,7 +316,7 @@ public class TaskView extends DragTaskPanel{
 		taskContentPane.setVisible(true);
 		btnEdit.setVisible(true);
 		taskModel.setIsExpanded(true);
-		stageView.updatePreferredDimensions();
+		stageView.updateStageHeight();
 		revalidate();
 	}
 	
@@ -328,7 +328,7 @@ public class TaskView extends DragTaskPanel{
 		taskContentPane.setVisible(false);
 		btnEdit.setVisible(false);
 		taskModel.setIsExpanded(false);
-		stageView.updatePreferredDimensions();
+		stageView.updateStageHeight();
 		revalidate();
 	}
 	
