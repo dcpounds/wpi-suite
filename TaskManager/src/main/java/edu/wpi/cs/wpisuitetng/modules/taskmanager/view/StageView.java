@@ -187,7 +187,8 @@ public class StageView extends DragStagePanel {
 	 * @param taskView
 	 */
 	public void addTaskView(TaskView taskView) {
-		stagePane.add(taskView);
+		if(taskViewList.get(taskView.getID()) == null)
+			stagePane.add(taskView);
 		taskViewList.put(taskView.getID(),taskView);
 		updatePreferredDimensions();
 		redrawStage();
