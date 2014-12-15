@@ -142,7 +142,11 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
+<<<<<<< HEAD
 		for (int i = taskSnapList.size(); i > 0; i=i - 1)
+=======
+		for (int i = taskSnapList.size(); i > 0; i=i-1)
+>>>>>>> dev-gradle
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
 			{
@@ -234,7 +238,11 @@ public class DataLoggerModel extends AbstractModel
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
 		
+<<<<<<< HEAD
 		for (int i=taskSnapList.size(); i > 0; i--) 
+=======
+		for (int i=taskSnapList.size(); i > 0; i=i-1) 
+>>>>>>> dev-gradle
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{
