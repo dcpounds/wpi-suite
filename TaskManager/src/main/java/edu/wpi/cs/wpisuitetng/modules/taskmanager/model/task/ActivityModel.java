@@ -108,15 +108,6 @@ public class ActivityModel extends AbstractModel {
         return dateFormat.format(date) + ", " + user + ": " + comment;
     }
     
-    /**
-     * @return the stamp for the activity
-     */
-    public String getStamp(){
-        // Format the date-time stamp
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-        return dateFormat.format(date) + ", " + user + ": ";
-    }
-    
     /*
      * The methods below are required by the model interface, however they
      * do not need to be implemented for a basic model like Activity.

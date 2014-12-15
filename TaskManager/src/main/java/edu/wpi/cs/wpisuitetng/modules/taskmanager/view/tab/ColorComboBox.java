@@ -69,7 +69,7 @@ public class ColorComboBox extends JComboBox {
 	 * Add colors to the color combo box
 	 * @return
 	 */
-	public Hashtable addColors() {
+	private Hashtable addColors() {
 		colors = new<String, Color> Hashtable();
 		colors.put("GRAY", Color.LIGHT_GRAY);
 		colors.put("WHITE", Color.WHITE);

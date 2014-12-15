@@ -201,7 +201,7 @@ public class StageController implements ActionListener{
 		HashMap<Integer, TaskView> taskViewList = stage.getTaskViewList();
 		
 		if(taskViewList.size() != taskModelList.size()){
-			stage.clearStage();
+			stage.clearAllStages();
 		}
 			
 		for( TaskModel task : taskModelList.values() ){
