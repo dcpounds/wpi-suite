@@ -10,6 +10,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.reports;
 
 import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -418,12 +420,11 @@ public class DataLoggerModel extends AbstractModel
 	}
 	
 	
-	
 	/**
-	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * Returns a sublist of the most recent snapshot for every task. Used for estimated effort on velocity
 	 * @return SnapshotSubList
 	 */
-	public SnapshotSubList filterByCategory ()
+	public SnapshotSubList filterByID ()
 	{
 		SnapshotSubList filteredList = new SnapshotSubList();
 
@@ -433,17 +434,99 @@ public class DataLoggerModel extends AbstractModel
 			{
 				filteredList.appendSnapshot(taskSnapList.get(i-1));
 			}
-			else if (filteredList.returnOldestSnapshot(taskSnapList.get(i-1).getTaskID())!=null)
+		}
+		
+		return filteredList;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByCategory ()
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		//loop is reversed from others so that filtered list fills in the correct order
+		for (int i=0; i<taskSnapList.size(); i++)
+		{
+			if (!filteredList.listContainsID(taskSnapList.get(i).getTaskID()))
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i));
+			}
+			else if (filteredList.returnCurrentSnapshot(taskSnapList.get(i).getTaskID())!=null)
 			
 
 			{
-				if (!filteredList.returnOldestSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor().equals(
-					taskSnapList.get(i-1).getCatColor()))
+				if (!filteredList.returnCurrentSnapshot(taskSnapList.get(i).getTaskID()).getCatColor().equals(
+					taskSnapList.get(i).getCatColor()))
 					{
-						filteredList.appendSnapshot(taskSnapList.get(i-1));
+						filteredList.appendSnapshot(taskSnapList.get(i));
 					}
 						
 
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots taken between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDateRange(SnapshotSubList list, Date startdate, Date enddate)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			if (!list.taskSnapList.get(i-1).getTimeStamp().after(enddate))
+			{
+				if (!list.taskSnapList.get(i-1).getTimeStamp().before(startdate) || 
+					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots due between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDueDate(SnapshotSubList list, Date startdate, Date enddate)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = null;
+			try {
+				date = dateFormat.parse(list.taskSnapList.get(i-1).getDueDate());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (!date.after(enddate))
+			{
+				if (!date.before(startdate) || 
+					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
 			}
 		}
 		
