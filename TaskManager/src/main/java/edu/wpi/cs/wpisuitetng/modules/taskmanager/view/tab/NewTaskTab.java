@@ -212,6 +212,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			public void actionPerformed(ActionEvent arg0) {
 				buildTask();
 				TabController.getInstance().removeTab(thisTab);
+				TabController.getTabView().setSelectedIndex(0);
 			}
 		});
 
