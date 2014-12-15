@@ -175,6 +175,51 @@ public class DataLoggerModel extends AbstractModel
 
 	}
 	
+	/**
+	 * Return the oldest task snapshot based on task ID value
+	
+	
+	 * @param taskID int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnOldestSnapshot(int taskID)
+	{
+		TaskSnapshot buffer = null;
+		for (int i = taskSnapList.size(); i>0; i=i-1)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskID)
+			{
+				buffer = taskSnapList.get(i-1);
+			}
+		}
+		return buffer;
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public TaskSnapshot SnapshotWithID(long id)
+	{
+		
+		for(int i=taskSnapList.size(); i>0; i--)
+		{
+			if (taskSnapList.get(i-1).getID() == id)
+			{
+				return taskSnapList.get(i-1);
+			}
+		}
+		return null;
+	}
+	
 	
 	
 	
@@ -232,6 +277,63 @@ public class DataLoggerModel extends AbstractModel
 		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
 		return null;
 	}
+	
+	
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnNextSnapshot(TaskSnapshot taskSnapshot) {
+		//checks each task for an ID match, starting from the most recent tasks
+		TaskSnapshot buffer = null;
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
+			{
+				if (taskSnapList.get(i-1).getID() == taskSnapshot.getID())
+				{
+					return buffer;
+				}
+				else
+				{
+					buffer = taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnNextSnapshot(long id) {
+		//checks each task for an ID match, starting from the most recent tasks
+		TaskSnapshot buffer = null;
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == id)
+			{
+				if (taskSnapList.get(i-1) == SnapshotWithID(id))
+				{
+					return buffer;
+				}
+				else
+				{
+					buffer = taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -331,12 +433,17 @@ public class DataLoggerModel extends AbstractModel
 			{
 				filteredList.appendSnapshot(taskSnapList.get(i-1));
 			}
-			else if (
-					(filteredList.returnCurrentSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor() != 
-					filteredList.returnPreviousSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor()))
+			else if (filteredList.returnOldestSnapshot(taskSnapList.get(i-1).getTaskID())!=null)
+			
 
 			{
-				filteredList.appendSnapshot(taskSnapList.get(i-1));
+				if (!filteredList.returnOldestSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor().equals(
+					taskSnapList.get(i-1).getCatColor()))
+					{
+						filteredList.appendSnapshot(taskSnapList.get(i-1));
+					}
+						
+
 			}
 		}
 		
