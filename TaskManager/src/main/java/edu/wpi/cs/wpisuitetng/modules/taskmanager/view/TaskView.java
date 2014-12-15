@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveControl
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ColorComboBox;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 
 import java.awt.Color;
@@ -50,15 +51,15 @@ import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
 import java.awt.FlowLayout;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
- * @author Alec
+ * @author Alec, Dave
  * An accordian style expandable task view that can be inserted into the stages
  */
-/**
- * @author dave
- *
- */
+
 public class TaskView extends DragTaskPanel{
 	private static final long serialVersionUID = 6517799529927334536L;
 	private TaskModel taskModel;
@@ -371,6 +372,12 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void setCategoryColor(Color color){
 		catPanel.setBackground(color);
+		Hashtable<String,Color> col = new ColorComboBox().addColors();
+			for(Map.Entry<String,Color> entry : col.entrySet()) {
+			    if(color.equals(entry.getValue())){
+			    	catPanel.setToolTipText(entry.getKey());
+			    }
+			}
 	}
 	
 	/**
@@ -471,10 +478,10 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void toggleTaskViewColor(Color color){
 		if(WorkflowController.getWorkflowModel().getToggleColor()){
-			statusLabel.setVisible(false);
+			catPanel.setVisible(false);
 			this.setBackground(color);
 		}else{
-			statusLabel.setVisible(true);
+			catPanel.setVisible(true);
 			this.setBackground(Color.LIGHT_GRAY);
 		}
 	}
