@@ -50,6 +50,7 @@ public class ToolbarView extends JPanel {
     private final JButton reportsButton;
     private final WorkflowModel workflowModel;
     private JTextField searchBox;
+	private JButton gitButton;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -63,8 +64,9 @@ public class ToolbarView extends JPanel {
         ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
         ImageIcon stageIcon = new ImageIcon(this.getClass().getResource("new_req.png"));
         ImageIcon reportsIcon = new ImageIcon(this.getClass().getResource("new_itt.png"));
-        ImageIcon urgencyIcon = new ImageIcon(this.getClass().getResource("urgent.png"));
+        ImageIcon urgencyIcon = new ImageIcon(this.getClass().getResource("Colors.png"));
         ImageIcon searchIcon = new ImageIcon(this.getClass().getResource("search.png"));
+        ImageIcon gitIcon = new ImageIcon(this.getClass().getResource("github.png"));
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -128,6 +130,20 @@ public class ToolbarView extends JPanel {
         archiveButton.setMargin(new Insets(0,0,0,0));
         add(Box.createHorizontalStrut(20));
         add(archiveButton);
+        
+        add(Box.createHorizontalStrut(20));
+        
+        gitButton = new JButton("Link to GitHub");
+        gitButton.setIcon(gitIcon);
+        gitButton.setMargin(new Insets(0,0,0,0));
+        gitButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabController.getInstance().addTab(TabType.GIT, null);
+			}
+		});
+        add(gitButton);
+        
         
         Component horizontalStrut2 = Box.createHorizontalStrut(20);
         add(horizontalStrut2);

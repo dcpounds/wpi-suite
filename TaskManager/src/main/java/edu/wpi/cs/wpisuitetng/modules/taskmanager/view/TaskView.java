@@ -93,6 +93,8 @@ public class TaskView extends DragTaskPanel{
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
+		ImageIcon editIcon = new ImageIcon(this.getClass().getResource("edit.png"));
+		
 		this.stageView = stageView;
 		this.taskModel = taskModel;
 		id = taskModel.getID();
@@ -191,6 +193,8 @@ public class TaskView extends DragTaskPanel{
 		
 		//Set up the edit button
 		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(editIcon);
+		btnEdit.setMargin(new Insets(0,0,0,5));
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -316,7 +320,7 @@ public class TaskView extends DragTaskPanel{
 		taskContentPane.setVisible(true);
 		btnEdit.setVisible(true);
 		taskModel.setIsExpanded(true);
-		stageView.updatePreferredDimensions();
+		stageView.updateStageHeight();
 		revalidate();
 	}
 	
@@ -328,7 +332,7 @@ public class TaskView extends DragTaskPanel{
 		taskContentPane.setVisible(false);
 		btnEdit.setVisible(false);
 		taskModel.setIsExpanded(false);
-		stageView.updatePreferredDimensions();
+		stageView.updateStageHeight();
 		revalidate();
 	}
 	
