@@ -73,7 +73,7 @@ public class StageView extends DragStagePanel {
 		this.closable = stageModel.getClosable();
 		
 		StageView thisStage = this;
-		collapseAll = new JButton("+");
+		collapseAll = new JButton(" - ");
 		collapseAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		collapseAll.setMargin(new Insets(0, 0, 0, 0));
 		collapseAll.addActionListener(new ActionListener() {
@@ -85,7 +85,7 @@ public class StageView extends DragStagePanel {
 		});
 		add(collapseAll, "pad 5 2 0 2,cell 0 0,alignx left,aligny center");
 		
-		expandAll = new JButton(" - ");
+		expandAll = new JButton("+");
 		expandAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		expandAll.setMargin(new Insets(0, 0, 0, 0));
 		expandAll.addActionListener(new ActionListener() {
