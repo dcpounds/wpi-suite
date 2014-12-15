@@ -40,9 +40,9 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 */
 	public StageModel(String title, int index) {
 		this.title = title;
-		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
-		this.id = this.hashCode();
-		this.taskModelList = new HashMap<Integer, TaskModel>();
+		closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
+		id = this.hashCode();
+		taskModelList = new HashMap<Integer, TaskModel>();
 		this.index = index;
 	}
 	
@@ -52,9 +52,9 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * database needs a class to identify the type to fetch
 	 */
 	public StageModel() {
-		this.taskModelList = new HashMap<Integer, TaskModel>();
-		this.closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
-		this.index = -1;
+		taskModelList = new HashMap<Integer, TaskModel>();
+		closable = WorkflowController.getWorkflowModel().getStageModelList().size() <= 1 ? false : true;
+		index = -1;
 	}
 
 	
@@ -62,12 +62,12 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * @param updatedStage - copies the 
 	 */
 	public void copyFrom(StageModel updatedStage) {
-		this.title = updatedStage.getTitle();
-		this.closable = updatedStage.getClosable();
-		this.id = updatedStage.getID();
-		this.taskModelList = updatedStage.taskModelList;
-		this.isArchived = updatedStage.isArchived;
-		this.index = updatedStage.getIndex();
+		title = updatedStage.getTitle();
+		closable = updatedStage.getClosable();
+		id = updatedStage.getID();
+		taskModelList = updatedStage.taskModelList;
+		isArchived = updatedStage.isArchived;
+		index = updatedStage.getIndex();
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * @return - the ID of this object
 	 */
 	public int getID(){
-		return this.id;
+		return id;
 	}
 	
 	
@@ -138,7 +138,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * @return - the list of taskModels in this stage
 	 */
 	public HashMap<Integer,TaskModel> getTaskModelList(){
-		return this.taskModelList;
+		return taskModelList;
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
         
         StageModel other = (StageModel) obj;
         
-        return this.title.equals(other.getTitle());
+        return title.equals(other.getTitle());
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * @param archived - set the stage as archived or not
 	 */
 	public void setIsArchived(boolean archived) {
-		this.isArchived = archived;
+		isArchived = archived;
 		
 	}
 	
@@ -248,7 +248,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 * @return - whether or not the stage is in an archived state
 	 */
 	public boolean getIsArchived(){
-		return this.isArchived;
+		return isArchived;
 	}
 
 

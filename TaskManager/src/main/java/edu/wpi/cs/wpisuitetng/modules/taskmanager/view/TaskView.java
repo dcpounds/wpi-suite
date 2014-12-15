@@ -95,7 +95,7 @@ public class TaskView extends DragTaskPanel{
 		
 		this.stageView = stageView;
 		this.taskModel = taskModel;
-		this.id = taskModel.getID();
+		id = taskModel.getID();
 		
 		
 		//Sets the parameters of the panel that holds the title
@@ -128,12 +128,12 @@ public class TaskView extends DragTaskPanel{
 		
 		//The beginning of the taskContents section
 		//The scrollPane that the task contents are surrounded by
-		this.taskContents = new JPanel(){
+		taskContents = new JPanel(){
 			public Dimension getPreferredSize() {
             	return new Dimension(this.getParent().getWidth()-30,super.getPreferredSize().height);
 	    }};
 	    
-		this.taskContentPane = new JScrollPane(taskContents,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		taskContentPane = new JScrollPane(taskContents,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		taskContents.setBackground(Color.WHITE);
 		taskContentPane.setViewportView(taskContents);
 		taskContents.setLayout(new BoxLayout(taskContents, BoxLayout.Y_AXIS));
@@ -145,7 +145,7 @@ public class TaskView extends DragTaskPanel{
 		lblDue.setFont(new Font("Tahoma", Font.BOLD, 11));
 		taskContents.add(lblDue);
 		
-		this.lblEstimatedEffort = new JLabel();
+		lblEstimatedEffort = new JLabel();
 		lblEstimatedEffort.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEstimatedEffort.setFont(new Font("Tahoma", Font.BOLD, 11));
 		taskContents.add(lblEstimatedEffort);
@@ -163,7 +163,7 @@ public class TaskView extends DragTaskPanel{
 		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 11));
 		taskContents.add(lblDescription);
 		
-		this.descriptionField = new JTextArea();
+		descriptionField = new JTextArea();
 		descriptionField.putClientProperty("html.disable", Boolean.TRUE);
 		descriptionField.setWrapStyleWord(true);
 		descriptionField.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -180,7 +180,7 @@ public class TaskView extends DragTaskPanel{
 		lblAssignedTo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		taskContents.add(lblAssignedTo);
 		
-		this.assignedListModel = new DefaultListModel<String>();
+		assignedListModel = new DefaultListModel<String>();
 		JList<String> assignedListComponent = new JList<String>( assignedListModel );
 		assignedListComponent.setEnabled(false);
 		assignedListComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -412,23 +412,23 @@ public class TaskView extends DragTaskPanel{
 	 * @param newTaskModel
 	 */
 	public void setContents(TaskModel task){
-		this.taskModel.setTitle(task.getTitle());
-		this.taskModel.setAssociatedRequirement(task.getAssociatedRequirement());
+		taskModel.setTitle(task.getTitle());
+		taskModel.setAssociatedRequirement(task.getAssociatedRequirement());
 		
 		task.setDueDate(task.getDueDate());
-		this.lblDue.setText("Due: " + task.getDueDate());
+		lblDue.setText("Due: " + task.getDueDate());
 		
-		this.taskModel.setDescription(task.getDescription());
-		this.descriptionField.setText(task.getDescription());
+		taskModel.setDescription(task.getDescription());
+		descriptionField.setText(task.getDescription());
 		
 		this.setCategoryColor(task.getCatColor());
 		taskModel.setCatColor(task.getCatColor());
 		taskModel.setCatID(task.getCatID());
 		
-		this.taskModel.setEstimatedEffort(task.getEstimatedEffort());
-		this.lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
-		this.taskModel.setActualEffort(task.getActualEffort());
-		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
+		taskModel.setEstimatedEffort(task.getEstimatedEffort());
+		lblEstimatedEffort.setText("Estimated Effort: " + task.getEstimatedEffort());
+		taskModel.setActualEffort(task.getActualEffort());
+		lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
 		setSign(taskModel);
 		

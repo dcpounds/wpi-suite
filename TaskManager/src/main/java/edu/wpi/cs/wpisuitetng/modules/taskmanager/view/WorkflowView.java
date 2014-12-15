@@ -46,7 +46,7 @@ public class WorkflowView extends JPanel {
 		String projectName = configuration.getProjectName();
 		workflowModel = WorkflowController.getWorkflowModel();
 		
-		this.workflowPanel = new JPanel();
+		workflowPanel = new JPanel();
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
@@ -66,7 +66,7 @@ public class WorkflowView extends JPanel {
 		if(stageViewList.size() == 0){
 			return new LinkedHashMap<Integer,StageView>();
 		}
-		return this.stageViewList;
+		return stageViewList;
 	}
 	
 	

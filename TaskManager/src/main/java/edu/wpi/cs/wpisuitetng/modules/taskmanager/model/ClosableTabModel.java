@@ -33,18 +33,18 @@ public class ClosableTabModel extends AbstractModel {
 	
 	public ClosableTabModel(String tabTitle, int index) {
 		this.tabTitle = tabTitle;
-		this.icon = new ImageIcon();
+		icon = new ImageIcon();
 		this.index = index;
 	}
 	
 	public ClosableTabModel(String tabTitle) {
 		this.tabTitle = tabTitle;
-		this.icon = new ImageIcon();
+		icon = new ImageIcon();
 	}
 	
 	public ClosableTabModel() {
-		this.tabTitle = null;
-		this.icon = new ImageIcon();
+		tabTitle = null;
+		icon = new ImageIcon();
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class ClosableTabModel extends AbstractModel {
 	 * @return the title of this tab
 	 */
 	public String getTabTitle(){
-		return this.tabTitle;
+		return tabTitle;
 	}
 	
 	/** Set the title of this tab
@@ -72,7 +72,7 @@ public class ClosableTabModel extends AbstractModel {
 	 * @return
 	 */
 	public int getTabIndex() {
-		return this.index;
+		return index;
 	}
 	
 	/** 
@@ -88,7 +88,7 @@ public class ClosableTabModel extends AbstractModel {
 	 * @param path
 	 */
 	public void setImageIcon(String path){
-		this.icon = new ImageIcon(path);
+		icon = new ImageIcon(path);
 	}
 	@Override
 	public void save() {

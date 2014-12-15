@@ -35,23 +35,27 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 public class DataLoggerModel extends AbstractModel 
 	{
-	private int taskSnapID;
+	protected int taskSnapID;
 	private int db_id;
-	private List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
+	protected List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
 	
+	/**
+	 * Constructor for DataLoggerModel.
+	 */
 	public DataLoggerModel() {
 		taskSnapID = 0;
-		this.db_id=this.hashCode();
+		db_id=this.hashCode();
 	}
 	
 	/**
 	 * Updates a data logger model based on more recent values pulled from the database
+	 * @param updatedDataLogger DataLoggerModel
 	 */
 	public void copyFrom(DataLoggerModel updatedDataLogger)
 	{
-		this.taskSnapID = updatedDataLogger.getTaskSnapID();
-		this.db_id = updatedDataLogger.getDb_id();
-		this.taskSnapList = updatedDataLogger.getTaskSnapList();
+		taskSnapID = updatedDataLogger.getTaskSnapID();
+		db_id = updatedDataLogger.getDb_id();
+		taskSnapList = updatedDataLogger.getTaskSnapList();
 		
 	}
 	
@@ -115,13 +119,30 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	/**
-	 * Return the current task snapshot
-	 * @param taskModel
-	 * @return
+	 * Add the given snapshot to the task snapshot list
+	
+	 * @param tasksnapshot TaskSnapshot
+	 */
+	public void appendSnapshot(TaskSnapshot tasksnapshot)
+	{
+		taskSnapList.add(tasksnapshot);
+	}
+	
+
+	
+	
+	
+	
+	/**
+	 * Return the current task snapshot based on a task model
+	
+	
+	 * @param taskModel TaskModel
+	 * @return TaskSnapshot
 	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
-		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		for (int i = taskSnapList.size(); i >= 0; i=i - 1)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
 			{
@@ -133,8 +154,36 @@ public class DataLoggerModel extends AbstractModel
 
 	}
 	
+	/**
+	 * Return the current task snapshot based on task ID value
+	
+	
+	 * @param taskID int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnCurrentSnapshot(int taskID)
+	{
+		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskID)
+			{
+				return taskSnapList.get(i-1);
+			}
+		}
+		return null;
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
 	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
 	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
 	 */
 	public TaskSnapshot returnPreviousSnapshot(TaskSnapshot taskSnapshot) {
 		//checks each task for an ID match, starting from the most recent tasks
@@ -157,10 +206,45 @@ public class DataLoggerModel extends AbstractModel
 		return null;
 	}
 	
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	
+	 * @param id int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnPreviousSnapshot(int id) {
+		//checks each task for an ID match, starting from the most recent tasks
+		boolean firstTrip = true;
+		for (int i=taskSnapList.size(); i>=0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == id)
+			{
+				if (firstTrip)
+				{
+					firstTrip = false;
+				}
+				else
+				{
+					return taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	
+	
+	
+	
+	
 	/** Returns the estimated effort at a certain date. If the task did not exist before the specified date,
 	 * the oldest estimated effort will be return. 
-	 * @param task, the task to perform the check on
-	 * @param date, the date to use as a comparison point
+	
+	
+	 * @param task TaskModel
+	 * @param date Date
+	 * @return int
 	 */
 	public int estEffortAtDate(TaskModel task, Date date)
 	{
@@ -188,6 +272,12 @@ public class DataLoggerModel extends AbstractModel
 		return bufferSnap.getEstimatedEffort();
 	}
 	
+	/**
+	 * Method containsID.
+	 * @param list List<TaskSnapshot>
+	 * @param task TaskSnapshot
+	 * @return boolean
+	 */
 	public boolean containsID(List<TaskSnapshot> list, TaskSnapshot task)
 	{
 		for (int i=list.size(); i>=0; i--)
@@ -201,35 +291,43 @@ public class DataLoggerModel extends AbstractModel
 		return false;
 	}
 	
-	public List<TaskSnapshot> filterSnapList (String criteria)
+	/**
+	 * Method filterByEstimatedEffort.
+	 * @return List<TaskSnapshot>
+	 */
+	public List<TaskSnapshot> filterByEstimatedEffort ()
 	{
-		List<TaskSnapshot> filteredList = null;
-		if (criteria.equals("Estimated Effort"))
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		for (int i=taskSnapList.size(); i>=0; i--)
 		{
-			for (int i=taskSnapList.size(); i>=0; i--)
+			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
 			{
-				if (containsID(filteredList, taskSnapList.get(i-1)))
-				{
-					
-				}
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+			else if (filteredList.returnCurrentSnapshot(taskSnapList.get(i-1).getTaskID()).getEstimatedEffort() != 
+					filteredList.returnPreviousSnapshot(taskSnapList.get(i-1).getTaskID()).getEstimatedEffort())
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
 			}
 		}
+		
 		return taskSnapList;
 	}
 	
 	
 	
 	
-	public int estEffortOverPeriod(date startDate, date endDate)
-	{
-		
-	}
+
 	
 	
 	
 	/** Returns a string array of changes made between two snapshots
-	 * @param snap1, the first (older) snapshot
-	 * @param snap2, the second (newer) snapshot
+	
+	
+	 * @param snap1 TaskSnapshot
+	 * @param snap2 TaskSnapshot
+	 * @return List<String>
 	 */
 	public List<String> trackChanges(TaskSnapshot snap1, TaskSnapshot snap2) {
 		int changes = 0;
@@ -347,7 +445,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * Export all categories as a hashtable
-	 * @return
+	
+	 * @return Hashtable
 	 */
 	public Hashtable exportAllCategories()
 	{
@@ -410,7 +509,8 @@ public class DataLoggerModel extends AbstractModel
 	/**
 	 * Format the provided date into a string
 	 * @param date
-	 * @return
+	
+	 * @return String
 	 */
 	public String formatDateString(String date)
 	{
@@ -431,9 +531,10 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * Converts the given list of tasks to a JSON string
-	 * @param taskList -  a list of tasks
-	 * @return a string in JSON representing the list of tasks
-	 */
+	
+	
+	 * @param dataLoggerList DataLoggerModel[]
+	 * @return a string in JSON representing the list of tasks */
 	public static String toJSON(DataLoggerModel[] dataLoggerList) {
 		String json;
 		Gson gson = new Gson();
@@ -443,7 +544,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * @param json - the json obejct to convert back to a TaskModel
-	 * @return
+	
+	 * @return DataLoggerModel
 	 */
 	public static DataLoggerModel fromJson(String json) {
         final Gson parser = new Gson();
@@ -453,8 +555,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	   /**
 	 * @param json - the json to deserialize
-	 * @return - the list of deserialized tasks
-	 */
+	
+	 * @return - the list of deserialized tasks */
 	public static DataLoggerModel[] fromJsonArray(String json) {
 	        return new Gson().fromJson(json, DataLoggerModel[].class);
 	    }

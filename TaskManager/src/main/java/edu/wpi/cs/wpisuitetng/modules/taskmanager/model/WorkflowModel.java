@@ -37,7 +37,7 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name, LinkedHashMap<Integer,StageModel> stageList){
 		this.name = name;
-		this.stageModelList = stageList;
+		stageModelList = stageList;
 		WorkflowModel.userList = new ArrayList<User>();
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
@@ -51,7 +51,7 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	public WorkflowModel(String name){
 		this.name = name;
-		this.stageModelList = new LinkedHashMap<Integer, StageModel>();
+		stageModelList = new LinkedHashMap<Integer, StageModel>();
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
 	}
@@ -61,7 +61,7 @@ public class WorkflowModel extends AbstractModel {
 	 * @return the string name of the workflow
 	 */
 	public String getName(){
-		return this.name;
+		return name;
 	}
 	
 	
@@ -215,7 +215,7 @@ public class WorkflowModel extends AbstractModel {
         
         WorkflowModel other = (WorkflowModel) obj;
         
-        return this.name.equals(other.getName());
+        return name.equals(other.getName());
 	}
 	
 	/* (non-Javadoc)
@@ -223,11 +223,11 @@ public class WorkflowModel extends AbstractModel {
 	 */
 	@Override
 	public String toString(){
-		return this.name;
+		return name;
 	}
 	
 	public void copyFrom(WorkflowModel other){
-		this.stageModelList = other.stageModelList;
+		stageModelList = other.stageModelList;
 	}
 
 }

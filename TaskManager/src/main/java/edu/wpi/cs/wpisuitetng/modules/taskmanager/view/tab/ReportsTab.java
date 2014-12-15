@@ -202,7 +202,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
      * @return the barChart
      */
     ChartPanel getBarChart() {
-        return this.barChart;
+        return barChart;
     }
     
     /**

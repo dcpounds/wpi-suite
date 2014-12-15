@@ -46,7 +46,7 @@ public class ActivityListModel extends AbstractListModel<ActivityModel> {
      */
     public void addActivity(ActivityModel newActivity) {
         // Add the activity
-        this.activities.add(newActivity);
+        activities.add(newActivity);
         
         // Notify the model that it has changed so the GUI will be udpated
         this.fireIntervalAdded(this, 0, 0);
@@ -108,7 +108,7 @@ public class ActivityListModel extends AbstractListModel<ActivityModel> {
      * @return the activities
      */
     List<ActivityModel> getactivities() {
-        return this.activities;
+        return activities;
     }
     
     /**

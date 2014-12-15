@@ -23,7 +23,7 @@ public class UpdateStageRequestObserver implements RequestObserver{
 	StageController controller;
 	
 	public UpdateStageRequestObserver(StageController stageController){
-		this.controller = stageController;
+		controller = stageController;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {

@@ -21,7 +21,7 @@ public class AddDataLoggerRequestObserver implements RequestObserver{
 	DataLoggerController controller;
 	
 	public AddDataLoggerRequestObserver(DataLoggerController dataLoggerController){
-		this.controller = dataLoggerController;
+		controller = dataLoggerController;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {

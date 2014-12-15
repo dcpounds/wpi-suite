@@ -41,7 +41,7 @@ public class CustomRenderer extends BarRenderer {
      * @return The item color.
      */
     public Paint getItemPaint(final int row, final int column) {
-        return this.colors[column % this.colors.length];
+        return colors[column % colors.length];
     }
 	
 

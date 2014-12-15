@@ -65,7 +65,7 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 		}
 		
 		
-    	this.workflowModel = WorkflowController.getWorkflowModel();
+    	workflowModel = WorkflowController.getWorkflowModel();
 		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
     	
 		titleLabel = new JLabel("Stage Title(*)");
@@ -73,13 +73,13 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(titleLabel, "cell 0 0,alignx left, aligny top");
 		
-		this.stageTitleField = new JTextField();
+		stageTitleField = new JTextField();
 		stageTitleField.setColumns(30);
 		stageTitleField.addKeyListener(this);
 		add(stageTitleField, "flowx,cell 0 1,alignx left,aligny top");
 		
 		sbmtStageButton = new JButton("Submit");
-		this.thisTab = this;
+		thisTab = this;
 		sbmtStageButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -100,7 +100,7 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	 * @return the workflowModel passed in
 	 */
 	public WorkflowModel getWorkflowModel() {
-        return this.workflowModel;
+        return workflowModel;
     }
 	
 	/**
