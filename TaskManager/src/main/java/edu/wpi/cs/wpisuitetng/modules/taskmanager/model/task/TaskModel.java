@@ -263,7 +263,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 			//Red
 			color = new Color(252,87,83);
 		}
-		return color;
+		return getCatColor();
 	}
 	
 	
