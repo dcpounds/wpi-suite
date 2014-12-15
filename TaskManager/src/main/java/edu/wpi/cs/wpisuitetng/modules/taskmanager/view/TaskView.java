@@ -14,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -87,6 +88,8 @@ public class TaskView extends DragTaskPanel{
 	ImageIcon yellowIcon = new ImageIcon(this.getClass().getResource("Yellow.png"));
 	ImageIcon redIcon = new ImageIcon(this.getClass().getResource("Red.png"));
 	ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
+	private ActionListener archiveListener;
+	private ActionListener deleteListener;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -224,24 +227,24 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		titlePanel.add(btnRestore, "flowx,cell 4 0,alignx center,aligny top");
-		
-				
-				
-				//Set up the close button to remove the task
-				closeButton = new JButton("\u2716");
-				titlePanel.add(closeButton, "cell 4 0,alignx center,aligny top");
-				closeButton.setMargin(new Insets(0, 0, 0, 0));
-				closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
-				closeButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e) {
-						activateArchiveView();
-						StageController.archiveTask(tv);
-						TabController.getInstance().closeUniqueTab(TabType.TASK,taskModel);
-					}
-				});
-				
-						closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
-						btnRestore.setFont(closeButton.getFont().deriveFont((float) 8));
+
+		//Set up the close button to remove the task
+		closeButton = new JButton("\u2716");
+		titlePanel.add(closeButton, "cell 4 0,alignx center,aligny top");
+		closeButton.setMargin(new Insets(0, 0, 0, 0));
+		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(!taskModel.getIsArchived()){
+					archive();
+				} else {
+					delete();
+				}
+			}
+		});
+
+		closeButton.setHorizontalAlignment(SwingConstants.TRAILING);
+		btnRestore.setFont(closeButton.getFont().deriveFont((float) 8));
 		btnRestore.setVisible(false);
 		
 		if(taskModel.getIsArchived()){
@@ -253,13 +256,13 @@ public class TaskView extends DragTaskPanel{
 		this.setContents(taskModel);
 	}
 	
+	
 	/**
 	 * activates the archive view mode of a task view
 	 * 
 	 */
 	public void activateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.red, 2));
-		closeButton.setVisible(false);
 		btnRestore.setVisible(true);
 		btnActivities.setEnabled(false);
 		btnEdit.setEnabled(false);
@@ -272,7 +275,6 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public void deactivateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		closeButton.setVisible(true);
 		btnRestore.setVisible(false);
 		btnActivities.setEnabled(true);
 		btnEdit.setEnabled(true);
@@ -476,6 +478,31 @@ public class TaskView extends DragTaskPanel{
 		}else{
 			statusLabel.setVisible(true);
 			this.setBackground(Color.LIGHT_GRAY);
+		}
+	}
+	
+	/**
+	 * helper function for archiving the model of the task view
+	 */
+	private void archive(){
+		activateArchiveView();
+		StageController.archiveTask(this);
+		TabController.getInstance().closeUniqueTab(TabType.TASK, taskModel);
+	}
+	
+	/**
+	 * helper function for deleting the model of the task view
+	 */
+	private void delete(){
+		Object[] options = { "YES", "NO" };
+		int choice = JOptionPane.showOptionDialog(null, "Are you sure you permanently want to delete this task?", "Warning",
+			JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+			null, options, options[0]);
+		if(choice == 0){
+			StageController.deleteTask(this);
+		}
+		else{
+			//do nothing
 		}
 	}
 }
