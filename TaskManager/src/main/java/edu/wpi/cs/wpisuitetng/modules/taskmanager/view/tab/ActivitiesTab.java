@@ -24,11 +24,13 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ActivityListCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.ScrollPane;
 
 
@@ -54,6 +56,7 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
      
 		//make
         activitiesBoard = new JList<ActivityModel>(taskModel.getActivities());
+        activitiesBoard.setCellRenderer(new ActivityListCellRenderer());
         activitiesScrollPane = new JScrollPane(activitiesBoard);
         activitiesScrollPane.setPreferredSize(new Dimension(500, 400));
         add(activitiesScrollPane, "cell 0 0");
