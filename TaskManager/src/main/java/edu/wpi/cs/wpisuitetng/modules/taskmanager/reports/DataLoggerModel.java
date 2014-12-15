@@ -120,13 +120,12 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
-		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		for (int i = taskSnapList.size(); i > 0; i=i-1)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
 			{
 				return taskSnapList.get(i-1);
 			}
-			System.out.print("Did a loop");
 		}
 		return null;
 
@@ -140,7 +139,7 @@ public class DataLoggerModel extends AbstractModel
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
 		
-		for (int i=taskSnapList.size(); i > 0; i=i--) 
+		for (int i=taskSnapList.size(); i > 0; i=i-1) 
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{

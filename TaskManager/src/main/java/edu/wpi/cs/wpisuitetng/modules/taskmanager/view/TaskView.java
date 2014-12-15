@@ -284,21 +284,21 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public Dimension getPreferredSize() {
 		boolean isExpanded = taskModel.getIsExpanded();
-		Component parent = this.getParent();
+		StageView parent = this.getStageView();
 		
 		if( parent == null)
 			return super.getPreferredSize();
 		else{	
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
-			Dimension parentSize = parent.getSize();
+			Dimension parentSize = parent.getScrollPane().getViewport().getSize();
 			truncateTitle(parentSize.width);
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
-				return new Dimension(parentSize.width,openSize);	
+				return new Dimension(parentSize.width - 2,openSize);	
 			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
 			} else{
 				this.setMaximumSize(new Dimension(parentSize.width,closeSize));
-				return new Dimension(parentSize.width,closeSize);
+				return new Dimension(parentSize.width - 2,closeSize);
 			}
 		}
 	}
