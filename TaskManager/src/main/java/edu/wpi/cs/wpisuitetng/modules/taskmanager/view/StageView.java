@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
@@ -73,7 +74,7 @@ public class StageView extends DragStagePanel {
 		this.closable = stageModel.getClosable();
 		
 		StageView thisStage = this;
-		collapseAll = new JButton("+");
+		collapseAll = new JButton(" - ");
 		collapseAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		collapseAll.setMargin(new Insets(0, 0, 0, 0));
 		collapseAll.addActionListener(new ActionListener() {
@@ -85,7 +86,7 @@ public class StageView extends DragStagePanel {
 		});
 		add(collapseAll, "pad 5 2 0 2,cell 0 0,alignx left,aligny center");
 		
-		expandAll = new JButton(" - ");
+		expandAll = new JButton("+");
 		expandAll.setFont(new Font("Tahoma", Font.BOLD, 12));
 		expandAll.setMargin(new Insets(0, 0, 0, 0));
 		expandAll.addActionListener(new ActionListener() {
@@ -116,7 +117,7 @@ public class StageView extends DragStagePanel {
 		scrollPane = new JScrollPane(stagePane);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		stagePane.setLayout(new BoxLayout(stagePane, BoxLayout.Y_AXIS));
+		stagePane.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		add(scrollPane, "cell 0 1 3 1,grow");
 		setBackground(new Color(135, 206, 250));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
@@ -159,12 +160,9 @@ public class StageView extends DragStagePanel {
 		int heightNeeded = 0;
 		
 		//Go through each component in the stageView
-		for( Component childComponent : stagePane.getComponents() ){
-			if( childComponent instanceof TaskView ){
-				heightNeeded += ((TaskView) childComponent).getHeight();
-			}
-			stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
-		}
+		for( TaskView taskView : this.getTaskViewList().values() )
+				heightNeeded += taskView.getHeight();
+		stagePane.setPreferredSize(new Dimension(this.getWidth(), heightNeeded));
 	}
 
 	/**
@@ -195,6 +193,21 @@ public class StageView extends DragStagePanel {
 		redrawStage();
 	}
 	
+	/**
+	 * @return the stagePane that tasks are added to
+	 */
+	public JPanel getStagePane() {
+		return stagePane;
+	}
+	
+	/**
+	 * @return the scrollPane
+	 */
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+
 	public void redrawStage(){
 		stagePane.revalidate();
 		stagePane.repaint();

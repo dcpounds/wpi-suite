@@ -93,6 +93,8 @@ public class TaskView extends DragTaskPanel{
 		setForeground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
+		ImageIcon editIcon = new ImageIcon(this.getClass().getResource("edit.png"));
+		
 		this.stageView = stageView;
 		this.taskModel = taskModel;
 		this.id = taskModel.getID();
@@ -191,6 +193,8 @@ public class TaskView extends DragTaskPanel{
 		
 		//Set up the edit button
 		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(editIcon);
+		btnEdit.setMargin(new Insets(0,0,0,5));
 		btnEdit.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -280,21 +284,21 @@ public class TaskView extends DragTaskPanel{
 	 */
 	public Dimension getPreferredSize() {
 		boolean isExpanded = taskModel.getIsExpanded();
-		Component parent = this.getParent();
+		StageView parent = this.getStageView();
 		
 		if( parent == null)
 			return super.getPreferredSize();
 		else{	
 			//If the task is expanded, set the preferred size to the parent width and the openSize height
-			Dimension parentSize = parent.getSize();
+			Dimension parentSize = parent.getScrollPane().getViewport().getSize();
 			truncateTitle(parentSize.width);
 			if(isExpanded){
 				this.setMaximumSize(new Dimension(parentSize.width,openSize));
-				return new Dimension(parentSize.width,openSize);	
+				return new Dimension(parentSize.width - 2,openSize);	
 			//If the task is collapsed, set the preferred size to the parent width and the closedSize height
 			} else{
 				this.setMaximumSize(new Dimension(parentSize.width,closeSize));
-				return new Dimension(parentSize.width,closeSize);
+				return new Dimension(parentSize.width - 2,closeSize);
 			}
 		}
 	}
