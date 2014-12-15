@@ -22,6 +22,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -51,6 +52,8 @@ public class ToolbarView extends JPanel {
     private final WorkflowModel workflowModel;
     private JTextField searchBox;
 	private JButton gitButton;
+	private JCheckBox caseSensitivityToggle;
+	private boolean caseSensitive = false;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -162,6 +165,17 @@ public class ToolbarView extends JPanel {
         add(searchBox);
         
         searchBox.addKeyListener(new SearchController(this));
+        
+        
+        caseSensitivityToggle = new JCheckBox("Case Sensitive");
+        caseSensitivityToggle.setSelected(false);
+        caseSensitivityToggle.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		caseSensitive = !caseSensitive;
+        		SearchController.search();
+        	}
+        });
+        add(caseSensitivityToggle);
     }
 
     static long getSerialversionuid() {
@@ -174,5 +188,13 @@ public class ToolbarView extends JPanel {
      */
     public JTextField getSearchBox(){
     	return searchBox;
+    }
+    
+    /**
+     * Retrieve the case sensitivity status
+     * @return caseSensitive
+     */
+    public boolean getCaseSensitive() {
+    	return caseSensitive;
     }
 }
