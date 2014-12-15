@@ -14,31 +14,21 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragStagePanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
-
 import javax.swing.JLabel;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-
 import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.JButton;
 
 /**
@@ -247,7 +237,10 @@ public class StageView extends DragStagePanel {
 		this.redrawStage();
 	}
 	
-	public void clearAllStages(){
+	/**
+	 * Clears the contents of the stage
+	 */
+	public void clearStage(){
 		stagePane.removeAll();
 		this.getTaskViewList().clear();
 	}
