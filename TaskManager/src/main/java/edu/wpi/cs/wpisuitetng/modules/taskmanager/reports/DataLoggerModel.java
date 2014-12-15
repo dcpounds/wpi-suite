@@ -142,7 +142,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
-		for (int i = taskSnapList.size(); i >= 0; i=i - 1)
+		for (int i = taskSnapList.size(); i > 0; i=i - 1)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
 			{
@@ -163,7 +163,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public TaskSnapshot returnCurrentSnapshot(int taskID)
 	{
-		for (int i = taskSnapList.size(); i>=0; i=i-1)
+		for (int i = taskSnapList.size(); i>0; i=i-1)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskID)
 			{
@@ -188,7 +188,7 @@ public class DataLoggerModel extends AbstractModel
 	public TaskSnapshot returnPreviousSnapshot(TaskSnapshot taskSnapshot) {
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
-		for (int i=taskSnapList.size(); i>=0; i=i-1) 
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{
@@ -215,7 +215,7 @@ public class DataLoggerModel extends AbstractModel
 	public TaskSnapshot returnPreviousSnapshot(int id) {
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
-		for (int i=taskSnapList.size(); i>=0; i=i-1) 
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
 		{
 			if (taskSnapList.get(i-1).getTaskID() == id)
 			{
@@ -248,7 +248,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public int estEffortAtDate(TaskModel task, Date date)
 	{
-		for (int i=taskSnapList.size(); i>=0; i--)
+		for (int i=taskSnapList.size(); i>0; i--)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == task.getID())
 			{
@@ -292,14 +292,14 @@ public class DataLoggerModel extends AbstractModel
 	}
 	
 	/**
-	 * Method filterByEstimatedEffort.
-	 * @return List<TaskSnapshot>
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
 	 */
-	public List<TaskSnapshot> filterByEstimatedEffort ()
+	public SnapshotSubList filterByEstimatedEffort ()
 	{
 		SnapshotSubList filteredList = new SnapshotSubList();
 
-		for (int i=taskSnapList.size(); i>=0; i--)
+		for (int i=taskSnapList.size(); i>0; i--)
 		{
 			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
 			{
@@ -312,7 +312,35 @@ public class DataLoggerModel extends AbstractModel
 			}
 		}
 		
-		return taskSnapList;
+		return filteredList;
+	}
+	
+	
+	
+	/**
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByCategory ()
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+			else if (
+					(filteredList.returnCurrentSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor() != 
+					filteredList.returnPreviousSnapshot(taskSnapList.get(i-1).getTaskID()).getCatColor()))
+
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+		}
+		
+		return filteredList;
 	}
 	
 	
@@ -462,12 +490,14 @@ public class DataLoggerModel extends AbstractModel
 		output.put("BLUE", 0);
 		output.put("PURPLE", 0);		
 		
-		if (taskSnapList.size()>0)
+		
+		SnapshotSubList filteredList = filterByCategory();
+		if (filteredList.taskSnapList.size()>0)
 		{
-			for (int i = taskSnapList.size(); i>0; i=i-1)
+			for (int i = filteredList.taskSnapList.size(); i>0; i=i-1)
 			{
 	
-				switch (taskSnapList.get(i-1).getCatColorString()) {
+				switch (filteredList.taskSnapList.get(i-1).getCatColorString()) {
 				case "GRAY":
 					output.replace("GRAY", output.get("GRAY")+1);
 					break;

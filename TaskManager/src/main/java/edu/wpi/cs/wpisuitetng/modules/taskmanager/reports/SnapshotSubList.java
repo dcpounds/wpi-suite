@@ -12,9 +12,9 @@ public class SnapshotSubList extends DataLoggerModel {
 	
 	public boolean listContainsID(int taskID)
 	{
-		for (int i=taskSnapList.size(); i>=0; i--)
+		for (int i=this.taskSnapList.size(); i>0; i--)
 		{
-			if (taskSnapList.get(i-1).getTaskID() == taskID)
+			if (this.taskSnapList.get(i-1).getTaskID() == taskID)
 			{
 				return true;
 			}
