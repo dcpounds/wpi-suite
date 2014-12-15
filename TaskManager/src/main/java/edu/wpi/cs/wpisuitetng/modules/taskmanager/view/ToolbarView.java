@@ -64,7 +64,7 @@ public class ToolbarView extends JPanel {
         ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
         ImageIcon stageIcon = new ImageIcon(this.getClass().getResource("new_req.png"));
         ImageIcon reportsIcon = new ImageIcon(this.getClass().getResource("new_report.png"));
-        ImageIcon urgencyIcon = new ImageIcon(this.getClass().getResource("Colors.png"));
+        ImageIcon categoryIcon = new ImageIcon(this.getClass().getResource("Colors.png"));
         ImageIcon searchIcon = new ImageIcon(this.getClass().getResource("search.png"));
         ImageIcon gitIcon = new ImageIcon(this.getClass().getResource("github.png"));
         
@@ -112,8 +112,8 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Urgency Coloring");
-        toggleColor.setIcon(urgencyIcon);
+        JButton toggleColor = new JButton("Toggle Category Coloring");
+        toggleColor.setIcon(categoryIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
         	 @Override
