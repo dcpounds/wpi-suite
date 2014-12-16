@@ -13,9 +13,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Hashtable;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import net.miginfocom.swing.MigLayout;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -25,7 +38,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
 
 /**
@@ -35,8 +52,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLogg
 public class ReportsTab extends JScrollPane implements IHashableTab {
     static final long serialVersionUID = 2930864775768057902L;
     
+    private final WorkflowModel workflowModel;
+    
     private String title;
     private ChartPanel barChart;
+    private Date startDate;
+    private Date endDate;
     
    
     /**
@@ -47,7 +68,38 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         this.title = title;//title of the chart, either status or iteration
         JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
-        panel.add(barChart, BorderLayout.CENTER);
+        panel.add(barChart, BorderLayout.WEST);
+        
+        this.workflowModel = WorkflowController.getWorkflowModel();
+        
+        JPanel rightPanel = (new JPanel(new MigLayout("wrap 4")));
+        
+        JLabel top = new JLabel("Choose the time period for your report");
+        JButton cal1 = new JButton("Calendar 1");
+        JButton cal2 = new JButton("Calendar 2");
+        JLabel start = new JLabel("Select Starting Date");
+        JLabel end = new JLabel("Select Ending Date");
+        JButton button1 = new JButton("Task Distribution");
+        JButton button2 = new JButton("Velocity Chart");
+        JButton button3 = new JButton("Scrum Burndown");
+        JButton button4 = new JButton("Category Distribution");
+        JLabel bottom = new JLabel("Select \"Task Completed\" Stage");
+        JComboBox<String> dropDown = new JComboBox<String>();
+        dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
+        
+        rightPanel.add(top, "span 4");
+        rightPanel.add(cal1, "span 2");
+        rightPanel.add(cal2, "span 2");
+        rightPanel.add(start, "span 2");
+        rightPanel.add(end, "span 2");
+        rightPanel.add(button1);
+        rightPanel.add(button2);
+        rightPanel.add(button3);
+        rightPanel.add(button4);
+        rightPanel.add(bottom, "span 2");
+        rightPanel.add(dropDown, "span 2");
+        
+        panel.add(rightPanel, BorderLayout.CENTER);
         
         this.setViewportView(panel);
     }
@@ -244,5 +296,18 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
 	@Override
 	public boolean hasBeenModified() {
 		return false;
+	}
+	
+	private String[] getStages() {
+		ArrayList<String> statusOptions = new ArrayList<String>();
+		for (StageModel stage : workflowModel.getStageModelList().values()) {
+			String truncatedTitle;
+			if (stage.getTitle().length() >= 21)
+				truncatedTitle = stage.getTitle().substring(0, 21) + "...";
+			else
+				truncatedTitle = stage.getTitle();
+			statusOptions.add(truncatedTitle);
+		}
+		return statusOptions.toArray(new String[statusOptions.size()]);
 	}
 }
