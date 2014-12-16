@@ -47,6 +47,8 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
@@ -206,18 +208,6 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
-				
-		
-		//Set up the activities button
-		btnActivities = new JButton("Activities");
-		btnActivities.addActionListener( new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addUniqueTab(TabType.ACTIVITIES, taskModel);
-			}
-		});
-		add(btnActivities, "cell 0 4");
-		
 		
 		btnRestore = new JButton("Restore");
 		btnRestore.setMargin(new Insets(0, 0, 0, 0));
@@ -265,7 +255,6 @@ public class TaskView extends DragTaskPanel{
 	public void activateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		btnRestore.setVisible(true);
-		btnActivities.setEnabled(false);
 		btnEdit.setEnabled(false);
 	}
 	
@@ -277,7 +266,6 @@ public class TaskView extends DragTaskPanel{
 	public void deactivateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		btnRestore.setVisible(false);
-		btnActivities.setEnabled(true);
 		btnEdit.setEnabled(true);
 	}
 	
@@ -507,9 +495,6 @@ public class TaskView extends DragTaskPanel{
 			null, options, options[0]);
 		if(choice == 0){
 			StageController.deleteTask(this);
-		}
-		else{
-			//do nothing
 		}
 	}
 }

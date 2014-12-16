@@ -27,7 +27,9 @@ import java.util.Properties;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -96,7 +98,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private JLabel lblRequirement;
 	private JLabel daysUntilLabel2;
 	private DefaultComboBoxModel<String> requirementsComboModel;
-
+	private ActivitiesView activitiesView;
+	private JPanel editPane;
+	private JPanel activitiesPane;
+	private JScrollPane editScrollPane;
+	private JScrollPane activitiesScrollPane;
+	private JSplitPane splitPane;
+	
 	/**
 	 * contructs a tab for creating tasks
 	 * 
@@ -104,11 +112,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 *            - the main view that holds tabs
 	 */
 	public NewTaskTab(TaskModel model) {
+		
+		editPane = new JPanel();
+		
 		// get the requirements from the database
-		setLayout(new MigLayout("", "[][][][grow]",
+		editPane.setLayout(new MigLayout("", "[][][][grow]",
 				"[][][][][][][][][][][][][][][][][][]"));
 		JLabel taskTitleLabel = new JLabel("Task Title(*)");
-		add(taskTitleLabel, "flowx,cell 1 0");
+		editPane.add(taskTitleLabel, "flowx,cell 1 0");
 		this.workflowModel = WorkflowController.getWorkflowModel();
 
 		// Decide what action the user is taking
@@ -122,27 +133,29 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			this.isEditingTask = true;
 		}
 
+		activitiesPane = new ActivitiesView(taskModel);
+
 		// Set an error if the task needs a title
 		titleEmptyError = new JLabel("Task Needs A Title");
 		titleEmptyError.setForeground(Color.red);
-		add(titleEmptyError, "flowx,cell 1 0");
+		editPane.add(titleEmptyError, "flowx,cell 1 0");
 		titleEmptyError.setVisible(false);
 
 		// Set the task title
 		taskTitleField = new JTextField();
 		taskTitleField.setText(this.taskModel.getTitle());
-		add(taskTitleField, "flowx,cell 1 1,alignx left");
+		editPane.add(taskTitleField, "flowx,cell 1 1,alignx left");
 		taskTitleField.setColumns(45);
 		taskTitleField.addKeyListener(this);
 
 		// Let the user decide where to put the task
 		JLabel stageLabel = new JLabel("Stage");
-		add(stageLabel, "pad 0 10 0 50,cell 3 0");
+		editPane.add(stageLabel, "pad 0 10 0 50,cell 3 0");
 		stageBox = new JComboBox<String>();
 		stageBox.setPreferredSize(new Dimension(125,10));
 		stageBox.setToolTipText("Select a status for this task");
 		stageBox.setModel(new DefaultComboBoxModel<String>(getStatusOptions()));
-		add(stageBox, "pad 0 10 0 0,cell 3 1");
+		editPane.add(stageBox, "pad 0 10 0 0,cell 3 1");
 		stageBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selected = ((JComboBox) e.getSource()).getSelectedIndex();
@@ -152,15 +165,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		// Set a deescription for the task
 		taskDescriptionLabel = new JLabel("Task Description(*)");
-		add(taskDescriptionLabel, "cell 1 2");
+		editPane.add(taskDescriptionLabel, "cell 1 2");
 
 		// Warn if the user has not put in a description
 		descriptionEmptyError = new JLabel("Task Needs A Description");
 		descriptionEmptyError.setForeground(Color.red);
-		add(descriptionEmptyError, "cell 1 2");
+		editPane.add(descriptionEmptyError, "cell 1 2");
 		descriptionEmptyError.setVisible(false);
 		descriptionScrollPane = new JScrollPane();
-		add(descriptionScrollPane, "cell 1 3,grow");
+		editPane.add(descriptionScrollPane, "cell 1 3,grow");
 		taskDescriptionField = new JTextArea(this.taskModel.getDescription());
 		descriptionScrollPane.setViewportView(taskDescriptionField);
 		taskDescriptionField.setLineWrap(true);
@@ -170,14 +183,14 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		// Create a view where users can assign users to the task
 		assignUsersView = new AssignUsersView(taskModel);
-		add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
+		editPane.add(assignUsersView, "pad 0 10 0 0,cell 3 3,grow");
 
 		// Warn if the users put in a bad estimated effort
 		JLabel estEffortLabel = new JLabel("Estimated Effort");
-		add(estEffortLabel, "flowx,pad 0 10 0 100,cell 3 6");
+		editPane.add(estEffortLabel, "flowx,pad 0 10 0 100,cell 3 6");
 		estEffortError = new JLabel("Must specify a valid effort");
 		estEffortError.setForeground(Color.red);
-		add(estEffortError, "flowx,pad 0 5 0 100,cell 3 6");
+		editPane.add(estEffortError, "flowx,pad 0 5 0 100,cell 3 6");
 		estEffortError.setVisible(false);
 
 		// Set the estimated effort
@@ -185,22 +198,22 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		estEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		estEffortField.setText(Integer.toString(this.taskModel
 				.getEstimatedEffort()));
-		add(estEffortField, "flowx,pad 0 10 0 0,cell 3 7,alignx left");
+		editPane.add(estEffortField, "flowx,pad 0 10 0 0,cell 3 7,alignx left");
 		estEffortField.setColumns(10);
 		estEffortField.addKeyListener(this);
 
 		// Set the actual effort
 		JLabel actEffortLabel = new JLabel("Actual Effort");
-		add(actEffortLabel, "flowx,pad 0 10 0 100,cell 3 8");
+		editPane.add(actEffortLabel, "flowx,pad 0 10 0 100,cell 3 8");
 
 		// Let the user specify the number of critical days before due
 		JLabel daysUntilLabel = new JLabel("Task will become urgent ");
-		add(daysUntilLabel, "flowx,pad 0 0 0 0,cell 1 9,alignx left");
+		editPane.add(daysUntilLabel, "flowx,pad 0 0 0 0,cell 1 9,alignx left");
 		actEffortField = new JTextField();
 		actEffortField.setHorizontalAlignment(SwingConstants.RIGHT);
 		actEffortField.setText(Integer.toString(this.taskModel
 				.getActualEffort()));
-		add(actEffortField, "flowx,pad 0 10 0 0,cell 3 9,alignx left");
+		editPane.add(actEffortField, "flowx,pad 0 10 0 0,cell 3 9,alignx left");
 		actEffortField.setColumns(10);
 		actEffortField.addKeyListener(this);
 
@@ -217,11 +230,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		});
 
 		colorTitle = new JLabel("Select Category");
-		add(colorTitle, "cell 1 12,alignx left");
+		editPane.add(colorTitle, "cell 1 12,alignx left");
 
 		// Colorcombobox is a custom jcombobox that allows color section visible
 		colorBox = new ColorComboBox();
-		add(colorBox, "cell 1 13");
+		editPane.add(colorBox, "cell 1 13");
 		colorBox.setBounds(100, 20, 140, 30);
 		colorBox.setToolTipText("Select a Category Color");
 		colorTitle = new JLabel("                  ");
@@ -229,11 +242,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		setCategoryColorBox();
 		else colorBox.setSelectedIndex(1);
 		
-		add(colorTitle, "cell 3 0");
+		editPane.add(colorTitle, "cell 3 0");
 
 		// Make a label for the requirements combo box
 		lblRequirement = new JLabel("Requirement:");
-		add(lblRequirement, "pad 0 10 0 0,cell 3 12, pad 0 9 0 50");
+		editPane.add(lblRequirement, "pad 0 10 0 0,cell 3 12, pad 0 9 0 50");
 
 		// Make the requirements combo box.
 		this.requirementsComboModel = new DefaultComboBoxModel<String>();
@@ -248,9 +261,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			}
 		});
 
-		add(requirementsBox, "pad 0 10 0 0,cell 3 13");
+		editPane.add(requirementsBox, "pad 0 10 0 0,cell 3 13");
 
-		add(sbmtTaskButton, "flowx,cell 1 17");
+		editPane.add(sbmtTaskButton, "flowx,cell 1 17");
 		sbmtTaskButton.setEnabled(false);
 
 		/*
@@ -259,10 +272,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		 * this info, and the DateLabelFormatter formats it to be in MM-dd-YYYY
 		 */
 		dateDue = new JLabel("Due Date:(*)");
-		add(dateDue, "flowx,cell 1 6");
+		editPane.add(dateDue, "flowx,cell 1 6");
 		dateNotAddedError = new JLabel("Task Needs A Due Date");
 		dateNotAddedError.setForeground(Color.red);
-		add(dateNotAddedError, "cell 1 6");
+		editPane.add(dateNotAddedError, "cell 1 6");
 		dateNotAddedError.setVisible(false);
 
 		dateModel = new UtilDateModel();
@@ -286,7 +299,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		springLayout.putConstraint(SpringLayout.SOUTH,
 				datePicker.getJFormattedTextField(), 0, SpringLayout.SOUTH,
 				datePicker);
-		add(datePicker, "flowx,cell 1 7");
+		editPane.add(datePicker, "flowx,cell 1 7");
 		datePicker.addMouseListener(this);
 		datePanel.addMouseListener(this);
 		datePicker.addActionListener(this);
@@ -294,13 +307,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		// Warn if users put an invalid actual effort
 		actEffortError = new JLabel("Must specify a valid effort");
 		actEffortError.setForeground(Color.red);
-		add(actEffortError, "pad 0 5 0 100,cell 3 8");
+		editPane.add(actEffortError, "pad 0 5 0 100,cell 3 8");
 		actEffortError.setVisible(false);
 
 		daysUntilError = new JLabel("Must specify valid number of days");
 		daysUntilError.setHorizontalAlignment(SwingConstants.LEFT);
 		daysUntilError.setForeground(Color.red);
-		add(daysUntilError, "pad 0 0 0 70,cell 1 8,alignx left");
+		editPane.add(daysUntilError, "pad 0 0 0 70,cell 1 8,alignx left");
 		daysUntilError.setVisible(false);
 		daysUntilField = new JTextField();
 		daysUntilField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -308,15 +321,22 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.getTimeThreshold()));
 		daysUntilField
 				.setToolTipText("The task will become urgent this many days before the due date");
-		add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
+		editPane.add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
 		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
 		daysUntilLabel2 = new JLabel(" day(s) before it is due");
-		add(daysUntilLabel2, "cell 1 9");
+		editPane.add(daysUntilLabel2, "cell 1 9");
 
 		checkForErrors();
+		
+		editScrollPane = new JScrollPane(editPane);
+		activitiesScrollPane = new JScrollPane(activitiesPane);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                           editScrollPane, activitiesScrollPane);
+		splitPane.setOneTouchExpandable(true);
+		add(splitPane);
 	}
 
 	/**
@@ -484,16 +504,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		checkForErrors();
 	}
 
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		//Intentionally left blank
-	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		//Intentionally left blank
-	}
-
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -611,26 +621,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		//Intentionally left blank
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		//Intentionally left blank
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		//Intentionally left blank
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		//Intentionally left blank
-	}
-
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
@@ -680,6 +670,36 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	@Override
 	public TabType getTabType() {
 		return TabType.TASK;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		//do nothing
 	}
 
 

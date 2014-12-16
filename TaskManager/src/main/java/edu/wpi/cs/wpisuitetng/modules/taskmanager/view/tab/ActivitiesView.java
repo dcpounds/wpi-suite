@@ -38,9 +38,13 @@ import java.awt.ScrollPane;
  * @author Dave
  * This tab view displays the activities log that each task contains. 
  */
-public class ActivitiesTab extends AbstractTab implements IHashableTab {
+public class ActivitiesView extends AbstractTab {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7944220332816331243L;
 	private WorkflowModel workflowModel;
 	private TaskModel taskModel;
 	private JList<ActivityModel> activitiesBoard;
@@ -49,7 +53,7 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 	private JButton btnSubmit;
 	private JScrollPane commentScrollPane;
 
-	public ActivitiesTab(TaskModel model){
+	public ActivitiesView(TaskModel model){
 		taskModel = model;
 		workflowModel = WorkflowController.getWorkflowModel();
 		setLayout(new MigLayout("", "[grow]", "[grow][]"));
@@ -97,16 +101,8 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 	 * @return - the task that has been built with the fields that the user entered
 	 */
 	public void addActivity() {
-		StageModel stageModel = null;
-		for(StageModel stage : workflowModel.getStageModelList().values()){
-			if(stage.getID() == taskModel.getStageID())
-				stageModel = stage;
-		}
-		
 		taskModel.addActivity(new ActivityModel(newCommentTxt.getText()));
 		newCommentTxt.setText("");
-		//Updates task on the stage model
-		StageController.sendUpdateRequest(stageModel);
 	}
 	
 	/**
@@ -116,20 +112,4 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 		return taskModel;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
-	 */
-	@Override
-	public int getModelID() {
-		return taskModel.getID();
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
-	 */
-	@Override
-	public TabType getTabType() {
-		// TODO Auto-generated method stub
-		return TabType.ACTIVITIES;
-	}
 }
