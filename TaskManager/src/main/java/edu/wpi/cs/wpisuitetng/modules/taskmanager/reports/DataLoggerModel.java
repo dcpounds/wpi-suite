@@ -560,6 +560,11 @@ public class DataLoggerModel extends AbstractModel
 	}
 	
 	
+	
+	
+	
+	
+	
 	/**
 	 * Filters a sublist, returning only the snapshots where a snapshot was moved into the complete stage
 	 * @param list, the list to perform the operation on
@@ -578,6 +583,19 @@ public class DataLoggerModel extends AbstractModel
 		}
 		return filteredList;
 		
+	}
+	
+	
+	
+	
+	public int AccumulateActualEffort(SnapshotSubList list)
+	{
+		int accumulator = 0;
+		for (int i = list.taskSnapList.size(); i>0; i--)
+		{
+			accumulator = accumulator + list.taskSnapList.get(i-1).getActualEffort();
+		}
+		return accumulator;
 	}
 	
 	
