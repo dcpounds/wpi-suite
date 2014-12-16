@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -85,32 +86,18 @@ public class GitController extends GitHubService implements ActionListener {
 	 * @throws IOException
 	 */
 	public List<RepositoryIssue> getAllIssues(GitHubClient client) throws IOException {
-		System.out.println("Got all issues");
-		List<RepositoryIssue> issues = super.getAll(this.pageIssues(client));
-		
-		createTasks(issues);
-		setSuccessMessage("Successfully imported issues from the repository!");
-		return issues;
-	}
-	
-	/**
-	 * Log the client in using the provided credentials
-	 * @throws IOException 
-	 */
-	private GitHubClient authenticate(GitHubClient client){
+		List<RepositoryIssue> issues = new ArrayList<RepositoryIssue>();
 		try{
-			client.setCredentials(gitTab.getUsernameField().getText(), gitTab.getPassField().getText());
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			getAllIssues(client);
-		} catch (IOException e) {
+			System.out.println("Got all issues");
+			issues = super.getAll(this.pageIssues(client));
+			createTasks(issues);
+		}catch (Exception e){
 			setSuccessMessage("Failed to get issues from the repository. Make sure you entered a valid repository.");
 			e.printStackTrace();
 		}
-		return client;
+		
+		setSuccessMessage("Successfully imported issues from the repository!");
+		return issues;
 	}
 	
 	/**
@@ -143,7 +130,8 @@ public class GitController extends GitHubService implements ActionListener {
 				setSuccessMessage("Failed to create a client. I'm sorry Team 4.");
 				e.printStackTrace();
 			}
-		return authenticate(client);
+		getAllIssues(client);
+		return client;
 	}
 	
 	/**
@@ -166,6 +154,7 @@ public class GitController extends GitHubService implements ActionListener {
 			int issueID = new BigDecimal(issue.getId()).intValueExact();
 			task.setID(issueID);
 			task.setCreator(issue.getUser().getName());
+			task.setCatID(1);
 			
 			Format formatter = new SimpleDateFormat("MM/dd/yyyy");
 			task.setDueDate(formatter.format(issue.getCreatedAt()));
