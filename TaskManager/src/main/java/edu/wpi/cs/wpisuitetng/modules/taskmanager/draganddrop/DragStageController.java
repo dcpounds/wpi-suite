@@ -47,8 +47,8 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	public DragStageController(DragStagePanel stage){
 		this.stage = stage;
 		stageID = ((StageView)stage).getID();
-		this.workflowView = TabController.getTabView().getWorkflowView();
-		this.movedStages = new LinkedHashMap<Integer,StageModel>();
+		workflowView = TabController.getTabView().getWorkflowView();
+		movedStages = new LinkedHashMap<Integer,StageModel>();
 		
 		
 	}
@@ -127,7 +127,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 			
 			if(view.getX() < overlap && (view.getX() + stage.getWidth() > overlap)){
 				//The position we will put our stage in if the user lets go of the mouse
-				this.targetXPos = view.getX();
+				targetXPos = view.getX();
 				StageModel draggedStage = workflowModel.getStageModelByID(((StageView) stage).getID());
 				StageModel displacedStage = workflowModel.getStageModelByID(view.getID());
 				int originalIndex = draggedStage.getIndex();
@@ -139,7 +139,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 				System.out.println("Stage " + displacedStage.getTitle() + " now has index " + displacedStage.getIndex());
 				//Put the stage we're displacing at the old initialXPos
 				view.setLocation(initialXPos, stage.getY() );
-				this.initialXPos = targetXPos;
+				initialXPos = targetXPos;
 				
 			}
 		}
@@ -175,7 +175,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		workflowModel.setIsDraggingTask(true);
 		mouseX = e.getX();
 		mouseY = e.getY();
-		this.initialXPos = targetXPos = stage.getLocation().x;
+		initialXPos = targetXPos = stage.getLocation().x;
 	}
 
 	/* (non-Javadoc)
@@ -184,7 +184,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
-		this.stageModel = WorkflowController.getWorkflowModel().getStageModelByID(stageID);
+		stageModel = WorkflowController.getWorkflowModel().getStageModelByID(stageID);
 		stage.setLocation(targetXPos, stage.getLocation().y);
 		initialXPos = stage.getX();
 		

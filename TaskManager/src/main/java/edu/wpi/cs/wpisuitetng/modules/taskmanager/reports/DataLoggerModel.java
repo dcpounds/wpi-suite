@@ -10,6 +10,9 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.reports;
 
 import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -34,23 +37,27 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 public class DataLoggerModel extends AbstractModel 
 	{
-	private int taskSnapID;
+	protected int taskSnapID;
 	private int db_id;
-	private List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
+	protected List<TaskSnapshot> taskSnapList = new LinkedList<TaskSnapshot>();
 	
+	/**
+	 * Constructor for DataLoggerModel.
+	 */
 	public DataLoggerModel() {
 		taskSnapID = 0;
-		this.db_id=this.hashCode();
+		db_id=this.hashCode();
 	}
 	
 	/**
 	 * Updates a data logger model based on more recent values pulled from the database
+	 * @param updatedDataLogger DataLoggerModel
 	 */
 	public void copyFrom(DataLoggerModel updatedDataLogger)
 	{
-		this.taskSnapID = updatedDataLogger.getTaskSnapID();
-		this.db_id = updatedDataLogger.getDb_id();
-		this.taskSnapList = updatedDataLogger.getTaskSnapList();
+		taskSnapID = updatedDataLogger.getTaskSnapID();
+		db_id = updatedDataLogger.getDb_id();
+		taskSnapList = updatedDataLogger.getTaskSnapList();
 		
 	}
 	
@@ -114,13 +121,32 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	/**
-	 * Return the current task snapshot
-	 * @param taskModel
-	 * @return
+	 * Add the given snapshot to the task snapshot list
+	
+	 * @param tasksnapshot TaskSnapshot
+	 */
+	public void appendSnapshot(TaskSnapshot tasksnapshot)
+	{
+		taskSnapList.add(tasksnapshot);
+	}
+	
+
+	
+	
+	
+	
+	/**
+	 * Return the current task snapshot based on a task model
+	
+	
+	 * @param taskModel TaskModel
+	 * @return TaskSnapshot
 	 */
 	public TaskSnapshot returnCurrentSnapshot(TaskModel taskModel)
 	{
-		for (int i = taskSnapList.size(); i > 0; i=i-1)
+
+		for (int i = taskSnapList.size(); i > 0; i=i - 1)
+
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskModel.getID())
 			{
@@ -132,14 +158,88 @@ public class DataLoggerModel extends AbstractModel
 
 	}
 	
+	/**
+	 * Return the current task snapshot based on task ID value
+	
+	
+	 * @param taskID int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnCurrentSnapshot(int taskID)
+	{
+		for (int i = taskSnapList.size(); i>0; i=i-1)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskID)
+			{
+				return taskSnapList.get(i-1);
+			}
+		}
+		return null;
+
+
+	}
+	
+	/**
+	 * Return the oldest task snapshot based on task ID value
+	
+	
+	 * @param taskID int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnOldestSnapshot(int taskID)
+	{
+		TaskSnapshot buffer = null;
+		for (int i = taskSnapList.size(); i>0; i=i-1)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskID)
+			{
+				buffer = taskSnapList.get(i-1);
+			}
+		}
+		return buffer;
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public TaskSnapshot SnapshotWithID(long id)
+	{
+		
+		for(int i=taskSnapList.size(); i>0; i--)
+		{
+			if (taskSnapList.get(i-1).getID() == id)
+			{
+				return taskSnapList.get(i-1);
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
 	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
 	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
 	 */
 	public TaskSnapshot returnPreviousSnapshot(TaskSnapshot taskSnapshot) {
 		//checks each task for an ID match, starting from the most recent tasks
 		boolean firstTrip = true;
 		
 		for (int i=taskSnapList.size(); i > 0; i=i-1) 
+
 		{
 			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
 			{
@@ -157,9 +257,364 @@ public class DataLoggerModel extends AbstractModel
 		return null;
 	}
 	
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	
+	 * @param id int
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnPreviousSnapshot(int id) {
+		//checks each task for an ID match, starting from the most recent tasks
+		boolean firstTrip = true;
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == id)
+			{
+				if (firstTrip)
+				{
+					firstTrip = false;
+				}
+				else
+				{
+					return taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnNextSnapshot(TaskSnapshot taskSnapshot) {
+		//checks each task for an ID match, starting from the most recent tasks
+		TaskSnapshot buffer = null;
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == taskSnapshot.getTaskID())
+			{
+				if (taskSnapList.get(i-1).getID() == taskSnapshot.getID())
+				{
+					return buffer;
+				}
+				else
+				{
+					buffer = taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	/** Returns the most recent snapshot associated with the task snapshot passed as an argument
+	 * @param taskSnapshot the snapshot to find the most recent previous match for
+	 * @return TaskSnapshot
+	 */
+	public TaskSnapshot returnNextSnapshot(long id) {
+		//checks each task for an ID match, starting from the most recent tasks
+		TaskSnapshot buffer = null;
+		for (int i=taskSnapList.size(); i>0; i=i-1) 
+		{
+			if (taskSnapList.get(i-1).getTaskID() == id)
+			{
+				if (taskSnapList.get(i-1) == SnapshotWithID(id))
+				{
+					return buffer;
+				}
+				else
+				{
+					buffer = taskSnapList.get(i-1);
+				}
+			}
+		}
+		//executed only if the for loop reaches the end, indicating that only one snapshot has been taken of the task
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/** Returns the estimated effort at a certain date. If the task did not exist before the specified date,
+	 * the oldest estimated effort will be return. 
+	
+	
+	 * @param task TaskModel
+	 * @param date Date
+	 * @return int
+	 */
+	public int estEffortAtDate(TaskModel task, Date date)
+	{
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == task.getID())
+			{
+				
+				//get the most recent snapshot created before the given date
+				if (taskSnapList.get(i-1).getTimeStamp().before(date))
+				{
+					return (taskSnapList.get(i-1).getEstimatedEffort());
+				}
+			}
+		}
+		//only reached if it does not find a previous date. Returns the oldest valid snapshot of the task
+		TaskSnapshot bufferSnap = task.getCurrentSnapshot();
+		for (int i=taskSnapList.size(); i>=0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == task.getID())
+			{
+				bufferSnap = taskSnapList.get(i-1);
+			}
+		}
+		return bufferSnap.getEstimatedEffort();
+	}
+	
+	/**
+	 * Method containsID.
+	 * @param list List<TaskSnapshot>
+	 * @param task TaskSnapshot
+	 * @return boolean
+	 */
+	public boolean containsID(List<TaskSnapshot> list, TaskSnapshot task)
+	{
+		for (int i=list.size(); i>=0; i--)
+		{
+			if (list.get(i-1).getID() == task.getTaskID())
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByEstimatedEffort ()
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+			else if (filteredList.returnCurrentSnapshot(taskSnapList.get(i-1).getTaskID()).getEstimatedEffort() != 
+					filteredList.returnPreviousSnapshot(taskSnapList.get(i-1).getTaskID()).getEstimatedEffort())
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	/**
+	 * Returns a sublist of the most recent snapshot for every task. Used for estimated effort on velocity
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByID ()
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i-1));
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	public TaskSnapshot snapAtDate (TaskSnapshot snapshot, Date date)
+	{
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == snapshot.getTaskID())
+			{
+				if (taskSnapList.get(i-1).getTimeStamp().before(date))
+				{
+					return taskSnapList.get(i-1);
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Filters out all entries on a sublist whose timestamp does not match the given date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDay (SnapshotSubList list, Date date)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i=list.taskSnapList.size(); i>0; i--)
+		{
+			if (list.taskSnapList.get(i-1).getTimeStamp().equals(date))
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+			}
+		}
+		return filteredList;
+	}
+	
+	/**
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByCategory ()
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		//loop is reversed from others so that filtered list fills in the correct order
+		for (int i=0; i<taskSnapList.size(); i++)
+		{
+			if (!filteredList.listContainsID(taskSnapList.get(i).getTaskID()))
+			{
+				filteredList.appendSnapshot(taskSnapList.get(i));
+			}
+			else if (filteredList.returnCurrentSnapshot(taskSnapList.get(i).getTaskID())!=null)
+			
+
+			{
+				if (!filteredList.returnCurrentSnapshot(taskSnapList.get(i).getTaskID()).getCatColor().equals(
+					taskSnapList.get(i).getCatColor()))
+					{
+						filteredList.appendSnapshot(taskSnapList.get(i));
+					}
+						
+
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots taken between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDateRange(SnapshotSubList list, Date startdate, Date enddate)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			if (!list.taskSnapList.get(i-1).getTimeStamp().after(enddate))
+			{
+				if (!list.taskSnapList.get(i-1).getTimeStamp().before(startdate) || 
+					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots due between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDueDate(SnapshotSubList list, Date startdate, Date enddate)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = null;
+			try {
+				date = dateFormat.parse(list.taskSnapList.get(i-1).getDueDate());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (!date.after(enddate))
+			{
+				if (!date.before(startdate) || 
+					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Filters a sublist, returning only the snapshots where a snapshot was moved into the complete stage
+	 * @param list, the list to perform the operation on
+	 * @param stageID, the stage id used as the complete stage
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList returnCompleteSnapshots(SnapshotSubList list, int stageID)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+			}
+		}
+		return filteredList;
+		
+	}
+	
+	
+	
+	
+	public int AccumulateActualEffort(SnapshotSubList list)
+	{
+		int accumulator = 0;
+		for (int i = list.taskSnapList.size(); i>0; i--)
+		{
+			accumulator = accumulator + list.taskSnapList.get(i-1).getActualEffort();
+		}
+		return accumulator;
+	}
+	
+	
+	
+	
+
+	
+	
+	
 	/** Returns a string array of changes made between two snapshots
-	 * @param snap1, the first (older) snapshot
-	 * @param snap2, the second (newer) snapshot
+	
+	
+	 * @param snap1 TaskSnapshot
+	 * @param snap2 TaskSnapshot
+	 * @return List<String>
 	 */
 	public List<String> trackChanges(TaskSnapshot snap1, TaskSnapshot snap2) {
 		int changes = 0;
@@ -237,7 +692,6 @@ public class DataLoggerModel extends AbstractModel
 				}
 			}
 			
-			
 			removeList = snap1.getUsersAssignedTo();
 			removeList.removeAll(snap2.getUsersAssignedTo());
 			if (removeList.size()>=0)
@@ -277,7 +731,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * Export all categories as a hashtable
-	 * @return
+	
+	 * @return Hashtable
 	 */
 	public Hashtable exportAllCategories()
 	{
@@ -293,12 +748,14 @@ public class DataLoggerModel extends AbstractModel
 		output.put("BLUE", 0);
 		output.put("PURPLE", 0);		
 		
-		if (taskSnapList.size()>0)
+		
+		SnapshotSubList filteredList = filterByCategory();
+		if (filteredList.taskSnapList.size()>0)
 		{
-			for (int i = taskSnapList.size(); i>0; i=i-1)
+			for (int i = filteredList.taskSnapList.size(); i>0; i=i-1)
 			{
 	
-				switch (taskSnapList.get(i-1).getCatColorString()) {
+				switch (filteredList.taskSnapList.get(i-1).getCatColorString()) {
 				case "GRAY":
 					output.replace("GRAY", output.get("GRAY")+1);
 					break;
@@ -340,7 +797,8 @@ public class DataLoggerModel extends AbstractModel
 	/**
 	 * Format the provided date into a string
 	 * @param date
-	 * @return
+	
+	 * @return String
 	 */
 	public String formatDateString(String date)
 	{
@@ -361,9 +819,10 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * Converts the given list of tasks to a JSON string
-	 * @param taskList -  a list of tasks
-	 * @return a string in JSON representing the list of tasks
-	 */
+	
+	
+	 * @param dataLoggerList DataLoggerModel[]
+	 * @return a string in JSON representing the list of tasks */
 	public static String toJSON(DataLoggerModel[] dataLoggerList) {
 		String json;
 		Gson gson = new Gson();
@@ -373,7 +832,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	/**
 	 * @param json - the json obejct to convert back to a TaskModel
-	 * @return
+	
+	 * @return DataLoggerModel
 	 */
 	public static DataLoggerModel fromJson(String json) {
         final Gson parser = new Gson();
@@ -383,8 +843,8 @@ public class DataLoggerModel extends AbstractModel
 	
 	   /**
 	 * @param json - the json to deserialize
-	 * @return - the list of deserialized tasks
-	 */
+	
+	 * @return - the list of deserialized tasks */
 	public static DataLoggerModel[] fromJsonArray(String json) {
 	        return new Gson().fromJson(json, DataLoggerModel[].class);
 	    }

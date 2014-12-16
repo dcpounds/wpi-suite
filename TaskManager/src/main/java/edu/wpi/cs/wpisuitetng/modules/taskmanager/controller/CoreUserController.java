@@ -28,7 +28,7 @@ public class CoreUserController implements ActionListener {
 	private AssignUsersView view;
 	
 	public CoreUserController(AssignUsersView view) {
-		this.observer = new CoreUserRequestObserver(this);
+		observer = new CoreUserRequestObserver(this);
 		this.view = view;
 	}
 

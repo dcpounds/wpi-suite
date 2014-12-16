@@ -39,7 +39,7 @@ public class DataLoggerController {
 
 	public DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
-		this.action = action;
+		action = action;
 		DataLoggerController.addObserver = new AddDataLoggerRequestObserver(this);
 		DataLoggerController.updateObserver = new UpdateDataLoggerRequestObserver(this);
 		DataLoggerController.getObserver = new GetDataLoggerRequestObserver(this);

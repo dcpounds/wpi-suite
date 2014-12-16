@@ -27,7 +27,7 @@ public class RequirementsController implements ActionListener {
 	//private AssociatedRequirementsView view;
 	
 	public RequirementsController(NewTaskTab view) {
-		this.observer = new RequirementsRequestObserver(this);
+		observer = new RequirementsRequestObserver(this);
 		this.view = view;
 		//this.view = view;
 	}

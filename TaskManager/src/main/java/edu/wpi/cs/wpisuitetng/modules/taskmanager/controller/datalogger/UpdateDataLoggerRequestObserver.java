@@ -21,7 +21,7 @@ public class UpdateDataLoggerRequestObserver implements RequestObserver{
 	DataLoggerController controller;
 	
 	public UpdateDataLoggerRequestObserver(DataLoggerController dataLoggerController){
-		this.controller = dataLoggerController;
+		controller = dataLoggerController;
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {

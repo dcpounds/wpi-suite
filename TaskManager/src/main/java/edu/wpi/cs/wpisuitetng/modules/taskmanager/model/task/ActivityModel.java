@@ -81,7 +81,7 @@ public class ActivityModel extends AbstractModel {
      * @return the date
      */
     public Date getDate() {
-        return this.date;
+        return date;
     }
     
     /**
@@ -95,7 +95,7 @@ public class ActivityModel extends AbstractModel {
      * @return the message
      */
     public String getMessage() {
-        return this.comment;
+        return comment;
     }
     
     /*
@@ -150,20 +150,20 @@ public class ActivityModel extends AbstractModel {
         
         ActivityModel other = (ActivityModel) obj;
         
-        if (this.date == null) {
+        if (date == null) {
             if (other.date != null)
                 return false;
-        } else if (!this.date.equals(other.date))
+        } else if (!date.equals(other.date))
             return false;
-        if (this.user == null) {
+        if (user == null) {
             if (other.user != null)
                 return false;
-        } else if (!this.user.equals(other.user))
+        } else if (!user.equals(other.user))
             return false;
-        if (this.comment == null) {
+        if (comment == null) {
             if (other.comment != null)
                 return false;
-        } else if (!this.comment.equals(other.comment))
+        } else if (!comment.equals(other.comment))
             return false;
         
         return true;

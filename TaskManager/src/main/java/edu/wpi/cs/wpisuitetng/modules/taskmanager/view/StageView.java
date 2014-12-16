@@ -55,11 +55,12 @@ public class StageView extends DragStagePanel {
 	 */
 	public StageView(StageModel stageModel, WorkflowView workflowView) {
 		this.stageModel = stageModel;
-		this.id = stageModel.getID();
-		this.taskViewList = new HashMap<Integer,TaskView>();
+		id = stageModel.getID();
+		taskViewList = new HashMap<Integer,TaskView>();
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
+
 		setLayout(new MigLayout("insets 0", "[][grow][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
 		
@@ -89,6 +90,7 @@ public class StageView extends DragStagePanel {
 		add(expandAll, "pad 5 2 0 2,cell 0 0,alignx left,aligny center");
 		
 		
+
 		lblStageTitle = new JLabel();
 		lblStageTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblStageTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -231,8 +233,8 @@ public class StageView extends DragStagePanel {
 	 * @param newStageModel - the stageModel to replace the current stage with
 	 */
 	public void updateContents(StageModel newStageModel){		
-		this.closable = newStageModel.getClosable();
-		this.stageModel = newStageModel;
+		closable = newStageModel.getClosable();
+		stageModel = newStageModel;
 		btnClose.setEnabled(newStageModel.getClosable());
 		this.redrawStage();
 	}

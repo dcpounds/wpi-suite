@@ -49,7 +49,7 @@ public class ClosableTabView extends JPanel{
 
 	public ClosableTabView(ClosableTabModel tabModel, IHashableTab paneComponent, TabType tabType){
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		this.view = TabController.getTabView();
+		view = TabController.getTabView();
 		this.paneComponent = paneComponent;
 		this.tabType = tabType;
 		tabLabel = new JLabel(tabModel.getTabTitle());
@@ -57,7 +57,7 @@ public class ClosableTabView extends JPanel{
 		setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
 		setOpaque(false);
 		
-		this.closeButton = new JButton("\u2716");
+		closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.addActionListener( new ActionListener(){

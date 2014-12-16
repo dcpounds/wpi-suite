@@ -24,7 +24,7 @@ public class RequirementsRequestObserver implements RequestObserver {
 	RequirementsController controller;
 	
     public RequirementsRequestObserver(RequirementsController requirementsCont){
-        this.controller = requirementsCont;
+        controller = requirementsCont;
     }
     
     /**

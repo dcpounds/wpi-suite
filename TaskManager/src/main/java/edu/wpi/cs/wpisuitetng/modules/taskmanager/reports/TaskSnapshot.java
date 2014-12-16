@@ -32,7 +32,10 @@ public class TaskSnapshot {
 	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
+	private Date timeStamp;
 	private int stageID;
+
+	
 	private boolean isArchived;
 	private Color color;
 	private Color CatColor;
@@ -46,20 +49,21 @@ public class TaskSnapshot {
 	{
 		this.id = DataLoggerController.getDataModel().getTaskSnapID();
 		DataLoggerController.getDataModel().incrementTaskSnapID();
-		this.taskID = task.getID();
-		this.estimatedEffort = task.getEstimatedEffort();
-		this.actualEffort = task.getActualEffort();
-		this.title = task.getTitle();
-		this.description = task.getDescription();
-		this.creatorName = task.getCreatorName();
-		this.creationDate = task.getCreationDate();
-		this.usersAssignedTo = task.getUsersAssignedTo();
-		this.dueDate = task.getDueDate();
-		this.stageID = task.getStageID();
-		this.isArchived = task.getIsArchived();
-		this.activities = task.getActivities();
-		this.color = task.getColor();
-		this.CatColor = task.getCatColor();
+		taskID = task.getID();
+		estimatedEffort = task.getEstimatedEffort();
+		actualEffort = task.getActualEffort();
+		title = task.getTitle();
+		description = task.getDescription();
+		creatorName = task.getCreatorName();
+		creationDate = task.getCreationDate();
+		usersAssignedTo = task.getUsersAssignedTo();
+		dueDate = task.getDueDate();
+		timeStamp = new Date();
+		stageID = task.getStageID();
+		isArchived = task.getIsArchived();
+		activities = task.getActivities();
+		color = task.getColor();
+		CatColor = task.getCatColor();
 	}
 	
 	
@@ -115,7 +119,7 @@ public class TaskSnapshot {
 	 */
 	public void setTaskID(int id)
 	{
-		this.taskID = id;
+		taskID = id;
 	}
 	
 	/**
@@ -284,7 +288,7 @@ public class TaskSnapshot {
 	}
 	
 	public String getCatColorString() {
-		return colorToString(this.CatColor);
+		return colorToString(CatColor);
 	}
 	
 	
@@ -300,6 +304,22 @@ public class TaskSnapshot {
 	public void setActivities(ActivityListModel activities) {
 		this.activities = activities;
 	}
+	
+	/**
+	 * @return the timeStamp
+	 */
+	public Date getTimeStamp() {
+		return timeStamp;
+	}
+
+
+	/**
+	 * @param timeStamp the timeStamp to set
+	 */
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+	
 	
 
 }
