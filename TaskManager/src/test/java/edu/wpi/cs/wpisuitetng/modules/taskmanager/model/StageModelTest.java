@@ -88,4 +88,36 @@ public class StageModelTest {
 		assertEquals(hashMap, stage.getTaskModelList());
 	}
 
+@Test
+public void setIndexTest()
+{
+	StageModel stage = new StageModel();
+	StageModel stage2 = new StageModel();
+	StageModel stage3 = new StageModel();
+	HashMap<Integer, TaskModel> hashMap = new HashMap<Integer, TaskModel>();
+	TaskModel task = new TaskModel();
+	TaskModel task2 = new TaskModel();
+	TaskModel task3 = new TaskModel();
+	
+	hashMap.put(task.getID(), task);
+	hashMap.put(task2.getID(), task2);
+	hashMap.put(task3.getID(), task3);
+	stage.addTaskModel(task);
+	stage.addTaskModel(task2);
+	stage.addTaskModel(task3);
+	
+	stage.setIndex(3);
+	stage2.setIndex(0);
+	stage3.setIndex(2);
+	
+	assertEquals(3, stage.getIndex());
+	assertEquals(0, stage2.getIndex());
+	assertEquals(3, stage3.getIndex());
+	
+}
+
+
+
+
+	
 }
