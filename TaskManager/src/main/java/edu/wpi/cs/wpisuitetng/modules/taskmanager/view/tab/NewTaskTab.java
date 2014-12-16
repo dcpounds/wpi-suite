@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -331,11 +332,13 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		checkForErrors();
 		
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		editScrollPane = new JScrollPane(editPane);
 		activitiesScrollPane = new JScrollPane(activitiesPane);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                            editScrollPane, activitiesScrollPane);
 		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(1.0d);
 		add(splitPane);
 	}
 
