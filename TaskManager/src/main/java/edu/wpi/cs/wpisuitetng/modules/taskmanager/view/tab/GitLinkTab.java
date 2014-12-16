@@ -25,14 +25,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.GitController;
 
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.JTextArea;
 
 public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 	private JTextField repositoryURL;
-	private JTextField usernameField;
-	private JTextField passField;
 	private JLabel lblVerification;
 	public GitLinkTab() {
-		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][][][][]"));
+		setLayout(new MigLayout("", "[grow][][grow]", "[][][][][][][grow][][][][]"));
 		
 		JLabel lblTitle = new JLabel("Import Github Issues");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -52,26 +51,12 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 		GitController controller = new GitController(this);
 		JButton importButton = new JButton("Import");
 		importButton.addActionListener(controller);
-		add(importButton, "flowx,cell 0 8");
-		
-		JLabel lblUsername = new JLabel("Username:");
-		add(lblUsername, "cell 0 4");
-		
-		usernameField = new JTextField();
-		add(usernameField, "cell 0 5");
-		usernameField.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Password");
-		add(lblPassword, "cell 0 6");
-		
-		passField = new JPasswordField();
-		add(passField, "cell 0 7");
-		passField.setColumns(10);
+		add(importButton, "flowx,cell 0 3");
 		
 		lblVerification = new JLabel("Verification");
 		lblVerification.setForeground(Color.RED);
 		lblVerification.setFont(new Font("Tahoma", Font.BOLD, 12));
-		add(lblVerification, "cell 0 9");
+		add(lblVerification, "cell 0 4");
 		
 		lblVerification.setVisible(false);
 	}
@@ -90,22 +75,6 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 
 	public void setRepositoryURL(JTextField repositoryURL) {
 		this.repositoryURL = repositoryURL;
-	}
-
-	public JTextField getUsernameField() {
-		return usernameField;
-	}
-
-	public void setUsernameField(JTextField usernameField) {
-		this.usernameField = usernameField;
-	}
-
-	public JTextField getPassField() {
-		return passField;
-	}
-
-	public void setPassField(JTextField passField) {
-		this.passField = passField;
 	}
 
 	@Override
