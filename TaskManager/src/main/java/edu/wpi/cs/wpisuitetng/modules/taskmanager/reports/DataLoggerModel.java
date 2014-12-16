@@ -438,13 +438,39 @@ public class DataLoggerModel extends AbstractModel
 		
 		return filteredList;
 	}
-
+	
+	public TaskSnapshot snapAtDate (TaskSnapshot snapshot, Date date)
+	{
+		for (int i=taskSnapList.size(); i>0; i--)
+		{
+			if (taskSnapList.get(i-1).getTaskID() == snapshot.getTaskID())
+			{
+				if (taskSnapList.get(i-1).getTimeStamp().before(date))
+				{
+					return taskSnapList.get(i-1);
+				}
+			}
+		}
+		return null;
+	}
 	
 	
-	
-	
-	
-	
+	/**
+	 * Filters out all entries on a sublist whose timestamp does not match the given date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDay (SnapshotSubList list, Date date)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i=list.taskSnapList.size(); i>0; i--)
+		{
+			if (list.taskSnapList.get(i-1).getTimeStamp().equals(date))
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+			}
+		}
+		return filteredList;
+	}
 	
 	/**
 	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
@@ -531,6 +557,27 @@ public class DataLoggerModel extends AbstractModel
 		}
 		
 		return filteredList;
+	}
+	
+	
+	/**
+	 * Filters a sublist, returning only the snapshots where a snapshot was moved into the complete stage
+	 * @param list, the list to perform the operation on
+	 * @param stageID, the stage id used as the complete stage
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList returnCompleteSnapshots(SnapshotSubList list, int stageID)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+			}
+		}
+		return filteredList;
+		
 	}
 	
 	
@@ -622,7 +669,6 @@ public class DataLoggerModel extends AbstractModel
 					}
 				}
 			}
-			
 			
 			removeList = snap1.getUsersAssignedTo();
 			removeList.removeAll(snap2.getUsersAssignedTo());
