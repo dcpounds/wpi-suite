@@ -74,7 +74,10 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 	private JDatePickerImpl datePicker1;
 	private UtilDateModel dateModel2;
 	private JDatePanelImpl datePanel2;
-	private JDatePickerImpl datePicker2;
+	private JDatePickerImpl datePicker2;	
+	private UtilDateModel dateModel3;
+	private JDatePanelImpl datePanel3;
+	private JDatePickerImpl datePicker3;
     
    
     /**
@@ -131,21 +134,43 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		datePicker2.addMouseListener(this);
 		datePanel2.addMouseListener(this);
 		datePicker2.addActionListener(this);
+		
+		
+		
+		
+		
+
+        dateModel3 = new UtilDateModel();
+		Properties r = new Properties();
+		r.put("text.today", "Today");
+		r.put("text.month", "Month");
+		r.put("text.year", "Year");
+		datePanel3 = new JDatePanelImpl(dateModel3, r);
+		datePicker3 = new JDatePickerImpl(datePanel3, new DateLabelFormatter());
+		
+
+		datePicker3.addMouseListener(this);
+		datePanel3.addMouseListener(this);
+		datePicker3.addActionListener(this);
         
+		
+		
         
         rightPanel.add(top, "span 4");
+        rightPanel.add(start, "span 2");
+        rightPanel.add(end, "span 2");
 		rightPanel.add(datePicker1, "span 2");
         //rightPanel.add(cal1, "span 2");
 		rightPanel.add(datePicker2, "span 2");
         //rightPanel.add(cal2, "span 2");
-        rightPanel.add(start, "span 2");
-        rightPanel.add(end, "span 2");
+ 
         rightPanel.add(button1);
         rightPanel.add(button2);
         rightPanel.add(button3);
         rightPanel.add(button4);
         rightPanel.add(bottom, "span 2");
         rightPanel.add(dropDown, "span 2");
+        rightPanel.add(datePicker3, "span 4");
         
         
 
@@ -154,7 +179,6 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 
 
 
-        
         
         
         
@@ -163,6 +187,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         
         
         panel.add(rightPanel, BorderLayout.CENTER);
+        
         
         this.setViewportView(panel);
     }

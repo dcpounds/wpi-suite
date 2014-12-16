@@ -136,6 +136,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		taskTitleField.addKeyListener(this);
 
 		// Let the user decide where to put the task
+		
 		JLabel stageLabel = new JLabel("Stage");
 		add(stageLabel, "pad 0 10 0 50,cell 3 0");
 		stageBox = new JComboBox<String>();
@@ -218,6 +219,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		colorTitle = new JLabel("Select Category");
 		add(colorTitle, "cell 1 12,alignx left");
+		
+		
+		
+		
 
 		// Colorcombobox is a custom jcombobox that allows color section visible
 		colorBox = new ColorComboBox();
