@@ -116,7 +116,34 @@ public void setIndexTest()
 	
 }
 
-
+@Test
+public void setClosableTest()
+{
+	StageModel stage = new StageModel();
+	StageModel stage2 = new StageModel();
+	StageModel stage3 = new StageModel();
+	HashMap<Integer, TaskModel> hashMap = new HashMap<Integer, TaskModel>();
+	TaskModel task = new TaskModel();
+	TaskModel task2 = new TaskModel();
+	TaskModel task3 = new TaskModel();
+	
+	hashMap.put(task.getID(), task);
+	hashMap.put(task2.getID(), task2);
+	hashMap.put(task3.getID(), task3);
+	stage.addTaskModel(task);
+	stage.addTaskModel(task2);
+	stage.addTaskModel(task3);
+	
+	stage.setClosable(true);
+	stage2.setClosable(false);
+	stage2.setClosable(true);
+	stage3.setClosable(false);
+	
+	assertEquals(false, stage.getClosable());
+	assertEquals(true, stage2.getClosable());
+	assertEquals(false, stage3.getClosable());
+	
+}
 
 
 	
