@@ -164,7 +164,7 @@ public class StageController implements ActionListener{
 		if(workflowModel.getIsDraggingStage())
 			return;
 		
-		System.out.println("Stage " + stage.getTitle() + " has index " + stage.getIndex());
+//		System.out.println("Stage " + stage.getTitle() + " has index " + stage.getIndex());
 		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
 		boolean closable = stageViewList.size() <= 1 ? false : true;
 		stage.setClosable(closable);

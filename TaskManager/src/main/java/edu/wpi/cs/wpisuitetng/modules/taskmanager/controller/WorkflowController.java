@@ -20,12 +20,12 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 public class WorkflowController {
 	private static WorkflowController instance = new WorkflowController();
 	private static WorkflowModel model;
-	
+
 	private WorkflowController () {
 		model = new WorkflowModel("main");		
 		Thread thread = new Thread() {
 			public void run() {
-			
+
 				while (true) {
 					try {
 						sleep(4000);
@@ -38,22 +38,33 @@ public class WorkflowController {
 		};
 		thread.setDaemon(true);
 		thread.start();
-	}
+		Thread mouseMoved = new Thread(){
+			public void run(){
+				while (true) {
+					try {
+						sleep(100);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 
-	/**
-	 * Gets the current instance of the workflow controller
-	 * @return
-	 */
-	public static WorkflowController getInstance(){
-		return instance;
-	}
+		/**
+		 * Gets the current instance of the workflow controller
+		 * @return
+		 */
+		public static WorkflowController getInstance(){
+			return instance;
+		}
 
-	
-	/**
-	 * @return the singleton workflow model
-	 */
-	public static WorkflowModel getWorkflowModel(){
-		return model;
+
+		/**
+		 * @return the singleton workflow model
+		 */
+		public static WorkflowModel getWorkflowModel(){
+			return model;
+		}
+
 	}
-		
-}
