@@ -13,9 +13,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -23,9 +31,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jdatepicker.DateModel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -41,6 +51,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 
@@ -49,7 +60,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
  * @author joe
  * The view that contains task reports
  */
-public class ReportsTab extends JScrollPane implements IHashableTab {
+public class ReportsTab extends JScrollPane implements IHashableTab, MouseListener, ActionListener {
     static final long serialVersionUID = 2930864775768057902L;
     
     private final WorkflowModel workflowModel;
@@ -58,6 +69,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
     private ChartPanel barChart;
     private Date startDate;
     private Date endDate;
+	private UtilDateModel dateModel1;
+	private JDatePanelImpl datePanel1;
+	private JDatePickerImpl datePicker1;
+	private UtilDateModel dateModel2;
+	private JDatePanelImpl datePanel2;
+	private JDatePickerImpl datePicker2;
     
    
     /**
@@ -87,9 +104,40 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         JComboBox<String> dropDown = new JComboBox<String>();
         dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
         
+        dateModel1 = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		datePanel1 = new JDatePanelImpl(dateModel1, p);
+		datePicker1 = new JDatePickerImpl(datePanel1, new DateLabelFormatter());
+		
+
+		datePicker1.addMouseListener(this);
+		datePanel1.addMouseListener(this);
+		datePicker1.addActionListener(this);
+		
+		
+		
+        dateModel2 = new UtilDateModel();
+		Properties q = new Properties();
+		q.put("text.today", "Today");
+		q.put("text.month", "Month");
+		q.put("text.year", "Year");
+		datePanel2 = new JDatePanelImpl(dateModel2, q);
+		datePicker2 = new JDatePickerImpl(datePanel2, new DateLabelFormatter());
+		
+
+		datePicker2.addMouseListener(this);
+		datePanel2.addMouseListener(this);
+		datePicker2.addActionListener(this);
+        
+        
         rightPanel.add(top, "span 4");
-        rightPanel.add(cal1, "span 2");
-        rightPanel.add(cal2, "span 2");
+		rightPanel.add(datePicker1, "span 2");
+        //rightPanel.add(cal1, "span 2");
+		rightPanel.add(datePicker2, "span 2");
+        //rightPanel.add(cal2, "span 2");
         rightPanel.add(start, "span 2");
         rightPanel.add(end, "span 2");
         rightPanel.add(button1);
@@ -99,10 +147,44 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
         rightPanel.add(bottom, "span 2");
         rightPanel.add(dropDown, "span 2");
         
+        
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
         panel.add(rightPanel, BorderLayout.CENTER);
         
         this.setViewportView(panel);
     }
+    
+    public void updateStartDate()
+    {
+    	int days = datePicker1.getModel().getDay();
+    	int month = datePicker1.getModel().getMonth();
+    	int year = datePicker1.getModel().getYear();
+    	startDate = new Date(year,month,days);
+    }   
+    
+    public void updateEndDate()
+    {
+    	int days = datePicker2.getModel().getDay();
+    	int month = datePicker2.getModel().getMonth();
+    	int year = datePicker2.getModel().getYear();
+    	endDate = new Date(year,month,days);
+    }
+    
+    
+    
     
     /**
      * @return the data set depending on the type of data called for either
@@ -309,5 +391,42 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
 			statusOptions.add(truncatedTitle);
 		}
 		return statusOptions.toArray(new String[statusOptions.size()]);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		updateStartDate();
+		updateEndDate();
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
