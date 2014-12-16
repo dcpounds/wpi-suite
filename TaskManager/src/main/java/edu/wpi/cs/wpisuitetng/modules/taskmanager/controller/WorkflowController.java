@@ -38,18 +38,8 @@ public class WorkflowController {
 		};
 		thread.setDaemon(true);
 		thread.start();
-		Thread mouseMoved = new Thread(){
-			public void run(){
-				while (true) {
-					try {
-						sleep(100);
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+
+	}
 
 		/**
 		 * Gets the current instance of the workflow controller
