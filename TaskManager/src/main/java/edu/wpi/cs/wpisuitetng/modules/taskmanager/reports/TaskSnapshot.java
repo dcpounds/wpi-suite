@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -32,12 +34,29 @@ public class TaskSnapshot {
 	private ArrayList<String> usersAssignedTo;
 	private Date creationDate;
 	private String dueDate;
+	private Date creationDateBuffer;
 	private Date timeStamp;
 	private int stageID;
 
 	
 	private boolean isArchived;
 	private Color color;
+	/**
+	 * @return the creationDateBuffer
+	 */
+	public Date getCreationDateBuffer() {
+		return creationDateBuffer;
+	}
+
+
+	/**
+	 * @param creationDateBuffer the creationDateBuffer to set
+	 */
+	public void setCreationDateBuffer(Date creationDateBuffer) {
+		this.creationDateBuffer = creationDateBuffer;
+	}
+
+
 	private Color CatColor;
 	private ActivityListModel activities;
 	
@@ -58,7 +77,9 @@ public class TaskSnapshot {
 		creationDate = task.getCreationDate();
 		usersAssignedTo = task.getUsersAssignedTo();
 		dueDate = task.getDueDate();
-		timeStamp = new Date();
+		creationDateBuffer = new Date();
+		timeStamp = new Date(WorkflowController.getWorkflowModel().getOverrideDate().getYear(), WorkflowController.getWorkflowModel().getOverrideDate().getMonth(),
+				WorkflowController.getWorkflowModel().getOverrideDate().getDate(), creationDateBuffer.getHours(), creationDateBuffer.getMinutes(), creationDateBuffer.getSeconds());
 		stageID = task.getStageID();
 		isArchived = task.getIsArchived();
 		activities = task.getActivities();

@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.*;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -48,6 +49,7 @@ public class DataLoggerModel extends AbstractModel
 		taskSnapID = 0;
 		db_id=this.hashCode();
 	}
+	
 	
 	/**
 	 * Updates a data logger model based on more recent values pulled from the database
@@ -370,7 +372,7 @@ public class DataLoggerModel extends AbstractModel
 		}
 		//only reached if it does not find a previous date. Returns the oldest valid snapshot of the task
 		TaskSnapshot bufferSnap = task.getCurrentSnapshot();
-		for (int i=taskSnapList.size(); i>=0; i--)
+		for (int i=taskSnapList.size(); i>0; i--)
 		{
 			if (taskSnapList.get(i-1).getTaskID() == task.getID())
 			{
@@ -388,7 +390,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public boolean containsID(List<TaskSnapshot> list, TaskSnapshot task)
 	{
-		for (int i=list.size(); i>=0; i--)
+		for (int i=list.size(); i>0; i--)
 		{
 			if (list.get(i-1).getID() == task.getTaskID())
 			{
@@ -514,12 +516,15 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public SnapshotSubList filterByDateRange(SnapshotSubList list, Date startdate, Date enddate)
 	{
+		String startDate = startdate.toString();
+		String endDate = enddate.toString();
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
+			String stampDate = list.taskSnapList.get(i-1).getTimeStamp().toString();
 			if (!list.taskSnapList.get(i-1).getTimeStamp().after(enddate))
 			{
-				if (!list.taskSnapList.get(i-1).getTimeStamp().before(startdate) || 
+				if ((!list.taskSnapList.get(i-1).getTimeStamp().before(startdate)) || 
 					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
 				{
 					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
@@ -750,6 +755,8 @@ public class DataLoggerModel extends AbstractModel
 		
 		
 		SnapshotSubList filteredList = filterByCategory();
+		filteredList = filterByDateRange(filteredList, WorkflowController.getWorkflowModel().getStartDate(), 
+										WorkflowController.getWorkflowModel().getEndDate());
 		if (filteredList.taskSnapList.size()>0)
 		{
 			for (int i = filteredList.taskSnapList.size(); i>0; i=i-1)

@@ -9,6 +9,9 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
 
+import java.util.Date;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.DeleteStageRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.GetStageRequestObserver;
@@ -36,16 +39,31 @@ public class DataLoggerController {
 	private static UpdateDataLoggerRequestObserver updateObserver;
 	private static DeleteDataLoggerRequestObserver deleteObserver;
 	
-
-	public DataLoggerController() {
+    private Date overrideDate;
+    private Date startDate;
+    private Date endDate;
+    
+    
+    
+    
+    DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
 		action = action;
 		DataLoggerController.addObserver = new AddDataLoggerRequestObserver(this);
 		DataLoggerController.updateObserver = new UpdateDataLoggerRequestObserver(this);
 		DataLoggerController.getObserver = new GetDataLoggerRequestObserver(this);
 		DataLoggerController.deleteObserver = new DeleteDataLoggerRequestObserver(this);
+
 	}
-	
+
+
+
+
+
+
+
+
+
 	/**
 	 * Depending on the specified action, either create, edit, delete, or get stageModel(s) from the database
 	 */

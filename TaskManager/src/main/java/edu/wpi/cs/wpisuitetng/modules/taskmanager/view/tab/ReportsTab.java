@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +69,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     private ChartPanel barChart;
     private Date startDate;
     private Date endDate;
+
 	private UtilDateModel dateModel1;
 	private JDatePanelImpl datePanel1;
 	private JDatePickerImpl datePicker1;
@@ -85,6 +86,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
      * @param title String
      */
     public ReportsTab(String title) {
+
         this.title = title;//title of the chart, either status or iteration
         JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
@@ -95,8 +97,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         JPanel rightPanel = (new JPanel(new MigLayout("wrap 4")));
         
         JLabel top = new JLabel("Choose the time period for your report");
-        JButton cal1 = new JButton("Calendar 1");
-        JButton cal2 = new JButton("Calendar 2");
+
         JLabel start = new JLabel("Select Starting Date");
         JLabel end = new JLabel("Select Ending Date");
         JButton button1 = new JButton("Task Distribution");
@@ -108,6 +109,13 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
         
         dateModel1 = new UtilDateModel();
+
+		Date Bufferdate = WorkflowController.getWorkflowModel().getStartDate();
+		dateModel1.setValue(Bufferdate);
+			
+
+        
+        
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -123,6 +131,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		
 		
         dateModel2 = new UtilDateModel();
+        
+
+		Bufferdate = WorkflowController.getWorkflowModel().getEndDate();
+		dateModel2.setValue(Bufferdate);
+
+		
 		Properties q = new Properties();
 		q.put("text.today", "Today");
 		q.put("text.month", "Month");
@@ -137,10 +151,14 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		
 		
 		
-		
-		
 
         dateModel3 = new UtilDateModel();
+        
+
+		Bufferdate = WorkflowController.getWorkflowModel().getOverrideDate();
+		dateModel3.setValue(Bufferdate);
+
+		
 		Properties r = new Properties();
 		r.put("text.today", "Today");
 		r.put("text.month", "Month");
@@ -194,18 +212,49 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     public void updateStartDate()
     {
-    	int days = datePicker1.getModel().getDay();
-    	int month = datePicker1.getModel().getMonth();
-    	int year = datePicker1.getModel().getYear();
-    	startDate = new Date(year,month,days);
+    	String daysString = Integer.toString(datePicker1.getModel().getDay());
+    	String monthString = Integer.toString(datePicker1.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker1.getModel().getYear());
+
+	    try {
+			Date StartDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setStartDate(StartDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }   
     
     public void updateEndDate()
     {
-    	int days = datePicker2.getModel().getDay();
-    	int month = datePicker2.getModel().getMonth();
-    	int year = datePicker2.getModel().getYear();
-    	endDate = new Date(year,month,days);
+    	String daysString = Integer.toString(datePicker2.getModel().getDay());
+    	String monthString = Integer.toString(datePicker2.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker2.getModel().getYear());
+
+	    try {
+			Date EndDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setEndDate(EndDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void updateOverrideDate()
+    {
+    	String daysString = Integer.toString(datePicker3.getModel().getDay());
+    	String monthString = Integer.toString(datePicker3.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker3.getModel().getYear());
+
+	    try {
+			Date OverrideDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setOverrideDate(OverrideDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     
@@ -422,6 +471,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 	public void actionPerformed(ActionEvent e) {
 		updateStartDate();
 		updateEndDate();
+		updateOverrideDate();
 		
 	}
 

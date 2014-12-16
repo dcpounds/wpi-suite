@@ -9,10 +9,16 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
+
 import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -22,12 +28,19 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
  * contains all the stages where tasks are moved around in
  */
 public class WorkflowModel extends AbstractModel {
+	private static final int YEAR = 0;
 	final private String name;
 	private LinkedHashMap<Integer,StageModel> stageModelList;
 	private static ArrayList<User> userList; 
 	private static boolean toggleColor;
 	private static boolean isDraggingStage;
 	private static ArrayList<String> requirementsList;
+	private Date overrideDate;
+	private Date startDate;
+	private Date endDate;
+	private String overrideString;
+	private String startString;
+	private String endString;
 	
 
 	/**
@@ -42,6 +55,13 @@ public class WorkflowModel extends AbstractModel {
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
 		WorkflowModel.requirementsList = new ArrayList<String>();
+		
+	    overrideDate = new Date();
+	    startDate = new Date(1970,1,1);
+	    endDate = new Date (2100,12,31);
+	    overrideString = overrideDate.toString();
+	    startString = startDate.toString();
+	    endString = endDate.toString();
 	}
 	
 	
@@ -54,9 +74,83 @@ public class WorkflowModel extends AbstractModel {
 		stageModelList = new LinkedHashMap<Integer, StageModel>();
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
+		
+	    overrideDate = new Date();
+	    
+	    
+	    try {
+			startDate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    try {
+			endDate = new SimpleDateFormat("yyyy-MM-dd").parse("2100-12-31");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	    overrideString = overrideDate.toString();
+	    startString = startDate.toString();
+	    endString = endDate.toString();
+	    
 	}
 	
 	
+	/**
+	 * @return the overrideDate
+	 */
+	public Date getOverrideDate() {
+		return overrideDate;
+	}
+
+
+	/**
+	 * @param overrideDate the overrideDate to set
+	 */
+	public void setOverrideDate(Date overrideDate) {
+		this.overrideDate = overrideDate;
+		this.overrideString = overrideDate.toString();
+	}
+
+
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+		this.startString = startDate.toString();
+	}
+
+
+	/**
+	 * @return the endDate
+	 */
+	public Date getEndDate() {
+		return endDate;
+	}
+
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+		this.endString = endDate.toString();
+	}
+
+
 	/**
 	 * @return the string name of the workflow
 	 */
@@ -228,6 +322,9 @@ public class WorkflowModel extends AbstractModel {
 	
 	public void copyFrom(WorkflowModel other){
 		stageModelList = other.stageModelList;
+		overrideDate = other.overrideDate;
+		startDate = other.startDate;
+		endDate = other.endDate;
 	}
 
 }

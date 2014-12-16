@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DateLabelFormatter;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
@@ -34,6 +35,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private ArrayList<String> usersAssignedTo;
 	private String associatedRequirement;
 	private Date creationDate;
+	private Date creationDateBuffer;
 	private String dueDate;
 	private int stageID;
 	private int catID;
@@ -46,6 +48,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 	private Color[] urgencyArray = {new Color(51,199,72),new Color(51,199,72),new Color(51,199,72)};
 	
 	/** The default constructor for a Task **/
+	@SuppressWarnings("deprecation")
 	public TaskModel(){
 		this.id = this.hashCode();
 		this.estimatedEffort = 0;
