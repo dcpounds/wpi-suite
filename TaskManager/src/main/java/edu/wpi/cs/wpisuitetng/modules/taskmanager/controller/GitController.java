@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -28,6 +29,7 @@ import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.GitHubService;
+import org.eclipse.egit.github.core.service.IssueService;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -35,8 +37,11 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_ISSUE
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.StageView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.TaskView;
@@ -50,7 +55,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
  * @author Alec
  *
  */
-public class GitController extends GitHubService implements ActionListener {
+public class GitController extends IssueService implements ActionListener {
 	private GitLinkTab gitTab;
 
 	public GitController(GitLinkTab gitTab){
@@ -135,6 +140,59 @@ public class GitController extends GitHubService implements ActionListener {
 	}
 	
 	/**
+	 * Makes an activity list from the comments
+	 * @param issue
+	 * @return the activitylistmodel
+	 */
+	public ActivityListModel makeActivities(Issue issue){
+		ActivityListModel activityList = new ActivityListModel();
+		List<Comment> commentList = new ArrayList<Comment>();
+		
+		try {
+			commentList = this.getComments(gitTab.getRepositoryURL().getText(), Integer.toString(issue.getNumber()) );
+			System.out.println("Successfully fetched comments");
+		} catch (IOException e) {
+			System.out.println("Error fetching comments");
+			e.printStackTrace();
+		}
+		
+		for(Comment comment : commentList){
+			ActivityModel activity = new ActivityModel(comment.getBody());
+			activity.setDate(comment.getCreatedAt());
+			activity.setUser(comment.getUser().getLogin());
+			activityList.addActivity(activity);
+		}
+		return activityList;
+	}
+	
+	/**
+	 * Get an issue's comments
+	 *
+	 * @param repository
+	 * @param issueNumber
+	 * @return list of comments
+	 * @throws IOException
+	 */
+	private List<Comment> getComments(String repoId, String issueNumber)
+			throws IOException {
+		if (issueNumber == null)
+			throw new IllegalArgumentException("Issue number cannot be null"); //$NON-NLS-1$
+		if (issueNumber.length() == 0)
+			throw new IllegalArgumentException("Issue number cannot be empty"); //$NON-NLS-1$
+
+		StringBuilder uri = new StringBuilder(SEGMENT_REPOS);
+		uri.append('/').append(repoId);
+		uri.append(SEGMENT_ISSUES);
+		uri.append('/').append(issueNumber);
+		uri.append(SEGMENT_COMMENTS);
+		PagedRequest<Comment> request = createPagedRequest();
+		request.setUri(uri);
+		request.setType(new TypeToken<List<Comment>>() {
+		}.getType());
+		return getAll(request);
+	}
+	
+	/**
 	 * Create a task from an issue and add it to the workflow
 	 * @param issue
 	 */
@@ -155,6 +213,7 @@ public class GitController extends GitHubService implements ActionListener {
 			task.setID(issueID);
 			task.setCreator(issue.getUser().getName());
 			task.setCatID(1);
+			task.setActivities(this.makeActivities(issue));
 			
 			Format formatter = new SimpleDateFormat("MM/dd/yyyy");
 			task.setDueDate(formatter.format(issue.getCreatedAt()));
