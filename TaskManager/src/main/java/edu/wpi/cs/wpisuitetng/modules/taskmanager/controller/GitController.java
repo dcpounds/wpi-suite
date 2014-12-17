@@ -28,7 +28,6 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
-import org.eclipse.egit.github.core.service.GitHubService;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import com.google.gson.reflect.TypeToken;
