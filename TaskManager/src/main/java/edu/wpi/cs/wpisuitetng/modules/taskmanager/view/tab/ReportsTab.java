@@ -52,6 +52,11 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.PieDataset;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
@@ -72,6 +77,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     private String title;
     private ChartPanel barChart;
     private ChartPanel pieChart;
+    private ChartPanel velocityChart;
     private Date startDate;
     private Date endDate;
     private int reportSelect;
@@ -106,10 +112,18 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
         pieChart = createPiePanel();
+        velocityChart = createVelocityPanel();
         
         if (reportSelect == 3)
         {
         	panel.add(barChart, BorderLayout.WEST);
+        }
+        else if (reportSelect == 1)
+        {
+            //final XYDataset dataset = setVelocityData();
+            //final JFreeChart chart = createVelocityChart(dataset);
+            //final ChartPanel chartPanel = new ChartPanel(chart);
+            panel.add(velocityChart, BorderLayout.WEST);
         }
         else
         {
@@ -139,11 +153,11 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         	}
         });
         
-        button2.addActionListener(new ActionListener() { // Uncomment this when we have a velocityChart (or whatever it's called)
+        button2.addActionListener(new ActionListener() { 
         	public void actionPerformed(ActionEvent e) {
-        		// panel.removeAll();
-        		// panel.add(velocityChart, BorderLayout.WEST);
-        		// panel.add(rightPanel, BorderLayout.WEST);
+        		panel.removeAll();
+        		reportSelect = 1;
+        		buildPanel();
         	}
         });
         
@@ -347,6 +361,99 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     	return dataSet;
     }
     
+    
+    private XYDataset  setVelocityData() {
+    	final XYSeries series1 = new XYSeries("First");
+        series1.add(1.0, 1.0);
+        series1.add(2.0, 4.0);
+        series1.add(3.0, 3.0);
+        series1.add(4.0, 5.0);
+        series1.add(5.0, 5.0);
+        series1.add(6.0, 7.0);
+        series1.add(7.0, 7.0);
+        series1.add(8.0, 8.0);
+
+        final XYSeries series2 = new XYSeries("Second");
+        series2.add(1.0, 5.0);
+        series2.add(2.0, 7.0);
+        series2.add(3.0, 6.0);
+        series2.add(4.0, 8.0);
+        series2.add(5.0, 4.0);
+        series2.add(6.0, 4.0);
+        series2.add(7.0, 2.0);
+        series2.add(8.0, 1.0);
+        
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+        
+        return dataset;
+    }
+    
+    
+    
+    
+    /**
+     * Creates a chart.
+     * 
+     * @param dataset  the data for the chart.
+     * 
+     * @return a chart.
+     */
+    private JFreeChart createVelocityChart(final XYDataset dataset) {
+        
+        // create the chart...
+        final JFreeChart chart = ChartFactory.createXYLineChart(
+            "Velocity Chart",      // chart title
+            "X",                      // x axis label
+            "Y",                      // y axis label
+            dataset,                  // data
+            PlotOrientation.VERTICAL,
+            true,                     // include legend
+            true,                     // tooltips
+            false                     // urls
+        );
+
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+        chart.setBackgroundPaint(Color.white);
+
+//        final StandardLegend legend = (StandardLegend) chart.getLegend();
+  //      legend.setDisplaySeriesShapes(true);
+        
+        // get a reference to the plot for further customisation...
+        final XYPlot plot = chart.getXYPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+    //    plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        
+        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, false);
+        renderer.setSeriesShapesVisible(1, false);
+        plot.setRenderer(renderer);
+
+        // change the auto tick unit selection to integer units only...
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        // OPTIONAL CUSTOMISATION COMPLETED.
+                
+        return chart;
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     /**
@@ -356,7 +463,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
      */
     private static JFreeChart createChart(CategoryDataset dataset, String title) {
         JFreeChart chart = ChartFactory.createBarChart(
-                title,         // chart title
+                "Category Use",         // chart title
                 "Name",               // domain axis label
                 "Value",                  // range axis label
                 dataset,                  // data
@@ -441,7 +548,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     }
     
     private static JFreeChart createPieChart(PieDataset dataset, String title) {
-    	JFreeChart chart = ChartFactory.createPieChart(title, dataset, true, false,false);
+    	JFreeChart chart = ChartFactory.createPieChart("Effort Completed by Each User", dataset, true, false,false);
     	return chart;
     }
     
@@ -456,6 +563,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     public ChartPanel createPiePanel() {
     	JFreeChart chart = createPieChart(setPieData(), title);
+    	
+    	return new ChartPanel(chart);
+    }
+    
+    public ChartPanel createVelocityPanel() {
+    	JFreeChart chart = createVelocityChart(setVelocityData());
     	
     	return new ChartPanel(chart);
     }
