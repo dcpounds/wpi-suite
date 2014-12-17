@@ -98,7 +98,6 @@ public class DataLoggerController {
 	 * get a list of all DataLoggers from the database
 	 */
 	public static void sendGetRequest (DataLoggerModel dataLoggerModel) {
-		System.out.println("Sending data logger get request");
 		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
 		request.addObserver(getObserver); // add an observer to process the response
 		request.send();
@@ -133,10 +132,8 @@ public class DataLoggerController {
 	 */
 	public void process(DataLoggerModel[] dataLogger) {
 		if(dataLogger.length == 0){
-			System.out.println("GOT BACK NOTHING");
 			sendAddRequest(getDataModel());
 		}else{
-			System.out.println("GOT BACK A DATA LOGGER");
 			DataLoggerModel dlModel = dataLogger[0];
 			getDataModel().copyFrom(dlModel);
 		}	
