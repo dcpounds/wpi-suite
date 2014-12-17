@@ -102,7 +102,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private DefaultComboBoxModel<String> requirementsComboModel;
 	private ActivitiesView activitiesView;
 	private JPanel editPane;
-	private JPanel activitiesPane;
+	private ActivitiesView activitiesPane;
 	private JSplitPane splitPane;
 	
 	/**
@@ -335,7 +335,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                            editPane, activitiesPane);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(700);
 		add(splitPane);
 	}
 
