@@ -43,9 +43,6 @@ public class DataLoggerController {
     private Date startDate;
     private Date endDate;
     
-    
-    
-    
     DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
 		action = action;
@@ -55,14 +52,6 @@ public class DataLoggerController {
 		DataLoggerController.deleteObserver = new DeleteDataLoggerRequestObserver(this);
 
 	}
-
-
-
-
-
-
-
-
 
 	/**
 	 * Depending on the specified action, either create, edit, delete, or get stageModel(s) from the database
@@ -109,9 +98,10 @@ public class DataLoggerController {
 	 * get a list of all DataLoggers from the database
 	 */
 	public static void sendGetRequest (DataLoggerModel dataLoggerModel) {
-		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
-		request.addObserver(getObserver); // add an observer to process the response
-		request.send();
+		System.out.println("Sending data logger get request");
+		//final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
+		//request.addObserver(getObserver); // add an observer to process the response
+		//request.send();
 	}
 	
 	/**
@@ -134,6 +124,22 @@ public class DataLoggerController {
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 
+	}
+
+	/**
+	 * If the database has no datalogger model, add it
+	 * Otherwise, copy it from the database
+	 * @param dataLogger
+	 */
+	public void process(DataLoggerModel[] dataLogger) {
+		if(dataLogger.length == 0){
+			System.out.println("GOT BACK NOTHING");
+			sendAddRequest(getDataModel());
+		}else{
+			System.out.println("GOT BACK A DATA LOGGER");
+			DataLoggerModel dlModel = dataLogger[0];
+			getDataModel().copyFrom(dlModel);
+		}	
 	}
 
 }

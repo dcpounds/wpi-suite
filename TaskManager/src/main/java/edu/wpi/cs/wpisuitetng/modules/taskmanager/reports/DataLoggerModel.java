@@ -119,6 +119,7 @@ public class DataLoggerModel extends AbstractModel
 	public void addSnapshot(TaskModel taskmodel)
 	{
 		taskSnapList.add(new TaskSnapshot(taskmodel, taskSnapID));
+		DataLoggerController.sendUpdateRequest(this);
 	}
 	
 	

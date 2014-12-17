@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.sql.Date;
 
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -33,6 +34,7 @@ public class WorkflowController {
 					try {
 						sleep(4000);
 						new StageController(new StageModel(), ActionType.GET).act();
+						DataLoggerController.sendGetRequest( DataLoggerController.getDataModel());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
