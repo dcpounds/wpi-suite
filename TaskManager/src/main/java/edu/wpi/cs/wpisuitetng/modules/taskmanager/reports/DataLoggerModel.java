@@ -577,8 +577,7 @@ public class DataLoggerModel extends AbstractModel
 			String stampDate =  taskSnapList.get(i-1).getTimeStamp().toString();
 			if (!taskSnapList.get(i-1).getTimeStamp().after(enddate))
 			{
-				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate)) || 
-					containsID(filteredList.taskSnapList, taskSnapList.get(i-1)))
+				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate)))
 				{
 					filteredList.appendSnapshot(taskSnapList.get(i-1));
 				}
@@ -698,6 +697,30 @@ public class DataLoggerModel extends AbstractModel
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
 			if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+			}
+		}
+		return filteredList;
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Filters a sublist, returning only the snapshots not included in the complete stage
+	 * @param list, the list to perform the operation on
+	 * @param stageID, the stage id used as the complete stage
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByStage(SnapshotSubList list, int stageID)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			if (list.taskSnapList.get(i-1).getStageID() != stageID)
 			{
 				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
 			}
@@ -880,6 +903,38 @@ public class DataLoggerModel extends AbstractModel
 			filteredList = filterByDueDate(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
 											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
 			filteredList = filterByID(filteredList);
+			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
+			output.put(i+1, estimatedEffort);
+		}
+		return output;
+	}
+	
+	public Hashtable<Integer, Double> exportDailyEffortStamps()
+	{
+		Hashtable<Integer, Double> output = new Hashtable<Integer, Double>();
+		int days = 0;
+		long startDateMS = WorkflowController.getWorkflowModel().getStartDate().getTime();
+		while (true)
+		{
+			if (startDateMS+86400000 < WorkflowController.getWorkflowModel().getEndDate().getTime())
+			{
+				days++;
+				startDateMS = startDateMS+86400000;	//number of milliseconds in a week
+			}
+			else
+			{
+				days++;
+				break;
+			}
+		}
+		SnapshotSubList filteredList;
+		for (int i = 0; i<days; i++)
+		{
+			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+i*86400000),
+											new Date(WorkflowController.getWorkflowModel().getEndDate().getTime()));
+			filteredList = filterByID(filteredList);
+			filteredList = filterByStage(filteredList, WorkflowController.getWorkflowModel().getCompleteStageID());
+
 			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
 			output.put(i+1, estimatedEffort);
 		}

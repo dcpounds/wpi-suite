@@ -78,9 +78,11 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     private ChartPanel barChart;
     private ChartPanel pieChart;
     private ChartPanel velocityChart;
+    private ChartPanel burndownChart;
     private Date startDate;
     private Date endDate;
     private int reportSelect;
+    private JPanel panel;
 
 	private UtilDateModel dateModel1;
 	private JDatePanelImpl datePanel1;
@@ -116,20 +118,23 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     public void buildPanel() {
     	
     
-    	JPanel panel = new JPanel(new BorderLayout());
+    	panel = new JPanel(new BorderLayout());
         barChart = createPanel();
         pieChart = createPiePanel();
         velocityChart = createVelocityPanel();
+        burndownChart = createBurndownPanel();
         
         if (reportSelect == 3)
         {
         	panel.add(barChart, BorderLayout.WEST);
         }
+        else if (reportSelect == 2)
+        {
+        	panel.add(burndownChart, BorderLayout.WEST);
+        }
         else if (reportSelect == 1)
         {
-            //final XYDataset dataset = setVelocityData();
-            //final JFreeChart chart = createVelocityChart(dataset);
-            //final ChartPanel chartPanel = new ChartPanel(chart);
+
             panel.add(velocityChart, BorderLayout.WEST);
         }
         else
@@ -169,11 +174,11 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         	}
         });
         
-        button3.addActionListener(new ActionListener() { // Uncomment this when we have a scrumBurndown (or whatever it's called)
+        button3.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		// panel.removeAll();
-        		// panel.add(scrumBurndown, BorderLayout.WEST);
-        		// panel.add(rightPanel, BorderLayout.WEST);
+        		panel.removeAll();
+        		reportSelect = 2;
+        		buildPanel();
         	}
         });
         
@@ -186,64 +191,40 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         });
         
         dateModel1 = new UtilDateModel();
-
 		Date Bufferdate = WorkflowController.getWorkflowModel().getStartDate();
 		dateModel1.setValue(Bufferdate);
-			
-
-        
-        
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
 		datePanel1 = new JDatePanelImpl(dateModel1, p);
 		datePicker1 = new JDatePickerImpl(datePanel1, new DateLabelFormatter());
-		
-
 		datePicker1.addMouseListener(this);
 		datePanel1.addMouseListener(this);
 		datePicker1.addActionListener(this);
 		
-		
-		
         dateModel2 = new UtilDateModel();
-        
-
 		Bufferdate = WorkflowController.getWorkflowModel().getEndDate();
 		dateModel2.setValue(Bufferdate);
-
-		
 		Properties q = new Properties();
 		q.put("text.today", "Today");
 		q.put("text.month", "Month");
 		q.put("text.year", "Year");
 		datePanel2 = new JDatePanelImpl(dateModel2, q);
 		datePicker2 = new JDatePickerImpl(datePanel2, new DateLabelFormatter());
-		
-
 		datePicker2.addMouseListener(this);
 		datePanel2.addMouseListener(this);
 		datePicker2.addActionListener(this);
-		
-		
-		
 
         dateModel3 = new UtilDateModel();
-        
-
 		Bufferdate = WorkflowController.getWorkflowModel().getOverrideDate();
 		dateModel3.setValue(Bufferdate);
-
-		
 		Properties r = new Properties();
 		r.put("text.today", "Today");
 		r.put("text.month", "Month");
 		r.put("text.year", "Year");
 		datePanel3 = new JDatePanelImpl(dateModel3, r);
 		datePicker3 = new JDatePickerImpl(datePanel3, new DateLabelFormatter());
-		
-
 		datePicker3.addMouseListener(this);
 		datePanel3.addMouseListener(this);
 		datePicker3.addActionListener(this);
@@ -317,6 +298,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
     	
     }   
     
@@ -333,6 +315,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
+
     	
     }
     
@@ -349,6 +333,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
     }
     
     
@@ -428,6 +413,35 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     
     
+    private XYDataset  setBurndownData() {
+    	final XYSeries series1 = new XYSeries("Estimated Effort");
+    	final XYSeries series2 = new XYSeries("Actual Effort");
+    	double xvalue;
+    	double yvalue;
+    	for (int i = 0; i<DataLoggerController.getDataModel().exportDailyEffortStamps().size(); i++)
+        {
+        	xvalue = i+1;
+        	yvalue = DataLoggerController.getDataModel().exportDailyEffortStamps().get(i+1);
+        	series1.add(xvalue, yvalue);
+        }
+    	xvalue = 0;
+    	yvalue = 0;
+
+    	
+        series2.add(0, series1.getY(0));
+        series2.add(series1.getMaxX(), 0);
+        
+        
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+        
+        return dataset;
+    }
+    
+    
+    
+    
     /**
      * Creates a chart.
      * 
@@ -471,7 +485,68 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         final NumberAxis XAxis = (NumberAxis) plot.getDomainAxis();
         XAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        XAxis.setLabel("Week");
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        rangeAxis.setLabel("Effort");
+        // OPTIONAL CUSTOMISATION COMPLETED.
+                
+        return chart;
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Creates a chart.
+     * 
+     * @param dataset  the data for the chart.
+     * 
+     * @return a chart.
+     */
+    private JFreeChart createBurndownChart(final XYDataset dataset) {
+        
+        // create the chart...
+        final JFreeChart chart = ChartFactory.createXYLineChart(
+            "Velocity Chart",      // chart title
+            "X",                      // x axis label
+            "Y",                      // y axis label
+            dataset,                  // data
+            PlotOrientation.VERTICAL,
+            true,                     // include legend
+            true,                     // tooltips
+            false                     // urls
+        );
+
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+        chart.setBackgroundPaint(Color.white);
+
+//        final StandardLegend legend = (StandardLegend) chart.getLegend();
+  //      legend.setDisplaySeriesShapes(true);
+        
+        // get a reference to the plot for further customisation...
+        final XYPlot plot = chart.getXYPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+    //    plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        
+        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, true);
+        renderer.setSeriesShapesVisible(1, false);
+        plot.setRenderer(renderer);
+
+        // change the auto tick unit selection to integer units only...
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        final NumberAxis XAxis = (NumberAxis) plot.getDomainAxis();
+        XAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        XAxis.setLabel("Week");
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        rangeAxis.setLabel("Effort");
         // OPTIONAL CUSTOMISATION COMPLETED.
                 
         return chart;
@@ -610,6 +685,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     	return new ChartPanel(chart);
     }
     
+    public ChartPanel createBurndownPanel() {
+    	JFreeChart chart = createBurndownChart(setBurndownData());
+    	
+    	return new ChartPanel(chart);
+    }
+    
 
 	/**
      * Method paintComponent.
@@ -686,10 +767,14 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		updateStartDate();
 		updateEndDate();
+		updateStartDate();
+
 		updateOverrideDate();
 		WorkflowController.getWorkflowModel().setCompleteStageID(getSelectedStageModel().getID());
+		
+	    panel.removeAll();
+	    buildPanel();
 		
 	}
 

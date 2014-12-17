@@ -25,7 +25,7 @@ public class UpdateDataLoggerRequestObserver implements RequestObserver{
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
-        DataLoggerModel stage = DataLoggerModel.fromJson(iReq.getResponse().getBody());
+        DataLoggerModel dataLogger = DataLoggerModel.fromJson(iReq.getResponse().getBody());
         //controller.updateStage(stage);
 		
 	}
