@@ -12,13 +12,14 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
@@ -35,14 +36,14 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * @author Alec
  * Manages the search bar's searching functionality.
  */
-public class SearchController implements ActionListener, KeyListener {
+public class SearchController implements ActionListener, KeyListener, ItemListener {
 	private static WorkflowModel workflowModel;
 	private static JTextField searchBox;
 	private static ToolbarView toolbarView;
 	
 	public SearchController(ToolbarView toolbarView) {
 		SearchController.toolbarView = toolbarView;
-		SearchController.workflowModel = WorkflowController.getWorkflowModel();
+		SearchController.workflowModel = WorkflowController.getWorkflowModel();	
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class SearchController implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Intentionally left empty		
+		// Intentionally left empty	
 	}
 	
 	/**
@@ -74,7 +75,12 @@ public class SearchController implements ActionListener, KeyListener {
 		boolean foundResult = false;
 		searchBox = toolbarView.getSearchBox();
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		String searchText = searchBox.getText().toLowerCase();
+		String searchText = searchBox.getText();
+		boolean caseSensitive = toolbarView.getCaseSensitive();
+		
+		if (!caseSensitive) {
+			searchText = searchText.toLowerCase();
+		}
 
 		for (StageModel stage : workflowModel.getStageModelList().values()) {
 			for(TaskModel task : stage.getTaskModelList().values()){
@@ -84,12 +90,21 @@ public class SearchController implements ActionListener, KeyListener {
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (searchText.isEmpty() && shouldShow) {
+				ArrayList<Color> colorList = toolbarView.getSelectedColorArray();
+				if (colorList.isEmpty() && searchText.isEmpty() && shouldShow) {
 					taskView.setVisible(true);
-				}
-				else if (task.getTitle().toLowerCase().contains(searchText) && shouldShow) {
-					taskView.setVisible(true);
+					searchBox.setBackground(Color.WHITE);
+				//If search field 
+				}else if (((!caseSensitive && task.getTitle().toLowerCase().contains(searchText)) 
+						|| (caseSensitive && task.getTitle().contains(searchText))) && shouldShow) {
 					foundResult = true;
+					searchBox.setBackground(new Color(0xFFF79A));
+					if(colorList.isEmpty() || colorList.contains(task.getCatColor())){
+						taskView.setVisible(true);
+						searchBox.setBackground(Color.WHITE);
+					} else {
+						taskView.setVisible(false);
+					}
 				} else {
 					taskView.setVisible(false);
 				}
@@ -98,8 +113,15 @@ public class SearchController implements ActionListener, KeyListener {
 		
 		if(!foundResult && !searchText.isEmpty())
 			searchBox.setBackground(new Color(255,120,120));
-		else
-			searchBox.setBackground(Color.WHITE);
+		
+		if(searchText.isEmpty()){
+			searchBox.setBackground(Color.white);
+		}
 	}
 
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		search();
+		
+	}
 }
