@@ -38,6 +38,7 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_REPOS
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityListModel;
@@ -240,6 +241,7 @@ public class GitController extends IssueService implements ActionListener {
 			stage.addTaskModel(task);
 			stageView.addTaskView(taskView);
 			stagesToUpdate.put(stage.getID(), stage);
+			DataLoggerController.getDataModel().addSnapshot(task);
 		}
 		
 		for(StageModel stage : stagesToUpdate.values()){
