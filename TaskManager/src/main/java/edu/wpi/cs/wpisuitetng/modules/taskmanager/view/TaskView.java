@@ -244,7 +244,6 @@ public class TaskView extends DragTaskPanel{
 	public void activateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		btnRestore.setVisible(true);
-		btnEdit.setEnabled(false);
 		setSign(taskModel);
 	}
 	
@@ -256,7 +255,6 @@ public class TaskView extends DragTaskPanel{
 	public void deactivateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		btnRestore.setVisible(false);
-		btnEdit.setEnabled(true);
 		setSign(taskModel);
 	}
 	
@@ -476,7 +474,6 @@ public class TaskView extends DragTaskPanel{
 	private void archive(){
 		activateArchiveView();
 		StageController.archiveTask(this);
-		TabController.getInstance().closeUniqueTab(TabType.TASK, taskModel);
 	}
 	
 	/**
@@ -489,6 +486,7 @@ public class TaskView extends DragTaskPanel{
 			null, options, options[0]);
 		if(choice == 0){
 			StageController.deleteTask(this);
+			TabController.getInstance().closeUniqueTab(TabType.TASK, taskModel);
 		}
 	}
 }
