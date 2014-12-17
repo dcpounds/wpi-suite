@@ -62,16 +62,16 @@ public class ActivitiesView extends AbstractTab {
 		setLayout(new MigLayout("", "[grow]", "[][grow][][][]"));
      
 		activitiesLabel = new JLabel("Activities");
-        add(activitiesLabel, "cell 0 0");
+        add(activitiesLabel, "cell 0 0,aligny top");
 		
         activitiesBoard = new JList<ActivityModel>(taskModel.getActivities());
         activitiesBoard.setCellRenderer(new ActivityListCellRenderer());
         activitiesScrollPane = new JScrollPane(activitiesBoard);
         activitiesScrollPane.setPreferredSize(new Dimension(500, 400));
-        add(activitiesScrollPane, "cell 0 1");
+        add(activitiesScrollPane, "cell 0 1,alignx left,growy");
         
         newCommentLabel = new JLabel("New Comment");
-        add(newCommentLabel, "cell 0 2");
+        add(newCommentLabel, "cell 0 2,alignx left,aligny top");
         
         newCommentTxt = new JTextArea("Enter a comment here.");
         newCommentTxt.setLineWrap(true);
@@ -85,7 +85,7 @@ public class ActivitiesView extends AbstractTab {
     	}});
         newCommentScrollPane = new JScrollPane();
         newCommentScrollPane.setViewportView(newCommentTxt);
-        add(newCommentScrollPane, "cell 0 3");
+        add(newCommentScrollPane, "cell 0 3,alignx left,aligny top");
         
         
         
@@ -99,7 +99,7 @@ public class ActivitiesView extends AbstractTab {
 					addActivity();
 			}
 		});
-        add(btnSubmit, "cell 0 4,alignx left");
+        add(btnSubmit, "cell 0 4,alignx left,aligny top");
 	}
 	
 	/**
