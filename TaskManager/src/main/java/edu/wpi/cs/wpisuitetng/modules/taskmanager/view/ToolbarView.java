@@ -93,9 +93,6 @@ public class ToolbarView extends JPanel {
         ImageIcon categoryIcon = new ImageIcon(this.getClass().getResource("Colors.png"));
         ImageIcon searchIcon = new ImageIcon(this.getClass().getResource("search.png"));
         ImageIcon gitIcon = new ImageIcon(this.getClass().getResource("github.png"));
-        
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
         newStageButton = new JButton("New Stage", stageIcon);
         newStageButton.addActionListener( new ActionListener(){
         	@Override
@@ -138,7 +135,7 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Category Coloring");
+        JButton toggleColor = new JButton("Toggle Colors");
         toggleColor.setIcon(categoryIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
@@ -150,7 +147,7 @@ public class ToolbarView extends JPanel {
         });
         add(toggleColor);
         
-        archiveButton = new JToggleButton("View Archives");
+        archiveButton = new JToggleButton("Archives");
         archiveButton.setIcon(archiveIcon);
         archiveButton.addChangeListener(ArchiveController.getInstance());
         archiveButton.setMargin(new Insets(0,0,0,0));
@@ -175,10 +172,10 @@ public class ToolbarView extends JPanel {
         add(horizontalStrut2);
         JLabel searchLabel = new JLabel();
         searchLabel.setIcon(searchIcon);
-        
         add(searchLabel);
         
         searchBox = new JTextField();
+        searchBox.setPreferredSize(new Dimension(150,38));
         searchBox.setMaximumSize(new Dimension(300, 38));
         searchBox.setOpaque(true);
         
