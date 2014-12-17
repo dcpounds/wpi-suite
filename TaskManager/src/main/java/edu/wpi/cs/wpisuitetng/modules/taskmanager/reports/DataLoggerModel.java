@@ -579,7 +579,8 @@ public class DataLoggerModel extends AbstractModel
 			String stampDate =  taskSnapList.get(i-1).getTimeStamp().toString();
 			if (!taskSnapList.get(i-1).getTimeStamp().after(enddate))
 			{
-				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate)))
+				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate))|| 
+						containsID(filteredList.taskSnapList, taskSnapList.get(i-1)))
 				{
 					filteredList.appendSnapshot(taskSnapList.get(i-1));
 				}
@@ -694,6 +695,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public SnapshotSubList returnCompleteSnapshots(SnapshotSubList list, int stageID)
 	{
+		
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
@@ -989,12 +991,9 @@ public class DataLoggerModel extends AbstractModel
 		SnapshotSubList filteredList;
 		for (int i = 0; i<weeks; i++)
 		{
-			
-			
-			filteredList = returnCompleteSnapshots(WorkflowController.getWorkflowModel().getCompleteStageID());
-			filteredList = reverseList(filteredList);
-			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000L*i),
-					new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000L+604800000L*i));
+			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
+											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
+			filteredList = returnCompleteSnapshots(filteredList, WorkflowController.getWorkflowModel().getCompleteStageID());
 			double actualEffort = AccumulateActualEffort(filteredList);
 			output.put(i+1, actualEffort);
 		}
