@@ -30,6 +30,7 @@ import java.util.HashMap;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+import javax.swing.JSeparator;
 
 /**
  * This view is responsible for rendering a stage that can be placed inside a workflow.
@@ -48,6 +49,7 @@ public class StageView extends DragStagePanel {
 	private boolean closable;
 	private StageModel stageModel;
 	private int id;
+	private JSeparator separator;
 	
 	/**
 	 * Constructs a new Stage based off the given model
@@ -60,7 +62,7 @@ public class StageView extends DragStagePanel {
 		title = stageModel.getTitle();
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
-		setLayout(new MigLayout("insets 0", "[][grow][]", "[][grow]"));
+		setLayout(new MigLayout("insets 0", "[][grow][][]", "[][grow]"));
 		this.closable = stageModel.getClosable();
 		
 		StageView thisStage = this;
@@ -101,14 +103,20 @@ public class StageView extends DragStagePanel {
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.addActionListener(new StageController(stageModel, ActionType.DELETE));
+		
+		separator = new JSeparator();
+		separator.setPreferredSize(new Dimension(60,5));
+		separator.setBackground(new Color(135,206,250));
+		separator.setForeground(new Color(135,206,250));
+		add(separator, "cell 2 0");
 		btnClose.setEnabled(closable);
-		add(btnClose, "pad 5 -5 0 -5,cell 2 0,aligny center");
+		add(btnClose, "pad 5 -5 0 -5,cell 3 0,aligny center");
 		
 		scrollPane = new JScrollPane(stagePane);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		stagePane.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-		add(scrollPane, "cell 0 1 3 1,grow");
+		add(scrollPane, "cell 0 1 4 1,grow");
 		setBackground(new Color(135, 206, 250));
 		stagePane.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
 		updateStageHeight();

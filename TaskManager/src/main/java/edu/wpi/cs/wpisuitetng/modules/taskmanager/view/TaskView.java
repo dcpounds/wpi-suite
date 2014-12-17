@@ -505,7 +505,7 @@ public class TaskView extends DragTaskPanel{
 			deactivateArchiveView();
 		}
 		
-		toggleTaskViewColor(task.getColor());
+		toggleTaskViewColor(task.getCatColor());
 		revalidate();
 		repaint();
 	}
