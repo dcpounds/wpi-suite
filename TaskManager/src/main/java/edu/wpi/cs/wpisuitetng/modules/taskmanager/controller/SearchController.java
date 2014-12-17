@@ -18,11 +18,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
@@ -39,19 +36,14 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
  * @author Alec
  * Manages the search bar's searching functionality.
  */
-public class SearchController implements ActionListener, KeyListener {
+public class SearchController implements ActionListener, KeyListener, ItemListener {
 	private static WorkflowModel workflowModel;
 	private static JTextField searchBox;
 	private static ToolbarView toolbarView;
-	private static JCheckBox filterBox;
 	
 	public SearchController(ToolbarView toolbarView) {
 		SearchController.toolbarView = toolbarView;
-		SearchController.workflowModel = WorkflowController.getWorkflowModel();
-		filterBox = toolbarView.getCatFilter();
-		
-		
-		
+		SearchController.workflowModel = WorkflowController.getWorkflowModel();	
 	}
 
 	@Override
@@ -98,12 +90,18 @@ public class SearchController implements ActionListener, KeyListener {
 				TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
 				if(taskView == null)
 					continue;
-				if (searchText.isEmpty() && shouldShow) {
+				ArrayList<Color> colorList = toolbarView.getSelectedColorArray();
+				if (colorList.isEmpty() && searchText.isEmpty() && shouldShow) {
 					taskView.setVisible(true);
-				}
-				else if (((!caseSensitive && task.getTitle().toLowerCase().contains(searchText)) || (caseSensitive && task.getTitle().contains(searchText))) && shouldShow) {
-					taskView.setVisible(true);
+				//If search field 
+				}else if (((!caseSensitive && task.getTitle().toLowerCase().contains(searchText)) 
+						|| (caseSensitive && task.getTitle().contains(searchText))) && shouldShow) {
 					foundResult = true;
+					if(colorList.isEmpty() || colorList.contains(task.getCatColor())){
+						taskView.setVisible(true);
+					} else {
+						taskView.setVisible(false);
+					}
 				} else {
 					taskView.setVisible(false);
 				}
@@ -115,33 +113,10 @@ public class SearchController implements ActionListener, KeyListener {
 		else
 			searchBox.setBackground(Color.WHITE);
 	}
-	
-	public static void catFilter() {
-		
-		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		boolean filter = filterBox.isSelected();
-		ArrayList<Color> selectedCategories = toolbarView.getSelectedColorArray();
-		if(filter){
-			for (StageModel stage : workflowModel.getStageModelList().values()) {
-				for(TaskModel task : stage.getTaskModelList().values()){
-					boolean shouldShow = (ArchiveController.getIsPressed() || !task.getIsArchived() ? true: false);
-					int stageID = stage.getID();
-					int taskID = task.getID();
-					TaskView taskView = workflowView.getStageViewList().get(stageID).getTaskViewList().get(taskID);
-					if(taskView == null)
-						continue;
-					if (!filter && shouldShow) {
-						taskView.setVisible(true);
-					}
-					else if (selectedCategories.contains(task.getCatColor()) && shouldShow) {
-						taskView.setVisible(true);
-					} else {
-						taskView.setVisible(false);
-					}
-				}
-			}
-		}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		search();
 		
 	}
-
 }
