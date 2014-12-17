@@ -99,9 +99,9 @@ public class DataLoggerController {
 	 */
 	public static void sendGetRequest (DataLoggerModel dataLoggerModel) {
 		System.out.println("Sending data logger get request");
-		//final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
-		//request.addObserver(getObserver); // add an observer to process the response
-		//request.send();
+		final Request request = Network.getInstance().makeRequest("taskmanager/datalogger", HttpMethod.GET); // PUT == create
+		request.addObserver(getObserver); // add an observer to process the response
+		request.send();
 	}
 	
 	/**

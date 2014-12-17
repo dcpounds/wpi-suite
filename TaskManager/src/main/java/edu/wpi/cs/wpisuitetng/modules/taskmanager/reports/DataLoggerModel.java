@@ -761,10 +761,6 @@ public class DataLoggerModel extends AbstractModel
 			changelog.add("Changed the category from " + snap1.colorToString(snap1.getCatColor()) + " to " + 
 							snap2.colorToString(snap2.getCatColor()) + ".");
 		}
-		if (!(snap1.getColor().equals(snap2.getColor())))
-		{
-			
-		}
 		if (!(snap1.getCreationDate().equals(snap2.getCreationDate())))
 		{
 			
