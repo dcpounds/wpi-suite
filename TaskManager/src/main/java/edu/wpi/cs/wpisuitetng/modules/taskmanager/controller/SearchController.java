@@ -93,12 +93,15 @@ public class SearchController implements ActionListener, KeyListener, ItemListen
 				ArrayList<Color> colorList = toolbarView.getSelectedColorArray();
 				if (colorList.isEmpty() && searchText.isEmpty() && shouldShow) {
 					taskView.setVisible(true);
+					searchBox.setBackground(Color.WHITE);
 				//If search field 
 				}else if (((!caseSensitive && task.getTitle().toLowerCase().contains(searchText)) 
 						|| (caseSensitive && task.getTitle().contains(searchText))) && shouldShow) {
 					foundResult = true;
+					searchBox.setBackground(new Color(0xFFF79A));
 					if(colorList.isEmpty() || colorList.contains(task.getCatColor())){
 						taskView.setVisible(true);
+						searchBox.setBackground(Color.WHITE);
 					} else {
 						taskView.setVisible(false);
 					}
@@ -110,8 +113,6 @@ public class SearchController implements ActionListener, KeyListener, ItemListen
 		
 		if(!foundResult && !searchText.isEmpty())
 			searchBox.setBackground(new Color(255,120,120));
-		else
-			searchBox.setBackground(Color.WHITE);
 	}
 
 	@Override
