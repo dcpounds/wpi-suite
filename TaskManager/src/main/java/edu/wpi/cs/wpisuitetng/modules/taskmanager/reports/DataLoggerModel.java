@@ -699,13 +699,12 @@ public class DataLoggerModel extends AbstractModel
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
-			if (list.returnPreviousSnapshot(list.taskSnapList.get(i-1))!=null)
-			{
-				if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+
+				if (list.taskSnapList.get(i-1).getStageID() == stageID)
 				{
 					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
 				}
-			}
+			
 		}
 		return filteredList;
 		

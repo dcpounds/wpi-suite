@@ -102,7 +102,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
      * @param title String
      */
     public ReportsTab(String title) {
-    	
+    	reportSelect = 3;
     	if (WorkflowController.getWorkflowModel().getCompleteStageID() == 0)
     	{
     		WorkflowController.getWorkflowModel().initializeCompleteStageModel();
@@ -153,6 +153,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         JButton button2 = new JButton("Velocity Chart");
         JButton button3 = new JButton("Scrum Burndown");
         JButton button4 = new JButton("Category Distribution");
+        JLabel buffer = new JLabel(" ");
         JLabel bottom = new JLabel("Select \"Task Completed\" Stage");
         dropDown = new JComboBox<String>();
         dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
@@ -240,10 +241,11 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		rightPanel.add(datePicker2, "span 2");
         //rightPanel.add(cal2, "span 2");
  
-        rightPanel.add(button1);
+        //rightPanel.add(button1);
         rightPanel.add(button2);
         rightPanel.add(button3);
         rightPanel.add(button4);
+        rightPanel.add(buffer);
         rightPanel.add(bottom, "span 2");
         rightPanel.add(dropDown, "span 2");
         rightPanel.add(datePicker3, "span 4");
@@ -415,7 +417,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     private XYDataset  setBurndownData() {
     	final XYSeries series1 = new XYSeries("Estimated Effort");
-    	final XYSeries series2 = new XYSeries("Actual Effort");
+    	final XYSeries series2 = new XYSeries("Ideal Effort");
     	double xvalue;
     	double yvalue;
     	for (int i = 0; i<DataLoggerController.getDataModel().exportDailyEffortStamps().size(); i++)
@@ -428,7 +430,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     	yvalue = 0;
 
     	
-        series2.add(0, series1.getY(0));
+        series2.add(0, series1.getMaxY());
         series2.add((WorkflowController.getWorkflowModel().getEndDate().getTime() - WorkflowController.getWorkflowModel().getStartDate().getTime())
         		/86400000, 0);
         
@@ -513,7 +515,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         
         // create the chart...
         final JFreeChart chart = ChartFactory.createXYLineChart(
-            "Velocity Chart",      // chart title
+            "Burndown Chart",      // chart title
             "X",                      // x axis label
             "Y",                      // y axis label
             dataset,                  // data
@@ -545,7 +547,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         final NumberAxis XAxis = (NumberAxis) plot.getDomainAxis();
         XAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        XAxis.setLabel("Week");
+        XAxis.setLabel("Day");
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         rangeAxis.setLabel("Effort");
         // OPTIONAL CUSTOMISATION COMPLETED.
