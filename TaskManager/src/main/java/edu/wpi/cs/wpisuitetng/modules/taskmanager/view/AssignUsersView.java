@@ -15,6 +15,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JLabel;
+import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -72,6 +73,7 @@ public AssignUsersView(TaskModel taskModel) {
 		unassignedListComponent.setFixedCellWidth(150);
 		JScrollPane unassignedScrollPane = new JScrollPane();
 		unassignedScrollPane.setViewportView(unassignedListComponent);
+		unassignedScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(unassignedScrollPane, "cell 0 2,growy");
 		
 		//List of assigned users
@@ -80,6 +82,7 @@ public AssignUsersView(TaskModel taskModel) {
 		assignedListComponent.setFixedCellWidth(150);
 		JScrollPane assignedScrollPane = new JScrollPane();
 		assignedScrollPane.setViewportView(assignedListComponent);
+		assignedScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(assignedScrollPane, "cell 2 2,growy");
 		
 		JButton btnAssign = new JButton("Assign >>");

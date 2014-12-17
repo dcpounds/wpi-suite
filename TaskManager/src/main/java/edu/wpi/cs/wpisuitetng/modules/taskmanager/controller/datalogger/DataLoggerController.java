@@ -8,16 +8,9 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
-
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.DeleteStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.GetStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.UpdateStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.network.Network;

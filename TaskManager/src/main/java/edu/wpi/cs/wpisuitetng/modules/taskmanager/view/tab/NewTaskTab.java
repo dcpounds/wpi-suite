@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -102,7 +103,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private DefaultComboBoxModel<String> requirementsComboModel;
 	private ActivitiesView activitiesView;
 	private JPanel editPane;
-	private JPanel activitiesPane;
+	private ActivitiesView activitiesPane;
 	private JSplitPane splitPane;
 	
 	/**
@@ -219,7 +220,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		actEffortField.addKeyListener(this);
 
 		// The submit button
-		sbmtTaskButton = new JButton("Submit");
+		ImageIcon submitIcon = new ImageIcon(this.getClass().getResource("submit.png"));
+		sbmtTaskButton = new JButton("Submit",submitIcon);
+		
 		NewTaskTab thisTab = this;
 		sbmtTaskButton.addActionListener(new ActionListener() {
 			@Override
@@ -326,6 +329,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.setToolTipText("The task will become urgent this many days before the due date");
 		editPane.add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
+		daysUntilField.setMinimumSize(new Dimension(30,10));
 		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
@@ -338,7 +342,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                            editPane, activitiesPane);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(700);
 		add(splitPane);
 	}
 
