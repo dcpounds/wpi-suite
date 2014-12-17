@@ -11,10 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.SearchController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
@@ -51,7 +48,7 @@ public class StageController implements ActionListener{
 		StageController.updateObserver = new UpdateStageRequestObserver(this);
 		StageController.deleteObserver = new DeleteStageRequestObserver(this);
 		StageController.getObserver = new GetStageRequestObserver(this);
-		this.workflowModel = WorkflowController.getWorkflowModel();
+		StageController.workflowModel = WorkflowController.getWorkflowModel();
 		this.stage = stage;
 	}
 	
@@ -141,7 +138,7 @@ public class StageController implements ActionListener{
 		StageView stageView = new StageView(stage, workflowView);
 		workflowView.addStageView(stage.getIndex(), stageView);
 		workflowModel.addStage(stage);
-		this.syncTaskViews(stage, stageView);
+		StageController.syncTaskViews(stage, stageView);
 	}
 	
 	/**
@@ -173,7 +170,7 @@ public class StageController implements ActionListener{
 		workflowView.addStageView(stage.getIndex(), stageView);
 		
 		if(!stage.getIsArchived() && stageView != null){
-			this.syncTaskViews(stage, stageView);
+			StageController.syncTaskViews(stage, stageView);
 			stageView.updateContents(stage);
 		}
 		SearchController.search();
