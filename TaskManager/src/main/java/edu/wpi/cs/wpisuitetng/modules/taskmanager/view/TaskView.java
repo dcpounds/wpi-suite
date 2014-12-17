@@ -267,6 +267,7 @@ public class TaskView extends DragTaskPanel{
 		btnRestore.setVisible(true);
 		btnActivities.setEnabled(false);
 		btnEdit.setEnabled(false);
+		setSign(taskModel);
 	}
 	
 	
@@ -279,6 +280,7 @@ public class TaskView extends DragTaskPanel{
 		btnRestore.setVisible(false);
 		btnActivities.setEnabled(true);
 		btnEdit.setEnabled(true);
+		setSign(taskModel);
 	}
 	
 	
@@ -444,10 +446,13 @@ public class TaskView extends DragTaskPanel{
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
 		setSign(taskModel);
-		
-		if(task.getIsArchived()){
+
+		taskModel.setIsArchived(task.getIsArchived());
+		if(taskModel.getIsArchived()){
+			System.out.println("Task" + task.getTitle() + " is not archived");
 			activateArchiveView();
 		} else {
+			System.out.println("Task" + task.getTitle() + " is archived");
 			deactivateArchiveView();
 		}
 		

@@ -164,7 +164,6 @@ public class StageController implements ActionListener{
 		if(workflowModel.getIsDraggingStage())
 			return;
 		
-		System.out.println("Stage " + stage.getTitle() + " has index " + stage.getIndex());
 		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
 		boolean closable = stageViewList.size() <= 1 ? false : true;
 		stage.setClosable(closable);
@@ -205,7 +204,6 @@ public class StageController implements ActionListener{
 		}
 			
 		for( TaskModel task : taskModelList.values() ){
-			//System.out.println("Stage " + stageModel.getTitle() + " has task " + task.getTitle()); 
 			TaskView taskView = taskViewList.get(task.getID());
 			//If we found a matching taskView...
 			if(taskView != null){

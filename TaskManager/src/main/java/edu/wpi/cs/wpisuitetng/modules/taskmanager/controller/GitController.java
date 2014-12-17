@@ -93,12 +93,17 @@ public class GitController extends IssueService implements ActionListener {
 	public List<RepositoryIssue> getAllIssues(GitHubClient client) throws IOException {
 		List<RepositoryIssue> issues = new ArrayList<RepositoryIssue>();
 		try{
-			System.out.println("Got all issues");
 			issues = super.getAll(this.pageIssues(client));
 			createTasks(issues);
 		}catch (Exception e){
-			setSuccessMessage("Failed to get issues from the repository. Make sure you entered a valid repository.");
+			String msg = e.getMessage();
+			if(msg != null && !msg.isEmpty())
+				setSuccessMessage("Failed to get issues from the repository: " + msg);
+			else
+				setSuccessMessage("Failed to get issues from the repository.");
+			
 			e.printStackTrace();
+			return issues;
 		}
 		
 		setSuccessMessage("Successfully imported issues from the repository!");
@@ -132,7 +137,7 @@ public class GitController extends IssueService implements ActionListener {
 				URL parsedUrl = new URL("https://api.github.com");
 				client = new GitHubClient(parsedUrl.getHost(), parsedUrl.getPort(), parsedUrl.getProtocol());
 			}catch(Exception e){
-				setSuccessMessage("Failed to create a client. I'm sorry Team 4.");
+				setSuccessMessage("Failed to create a client: " + e.getMessage());
 				e.printStackTrace();
 			}
 		getAllIssues(client);
@@ -214,21 +219,26 @@ public class GitController extends IssueService implements ActionListener {
 			task.setCreator(issue.getUser().getName());
 			task.setCatID(1);
 			task.setActivities(this.makeActivities(issue));
+			task.setCatColor(Color.WHITE);
 			
 			Format formatter = new SimpleDateFormat("MM/dd/yyyy");
 			task.setDueDate(formatter.format(issue.getCreatedAt()));
 			
 			StageModel stage = StageController.locateTaskStage(issueID);
-			stage = stage == null ? (StageModel) stageList.values().toArray()[0] : stage;			
-			
-			task.setStageID(stage.getID());
-			task.setCatColor(Color.WHITE);
-			
+			stage = stage == null ? (StageModel) stageList.values().toArray()[0] : stage;
 			StageView stageView = TabController.getTabView().getWorkflowView().getStageViewList().get(stage.getID());
-			TaskView taskView = new TaskView(task, stageView);
-			stageView.addTaskView(taskView);
+			task.setStageID(stage.getID());
+			
+			TaskView taskView = new TaskView(task,stageView);
+			TaskModel existing = stage.getTaskModelList().get(task.getID());
+			if(existing != null){
+				taskView = stageView.getTaskViewList().get(task.getID());
+				task.setIsArchived(existing.getIsArchived());
+				taskView.setContents(task);
+			}
 			
 			stage.addTaskModel(task);
+			stageView.addTaskView(taskView);
 			stagesToUpdate.put(stage.getID(), stage);
 		}
 		
