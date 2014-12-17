@@ -91,6 +91,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 	private UtilDateModel dateModel3;
 	private JDatePanelImpl datePanel3;
 	private JDatePickerImpl datePicker3;
+
+	private JComboBox<String> dropDown;
     
    
     /**
@@ -98,7 +100,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
      * @param title String
      */
     public ReportsTab(String title) {
-
+    	
+    	if (WorkflowController.getWorkflowModel().getCompleteStageID() == 0)
+    	{
+    		WorkflowController.getWorkflowModel().initializeCompleteStageModel();
+    		
+    	}
         this.title = title;//title of the chart, either status or iteration
         this.workflowModel = WorkflowController.getWorkflowModel();
         buildPanel();
@@ -109,7 +116,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     public void buildPanel() {
     	
     
-    JPanel panel = new JPanel(new BorderLayout());
+    	JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
         pieChart = createPiePanel();
         velocityChart = createVelocityPanel();
@@ -142,8 +149,9 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         JButton button3 = new JButton("Scrum Burndown");
         JButton button4 = new JButton("Category Distribution");
         JLabel bottom = new JLabel("Select \"Task Completed\" Stage");
-        JComboBox<String> dropDown = new JComboBox<String>();
+        dropDown = new JComboBox<String>();
         dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
+        setStageBox();
         
         button1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -266,7 +274,34 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         this.setViewportView(panel);
     }
     
+    /**
+     * 
+     * returns the currently selected stageModel in the drop down
+     * 
+     * @return
+     */
+    public StageModel getSelectedStageModel(){
+		for (StageModel stage : workflowModel.getStageModelList().values()) {
+			if (stage.getTitle().equals(dropDown.getSelectedItem()))
+				return stage;
+		}
+		return null;
+    }
     
+    
+    
+	/**
+	 * Set the default value for the stage box
+	 */
+	public void setStageBox() {
+		// Set the default selected value of the stage selection box
+		if (workflowModel.getCompleteStageID() != 0){
+			String stageText = workflowModel.getStageModelList()
+					.get(workflowModel.getCompleteStageID()).getTitle();
+			
+			dropDown.setSelectedItem(stageText);
+		}
+	}
     
     
     public void updateStartDate()
@@ -653,6 +688,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		updateStartDate();
 		updateEndDate();
 		updateOverrideDate();
+		WorkflowController.getWorkflowModel().setCompleteStageID(getSelectedStageModel().getID());
 		
 	}
 

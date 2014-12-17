@@ -41,6 +41,7 @@ public class WorkflowModel extends AbstractModel {
 	private String overrideString;
 	private String startString;
 	private String endString;
+	private int completeStageID;
 	
 
 	/**
@@ -62,6 +63,8 @@ public class WorkflowModel extends AbstractModel {
 	    overrideString = overrideDate.toString();
 	    startString = startDate.toString();
 	    endString = endDate.toString();
+	    completeStageID=0;
+	    initializeCompleteStageModel();
 	}
 	
 	
@@ -96,6 +99,9 @@ public class WorkflowModel extends AbstractModel {
 	    overrideString = overrideDate.toString();
 	    startString = startDate.toString();
 	    endString = endDate.toString();
+	    
+	    completeStageID=0;
+	    initializeCompleteStageModel();
 	    
 	}
 	
@@ -133,6 +139,31 @@ public class WorkflowModel extends AbstractModel {
 		this.startString = startDate.toString();
 	}
 
+
+	/**
+	 * @return the completeStageID
+	 */
+	public int getCompleteStageID() {
+		return completeStageID;
+	}
+
+
+	/**
+	 * @param completeStageID the completeStageID to set
+	 */
+	public void setCompleteStageID(int completeStageID) {
+		this.completeStageID = completeStageID;
+	}
+
+	
+	
+	
+    public void initializeCompleteStageModel(){
+		for (StageModel stage : getStageModelList().values()) {
+			if (stage.getTitle().equals("Completed"))
+				setCompleteStageID(stage.getID());
+		}
+    }
 
 	/**
 	 * @return the endDate

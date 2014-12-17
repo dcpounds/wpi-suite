@@ -880,6 +880,39 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	
+	public Hashtable<Integer, Double> exportActualVelocity()
+	{
+		Hashtable<Integer, Double> output = new Hashtable<Integer, Double>();
+		int weeks = 0;
+		long startDateMS = WorkflowController.getWorkflowModel().getStartDate().getTime();
+		while (true)
+		{
+			if (startDateMS+604800000 < WorkflowController.getWorkflowModel().getEndDate().getTime())
+			{
+				weeks++;
+				startDateMS = startDateMS+604800000;	//number of milliseconds in a week
+			}
+			else
+			{
+				weeks++;
+				break;
+			}
+		}
+		SnapshotSubList filteredList;
+		for (int i = 0; i<weeks; i++)
+		{
+			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
+											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
+			filteredList = returnCompleteSnapshots(filteredList, i);
+			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
+			output.put(i+1, estimatedEffort);
+		}
+		return output;
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Export all categories as a hashtable
