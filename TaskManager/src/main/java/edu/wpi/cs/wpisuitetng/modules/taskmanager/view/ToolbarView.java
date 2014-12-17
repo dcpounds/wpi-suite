@@ -37,6 +37,9 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 
 import java.awt.Component;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JCheckBox;
+import java.awt.Color;
 
 /**
  * Class representing the view of the toolbar at the top of the gui
@@ -51,6 +54,18 @@ public class ToolbarView extends JPanel {
     private final WorkflowModel workflowModel;
     private JTextField searchBox;
 	private JButton gitButton;
+	private JPanel catPanel;
+	private JCheckBox greenBox;
+	private JCheckBox whiteBox;
+	private JCheckBox brownBox;
+	private JCheckBox grayBox;
+	private JCheckBox redBox;
+	private JCheckBox pinkBox;
+	private JCheckBox orangeBox;
+	private JCheckBox yellowBox;
+	private JCheckBox blueBox;
+	private JCheckBox purpleBox;
+	private JCheckBox chckbxFilter;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -162,6 +177,69 @@ public class ToolbarView extends JPanel {
         add(searchBox);
         
         searchBox.addKeyListener(new SearchController(this));
+        
+        add(Box.createHorizontalStrut(20));
+        
+        catPanel = new JPanel();
+        catPanel.setAlignmentY(0.45f);
+        catPanel.setMaximumSize(new Dimension(135, 60));
+        add(catPanel);
+        catPanel.setLayout(new MigLayout("", "[][][][][]", "[][][]"));
+        
+        greenBox = new JCheckBox("");
+        greenBox.setToolTipText("GREEN");
+        greenBox.setBackground(new Color(0x82CA9D));
+        catPanel.add(greenBox, "cell 0 0");
+        
+        brownBox = new JCheckBox("");
+        brownBox.setToolTipText("BROWN");
+        brownBox.setBackground(new Color(0xA67C52));
+        catPanel.add(brownBox, "cell 1 0");
+        
+        redBox = new JCheckBox("");
+        redBox.setBackground(new Color(0xF7977A));
+        redBox.setToolTipText("RED");
+        catPanel.add(redBox, "cell 2 0");
+        
+        pinkBox = new JCheckBox("");
+        pinkBox.setBackground(new Color(0xF49AC2));
+        pinkBox.setToolTipText("PINK");
+        catPanel.add(pinkBox, "cell 3 0");
+        
+        orangeBox = new JCheckBox("");
+        orangeBox.setToolTipText("ORANGE");
+        orangeBox.setBackground(new Color(0xFDC68A));
+        catPanel.add(orangeBox, "cell 4 0");
+        
+        whiteBox = new JCheckBox("");
+        whiteBox.setBackground(Color.WHITE);
+        whiteBox.setToolTipText("WHITE");
+        catPanel.add(whiteBox, "cell 0 1");
+        
+        yellowBox = new JCheckBox("");
+        yellowBox.setBackground(new Color(0xFFF79A));
+        yellowBox.setToolTipText("YELLOW");
+        catPanel.add(yellowBox, "cell 1 1");
+        
+        blueBox = new JCheckBox("");
+        blueBox.setToolTipText("BLUE");
+        blueBox.setBackground(new Color(0x8493CA));
+        catPanel.add(blueBox, "cell 2 1");
+        
+        purpleBox = new JCheckBox("");
+        purpleBox.setBackground(new Color(0xA187BE));
+        purpleBox.setToolTipText("PURPLE");
+        catPanel.add(purpleBox, "cell 3 1");
+        
+        grayBox = new JCheckBox("");
+        grayBox.setBackground(Color.LIGHT_GRAY);
+        grayBox.setToolTipText("GRAY");
+        catPanel.add(grayBox, "cell 4 1");
+        
+        chckbxFilter = new JCheckBox("filter");
+        add(chckbxFilter);
+        
+        
     }
 
     static long getSerialversionuid() {
@@ -175,4 +253,5 @@ public class ToolbarView extends JPanel {
     public JTextField getSearchBox(){
     	return searchBox;
     }
+    
 }
