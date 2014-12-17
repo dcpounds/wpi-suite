@@ -200,6 +200,27 @@ public class TaskView extends DragTaskPanel{
 		requirementName.setFont(new Font("Tahoma", Font.BOLD, 11));
 		taskContents.add(requirementName);
 		
+		btnRequirementManager = new JButton("Go To");
+		btnRequirementManager.setMargin(new Insets(0, 0, 0, 0));
+		//Set up the activities button
+		btnRequirementManager.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
+					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
+					int location = -1;
+					List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+					if (RequirementModel.getInstance().getRequirement(1) != null){
+						for (int n=0; n<reqs.size(); n++)
+							if (reqs.get(n).getName().equals(taskModel.getAssociatedRequirement()))
+								location = n;
+						ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(location));
+					}
+				}
+			}
+		});
+		taskContents.add(btnRequirementManager, "cell 1 4,alignx center,wmin 0");
+		
 		
 		TaskView tv = this;
 		this.add(taskContentPane, "cell 0 2 3 2,grow,wmin 0");
@@ -215,28 +236,6 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
-
-		
-		//Till I figure out where else we could put the button...
-		btnRequirementManager = new JButton("Requirement Manager");
-		//Set up the activities button
-		btnRequirementManager.addActionListener( new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
-					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
-					int location = 0;
-					List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-					if (RequirementModel.getInstance().getRequirement(1) != null){
-						for (int n=0; n<reqs.size(); n++)
-							if (reqs.get(n).getName().equals(taskModel.getAssociatedRequirement()))
-								location = n;
-						ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(location));
-					}
-				}
-			}
-		});
-		add(btnRequirementManager, "cell 1 4,alignx center,wmin 0");
 		
 		
 		btnRestore = new JButton("Restore");
