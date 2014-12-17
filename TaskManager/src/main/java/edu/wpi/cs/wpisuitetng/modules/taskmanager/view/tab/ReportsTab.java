@@ -15,6 +15,8 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Date;
@@ -26,12 +28,14 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
 
 import net.miginfocom.swing.MigLayout;
@@ -52,6 +56,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.PieDataset;
+import org.jfree.data.xy.XYDataset;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
@@ -64,7 +69,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
  * @author joe
  * The view that contains task reports
  */
-public class ReportsTab extends JScrollPane implements IHashableTab, MouseListener, ActionListener {
+public class ReportsTab extends JScrollPane implements IHashableTab, MouseListener, ActionListener, KeyListener {
     static final long serialVersionUID = 2930864775768057902L;
     
     private final WorkflowModel workflowModel;
@@ -72,8 +77,12 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     private String title;
     private ChartPanel barChart;
     private ChartPanel pieChart;
+    private ChartPanel velocityChart;
     private Date startDate;
     private Date endDate;
+    private Boolean devMode;
+    private Action toggleDev;
+    private int panelIndex;
 
 	private UtilDateModel dateModel1;
 	private JDatePanelImpl datePanel1;
@@ -84,6 +93,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 	private UtilDateModel dateModel3;
 	private JDatePanelImpl datePanel3;
 	private JDatePickerImpl datePicker3;
+	private JPanel panel;
     
    
     /**
@@ -91,6 +101,32 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
      * @param title String
      */
     public ReportsTab(String title) {
+        this.workflowModel = WorkflowController.getWorkflowModel();
+        this.panelIndex = 0;
+        buildPanel(title);
+    }
+    
+    public void updateStartDate()
+    {
+    	String daysString = Integer.toString(datePicker1.getModel().getDay());
+    	String monthString = Integer.toString(datePicker1.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker1.getModel().getYear());
+
+	    try {
+			Date StartDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setStartDate(StartDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }   
+    
+    public void updateEndDate()
+    {
+    	String daysString = Integer.toString(datePicker2.getModel().getDay());
+    	String monthString = Integer.toString(datePicker2.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker2.getModel().getYear());
 
         this.title = title;//title of the chart, either status or iteration
         JPanel panel = new JPanel(new BorderLayout());
@@ -98,8 +134,55 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         pieChart = createPiePanel();
         
         panel.add(barChart, BorderLayout.WEST);
+	    try {
+			Date EndDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setEndDate(EndDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void updateOverrideDate()
+    {
+    	String daysString = Integer.toString(datePicker3.getModel().getDay());
+    	String monthString = Integer.toString(datePicker3.getModel().getMonth()+1);
+    	String yearString = Integer.toString(datePicker3.getModel().getYear());
+
+	    try {
+			Date OverrideDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
+			WorkflowController.getWorkflowModel().setOverrideDate(OverrideDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    
+    public void buildPanel(String title)
+    {
+    	this.title = title;//title of the chart, either status or iteration
+        panel = new JPanel(new BorderLayout());
+        if (panelIndex == 0)
+        {
+        	barChart = createPanel();
+        	panel.add(barChart, BorderLayout.WEST);
+        }
         
-        this.workflowModel = WorkflowController.getWorkflowModel();
+        else
+        {
+        	velocityChart = createPanel();
+
+        	
+        	
+            final XYDataset dataset = createVelocityDataset();
+            final JFreeChart chart = createVelocityChart(dataset);
+            velocityChart = new ChartPanel(chart);
+       		panel.add(velocityChart, BorderLayout.WEST);
+        }
+        
+
         
         JPanel rightPanel = (new JPanel(new MigLayout("wrap 4")));
         
@@ -229,62 +312,19 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         rightPanel.add(dropDown, "span 2");
         rightPanel.add(datePicker3, "span 4");
 
+        datePicker3.setVisible(true);
+
+        
+        
+
+        
+        
         
         panel.add(rightPanel, BorderLayout.CENTER);
         
         
         this.setViewportView(panel);
     }
-    
-    public void updateStartDate()
-    {
-    	String daysString = Integer.toString(datePicker1.getModel().getDay());
-    	String monthString = Integer.toString(datePicker1.getModel().getMonth()+1);
-    	String yearString = Integer.toString(datePicker1.getModel().getYear());
-
-	    try {
-			Date StartDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
-			WorkflowController.getWorkflowModel().setStartDate(StartDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }   
-    
-    public void updateEndDate()
-    {
-    	String daysString = Integer.toString(datePicker2.getModel().getDay());
-    	String monthString = Integer.toString(datePicker2.getModel().getMonth()+1);
-    	String yearString = Integer.toString(datePicker2.getModel().getYear());
-
-	    try {
-			Date EndDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
-			WorkflowController.getWorkflowModel().setEndDate(EndDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
-    
-    public void updateOverrideDate()
-    {
-    	String daysString = Integer.toString(datePicker3.getModel().getDay());
-    	String monthString = Integer.toString(datePicker3.getModel().getMonth()+1);
-    	String yearString = Integer.toString(datePicker3.getModel().getYear());
-
-	    try {
-			Date OverrideDate = new SimpleDateFormat("yyyy-MM-dd").parse(yearString+"-"+monthString+"-"+daysString);
-			WorkflowController.getWorkflowModel().setOverrideDate(OverrideDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    
-    
     
     /**
      * @return the data set depending on the type of data called for either
@@ -522,17 +562,19 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 		updateEndDate();
 		updateOverrideDate();
 		
+		buildPanel(title);
+		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		this.requestFocusInWindow();
 		
 	}
 
@@ -552,5 +594,37 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+		if (e.getKeyChar() == 'e')
+		{
+
+			devMode = !devMode;
+			datePanel3.setVisible(devMode);
+
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void switchDev() {
+		devMode = !devMode;
+		datePanel3.setVisible(devMode);
 	}
 }

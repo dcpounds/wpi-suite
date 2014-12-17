@@ -133,7 +133,7 @@ public class ToolbarView extends JPanel {
         
         add(Box.createHorizontalStrut(20));
         
-        gitButton = new JButton("Link to GitHub");
+        gitButton = new JButton("Import from GitHub");
         gitButton.setIcon(gitIcon);
         gitButton.setMargin(new Insets(0,0,0,0));
         gitButton.addActionListener( new ActionListener(){

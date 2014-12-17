@@ -41,6 +41,7 @@ public class WorkflowModel extends AbstractModel {
 	private String overrideString;
 	private String startString;
 	private String endString;
+	public Boolean devMode;
 	
 
 	/**
@@ -56,12 +57,15 @@ public class WorkflowModel extends AbstractModel {
 		WorkflowModel.isDraggingStage = false;
 		WorkflowModel.requirementsList = new ArrayList<String>();
 		
+
+		
 	    overrideDate = new Date();
 	    startDate = new Date(1970,1,1);
 	    endDate = new Date (2100,12,31);
 	    overrideString = overrideDate.toString();
 	    startString = startDate.toString();
 	    endString = endDate.toString();
+	    devMode=false;
 	}
 	
 	
@@ -159,6 +163,22 @@ public class WorkflowModel extends AbstractModel {
 	}
 	
 	
+	/**
+	 * @return the devMode
+	 */
+	public Boolean getDevMode() {
+		return devMode;
+	}
+
+
+	/**
+	 * @param devMode the devMode to set
+	 */
+	public void setDevMode(Boolean devMode) {
+		this.devMode = devMode;
+	}
+
+
 	/**
 	 * @return a list of stages in the workflow
 	 */
