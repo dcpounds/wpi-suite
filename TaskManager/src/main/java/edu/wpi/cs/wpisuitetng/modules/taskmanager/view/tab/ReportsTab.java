@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.DefaultComboBoxModel;
@@ -45,9 +46,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.PieDataset;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger.DataLoggerController;
@@ -67,6 +71,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     private String title;
     private ChartPanel barChart;
+    private ChartPanel pieChart;
     private Date startDate;
     private Date endDate;
 
@@ -90,6 +95,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         this.title = title;//title of the chart, either status or iteration
         JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
+        pieChart = createPiePanel();
+        
         panel.add(barChart, BorderLayout.WEST);
         
         this.workflowModel = WorkflowController.getWorkflowModel();
@@ -107,6 +114,38 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         JLabel bottom = new JLabel("Select \"Task Completed\" Stage");
         JComboBox<String> dropDown = new JComboBox<String>();
         dropDown.setModel(new DefaultComboBoxModel<String>(getStages()));
+        
+        button1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		panel.removeAll();
+        		panel.add(pieChart, BorderLayout.WEST);
+        		panel.add(rightPanel, BorderLayout.CENTER);
+        	}
+        });
+        
+        button2.addActionListener(new ActionListener() { // Uncomment this when we have a velocityChart (or whatever it's called)
+        	public void actionPerformed(ActionEvent e) {
+        		// panel.removeAll();
+        		// panel.add(velocityChart, BorderLayout.WEST);
+        		// panel.add(rightPanel, BorderLayout.WEST);
+        	}
+        });
+        
+        button3.addActionListener(new ActionListener() { // Uncomment this when we have a scrumBurndown (or whatever it's called)
+        	public void actionPerformed(ActionEvent e) {
+        		// panel.removeAll();
+        		// panel.add(scrumBurndown, BorderLayout.WEST);
+        		// panel.add(rightPanel, BorderLayout.WEST);
+        	}
+        });
+        
+        button4.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		panel.removeAll();
+        		panel.add(barChart, BorderLayout.WEST);
+        		panel.add(rightPanel, BorderLayout.CENTER);
+        	}
+        });
         
         dateModel1 = new UtilDateModel();
 
@@ -189,20 +228,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         rightPanel.add(bottom, "span 2");
         rightPanel.add(dropDown, "span 2");
         rightPanel.add(datePicker3, "span 4");
-        
-        
 
-
-
-
-
-
-        
-        
-        
-        
-        
-        
         
         panel.add(rightPanel, BorderLayout.CENTER);
         
@@ -291,6 +317,17 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 
         return dataSet;
     }
+    
+    private PieDataset setPieData() {
+    	DefaultPieDataset dataSet = new DefaultPieDataset();
+    	dataSet.setValue("New", 5);
+        dataSet.setValue("Deleted", 9);
+        dataSet.setValue("In Progress", 1);
+        dataSet.setValue("Complete", 4);
+        dataSet.setValue("Open", 1);
+    	return dataSet;
+    }
+    
 
     
     /**
@@ -384,6 +421,11 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         return chart;
     }
     
+    private static JFreeChart createPieChart(PieDataset dataset, String title) {
+    	JFreeChart chart = ChartFactory.createPieChart(title, dataset, true, false,false);
+    	return chart;
+    }
+    
     /**
      * @return the created bar graph
      **/
@@ -393,7 +435,14 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         return new ChartPanel(chart);
     }
     
-    /**
+    public ChartPanel createPiePanel() {
+    	JFreeChart chart = createPieChart(setPieData(), title);
+    	
+    	return new ChartPanel(chart);
+    }
+    
+
+	/**
      * Method paintComponent.
      * 
      * @param g Graphics
