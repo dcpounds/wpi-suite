@@ -104,10 +104,7 @@ public class StageController implements ActionListener{
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 		for(StageModel stage2 : workflowModel.getStageModelList().values())
-		{
-			stage2.setClosable(false);
 			sendUpdateRequest(stage2);
-		}
 	}
 	
 	/**
@@ -139,6 +136,7 @@ public class StageController implements ActionListener{
 		workflowView.addStageView(stage.getIndex(), stageView);
 		workflowModel.addStage(stage);
 		StageController.syncTaskViews(stage, stageView);
+		StageController.locallyUpdateAllStages();
 	}
 	
 	/**
@@ -160,10 +158,7 @@ public class StageController implements ActionListener{
 	public void updateStage(StageModel stage) {
 		if(workflowModel.getIsDraggingStage())
 			return;
-		
-		HashMap<Integer,StageView> stageViewList = TabController.getTabView().getWorkflowView().getStageViewList();
-		boolean closable = stageViewList.size() <= 1 ? false : true;
-		stage.setClosable(closable);
+
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
 		StageView stageView = workflowView.getStageViewByID(stage.getID());
 		
@@ -184,6 +179,7 @@ public class StageController implements ActionListener{
 		for(StageModel stage : workflowModel.getStageModelList().values()){
 			StageView stageView = TabController.getTabView().getWorkflowView().getStageViewByID(stage.getID());
 			syncTaskViews(stage, stageView);
+			stageView.updateCloseButton();
 		}
 	}
 	
@@ -320,6 +316,7 @@ public class StageController implements ActionListener{
 		workflowView.removeStageView(sv);
 		
 		int index = stage.getIndex();
+		StageController.locallyUpdateAllStages();
 		for(StageModel otherStage : workflowModel.getStageModelList().values()){
 			if(otherStage.getIndex() > index ){
 				otherStage.setIndex( otherStage.getIndex() - 1);

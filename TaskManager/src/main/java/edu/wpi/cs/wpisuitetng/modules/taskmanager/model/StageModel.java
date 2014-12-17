@@ -63,11 +63,20 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	 */
 	public void copyFrom(StageModel updatedStage) {
 		this.title = updatedStage.getTitle();
-		this.closable = updatedStage.getClosable();
+		this.closable = updatedStage.canBeClosed();
 		this.id = updatedStage.getID();
 		this.taskModelList = updatedStage.taskModelList;
 		this.isArchived = updatedStage.isArchived;
 		this.index = updatedStage.getIndex();
+	}
+	
+	/**
+	 * True if the stage can be closed, false otherwise
+	 * @return whether or not the stage can be closed
+	 */
+	public boolean canBeClosed(){
+		int size = WorkflowController.getWorkflowModel().getStageModelList().size();
+		return (this.getTaskModelList().size() == 0) && size > 1;
 	}
 	
 	/**
@@ -218,22 +227,6 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
         final Gson parser = new Gson();
         return parser.fromJson(json, StageModel[].class);
     }
-
-    
-	/**
-	 * @return whether or not the stage can be closed
-	 */
-	public boolean getClosable() {
-		return closable;
-	}
-	
-	
-	/**
-	 * @param closable - set whether or not this stage may be deleted
-	 */
-	public void setClosable(boolean closable){
-		this.closable = closable;
-	}
 
 
 	/**

@@ -63,7 +63,7 @@ public class StageView extends DragStagePanel {
 		stagePane = new JPanel();
 		this.workflowView = workflowView;
 		setLayout(new MigLayout("insets 0", "[][grow][][]", "[][grow]"));
-		this.closable = stageModel.getClosable();
+		this.closable = stageModel.canBeClosed();
 		
 		StageView thisStage = this;
 		collapseAll = new JButton(" - ");
@@ -103,13 +103,13 @@ public class StageView extends DragStagePanel {
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.addActionListener(new StageController(stageModel, ActionType.DELETE));
+		btnClose.setEnabled(closable);
 		
 		separator = new JSeparator();
 		separator.setPreferredSize(new Dimension(60,5));
 		separator.setBackground(new Color(135,206,250));
 		separator.setForeground(new Color(135,206,250));
 		add(separator, "cell 2 0");
-		btnClose.setEnabled(closable);
 		add(btnClose, "pad 5 -5 0 -5,cell 3 0,aligny center");
 		
 		scrollPane = new JScrollPane(stagePane);
@@ -230,6 +230,10 @@ public class StageView extends DragStagePanel {
 		return  id;
 	}
 	
+	/**
+	 * Gets the list of taskviews within the stage
+	 * @return the list of task views 
+	 */
 	public HashMap<Integer,TaskView> getTaskViewList(){
 		return taskViewList;
 	}
@@ -239,14 +243,22 @@ public class StageView extends DragStagePanel {
 	 * @param newStageModel - the stageModel to replace the current stage with
 	 */
 	public void updateContents(StageModel newStageModel){		
-		this.closable = newStageModel.getClosable();
 		this.stageModel = newStageModel;
-		btnClose.setEnabled(newStageModel.getClosable());
+		btnClose.setEnabled(newStageModel.canBeClosed());
 		this.redrawStage();
 	}
 	
 	/**
+	 * Updates the close button
+	 * @return void
+	 */
+	public void updateCloseButton(){
+		btnClose.setEnabled(stageModel.canBeClosed());
+	}
+	
+	/**
 	 * Clears the contents of the stage
+	 * @return void
 	 */
 	public void clearStage(){
 		stagePane.removeAll();
