@@ -653,6 +653,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		if(!(this.getCatSelectionIndex() == this.taskModel.getCatID()))
 			return true;
 		
+		if(!(requirementsBox.getSelectedItem().equals(this.taskModel.getAssociatedRequirement())))
+			return true;
+		
 		return false;
 	}
 
