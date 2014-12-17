@@ -63,7 +63,7 @@ public class StageModelTest {
 		}
 		
 		@Test
-		public void titleTaste(){
+		public void titleIDTaste(){
 			StageModel stage1 = new StageModel("",0);
 			StageModel stage2 = new StageModel("StageTitle",2);
 			

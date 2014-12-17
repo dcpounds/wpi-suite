@@ -35,6 +35,8 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DummyTabModel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
@@ -125,7 +127,7 @@ public class ToolbarView extends JPanel {
         reportsButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.REPORTS, null);
+				TabController.getInstance().addUniqueTab(TabType.REPORTS, new DummyTabModel());
 			}
 		});
         reportsButton.setMargin(new Insets(0,0,0,0));
@@ -163,7 +165,7 @@ public class ToolbarView extends JPanel {
         gitButton.addActionListener( new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TabController.getInstance().addTab(TabType.GIT, null);
+				TabController.getInstance().addUniqueTab(TabType.GIT, new DummyTabModel());
 			}
 		});
         add(gitButton);
