@@ -13,6 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -37,9 +39,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 
 import java.awt.Component;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JCheckBox;
+
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Class representing the view of the toolbar at the top of the gui
@@ -237,6 +243,11 @@ public class ToolbarView extends JPanel {
         catPanel.add(grayBox, "cell 4 1");
         
         chckbxFilter = new JCheckBox("filter");
+        chckbxFilter.addItemListener(new ItemListener() {
+		      public void itemStateChanged(ItemEvent e) {
+		        //insert method
+		      }
+		    });
         add(chckbxFilter);
         
         
@@ -252,6 +263,42 @@ public class ToolbarView extends JPanel {
      */
     public JTextField getSearchBox(){
     	return searchBox;
+    }
+    
+    /**
+     * Retrieve the JCheckBox component
+     * @return filter checkbox
+     */
+    public JCheckBox getCatFilter(){
+    	return chckbxFilter;
+    }
+    
+    /**
+     * @return ArrayList of checked category selection boxes
+     */
+    public ArrayList<Color> getSelectedColorArray(){
+    	ArrayList<Color> colors = new ArrayList<Color>();
+    	if(grayBox.isSelected())
+    		colors.add(grayBox.getBackground());
+    	if(whiteBox.isSelected())
+    		colors.add(whiteBox.getBackground());
+    	if(brownBox.isSelected())
+    		colors.add(brownBox.getBackground());
+    	if(redBox.isSelected())
+    		colors.add(redBox.getBackground());
+    	if(pinkBox.isSelected())
+    		colors.add(pinkBox.getBackground());
+    	if(orangeBox.isSelected())
+    		colors.add(orangeBox.getBackground());
+    	if(yellowBox.isSelected())
+    		colors.add(yellowBox.getBackground());
+    	if(greenBox.isSelected())
+    		colors.add(greenBox.getBackground());
+    	if(blueBox.isSelected())
+    		colors.add(blueBox.getBackground());
+    	if(purpleBox.isSelected())
+    		colors.add(purpleBox.getBackground());
+    	return colors;
     }
     
 }
