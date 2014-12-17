@@ -429,7 +429,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
 
     	
         series2.add(0, series1.getY(0));
-        series2.add(series1.getMaxX(), 0);
+        series2.add((WorkflowController.getWorkflowModel().getEndDate().getTime() - WorkflowController.getWorkflowModel().getStartDate().getTime())
+        		/86400000, 0);
         
         
         final XYSeriesCollection dataset = new XYSeriesCollection();

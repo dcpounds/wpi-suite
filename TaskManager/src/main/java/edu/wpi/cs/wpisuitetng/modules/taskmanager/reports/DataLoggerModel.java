@@ -694,7 +694,6 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public SnapshotSubList returnCompleteSnapshots(SnapshotSubList list, int stageID)
 	{
-		list = reverseList(list);
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
@@ -703,6 +702,31 @@ public class DataLoggerModel extends AbstractModel
 				if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
 				{
 					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
+			}
+		}
+		return filteredList;
+		
+	}
+	
+	
+	
+	/**
+	 * Filters a sublist, returning only the snapshots where a snapshot was moved into the complete stage
+	 * @param list, the list to perform the operation on
+	 * @param stageID, the stage id used as the complete stage
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList returnCompleteSnapshots(int stageID)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = taskSnapList.size(); i>0 ; i--)
+		{
+			if (returnPreviousSnapshot(taskSnapList.get(i-1))!=null)
+			{
+				if (taskSnapList.get(i-1).getStageID() == stageID && returnPreviousSnapshot(taskSnapList.get(i-1)).getStageID() != stageID)
+				{
+					filteredList.appendSnapshot(taskSnapList.get(i-1));
 				}
 			}
 		}
@@ -918,7 +942,7 @@ public class DataLoggerModel extends AbstractModel
 		long startDateMS = WorkflowController.getWorkflowModel().getStartDate().getTime();
 		while (true)
 		{
-			if (startDateMS+86400000 < WorkflowController.getWorkflowModel().getEndDate().getTime())
+			if (startDateMS+86400000 < WorkflowController.getWorkflowModel().getOverrideDate().getTime())
 			{
 				days++;
 				startDateMS = startDateMS+86400000;	//number of milliseconds in a week
@@ -965,9 +989,12 @@ public class DataLoggerModel extends AbstractModel
 		SnapshotSubList filteredList;
 		for (int i = 0; i<weeks; i++)
 		{
-			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
-											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
-			filteredList = returnCompleteSnapshots(filteredList, WorkflowController.getWorkflowModel().getCompleteStageID());
+			
+			
+			filteredList = returnCompleteSnapshots(WorkflowController.getWorkflowModel().getCompleteStageID());
+			filteredList = reverseList(filteredList);
+			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000L*i),
+					new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000L+604800000L*i));
 			double actualEffort = AccumulateActualEffort(filteredList);
 			output.put(i+1, actualEffort);
 		}
