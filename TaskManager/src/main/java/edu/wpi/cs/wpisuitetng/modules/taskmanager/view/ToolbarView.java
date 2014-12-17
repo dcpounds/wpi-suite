@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
 
@@ -34,8 +35,11 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveControl
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DummyTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
+
 import java.awt.Component;
+
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -75,6 +79,7 @@ public class ToolbarView extends JPanel {
      */
     public ToolbarView() {
         this.workflowModel = WorkflowController.getWorkflowModel();
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -5));
         ImageIcon taskIcon = new ImageIcon(this.getClass().getResource("new_itt.png"));
         ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
         ImageIcon stageIcon = new ImageIcon(this.getClass().getResource("new_req.png"));

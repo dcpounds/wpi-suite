@@ -17,6 +17,8 @@ import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JTabbedPane;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ClosableTabModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;

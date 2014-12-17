@@ -220,6 +220,7 @@ public class GitController extends IssueService implements ActionListener {
 			task.setCatID(1);
 			task.setActivities(this.makeActivities(issue));
 			task.setCatColor(Color.WHITE);
+			task.setAssociatedRequirement("None");
 			
 			Format formatter = new SimpleDateFormat("MM/dd/yyyy");
 			task.setDueDate(formatter.format(issue.getCreatedAt()));

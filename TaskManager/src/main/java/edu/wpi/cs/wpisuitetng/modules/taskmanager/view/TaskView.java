@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
@@ -30,7 +31,9 @@ import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.JScrollPane;
-
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -43,11 +46,10 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,13 +65,12 @@ public class TaskView extends DragTaskPanel{
 	private JLabel lblNewTask;
 	private JScrollPane taskContentPane;
 	private JButton btnEdit;
-	private JButton btnActivities;
-	private JTextArea dateArea;
 	private JLabel lblEstimatedEffort;
 	private JLabel lblActualEffort;
 	private JLabel lblDue;
 	private JTextArea descriptionField;
 	private DefaultListModel<String> assignedListModel;
+	private JLabel requirementName;
 	private StageView stageView;
 	private int id;
 	private static final int openSize = 250;
@@ -83,6 +84,8 @@ public class TaskView extends DragTaskPanel{
 	ImageIcon yellowIcon = new ImageIcon(this.getClass().getResource("Yellow.png"));
 	ImageIcon redIcon = new ImageIcon(this.getClass().getResource("Red.png"));
 	ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
+	private JButton btnRequirementManager;
+
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -183,6 +186,42 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
+		
+		JSeparator separator_2 = new JSeparator();
+		taskContents.add(separator_2);
+		
+		JLabel lblRequiredFor = new JLabel("Requirement:");
+		lblRequiredFor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblRequiredFor.setFont(new Font("Tahoma", Font.BOLD, 11));
+		taskContents.add(lblRequiredFor);
+		
+		this.requirementName = new JLabel();
+		requirementName.setHorizontalAlignment(SwingConstants.LEFT);
+		requirementName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		taskContents.add(requirementName);
+		
+		btnRequirementManager = new JButton("Go To");
+		btnRequirementManager.setMargin(new Insets(0, 0, 0, 0));
+		//Set up the activities button
+		btnRequirementManager.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
+					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
+					int location = -1;
+					List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+					if (RequirementModel.getInstance().getRequirement(1) != null){
+						for (int n=0; n<reqs.size(); n++)
+							if (reqs.get(n).getName().equals(taskModel.getAssociatedRequirement()))
+								location = n;
+						ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(location));
+					}
+				}
+			}
+		});
+		taskContents.add(btnRequirementManager, "cell 1 4,alignx center,wmin 0");
+		
+		
 		TaskView tv = this;
 		this.add(taskContentPane, "cell 0 2 3 2,grow,wmin 0");
 		
@@ -197,6 +236,7 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
+		
 		
 		btnRestore = new JButton("Restore");
 		btnRestore.setMargin(new Insets(0, 0, 0, 0));
@@ -420,6 +460,7 @@ public class TaskView extends DragTaskPanel{
 		taskModel.setActualEffort(task.getActualEffort());
 		lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
+		this.requirementName.setText(taskModel.getAssociatedRequirement());
 		setSign(taskModel);
 
 		taskModel.setIsArchived(task.getIsArchived());
