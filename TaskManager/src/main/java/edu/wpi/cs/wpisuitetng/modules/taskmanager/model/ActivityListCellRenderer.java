@@ -60,7 +60,8 @@ public class ActivityListCellRenderer implements ListCellRenderer {
 		int width = list.getWidth() - sidePanel.getWidth();
 		if (width > 0){
 			textArea.setSize(width, Short.MAX_VALUE);
-		}
+		} else
+			textArea.setSize(100, Short.MAX_VALUE);
 		return panel;
 	}
 
