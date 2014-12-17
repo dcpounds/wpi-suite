@@ -326,6 +326,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.setToolTipText("The task will become urgent this many days before the due date");
 		editPane.add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
+		daysUntilField.setMinimumSize(new Dimension(30,10));
 		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
