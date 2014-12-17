@@ -58,6 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageControll
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SpringLayout;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
  * This is a tab for creating new tasks
@@ -102,8 +103,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private ActivitiesView activitiesView;
 	private JPanel editPane;
 	private JPanel activitiesPane;
-	private JScrollPane editScrollPane;
-	private JScrollPane activitiesScrollPane;
 	private JSplitPane splitPane;
 	
 	/**
@@ -333,12 +332,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		checkForErrors();
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		editScrollPane = new JScrollPane(editPane);
-		activitiesScrollPane = new JScrollPane(activitiesPane);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                           editScrollPane, activitiesScrollPane);
+                           editPane, activitiesPane);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(1.0d);
+		splitPane.setDividerLocation(700);
 		add(splitPane);
 	}
 

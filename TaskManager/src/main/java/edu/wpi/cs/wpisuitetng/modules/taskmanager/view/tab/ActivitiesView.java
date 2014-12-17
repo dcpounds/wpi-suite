@@ -17,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -51,21 +52,27 @@ public class ActivitiesView extends AbstractTab {
 	private JScrollPane activitiesScrollPane;
 	private JTextArea newCommentTxt;
 	private JButton btnSubmit;
-	private JScrollPane commentScrollPane;
+	private JScrollPane newCommentScrollPane;
+	private JLabel activitiesLabel;
+	private JLabel newCommentLabel;
 
 	public ActivitiesView(TaskModel model){
 		taskModel = model;
 		workflowModel = WorkflowController.getWorkflowModel();
-		setLayout(new MigLayout("", "[grow]", "[grow][]"));
+		setLayout(new MigLayout("", "[grow]", "[][grow][][][]"));
      
-		//make
+		activitiesLabel = new JLabel("Activities");
+        add(activitiesLabel, "cell 0 0");
+		
         activitiesBoard = new JList<ActivityModel>(taskModel.getActivities());
         activitiesBoard.setCellRenderer(new ActivityListCellRenderer());
         activitiesScrollPane = new JScrollPane(activitiesBoard);
         activitiesScrollPane.setPreferredSize(new Dimension(500, 400));
-        add(activitiesScrollPane, "cell 0 0");
+        add(activitiesScrollPane, "cell 0 1");
         
-        //make the txt for new comments
+        newCommentLabel = new JLabel("New Comment");
+        add(newCommentLabel, "cell 0 2");
+        
         newCommentTxt = new JTextArea("Enter a comment here.");
         newCommentTxt.setLineWrap(true);
         newCommentTxt.setWrapStyleWord(true);
@@ -76,15 +83,14 @@ public class ActivitiesView extends AbstractTab {
     			public void mouseClicked(MouseEvent e) {
     				newCommentTxt.setText("");
     	}});
-        
-        commentScrollPane = new JScrollPane();
-        commentScrollPane.setViewportView(newCommentTxt);
-        add(commentScrollPane, "cell 0 1");
+        newCommentScrollPane = new JScrollPane();
+        newCommentScrollPane.setViewportView(newCommentTxt);
+        add(newCommentScrollPane, "cell 0 3");
         
         
         
         //make the submit button
-        btnSubmit = new JButton("Submit");
+        btnSubmit = new JButton("Post");
         btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSubmit.addActionListener( new ActionListener(){
 			@Override
@@ -93,7 +99,7 @@ public class ActivitiesView extends AbstractTab {
 					addActivity();
 			}
 		});
-        add(btnSubmit, "cell 0 1,alignx left");
+        add(btnSubmit, "cell 0 4,alignx left");
 	}
 	
 	/**
