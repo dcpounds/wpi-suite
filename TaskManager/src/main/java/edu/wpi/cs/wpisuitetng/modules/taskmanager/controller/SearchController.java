@@ -113,6 +113,10 @@ public class SearchController implements ActionListener, KeyListener, ItemListen
 		
 		if(!foundResult && !searchText.isEmpty())
 			searchBox.setBackground(new Color(255,120,120));
+		
+		if(searchText.isEmpty()){
+			searchBox.setBackground(Color.white);
+		}
 	}
 
 	@Override
