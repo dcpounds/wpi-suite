@@ -8,9 +8,9 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.tasks;
-
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,13 +20,13 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
 /**
  * @author Nathaniel Jefferson
+ * 
+ * 
  *
  */
 public class TaskModelTest {
 	TaskModel task = new TaskModel();
 	StageModel stage = new StageModel();
-	
-	
 
 	/**
 	 * Test all methods in TaskModel
@@ -69,7 +69,6 @@ public class TaskModelTest {
 		assertTrue(task.getIsArchived());
 		assertFalse(task.equals(stage));
 		assertFalse(task.equals(task4));
-		assertTrue(task.getUsersAssignedTo().equals(new ArrayList<String>()));
 		
 		task1.setDueDate("12-15-2015");
 		assertEquals(5,task1.getID());
@@ -80,5 +79,4 @@ public class TaskModelTest {
 		assertTrue("12-15-2015".equals(task1.getDueDate()));
 		assertTrue(task1.getIsExpanded());
 	}
-	
 }
