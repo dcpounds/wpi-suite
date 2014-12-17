@@ -27,6 +27,7 @@ import java.util.Properties;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -445,11 +446,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * done.
 	 */
 	public void checkForErrors() {
-		boolean isTitleTextFull = taskTitleField.getText().isEmpty() ? false
+		boolean isTitleTextFull = taskTitleField.getText().trim().isEmpty() ? false
 				: true;
 		titleEmptyError.setVisible(!isTitleTextFull);
-
-		boolean isDescriptionTextFull = taskDescriptionField.getText()
+	
+		boolean isDescriptionTextFull = taskDescriptionField.getText().trim()
 				.isEmpty() ? false : true;
 		descriptionEmptyError.setVisible(!isDescriptionTextFull);
 
@@ -645,6 +646,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
  * @return
  */
 	public boolean hasBeenModified() {
+		ArrayList<String> assignedUsers = assignUsersView.getAssignedUsers();
+		
 		if(!taskTitleField.getText().equals(this.taskModel.getTitle()))
 			return true;
 	
@@ -663,6 +666,40 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		if(!(this.getCatSelectionIndex() == this.taskModel.getCatID()))
 			return true;
 		
+		String a = this.getRequirements();
+		String b = this.taskModel.getAssociatedRequirement();
+		
+		boolean isRequired = (a.equals(b)) ? true : false;
+		
+		if(!(isRequired))
+			return true;
+		
+		if(!(this.getDaysUntil() == this.taskModel.getTimeThreshold()))
+			return true;
+		
+//		int c = this.getStageSelectionIndex();
+//		int d = this.taskModel.get;
+//		
+//		boolean isStaged = (a == b) ? true : false;
+//		
+//		if(!(isStaged))
+//			return true;
+		
+		ArrayList<String> c = assignedUsers;
+		ArrayList<String> d = this.taskModel.getUsersAssignedTo();
+		if(c.size() != d.size()){
+			return true;
+		}
+		int e = Math.min(c.size(), d.size());
+		for(int i = 0; i < e; i++){
+			for(String s : d){
+				s = c.get(i);
+				if(s.equals(d.get(i))){
+					return true;
+				}
+			}
+		}
+		
 		return false;
 	}
 
@@ -680,6 +717,10 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	@Override
 	public TabType getTabType() {
 		return TabType.TASK;
+	}
+	
+	public String getRequirements(){
+		return (String) getRequirementsComboModel().getSelectedItem();
 	}
 
 

@@ -438,10 +438,8 @@ public class TaskView extends DragTaskPanel{
 
 		taskModel.setIsArchived(task.getIsArchived());
 		if(taskModel.getIsArchived()){
-			System.out.println("Task" + task.getTitle() + " is not archived");
 			activateArchiveView();
 		} else {
-			System.out.println("Task" + task.getTitle() + " is archived");
 			deactivateArchiveView();
 		}
 		

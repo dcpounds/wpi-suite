@@ -56,12 +56,12 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.usersAssignedTo = new ArrayList<String>();
 		this.dueDate = "";
 		this.stageID = 0;
-		this.catID = 0;
+		this.catID = 1;
 		this.timeThreshold = 1;
 		this.isExpanded = false;
 		this.isArchived = false;
 		this.activities = new ActivityListModel();
-		this.associatedRequirement = "";
+		this.associatedRequirement = "None";
 	}
 	
 	/** Copies the contents of updatedStage into this one
@@ -84,6 +84,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		activities = updatedTask.getActivities();
 		this.color = updatedTask.getColor();
 		this.associatedRequirement = updatedTask.getAssociatedRequirement();
+		this.timeThreshold = updatedTask.getTimeThreshold();
 	}
 	
 
