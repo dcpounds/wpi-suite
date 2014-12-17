@@ -9,12 +9,17 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.TransferHandler;
+
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.WorkflowView;
 
 /**
  * @author Alec
@@ -22,7 +27,9 @@ import javax.swing.TransferHandler;
  * It allows tasks to be dragged into different stages
  */
 public class DragTaskController extends MouseAdapter{
+	private static boolean isDraggingTask;
 	JPanel taskPanel;
+	private Point mousePos;
 	
 	public DragTaskController(JPanel taskPanel){
 		this.taskPanel = taskPanel;
@@ -34,10 +41,15 @@ public class DragTaskController extends MouseAdapter{
 	}
 	
 	@Override
-	public void mouseDragged(MouseEvent me){
+	public void mouseDragged(MouseEvent me){		
 		JComponent component = (JComponent) me.getSource();
 		TransferHandler transferHandler = component.getTransferHandler();
 		transferHandler.exportAsDrag(component, me, TransferHandler.MOVE);
 	}
-
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
+		JScrollBar workflowScrollBar = workflowView.getScrollPane().getHorizontalScrollBar();
+	}
 }

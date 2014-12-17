@@ -9,6 +9,7 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop;
 
+import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -18,6 +19,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.LinkedHashMap;
+
+import javax.swing.JScrollBar;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
@@ -43,6 +46,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	private StageModel stageModel;
 	private LinkedHashMap<Integer,StageModel> movedStages;
 	private WorkflowView workflowView;
+	private Point mousePos;
 	
 	public DragStageController(DragStagePanel stage){
 		this.stage = stage;
@@ -145,6 +149,38 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 		}
 		
 	}
+	
+	public void dynamicScroll(boolean condition, JScrollBar scrollbar){
+		System.out.println("Running");
+		
+		//If the condition is not met, don't do anything
+		if(!condition)
+			return;
+		
+		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
+		int leftEdgeLocation = (int) (workflowView.getWidth() * 0.1);
+		int rightEdgeLocation = (int) (workflowView.getWidth() * 0.9);
+		
+		
+		mousePos = workflowView.getMousePosition();
+		int currentBarLocation = scrollbar.getValue();
+		int barMinimum = scrollbar.getMinimum();
+		int barMaximum = scrollbar.getMaximum();
+		
+		//Scroll left
+		while(mousePos.getX() <= leftEdgeLocation && currentBarLocation != barMinimum){
+			currentBarLocation++;
+			scrollbar.setValue(currentBarLocation);
+			mousePos = workflowView.getMousePosition();
+		}
+		
+		//Scroll right
+		while(mousePos.getX() >= rightEdgeLocation && currentBarLocation != barMaximum){
+			currentBarLocation++;
+			scrollbar.setValue(currentBarLocation);
+			mousePos = workflowView.getMousePosition();
+		}
+	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -172,7 +208,7 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 	@Override
 	public void mousePressed(MouseEvent e) {
 		WorkflowModel workflowModel = WorkflowController.getWorkflowModel();
-		workflowModel.setIsDraggingTask(true);
+		workflowModel.setIsDraggingStage(true);
 		mouseX = e.getX();
 		mouseY = e.getY();
 		this.initialXPos = targetXPos = stage.getLocation().x;
@@ -193,6 +229,6 @@ public class DragStageController implements DropTargetListener, MouseListener, M
 			StageController.sendUpdateRequest(movedStage);
 		}
 		movedStages.clear();
-		workflowModel.setIsDraggingTask(false);
+		workflowModel.setIsDraggingStage(false);
 	}
 }

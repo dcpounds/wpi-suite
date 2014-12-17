@@ -8,25 +8,17 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
-import java.awt.Component;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-
-import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.config.Configuration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
@@ -37,7 +29,7 @@ import javax.swing.BoxLayout;
 /**
  * This class is used to display a workflow in the GUI.
  */
-public class WorkflowView extends JPanel implements MouseMotionListener{
+public class WorkflowView extends JPanel{
 	private static final long serialVersionUID = -3276090208342185552L;
 	private LinkedHashMap<Integer,StageView> stageViewList;
 	private JPanel workflowPanel;
@@ -58,7 +50,6 @@ public class WorkflowView extends JPanel implements MouseMotionListener{
 		workflowModel = WorkflowController.getWorkflowModel();
 		
 		this.workflowPanel = new JPanel();
-		this.workflowPanel.addMouseMotionListener(this);
 		scrollBar = new JScrollPane(workflowPanel);
 		add(scrollBar);
 		
@@ -136,43 +127,4 @@ public class WorkflowView extends JPanel implements MouseMotionListener{
 	public JScrollPane getScrollPane(){
 		return scrollBar;
 	}
-
-	@Override
-	public void mouseDragged(MouseEvent me) {
-		dynamicScroll();
-		
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent me) {
-		dynamicScroll();
-	}
-	
-	public void dynamicScroll(){
-		int leftEdgeLocation = 130;
-		int rightEdgeLocation = this.getWidth() - 10;
-		b = super.getMousePosition();
-		xLocation = (int) b.getX();
-		yLocation = (int) b.getY();
-		System.out.println("location:" + xLocation);
-		JScrollBar horizontalScrollBar = this.getScrollPane().getHorizontalScrollBar();
-		int currentBarLocation = this.getScrollPane().getHorizontalScrollBar().getValue();
-		int barMinimum = this.getScrollPane().getHorizontalScrollBar().getMinimum();
-		int barMaximum = this.getScrollPane().getHorizontalScrollBar().getMaximum();
-		while(xLocation <= leftEdgeLocation && currentBarLocation != barMinimum){
-			b = super.getMousePosition();
-			xLocation = (int) b.getX();
-			currentBarLocation = currentBarLocation-1;
-			horizontalScrollBar.setValue(currentBarLocation);
-		}
-		while(xLocation >= rightEdgeLocation && currentBarLocation != barMaximum){
-			currentPosition = MouseInfo.getPointerInfo();
-			b = currentPosition.getLocation();
-			xLocation = (int) b.getX();
-			currentBarLocation = currentBarLocation+1;
-			horizontalScrollBar.setValue(currentBarLocation);
-		}
-	}
-
-
 }

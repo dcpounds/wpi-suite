@@ -126,7 +126,7 @@ public class WorkflowModel extends AbstractModel {
 	 * We should not update a stage while this is happening
 	 * @param bool
 	 */
-	public void setIsDraggingTask(boolean bool){
+	public void setIsDraggingStage(boolean bool){
 		WorkflowModel.isDraggingStage = bool;
 	}
 	
