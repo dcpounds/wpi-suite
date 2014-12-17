@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
@@ -38,9 +39,8 @@ public class MainView extends JPanel{
 	public MainView(){
 		workflowModel = WorkflowController.getWorkflowModel();
 		mainTabView = TabController.getTabView();
-		
 		setLayout(new BorderLayout());
 		add(mainTabView, BorderLayout.CENTER);
+		
 	}
-
 }

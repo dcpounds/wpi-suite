@@ -41,7 +41,7 @@ public class WorkflowModel extends AbstractModel {
 		WorkflowModel.userList = new ArrayList<User>();
 		WorkflowModel.toggleColor = false;
 		WorkflowModel.isDraggingStage = false;
-		WorkflowModel.requirementsList = new ArrayList<String>();
+		WorkflowModel.setRequirementsList(new ArrayList<String>());
 	}
 	
 	
@@ -145,6 +145,15 @@ public class WorkflowModel extends AbstractModel {
 		 WorkflowModel.userList = new ArrayList<User>(Arrays.asList(userList));
 	}
 	
+	public static ArrayList<String> getRequirementsList() {
+		return requirementsList;
+	}
+
+
+	public static void setRequirementsList(ArrayList<String> requirementsList) {
+		WorkflowModel.requirementsList = requirementsList;
+	}
+	
 	/**
 	 * @param id - id of the task to look for
 	 * @return the taskModel if successful, null otherwise
@@ -229,5 +238,8 @@ public class WorkflowModel extends AbstractModel {
 	public void copyFrom(WorkflowModel other){
 		this.stageModelList = other.stageModelList;
 	}
+
+
+	
 
 }

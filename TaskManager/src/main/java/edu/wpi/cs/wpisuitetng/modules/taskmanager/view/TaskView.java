@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
@@ -31,6 +32,13 @@ import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 
+import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
@@ -39,6 +47,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskCont
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ColorComboBox;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.NewTaskTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
 
 import java.awt.Color;
@@ -52,6 +61,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,6 +86,7 @@ public class TaskView extends DragTaskPanel{
 	private JLabel lblDue;
 	private JTextArea descriptionField;
 	private DefaultListModel<String> assignedListModel;
+	private JLabel requirementName;
 	private StageView stageView;
 	private int id;
 	private static final int openSize = 250;
@@ -91,6 +102,8 @@ public class TaskView extends DragTaskPanel{
 	ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
 	private ActionListener archiveListener;
 	private ActionListener deleteListener;
+	private JButton btnRequirementManager;
+	
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -192,6 +205,21 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
+		
+		JSeparator separator_2 = new JSeparator();
+		taskContents.add(separator_2);
+		
+		JLabel lblRequiredFor = new JLabel("Requirement:");
+		lblRequiredFor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblRequiredFor.setFont(new Font("Tahoma", Font.BOLD, 11));
+		taskContents.add(lblRequiredFor);
+		
+		this.requirementName = new JLabel();
+		requirementName.setHorizontalAlignment(SwingConstants.LEFT);
+		requirementName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		taskContents.add(requirementName);
+		
+		
 		TaskView tv = this;
 		this.add(taskContentPane, "cell 0 2 3 2,grow");
 		
@@ -206,7 +234,31 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
-				
+		
+		//Till I figure out where else we could put the button...
+		btnRequirementManager = new JButton("Requirement Manager");
+		//Set up the activities button
+		btnRequirementManager.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
+					//new RequirementsController(new NewTaskTab(taskModel)).requestRequirementsList();
+					//TabController.getInstance().addUniqueTab(TabType.TASK, taskModel);
+					
+					//ArrayList<String> reqnames = WorkflowController.getInstance().getWorkflowModel().getRequirementsList();
+					//int location = reqnames.indexOf(taskModel.getAsn n sociatedRequirement());
+					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
+					//new GetRequirementsController().getInstance();
+					System.out.println(RequirementModel.getInstance().getRequirement(1));
+					System.out.println(RequirementModel.getInstance());
+					//RequirementPanel reqpanel = new RequirementPanel(new Requirement());
+					ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(1));
+					//ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(1));
+				}
+			}
+		});
+		add(btnRequirementManager, "cell 1 4,alignx center");
+		
 		
 		//Set up the activities button
 		btnActivities = new JButton("Activities");
@@ -443,6 +495,7 @@ public class TaskView extends DragTaskPanel{
 		this.taskModel.setActualEffort(task.getActualEffort());
 		this.lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
+		this.requirementName.setText(taskModel.getAssociatedRequirement());
 		setSign(taskModel);
 		
 		if(task.getIsArchived()){
