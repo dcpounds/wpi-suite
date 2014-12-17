@@ -74,6 +74,7 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     private ChartPanel pieChart;
     private Date startDate;
     private Date endDate;
+    private int reportSelect;
 
 	private UtilDateModel dateModel1;
 	private JDatePanelImpl datePanel1;
@@ -93,13 +94,28 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     public ReportsTab(String title) {
 
         this.title = title;//title of the chart, either status or iteration
-        JPanel panel = new JPanel(new BorderLayout());
+        this.workflowModel = WorkflowController.getWorkflowModel();
+        buildPanel();
+        
+        
+    }
+    
+    public void buildPanel() {
+    	
+    
+    JPanel panel = new JPanel(new BorderLayout());
         barChart = createPanel();
         pieChart = createPiePanel();
         
-        panel.add(barChart, BorderLayout.WEST);
-        
-        this.workflowModel = WorkflowController.getWorkflowModel();
+        if (reportSelect == 3)
+        {
+        	panel.add(barChart, BorderLayout.WEST);
+        }
+        else
+        {
+        	panel.add(pieChart, BorderLayout.WEST);
+        }
+
         
         JPanel rightPanel = (new JPanel(new MigLayout("wrap 4")));
         
@@ -118,8 +134,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         button1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		panel.removeAll();
-        		panel.add(pieChart, BorderLayout.WEST);
-        		panel.add(rightPanel, BorderLayout.CENTER);
+        		reportSelect = 0;
+        		buildPanel();
         	}
         });
         
@@ -142,8 +158,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         button4.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		panel.removeAll();
-        		panel.add(barChart, BorderLayout.WEST);
-        		panel.add(rightPanel, BorderLayout.CENTER);
+        		reportSelect = 3;
+        		buildPanel();
         	}
         });
         
@@ -235,6 +251,9 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         
         this.setViewportView(panel);
     }
+    
+    
+    
     
     public void updateStartDate()
     {
