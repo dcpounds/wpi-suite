@@ -79,7 +79,7 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 
 	@Override
 	public int getModelID() {
-		return this.hashCode();
+		return 0;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -40,30 +41,40 @@ import java.awt.ScrollPane;
  * @author Dave
  * This tab view displays the activities log that each task contains. 
  */
-public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListener {
+public class ActivitiesView extends AbstractTab implements IHashableTab, KeyListener {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7944220332816331243L;
 	private WorkflowModel workflowModel;
 	private TaskModel taskModel;
 	private JList<ActivityModel> activitiesBoard;
 	private JScrollPane activitiesScrollPane;
 	private JTextArea newCommentTxt;
 	private JButton btnSubmit;
-	private JScrollPane commentScrollPane;
+	private JScrollPane newCommentScrollPane;
+	private JLabel activitiesLabel;
+	private JLabel newCommentLabel;
 
-	public ActivitiesTab(TaskModel model){
+	public ActivitiesView(TaskModel model){
 		taskModel = model;
 		workflowModel = WorkflowController.getWorkflowModel();
-		setLayout(new MigLayout("", "[grow]", "[grow][]"));
+		setLayout(new MigLayout("", "[grow]", "[][grow][][][]"));
      
-		//make
+		activitiesLabel = new JLabel("Activities");
+        add(activitiesLabel, "cell 0 0");
+		
         activitiesBoard = new JList<ActivityModel>(taskModel.getActivities());
         activitiesBoard.setCellRenderer(new ActivityListCellRenderer());
         activitiesScrollPane = new JScrollPane(activitiesBoard);
         activitiesScrollPane.setPreferredSize(new Dimension(500, 400));
-        add(activitiesScrollPane, "cell 0 0");
+        add(activitiesScrollPane, "cell 0 1");
         
-        //make the txt for new comments
+        newCommentLabel = new JLabel("New Comment");
+        add(newCommentLabel, "cell 0 2");
+        
         newCommentTxt = new JTextArea("Enter a comment here.");
         newCommentTxt.setLineWrap(true);
         newCommentTxt.setWrapStyleWord(true);
@@ -74,15 +85,14 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListe
     			public void mouseClicked(MouseEvent e) {
     				newCommentTxt.setText("");
     	}});
-        
-        commentScrollPane = new JScrollPane();
-        commentScrollPane.setViewportView(newCommentTxt);
-        add(commentScrollPane, "cell 0 1");
+        newCommentScrollPane = new JScrollPane();
+        newCommentScrollPane.setViewportView(newCommentTxt);
+        add(newCommentScrollPane, "cell 0 3");
         
         
         
         //make the submit button
-        btnSubmit = new JButton("Submit");
+        btnSubmit = new JButton("Post");
         btnSubmit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSubmit.addActionListener( new ActionListener(){
 			@Override
@@ -91,7 +101,7 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListe
 					addActivity();
 			}
 		});
-        add(btnSubmit, "cell 0 1,alignx left");
+        add(btnSubmit, "cell 0 4,alignx left");
 	}
 	
 	/**
@@ -99,16 +109,8 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListe
 	 * @return - the task that has been built with the fields that the user entered
 	 */
 	public void addActivity() {
-		StageModel stageModel = null;
-		for(StageModel stage : workflowModel.getStageModelList().values()){
-			if(stage.getID() == taskModel.getStageID())
-				stageModel = stage;
-		}
-		
 		taskModel.addActivity(new ActivityModel(newCommentTxt.getText()));
 		newCommentTxt.setText("");
-		//Updates task on the stage model
-		StageController.sendUpdateRequest(stageModel);
 	}
 	
 	/**
@@ -116,23 +118,6 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListe
 	 */
 	public TaskModel getTaskModel(){
 		return taskModel;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getModelID()
-	 */
-	@Override
-	public int getModelID() {
-		return taskModel.getID();
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab#getTabType()
-	 */
-	@Override
-	public TabType getTabType() {
-		// TODO Auto-generated method stub
-		return TabType.ACTIVITIES;
 	}
 	
 	public boolean hasBeenModified(){
@@ -158,5 +143,17 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListe
 	public void keyTyped(KeyEvent ke) {
 		hasBeenModified();
 		
+}
+
+	@Override
+	public int getModelID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public TabType getTabType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

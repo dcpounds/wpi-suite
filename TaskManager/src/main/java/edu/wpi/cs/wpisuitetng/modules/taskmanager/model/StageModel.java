@@ -120,7 +120,7 @@ public class StageModel extends AbstractModel implements Comparable<StageModel>,
 	
 	/**
 	 * @param title - set the title of the string
-	 */
+	 */ 
 	public void setTitle(String title) {
 		this.title = title;
 	}

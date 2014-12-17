@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesTab;
+import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActivitiesView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ClosableTabView;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.GitLinkTab;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.IHashableTab;
@@ -60,6 +60,8 @@ public class TabController {
 	 * 
 	 * Adds a unique tab based off the given tabType and id of the model given
 	 * If there is already a tab for the given model, it will set the current selected tab to that model
+	 * 
+	 * Note: tabtType must implement IHashableTab for it to be closed later
 	 * 
 	 * @param tabType
 	 * @param model
@@ -145,9 +147,6 @@ public class TabController {
     		case STAGE:
     			newTab = new NewStageTab((StageModel) model, ActionType.CREATE);
     			break;
-    		case ACTIVITIES:
-	        	newTab = new ActivitiesTab((TaskModel) model);
-    			break;
     		case REPORTS:
     			newTab = new ReportsTab("Reports");
     			break;
@@ -197,12 +196,6 @@ public class TabController {
 	        	break;
     		case STAGE:
     			tabName = "New Stage   ";
-    			break;
-    		case ACTIVITIES:
-    			if(model.getTitle().length() > 34)
-    				tabName =  (model.getTitle().substring(0,34) + "... Activities   ");
-    			else
-    				tabName = (model.getTitle() + " Activities   ");
     			break;
     		case REPORTS:
     			tabName = "Reports	";
