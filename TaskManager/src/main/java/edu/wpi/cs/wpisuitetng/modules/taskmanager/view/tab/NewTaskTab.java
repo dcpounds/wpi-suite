@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -218,7 +219,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		actEffortField.addKeyListener(this);
 
 		// The submit button
-		sbmtTaskButton = new JButton("Submit");
+		ImageIcon submitIcon = new ImageIcon(this.getClass().getResource("submit.png"));
+		sbmtTaskButton = new JButton("Submit",submitIcon);
+		
 		NewTaskTab thisTab = this;
 		sbmtTaskButton.addActionListener(new ActionListener() {
 			@Override
