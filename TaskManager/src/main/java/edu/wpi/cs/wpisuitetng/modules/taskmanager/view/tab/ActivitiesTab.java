@@ -13,6 +13,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -38,7 +40,7 @@ import java.awt.ScrollPane;
  * @author Dave
  * This tab view displays the activities log that each task contains. 
  */
-public class ActivitiesTab extends AbstractTab implements IHashableTab {
+public class ActivitiesTab extends AbstractTab implements IHashableTab, KeyListener {
 
 	
 	private WorkflowModel workflowModel;
@@ -131,5 +133,30 @@ public class ActivitiesTab extends AbstractTab implements IHashableTab {
 	public TabType getTabType() {
 		// TODO Auto-generated method stub
 		return TabType.ACTIVITIES;
+	}
+	
+	public boolean hasBeenModified(){
+		if(newCommentTxt.getText().trim().isEmpty()){
+			return false;
+		}
+		else{ return true;}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent ke) {
+		hasBeenModified();
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent ke) {
+		hasBeenModified();
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent ke) {
+		hasBeenModified();
+		
 	}
 }

@@ -114,13 +114,56 @@ public class ClosableTabView extends JPanel{
 			}
 		}
 		else if(tabType == TabType.ACTIVITIES){
+			if(((ActivitiesTab)paneComponent).hasBeenModified()){
+				Object[] options = { "YES", "NO" };
+				int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[0]);
+			if(choice == 0){
 			TabController.getInstance().removeTab(paneComponent);
+			}
+			else if (choice == 1){
+				//do nothing
+			}
+		}
+			else{
+			TabController.getInstance().removeTab(paneComponent);
+			}
+			
 		}
 		else if(tabType == TabType.REPORTS){
+			if(((ReportsTab)paneComponent).hasBeenModified()){
+				Object[] options = { "YES", "NO" };
+				int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[0]);
+			if(choice == 0){
 			TabController.getInstance().removeTab(paneComponent);
+			}
+			else if (choice == 1){
+				//do nothing
+			}
+		}
+			else{
+			TabController.getInstance().removeTab(paneComponent);
+			}
 		}
 		else if(tabType == TabType.GIT){
+			if(((GitLinkTab)paneComponent).hasBeenModified()){
+				Object[] options = { "YES", "NO" };
+				int choice = JOptionPane.showOptionDialog(null, "You have unsaved changes. Are you sure you wish to leave this page?", "Warning",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[0]);
+			if(choice == 0){
 			TabController.getInstance().removeTab(paneComponent);
+			}
+			else if (choice == 1){
+				//do nothing
+			}
+		}
+			else{
+			TabController.getInstance().removeTab(paneComponent);
+			}
 		}
 		
 	};

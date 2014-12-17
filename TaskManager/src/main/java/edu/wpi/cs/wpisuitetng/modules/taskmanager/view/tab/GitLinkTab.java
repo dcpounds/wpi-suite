@@ -89,22 +89,25 @@ public class GitLinkTab  extends JPanel implements KeyListener, IHashableTab{
 
 	@Override
 	public boolean hasBeenModified() {
-		return false;
+		if(repositoryURL.getText().trim().isEmpty()){
+			return false;
+		}
+		else{return true;}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		
+		hasBeenModified();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		
+		hasBeenModified();
 	}
 
 }
