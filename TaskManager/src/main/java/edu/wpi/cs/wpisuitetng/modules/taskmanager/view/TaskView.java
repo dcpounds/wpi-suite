@@ -34,27 +34,19 @@ import javax.swing.JScrollPane;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ColorComboBox;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
-
 import java.awt.Color;
-
 import javax.swing.SwingConstants;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
-
-import java.awt.FlowLayout;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * @author Alec, Dave
@@ -89,8 +81,6 @@ public class TaskView extends DragTaskPanel{
 	ImageIcon yellowIcon = new ImageIcon(this.getClass().getResource("Yellow.png"));
 	ImageIcon redIcon = new ImageIcon(this.getClass().getResource("Red.png"));
 	ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
-	private ActionListener archiveListener;
-	private ActionListener deleteListener;
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -117,7 +107,6 @@ public class TaskView extends DragTaskPanel{
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		titlePanel.add(catPanel, "cell 0 0,alignx left,aligny center");
 		catPanel.setBackground(Color.LIGHT_GRAY);
-		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
 		
 
 		statusLabel = new JLabel();
@@ -267,6 +256,7 @@ public class TaskView extends DragTaskPanel{
 		btnRestore.setVisible(true);
 		btnActivities.setEnabled(false);
 		btnEdit.setEnabled(false);
+		setSign(taskModel);
 	}
 	
 	
@@ -279,6 +269,7 @@ public class TaskView extends DragTaskPanel{
 		btnRestore.setVisible(false);
 		btnActivities.setEnabled(true);
 		btnEdit.setEnabled(true);
+		setSign(taskModel);
 	}
 	
 	
@@ -444,10 +435,13 @@ public class TaskView extends DragTaskPanel{
 		lblActualEffort.setText("Actual Effort: " + task.getActualEffort());
 		this.addAssignedUsers(task);
 		setSign(taskModel);
-		
-		if(task.getIsArchived()){
+
+		taskModel.setIsArchived(task.getIsArchived());
+		if(taskModel.getIsArchived()){
+			System.out.println("Task" + task.getTitle() + " is not archived");
 			activateArchiveView();
 		} else {
+			System.out.println("Task" + task.getTitle() + " is archived");
 			deactivateArchiveView();
 		}
 		

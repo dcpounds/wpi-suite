@@ -28,10 +28,12 @@ public class DragTaskController extends MouseAdapter{
 		this.taskPanel = taskPanel;
 	}
 	
+	@Override
 	public void mousePressed(MouseEvent me){
 		taskPanel.getTransferHandler().setDragImageOffset(me.getPoint());
 	}
 	
+	@Override
 	public void mouseDragged(MouseEvent me){
 		JComponent component = (JComponent) me.getSource();
 		TransferHandler transferHandler = component.getTransferHandler();

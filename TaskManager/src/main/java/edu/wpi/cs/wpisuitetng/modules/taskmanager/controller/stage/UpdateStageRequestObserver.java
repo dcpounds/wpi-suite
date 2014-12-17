@@ -34,14 +34,12 @@ public class UpdateStageRequestObserver implements RequestObserver{
 
 	@Override
 	public void responseError(IRequest iReq) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left blank	
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		// TODO Auto-generated method stub
-		
+		//Intentionally left blank		
 	}
 
 }
