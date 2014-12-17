@@ -85,7 +85,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		this.catID = updatedTask.getCatID();
 		this.isArchived = updatedTask.getIsArchived();
 		activities = updatedTask.getActivities();
-		this.color = updatedTask.getColor();
+		this.color = updatedTask.getCatColor();
 		this.associatedRequirement = updatedTask.getAssociatedRequirement();
 	}
 	
@@ -252,23 +252,7 @@ public class TaskModel extends AbstractModel implements IDisplayModel {
 		return days;
 	}
 	
-	/**
-	 * @return returns the color of the task relative to its due date
-	 */
-	public Color getColor(){
-		if(daysUntilDue() > timeThreshold){
-			//Green
-			color = new Color(51,199,72);
-		}else if(daysUntilDue() <= timeThreshold && daysUntilDue() > 0){
-			//Yellow
-			color = new Color(253,188,64);
-		}else{
-			//Red
-			color = new Color(252,87,83);
-		}
-		return getCatColor();
-	}
-	
+
 	
 	/**
 	 * Get days before due date until this task becomes urgent

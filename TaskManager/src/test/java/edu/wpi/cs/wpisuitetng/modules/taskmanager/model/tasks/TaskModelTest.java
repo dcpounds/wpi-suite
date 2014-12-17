@@ -11,10 +11,13 @@ package edu.wpi.cs.wpisuitetng.modules.taskmanager.model.tasks;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+
 import org.junit.Test;
+
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 
@@ -36,7 +39,7 @@ public class TaskModelTest {
 	public void taskTest() throws ParseException {
 		ArrayList<String> testUser = new ArrayList<>();
 		testUser.add("Test User");
-
+		task.setStageID(2);
 		task.setID(5);
 		task.setTitle("Task");
 		task.setEstimatedEffort(16);
@@ -47,6 +50,10 @@ public class TaskModelTest {
 		task.setIsExpanded(true);
 		task.setExpanded(true);
 		task.setIsArchived(true);
+		task.setCreator("me");
+		task.setTimeThreshold(4);
+		task.setCatColor(Color.white);
+		task.setCatID(10);
 		TaskModel task1 = new TaskModel();
 		StageModel stage = new StageModel();
 		task1.copyFrom(task);
@@ -55,8 +62,11 @@ public class TaskModelTest {
 		
 		
 		TaskModel task4 = null;
-		
+		assertEquals(10,task.getCatID());
+		assertEquals(Color.white,task.getCatColor());
 		assertEquals(5,task.getID());
+		assertEquals(4,task.getTimeThreshold());
+		assertEquals(2,task.getStageID());
 		assertTrue("Task".equals(task.getTitle()));
 		assertEquals(16,task.getEstimatedEffort());
 		assertEquals(20,task.getActualEffort());
@@ -66,10 +76,14 @@ public class TaskModelTest {
 		assertTrue(task.identify(task1));
 		assertTrue(task.equals(task));
 		assertTrue(task.equals(task1));
+		assertEquals("me",task.getCreatorName());
 		assertTrue(task.getIsArchived());
 		assertFalse(task.equals(stage));
 		assertFalse(task.equals(task4));
 		assertTrue(task.getUsersAssignedTo().equals(new ArrayList<String>()));
+		
+		
+		
 		
 		task1.setDueDate("12-15-2015");
 		assertEquals(5,task1.getID());
@@ -79,6 +93,10 @@ public class TaskModelTest {
 		assertTrue("Test Description".equals(task1.getDescription()));
 		assertTrue("12-15-2015".equals(task1.getDueDate()));
 		assertTrue(task1.getIsExpanded());
+		
+		
+		
+		
 	}
 	
 }

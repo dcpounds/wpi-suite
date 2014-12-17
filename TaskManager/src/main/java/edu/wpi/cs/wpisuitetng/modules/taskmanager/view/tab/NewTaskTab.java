@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -102,7 +103,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	private DefaultComboBoxModel<String> requirementsComboModel;
 	private ActivitiesView activitiesView;
 	private JPanel editPane;
-	private JPanel activitiesPane;
+	private ActivitiesView activitiesPane;
 	private JSplitPane splitPane;
 	
 	/**
@@ -219,7 +220,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		actEffortField.addKeyListener(this);
 
 		// The submit button
-		sbmtTaskButton = new JButton("Submit");
+		ImageIcon submitIcon = new ImageIcon(this.getClass().getResource("submit.png"));
+		sbmtTaskButton = new JButton("Submit",submitIcon);
+		
 		NewTaskTab thisTab = this;
 		sbmtTaskButton.addActionListener(new ActionListener() {
 			@Override
@@ -326,6 +329,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 				.setToolTipText("The task will become urgent this many days before the due date");
 		editPane.add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
+		daysUntilField.setMinimumSize(new Dimension(30,10));
 		setDaysUntilField();
 		daysUntilField.addKeyListener(this);
 
@@ -338,7 +342,6 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                            editPane, activitiesPane);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(700);
 		add(splitPane);
 	}
 
@@ -468,11 +471,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * done.
 	 */
 	public void checkForErrors() {
-		boolean isTitleTextFull = taskTitleField.getText().isEmpty() ? false
+		boolean isTitleTextFull = taskTitleField.getText().trim().isEmpty() ? false
 				: true;
 		titleEmptyError.setVisible(!isTitleTextFull);
 
-		boolean isDescriptionTextFull = taskDescriptionField.getText()
+		boolean isDescriptionTextFull = taskDescriptionField.getText().trim()
 				.isEmpty() ? false : true;
 		descriptionEmptyError.setVisible(!isDescriptionTextFull);
 
@@ -560,7 +563,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @return
 	 */
 	public String getTitleLabelText() {
-		return taskTitleField.getText();
+		return taskTitleField.getText().trim();
 	};
 
 	/**
@@ -583,7 +586,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @return
 	 */
 	public String getDescriptionText() {
-		return taskDescriptionField.getText();
+		return taskDescriptionField.getText().trim();
 	}
 
 	/**
@@ -654,6 +657,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			return true;
 
 		if(!(this.getCatSelectionIndex() == this.taskModel.getCatID()))
+			return true;
+		
+		if(!(requirementsBox.getSelectedItem().equals(this.taskModel.getAssociatedRequirement())))
 			return true;
 		
 		return false;

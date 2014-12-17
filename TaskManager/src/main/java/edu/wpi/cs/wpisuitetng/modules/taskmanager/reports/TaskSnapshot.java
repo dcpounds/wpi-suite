@@ -83,7 +83,6 @@ public class TaskSnapshot {
 		stageID = task.getStageID();
 		isArchived = task.getIsArchived();
 		activities = task.getActivities();
-		color = task.getColor();
 		CatColor = task.getCatColor();
 	}
 	
@@ -282,18 +281,6 @@ public class TaskSnapshot {
 	 */
 	public void setArchived(boolean isArchived) {
 		this.isArchived = isArchived;
-	}
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
 	}
 	/**
 	 * @return the catColor

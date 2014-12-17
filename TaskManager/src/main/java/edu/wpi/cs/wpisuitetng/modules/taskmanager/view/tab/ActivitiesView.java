@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.ScrollPane;
+import java.awt.Font;
 
 
 /**
@@ -62,16 +63,18 @@ public class ActivitiesView extends AbstractTab {
 		setLayout(new MigLayout("", "[grow]", "[][grow][][][]"));
      
 		activitiesLabel = new JLabel("Activities");
-        add(activitiesLabel, "cell 0 0");
+		activitiesLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+        add(activitiesLabel, "cell 0 0,aligny top");
 		
         activitiesBoard = new JList<ActivityModel>(taskModel.getActivities());
         activitiesBoard.setCellRenderer(new ActivityListCellRenderer());
         activitiesScrollPane = new JScrollPane(activitiesBoard);
         activitiesScrollPane.setPreferredSize(new Dimension(500, 400));
-        add(activitiesScrollPane, "cell 0 1");
+        add(activitiesScrollPane, "cell 0 1,grow");
         
         newCommentLabel = new JLabel("New Comment");
-        add(newCommentLabel, "cell 0 2");
+        newCommentLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+        add(newCommentLabel, "cell 0 2,alignx left,aligny top");
         
         newCommentTxt = new JTextArea("Enter a comment here.");
         newCommentTxt.setLineWrap(true);
@@ -85,7 +88,7 @@ public class ActivitiesView extends AbstractTab {
     	}});
         newCommentScrollPane = new JScrollPane();
         newCommentScrollPane.setViewportView(newCommentTxt);
-        add(newCommentScrollPane, "cell 0 3");
+        add(newCommentScrollPane, "cell 0 3,growx,aligny top");
         
         
         
@@ -99,9 +102,16 @@ public class ActivitiesView extends AbstractTab {
 					addActivity();
 			}
 		});
-        add(btnSubmit, "cell 0 4,alignx left");
+        add(btnSubmit, "cell 0 4,alignx left,aligny top");
 	}
 	
+	/**
+	 * @return the activitiesBoard
+	 */
+	public JList<ActivityModel> getActivitiesBoard() {
+		return activitiesBoard;
+	}
+
 	/**
 	 * Given the input that the user provided, construct the task
 	 * @return - the task that has been built with the fields that the user entered

@@ -25,8 +25,8 @@ public class GetDataLoggerRequestObserver implements RequestObserver{
 	}
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		DataLoggerModel stages[] = DataLoggerModel.fromJsonArray(iReq.getResponse().getBody());
-        //controller.syncStages(stages);
+		DataLoggerModel dataLogger[] = DataLoggerModel.fromJsonArray(iReq.getResponse().getBody());
+        controller.process(dataLogger);
 		
 	}
 

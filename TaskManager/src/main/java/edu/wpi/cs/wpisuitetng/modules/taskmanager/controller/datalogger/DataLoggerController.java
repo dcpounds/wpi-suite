@@ -8,16 +8,9 @@
  * Contributors: Team What? We Thought This Was Bio!
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.datalogger;
-
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.AddStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.DeleteStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.GetStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.UpdateStageRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.reports.DataLoggerModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.ActionType;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -43,9 +36,6 @@ public class DataLoggerController {
     private Date startDate;
     private Date endDate;
     
-    
-    
-    
     DataLoggerController() {
 		dataLoggerModel = new DataLoggerModel();
 		action = action;
@@ -55,14 +45,6 @@ public class DataLoggerController {
 		DataLoggerController.deleteObserver = new DeleteDataLoggerRequestObserver(this);
 
 	}
-
-
-
-
-
-
-
-
 
 	/**
 	 * Depending on the specified action, either create, edit, delete, or get stageModel(s) from the database
@@ -134,6 +116,20 @@ public class DataLoggerController {
 		request.addObserver(deleteObserver); // add an observer to process the response
 		request.send();
 
+	}
+
+	/**
+	 * If the database has no datalogger model, add it
+	 * Otherwise, copy it from the database
+	 * @param dataLogger
+	 */
+	public void process(DataLoggerModel[] dataLogger) {
+		if(dataLogger.length == 0){
+			sendAddRequest(getDataModel());
+		}else{
+			DataLoggerModel dlModel = dataLogger[0];
+			getDataModel().copyFrom(dlModel);
+		}	
 	}
 
 }
