@@ -510,6 +510,42 @@ public class DataLoggerModel extends AbstractModel
 		return filteredList;
 	}
 	
+	
+	
+	/**
+	 * Filters the complete task list to only show unique tasks, and changes in estimated effort
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByCategory (SnapshotSubList list)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		//loop is reversed from others so that filtered list fills in the correct order
+		for (int i=0; i<list.taskSnapList.size(); i++)
+		{
+			if (!filteredList.listContainsID(list.taskSnapList.get(i).getTaskID()))
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i));
+			}
+			else if (filteredList.returnCurrentSnapshot(list.taskSnapList.get(i).getTaskID())!=null)
+			
+
+			{
+				if (!filteredList.returnCurrentSnapshot(list.taskSnapList.get(i).getTaskID()).getCatColor().equals(
+					list.taskSnapList.get(i).getCatColor()))
+					{
+						filteredList.appendSnapshot(list.taskSnapList.get(i));
+					}
+						
+
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
 	/**
 	 * Filters a sublist over a date range, including only snapshots taken between the start and end date
 	 * @return SnapshotSubList
@@ -528,6 +564,33 @@ public class DataLoggerModel extends AbstractModel
 					list.containsID(filteredList.taskSnapList, list.taskSnapList.get(i-1)))
 				{
 					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots taken between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDateRange(Date startdate, Date enddate)
+	{
+		String startDate = startdate.toString();
+		String endDate = enddate.toString();
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = taskSnapList.size(); i>0 ; i--)
+		{
+			String stampDate = taskSnapList.get(i-1).getTimeStamp().toString();
+			if (!taskSnapList.get(i-1).getTimeStamp().after(enddate))
+			{
+				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate)) || 
+					containsID(filteredList.taskSnapList, taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(taskSnapList.get(i-1));
 				}
 			}
 		}
@@ -754,9 +817,10 @@ public class DataLoggerModel extends AbstractModel
 		output.put("PURPLE", 0);		
 		
 		
-		SnapshotSubList filteredList = filterByCategory();
-		filteredList = filterByDateRange(filteredList, WorkflowController.getWorkflowModel().getStartDate(), 
-										WorkflowController.getWorkflowModel().getEndDate());
+		SnapshotSubList filteredList = filterByDateRange(WorkflowController.getWorkflowModel().getStartDate(), 
+				WorkflowController.getWorkflowModel().getEndDate());
+		
+		filteredList = filterByCategory(filteredList);
 		if (filteredList.taskSnapList.size()>0)
 		{
 			for (int i = filteredList.taskSnapList.size(); i>0; i=i-1)
