@@ -208,7 +208,7 @@ public class TabController {
     			tabName = "Reports	";
     			break;
     		case GIT:
-    			tabName = "Link ";
+    			tabName = "Import Issues ";
         }
     	return tabName;
     }
