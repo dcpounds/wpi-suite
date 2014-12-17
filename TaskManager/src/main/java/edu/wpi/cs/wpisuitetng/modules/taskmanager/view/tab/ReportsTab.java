@@ -228,7 +228,6 @@ public class ReportsTab extends JScrollPane implements IHashableTab {
 
 	@Override
 	public int getModelID() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -34,6 +34,9 @@ public class TaskModelTest {
 	 */
 	@Test
 	public void taskTest() throws ParseException {
+		ArrayList<String> testUser = new ArrayList<>();
+		testUser.add("Test User");
+
 		task.setID(5);
 		task.setTitle("Task");
 		task.setEstimatedEffort(16);
@@ -47,7 +50,7 @@ public class TaskModelTest {
 		TaskModel task1 = new TaskModel();
 		StageModel stage = new StageModel();
 		task1.copyFrom(task);
-		task1.setUsersAssignedTo(null);
+		task1.setUsersAssignedTo(testUser);
 		stage.setTitle("Hello");
 		
 		

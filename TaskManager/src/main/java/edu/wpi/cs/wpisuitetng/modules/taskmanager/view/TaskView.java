@@ -42,7 +42,6 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.RequirementsControl
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.TabController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ExpandTaskController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.draganddrop.DragTaskPanel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
@@ -56,15 +55,19 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
+
+
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * @author Alec, Dave
@@ -103,7 +106,7 @@ public class TaskView extends DragTaskPanel{
 	private ActionListener archiveListener;
 	private ActionListener deleteListener;
 	private JButton btnRequirementManager;
-	
+
 	
 	public TaskView(TaskModel taskModel, StageView stageView){
 		setLayout(new MigLayout("", "[][grow][][]", "[][][][grow][]"));
@@ -130,7 +133,6 @@ public class TaskView extends DragTaskPanel{
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		titlePanel.add(catPanel, "cell 0 0,alignx left,aligny center");
 		catPanel.setBackground(Color.LIGHT_GRAY);
-		FlowLayout flowLayout = (FlowLayout) catPanel.getLayout();
 		
 
 		statusLabel = new JLabel();
@@ -234,6 +236,7 @@ public class TaskView extends DragTaskPanel{
 			}
 		});
 		add(btnEdit, "cell 2 4");
+
 		
 		//Till I figure out where else we could put the button...
 		btnRequirementManager = new JButton("Requirement Manager");
@@ -242,18 +245,18 @@ public class TaskView extends DragTaskPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
-					//new RequirementsController(new NewTaskTab(taskModel)).requestRequirementsList();
-					//TabController.getInstance().addUniqueTab(TabType.TASK, taskModel);
-					
-					//ArrayList<String> reqnames = WorkflowController.getInstance().getWorkflowModel().getRequirementsList();
-					//int location = reqnames.indexOf(taskModel.getAsn n sociatedRequirement());
 					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
-					//new GetRequirementsController().getInstance();
 					System.out.println(RequirementModel.getInstance().getRequirement(1));
 					System.out.println(RequirementModel.getInstance());
-					//RequirementPanel reqpanel = new RequirementPanel(new Requirement());
-					ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(1));
-					//ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(1));
+					int location = 0;
+					List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+					if (RequirementModel.getInstance().getRequirement(1) != null){
+						for (int n=0; n<reqs.size(); n++)
+							if (reqs.get(n).getName().equals(taskModel.getAssociatedRequirement()))
+								location = n;
+						System.out.println(location);
+						ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(location));
+					}
 				}
 			}
 		});
@@ -317,8 +320,8 @@ public class TaskView extends DragTaskPanel{
 	public void activateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		btnRestore.setVisible(true);
-		btnActivities.setEnabled(false);
 		btnEdit.setEnabled(false);
+		setSign(taskModel);
 	}
 	
 	
@@ -329,8 +332,8 @@ public class TaskView extends DragTaskPanel{
 	public void deactivateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		btnRestore.setVisible(false);
-		btnActivities.setEnabled(true);
 		btnEdit.setEnabled(true);
+		setSign(taskModel);
 	}
 	
 	
@@ -497,10 +500,13 @@ public class TaskView extends DragTaskPanel{
 		this.addAssignedUsers(task);
 		this.requirementName.setText(taskModel.getAssociatedRequirement());
 		setSign(taskModel);
-		
-		if(task.getIsArchived()){
+
+		taskModel.setIsArchived(task.getIsArchived());
+		if(taskModel.getIsArchived()){
+			System.out.println("Task" + task.getTitle() + " is not archived");
 			activateArchiveView();
 		} else {
+			System.out.println("Task" + task.getTitle() + " is archived");
 			deactivateArchiveView();
 		}
 		
@@ -560,9 +566,6 @@ public class TaskView extends DragTaskPanel{
 			null, options, options[0]);
 		if(choice == 0){
 			StageController.deleteTask(this);
-		}
-		else{
-			//do nothing
 		}
 	}
 }
