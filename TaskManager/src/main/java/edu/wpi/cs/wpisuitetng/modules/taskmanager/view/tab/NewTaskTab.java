@@ -465,11 +465,11 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * done.
 	 */
 	public void checkForErrors() {
-		boolean isTitleTextFull = taskTitleField.getText().isEmpty() ? false
+		boolean isTitleTextFull = taskTitleField.getText().trim().isEmpty() ? false
 				: true;
 		titleEmptyError.setVisible(!isTitleTextFull);
 
-		boolean isDescriptionTextFull = taskDescriptionField.getText()
+		boolean isDescriptionTextFull = taskDescriptionField.getText().trim()
 				.isEmpty() ? false : true;
 		descriptionEmptyError.setVisible(!isDescriptionTextFull);
 
@@ -557,7 +557,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @return
 	 */
 	public String getTitleLabelText() {
-		return taskTitleField.getText();
+		return taskTitleField.getText().trim();
 	};
 
 	/**
@@ -580,7 +580,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	 * @return
 	 */
 	public String getDescriptionText() {
-		return taskDescriptionField.getText();
+		return taskDescriptionField.getText().trim();
 	}
 
 	/**

@@ -103,7 +103,7 @@ public class TaskView extends DragTaskPanel{
 		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(  new ExpandTaskController(this, taskModel) );
 		add(titlePanel, "cell 0 0 5 1,growx,aligny top");
-		titlePanel.setLayout(new MigLayout("insets 0 5 5 5", "[][grow][][grow][][]", "[][grow]"));
+		titlePanel.setLayout(new MigLayout("insets 0 5 5 5, wmin 0", "[][grow][][grow][][]", "[][grow]"));
 		
 		catPanel = new JPanel();
 		catPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -119,7 +119,7 @@ public class TaskView extends DragTaskPanel{
 		lblNewTask = new JLabel(taskModel.getTitle());
 		lblNewTask.putClientProperty("html.disable", Boolean.TRUE);
 		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		titlePanel.add(lblNewTask, "cell 2 0,alignx leading,aligny top");
+		titlePanel.add(lblNewTask, "cell 2 0,alignx leading,aligny top, wmin 0");
 		
 		
 		
@@ -184,7 +184,7 @@ public class TaskView extends DragTaskPanel{
 		assignedListComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
 		taskContents.add(assignedListComponent);
 		TaskView tv = this;
-		this.add(taskContentPane, "cell 0 2 3 2,grow");
+		this.add(taskContentPane, "cell 0 2 3 2,grow,wmin 0");
 		
 		//Set up the edit button
 		btnEdit = new JButton("Edit");
@@ -206,7 +206,7 @@ public class TaskView extends DragTaskPanel{
 				StageController.dearchiveTask(tv);
 			}
 		});
-		titlePanel.add(btnRestore, "flowx,cell 4 0,alignx center,aligny top");
+		titlePanel.add(btnRestore, "flowx,cell 4 0,alignx center,aligny top, wmin 0");
 
 		//Set up the close button to remove the task
 		closeButton = new JButton("\u2716");
@@ -244,7 +244,6 @@ public class TaskView extends DragTaskPanel{
 	public void activateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		btnRestore.setVisible(true);
-		btnEdit.setEnabled(false);
 		setSign(taskModel);
 	}
 	
@@ -256,7 +255,6 @@ public class TaskView extends DragTaskPanel{
 	public void deactivateArchiveView(){
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		btnRestore.setVisible(false);
-		btnEdit.setEnabled(true);
 		setSign(taskModel);
 	}
 	
@@ -476,7 +474,6 @@ public class TaskView extends DragTaskPanel{
 	private void archive(){
 		activateArchiveView();
 		StageController.archiveTask(this);
-		TabController.getInstance().closeUniqueTab(TabType.TASK, taskModel);
 	}
 	
 	/**
@@ -489,6 +486,7 @@ public class TaskView extends DragTaskPanel{
 			null, options, options[0]);
 		if(choice == 0){
 			StageController.deleteTask(this);
+			TabController.getInstance().closeUniqueTab(TabType.TASK, taskModel);
 		}
 	}
 }
