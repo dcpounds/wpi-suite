@@ -472,19 +472,20 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	
-	public TaskSnapshot snapAtDate (TaskSnapshot snapshot, Date date)
+	public SnapshotSubList snapAtDate (Date date)
 	{
+		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i=taskSnapList.size(); i>0; i--)
 		{
-			if (taskSnapList.get(i-1).getTaskID() == snapshot.getTaskID())
+			if (!filteredList.listContainsID(taskSnapList.get(i-1).getTaskID()))
 			{
 				if (taskSnapList.get(i-1).getTimeStamp().before(date))
 				{
-					return taskSnapList.get(i-1);
+					filteredList.appendSnapshot(taskSnapList.get(i-1));
 				}
 			}
 		}
-		return null;
+		return filteredList;
 	}
 	
 	
@@ -697,9 +698,12 @@ public class DataLoggerModel extends AbstractModel
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{
-			if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+			if (list.returnPreviousSnapshot(list.taskSnapList.get(i-1))!=null)
 			{
-				filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				if (list.taskSnapList.get(i-1).getStageID() == stageID && list.returnPreviousSnapshot(list.taskSnapList.get(i-1)).getStageID() != stageID)
+				{
+					filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+				}
 			}
 		}
 		return filteredList;
@@ -928,13 +932,11 @@ public class DataLoggerModel extends AbstractModel
 		SnapshotSubList filteredList;
 		for (int i = 0; i<days; i++)
 		{
-			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+i*86400000),
-											new Date(WorkflowController.getWorkflowModel().getEndDate().getTime()));
-			filteredList = filterByID(filteredList);
+			filteredList = snapAtDate(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+86400000L*i));
 			filteredList = filterByStage(filteredList, WorkflowController.getWorkflowModel().getCompleteStageID());
 
 			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
-			output.put(i+1, estimatedEffort);
+			output.put(i, estimatedEffort);
 		}
 		return output;
 	}

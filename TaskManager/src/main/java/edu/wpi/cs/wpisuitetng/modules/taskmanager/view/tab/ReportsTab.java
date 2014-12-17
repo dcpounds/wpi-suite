@@ -420,8 +420,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     	double yvalue;
     	for (int i = 0; i<DataLoggerController.getDataModel().exportDailyEffortStamps().size(); i++)
         {
-        	xvalue = i+1;
-        	yvalue = DataLoggerController.getDataModel().exportDailyEffortStamps().get(i+1);
+        	xvalue = i;
+        	yvalue = DataLoggerController.getDataModel().exportDailyEffortStamps().get(i);
         	series1.add(xvalue, yvalue);
         }
     	xvalue = 0;
