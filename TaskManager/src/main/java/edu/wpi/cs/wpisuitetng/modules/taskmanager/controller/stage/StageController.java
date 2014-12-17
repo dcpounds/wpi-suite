@@ -174,7 +174,6 @@ public class StageController implements ActionListener{
 			stageView.updateContents(stage);
 		}
 		SearchController.search();
-		SearchController.catFilter();
 	}
 	
 	/**
