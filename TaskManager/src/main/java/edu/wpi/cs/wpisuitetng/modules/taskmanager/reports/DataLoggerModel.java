@@ -666,7 +666,15 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	
-	
+	public SnapshotSubList reverseList(SnapshotSubList list)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = list.taskSnapList.size(); i>0 ; i--)
+		{
+			filteredList.appendSnapshot(list.taskSnapList.get(i-1));
+		}
+		return filteredList;
+	}
 	
 	
 	
@@ -685,6 +693,7 @@ public class DataLoggerModel extends AbstractModel
 	 */
 	public SnapshotSubList returnCompleteSnapshots(SnapshotSubList list, int stageID)
 	{
+		list = reverseList(list);
 		SnapshotSubList filteredList = new SnapshotSubList();
 		for (int i = list.taskSnapList.size(); i>0 ; i--)
 		{

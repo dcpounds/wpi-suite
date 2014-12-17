@@ -398,7 +398,8 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     
     private XYDataset  setVelocityData() {
-    	final XYSeries series1 = new XYSeries("First");
+    	final XYSeries series1 = new XYSeries("Estimated Effort");
+    	final XYSeries series2 = new XYSeries("Actual Effort");
     	double xvalue;
     	double yvalue;
     	for (int i = 0; i<DataLoggerController.getDataModel().exportEstmatedVelocity().size(); i++)
@@ -407,16 +408,15 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         	yvalue = DataLoggerController.getDataModel().exportEstmatedVelocity().get(i+1);
         	series1.add(xvalue, yvalue);
         }
+    	xvalue = 0;
+    	yvalue = 0;
 
-        final XYSeries series2 = new XYSeries("Second");
-        series2.add(1.0, 5.0);
-        series2.add(2.0, 7.0);
-        series2.add(3.0, 6.0);
-        series2.add(4.0, 8.0);
-        series2.add(5.0, 4.0);
-        series2.add(6.0, 4.0);
-        series2.add(7.0, 2.0);
-        series2.add(8.0, 1.0);
+    	for (int i = 0; i<DataLoggerController.getDataModel().exportActualVelocity().size(); i++)
+        {
+        	xvalue = i+1;
+        	yvalue = DataLoggerController.getDataModel().exportActualVelocity().get(i+1);
+        	series2.add(xvalue, yvalue);
+        }
         
         final XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);
@@ -463,12 +463,14 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
         plot.setRangeGridlinePaint(Color.white);
         
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesLinesVisible(0, false);
+        renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(1, false);
         plot.setRenderer(renderer);
 
         // change the auto tick unit selection to integer units only...
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        final NumberAxis XAxis = (NumberAxis) plot.getDomainAxis();
+        XAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         // OPTIONAL CUSTOMISATION COMPLETED.
                 
