@@ -246,15 +246,12 @@ public class TaskView extends DragTaskPanel{
 			public void actionPerformed(ActionEvent e) {
 				if (TabController.getTabView().getParent().getParent().getParent() instanceof JTabbedPane){
 					((JTabbedPane)TabController.getTabView().getParent().getParent().getParent()).setSelectedIndex(2);
-					System.out.println(RequirementModel.getInstance().getRequirement(1));
-					System.out.println(RequirementModel.getInstance());
 					int location = 0;
 					List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 					if (RequirementModel.getInstance().getRequirement(1) != null){
 						for (int n=0; n<reqs.size(); n++)
 							if (reqs.get(n).getName().equals(taskModel.getAssociatedRequirement()))
 								location = n;
-						System.out.println(location);
 						ViewEventController.getInstance().editRequirement(RequirementModel.getInstance().getRequirement(location));
 					}
 				}
