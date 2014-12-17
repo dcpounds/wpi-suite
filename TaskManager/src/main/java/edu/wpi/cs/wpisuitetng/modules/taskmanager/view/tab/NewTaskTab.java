@@ -64,7 +64,7 @@ import javax.swing.SpringLayout;
  * well. Authors Guillermo, Ashton;
  */
 public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
-		ActionListener, IHashableTab {
+ActionListener, IHashableTab {
 
 	private static final long serialVersionUID = -8772773694939459349L;
 	private TaskModel taskModel;
@@ -227,9 +227,9 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		colorBox.setToolTipText("Select a Category Color");
 		colorTitle = new JLabel("                  ");
 		if(model!=null)
-		setCategoryColorBox();
+			setCategoryColorBox();
 		else colorBox.setSelectedIndex(1);
-		
+
 		add(colorTitle, "cell 3 0");
 
 		// Make a label for the requirements combo box
@@ -270,7 +270,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		if (!this.taskModel.getDueDate().equals("")) {
 			try {
 				Date date = new SimpleDateFormat("MM/dd/yyyy")
-						.parse(this.taskModel.getDueDate());
+				.parse(this.taskModel.getDueDate());
 				dateModel.setValue(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -308,7 +308,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		daysUntilField.setText(Integer.toString(this.taskModel
 				.getTimeThreshold()));
 		daysUntilField
-				.setToolTipText("The task will become urgent this many days before the due date");
+		.setToolTipText("The task will become urgent this many days before the due date");
 		add(daysUntilField, "pad 0 0 0 0,cell 1 9,alignx left");
 		daysUntilField.setColumns(5);
 		setDaysUntilField();
@@ -375,19 +375,19 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		taskModel.setAssociatedRequirement((String) requirementsBox
 				.getSelectedItem() );
 		DataLoggerController.getDataModel().addSnapshot(taskModel);
-		
+
 		ActivityModel message;
 		String messageString;
 		if (isEditingTask) {
 			for (int i=0; i<DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
-					 taskModel.getCurrentSnapshot()).size(); i++)
+					taskModel.getCurrentSnapshot()).size(); i++)
 			{
 				messageString = DataLoggerController.getDataModel().trackChanges(taskModel.getPreviousSnapshot(), 
-															 taskModel.getCurrentSnapshot()).get(i);
+						taskModel.getCurrentSnapshot()).get(i);
 				message = new ActivityModel(messageString);
 				taskModel.addActivity(message);
 			}
-			
+
 		} else {
 			message = new ActivityModel("Created the task");
 			taskModel.addActivity(message);
@@ -395,8 +395,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		stageModel.addUpdateTaskModel(taskModel);
 	}
-	
-	
+
+
 	/**
 	 * Sets the requirement box based on the value of the given taskModel
 	 */
@@ -409,8 +409,8 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Set the default value for the stage box
 	 */
@@ -419,18 +419,18 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		if (taskModel.getStageID() != 0){
 			String stageText = workflowModel.getStageModelList()
 					.get(taskModel.getStageID()).getTitle();
-			
+
 			stageBox.setSelectedItem(stageText);
 		}
 	}
-	
+
 	/**
 	 * Sets the category color box based on the taskModel's value
 	 */
 	public void setCategoryColorBox() {
-		
+
 		colorBox.setSelectedIndex(taskModel.getCatID());
-		
+
 	}
 
 	/**
@@ -439,7 +439,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	public void setDaysUntilField() {
 		daysUntilField.setText( "" + taskModel.getTimeThreshold() );
 	}
-	
+
 	/**
 	 * Checks that all the requirements for creating a new task are met and
 	 * updates the correct fields indicating what if anything still needs to be
@@ -449,7 +449,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		boolean isTitleTextFull = taskTitleField.getText().trim().isEmpty() ? false
 				: true;
 		titleEmptyError.setVisible(!isTitleTextFull);
-	
+
 		boolean isDescriptionTextFull = taskDescriptionField.getText().trim()
 				.isEmpty() ? false : true;
 		descriptionEmptyError.setVisible(!isDescriptionTextFull);
@@ -564,7 +564,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	public int getCatSelectionIndex() {
 		return this.colorBox.getSelectedIndex();
 	}
-	
+
 	/**
 	 * get the current string in the description field
 	 * 
@@ -640,20 +640,20 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 		checkForErrors();
 		hasBeenModified();
 	}
-/**
- * Determines if any field has been modified. If any part of the field in newtask has
- * been modified, then it will return true. 
- * @return
- */
+	/**
+	 * Determines if any field has been modified. If any part of the field in newtask has
+	 * been modified, then it will return true. 
+	 * @return
+	 */
 	public boolean hasBeenModified() {
 		ArrayList<String> assignedUsers = assignUsersView.getAssignedUsers();
-		
+
 		if(!taskTitleField.getText().equals(this.taskModel.getTitle()))
 			return true;
-	
+
 		if(!taskDescriptionField.getText().equals(this.taskModel.getDescription()))
 			return true;
-		
+
 		if(!this.getDateText().equals(this.taskModel.getDueDate()))
 			return true;
 
@@ -665,28 +665,36 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 
 		if(!(this.getCatSelectionIndex() == this.taskModel.getCatID()))
 			return true;
-		
+
 		String a = this.getRequirements();
 		String b = this.taskModel.getAssociatedRequirement();
-		
+
 		boolean isRequired = (a.equals(b)) ? true : false;
-		
+
 		if(!(isRequired))
 			return true;
-		
+
 		if(!(this.getDaysUntil() == this.taskModel.getTimeThreshold()))
 			return true;
-		
-//		int c = this.getStageSelectionIndex();
-//		int d = this.taskModel.get;
-//		
-//		boolean isStaged = (a == b) ? true : false;
-//		
-//		if(!(isStaged))
-//			return true;
-		
+
+		String f = (String) this.stageBox.getSelectedItem();
+		String g;
+		if(this.taskModel.getStageID() == 0){
+			g = new String("New");
+		}
+		else{
+			g = this.workflowModel.getStageModelByID((this.taskModel.getStageID())).getTitle();
+		}
+
+		boolean isStaged = (f.equals(g)) ? true : false;
+
+		if(!(isStaged))
+			return true;
+
 		ArrayList<String> c = assignedUsers;
 		ArrayList<String> d = this.taskModel.getUsersAssignedTo();
+		int csize = c.size();
+		int dsize = d.size();
 		if(c.size() != d.size()){
 			return true;
 		}
@@ -695,11 +703,15 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 			for(String s : d){
 				s = c.get(i);
 				if(s.equals(d.get(i))){
-					return true;
+					return false;
 				}
 			}
+			if(i == e){
+				return true;
+			}
+			
 		}
-		
+
 		return false;
 	}
 
@@ -718,7 +730,7 @@ public class NewTaskTab extends JPanel implements KeyListener, MouseListener,
 	public TabType getTabType() {
 		return TabType.TASK;
 	}
-	
+
 	public String getRequirements(){
 		return (String) getRequirementsComboModel().getSelectedItem();
 	}
