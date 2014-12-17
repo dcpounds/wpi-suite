@@ -903,9 +903,9 @@ public class DataLoggerModel extends AbstractModel
 		{
 			filteredList = filterByDateRange(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
 											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
-			filteredList = returnCompleteSnapshots(filteredList, i);
-			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
-			output.put(i+1, estimatedEffort);
+			filteredList = returnCompleteSnapshots(filteredList, WorkflowController.getWorkflowModel().getCompleteStageID());
+			double actualEffort = AccumulateActualEffort(filteredList);
+			output.put(i+1, actualEffort);
 		}
 		return output;
 	}
