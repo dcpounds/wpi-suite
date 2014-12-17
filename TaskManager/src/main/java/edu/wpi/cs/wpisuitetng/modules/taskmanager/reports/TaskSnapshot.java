@@ -83,7 +83,6 @@ public class TaskSnapshot {
 		stageID = task.getStageID();
 		isArchived = task.getIsArchived();
 		activities = task.getActivities();
-		color = task.getColor();
 		CatColor = task.getCatColor();
 	}
 	
