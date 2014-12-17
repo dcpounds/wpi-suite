@@ -105,9 +105,6 @@ public class ClosableTabView extends JPanel{
 				if(choice == 0){
 					TabController.getInstance().removeTab(paneComponent);
 				}
-				else{
-					//do nothing
-				}
 			}
 			else{
 				TabController.getInstance().removeTab(paneComponent);
@@ -120,7 +117,6 @@ public class ClosableTabView extends JPanel{
 					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
 					null, options, options[0]);
 			if(choice == 0){
-			TabController.getInstance().removeTab(paneComponent);
 			}
 			else if (choice == 1){
 				//do nothing

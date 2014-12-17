@@ -13,35 +13,26 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.ActivityListCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.StageModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import net.miginfocom.swing.MigLayout;
-
-import java.awt.ScrollPane;
 
 
 /**
  * @author Dave
  * This tab view displays the activities log that each task contains. 
  */
-public class ActivitiesView extends AbstractTab implements IHashableTab, KeyListener {
+public class ActivitiesView extends AbstractTab {
 
 	
 	/**
@@ -125,35 +116,5 @@ public class ActivitiesView extends AbstractTab implements IHashableTab, KeyList
 			return false;
 		}
 		else{ return true;}
-	}
-
-	@Override
-	public void keyPressed(KeyEvent ke) {
-		hasBeenModified();
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent ke) {
-		hasBeenModified();
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent ke) {
-		hasBeenModified();
-		
-}
-
-	@Override
-	public int getModelID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public TabType getTabType() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
