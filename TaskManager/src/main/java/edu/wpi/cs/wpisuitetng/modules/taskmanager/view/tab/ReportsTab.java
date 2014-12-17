@@ -364,14 +364,14 @@ public class ReportsTab extends JScrollPane implements IHashableTab, MouseListen
     
     private XYDataset  setVelocityData() {
     	final XYSeries series1 = new XYSeries("First");
-        series1.add(1.0, 1.0);
-        series1.add(2.0, 4.0);
-        series1.add(3.0, 3.0);
-        series1.add(4.0, 5.0);
-        series1.add(5.0, 5.0);
-        series1.add(6.0, 7.0);
-        series1.add(7.0, 7.0);
-        series1.add(8.0, 8.0);
+    	double xvalue;
+    	double yvalue;
+    	for (int i = 0; i<DataLoggerController.getDataModel().exportEstmatedVelocity().size(); i++)
+        {
+        	xvalue = i+1;
+        	yvalue = DataLoggerController.getDataModel().exportEstmatedVelocity().get(i+1);
+        	series1.add(xvalue, yvalue);
+        }
 
         final XYSeries series2 = new XYSeries("Second");
         series2.add(1.0, 5.0);

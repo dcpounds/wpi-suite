@@ -445,6 +445,32 @@ public class DataLoggerModel extends AbstractModel
 		return filteredList;
 	}
 	
+	
+	
+	/**
+	 * Returns a sublist of the most recent snapshot for every task. Used for estimated effort on velocity
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByID (SnapshotSubList list)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+
+		for (int i=0; i<list.taskSnapList.size(); i++)
+		{
+			if (!filteredList.listContainsID(list.taskSnapList.get(i).getTaskID()))
+			{
+				filteredList.appendSnapshot(list.taskSnapList.get(i));
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	
+	
+	
 	public TaskSnapshot snapAtDate (TaskSnapshot snapshot, Date date)
 	{
 		for (int i=taskSnapList.size(); i>0; i--)
@@ -538,6 +564,33 @@ public class DataLoggerModel extends AbstractModel
 	
 	
 	/**
+	 * Filters a sublist over a date range, including only snapshots taken between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDateRange(Date startdate, Date enddate)
+	{
+		String startDate = startdate.toString();
+		String endDate = enddate.toString();
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i =  taskSnapList.size(); i>0 ; i--)
+		{
+			String stampDate =  taskSnapList.get(i-1).getTimeStamp().toString();
+			if (!taskSnapList.get(i-1).getTimeStamp().after(enddate))
+			{
+				if ((!taskSnapList.get(i-1).getTimeStamp().before(startdate)) || 
+					containsID(filteredList.taskSnapList, taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	/**
 	 * Filters a sublist over a date range, including only snapshots due between the start and end date
 	 * @return SnapshotSubList
 	 */
@@ -567,6 +620,56 @@ public class DataLoggerModel extends AbstractModel
 		
 		return filteredList;
 	}
+	
+	
+	
+	/**
+	 * Filters a sublist over a date range, including only snapshots due between the start and end date
+	 * @return SnapshotSubList
+	 */
+	public SnapshotSubList filterByDueDate(Date startdate, Date enddate)
+	{
+		SnapshotSubList filteredList = new SnapshotSubList();
+		for (int i = taskSnapList.size(); i>0 ; i--)
+		{
+			
+			
+			String bufferString = taskSnapList.get(i-1).getDueDate();
+			
+			
+			
+			
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Date date = null;
+			try {
+				date = dateFormat.parse(taskSnapList.get(i-1).getDueDate());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (!date.after(enddate))
+			{
+				if (!date.before(startdate) || 
+					containsID(filteredList.taskSnapList, taskSnapList.get(i-1)))
+				{
+					filteredList.appendSnapshot(taskSnapList.get(i-1));
+				}
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -603,6 +706,16 @@ public class DataLoggerModel extends AbstractModel
 		for (int i = list.taskSnapList.size(); i>0; i--)
 		{
 			accumulator = accumulator + list.taskSnapList.get(i-1).getActualEffort();
+		}
+		return accumulator;
+	}
+	
+	public int AccumulateEstimatedEffort(SnapshotSubList list)
+	{
+		int accumulator = 0;
+		for (int i = list.taskSnapList.size(); i>0; i--)
+		{
+			accumulator = accumulator + list.taskSnapList.get(i-1).getEstimatedEffort();
 		}
 		return accumulator;
 	}
@@ -733,6 +846,40 @@ public class DataLoggerModel extends AbstractModel
 		return changelog;
 		
 	}
+	
+	public Hashtable<Integer, Double> exportEstmatedVelocity()
+	{
+		Hashtable<Integer, Double> output = new Hashtable<Integer, Double>();
+		int weeks = 0;
+		long startDateMS = WorkflowController.getWorkflowModel().getStartDate().getTime();
+		while (true)
+		{
+			if (startDateMS+604800000 < WorkflowController.getWorkflowModel().getEndDate().getTime())
+			{
+				weeks++;
+				startDateMS = startDateMS+604800000;	//number of milliseconds in a week
+			}
+			else
+			{
+				weeks++;
+				break;
+			}
+		}
+		SnapshotSubList filteredList;
+		for (int i = 0; i<weeks; i++)
+		{
+			filteredList = filterByDueDate(new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000*i),
+											new Date(WorkflowController.getWorkflowModel().getStartDate().getTime()+604800000+604800000*i));
+			filteredList = filterByID(filteredList);
+			double estimatedEffort = AccumulateEstimatedEffort(filteredList);
+			output.put(i+1, estimatedEffort);
+		}
+		return output;
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Export all categories as a hashtable

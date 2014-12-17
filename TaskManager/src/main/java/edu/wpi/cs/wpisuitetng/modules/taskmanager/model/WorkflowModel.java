@@ -57,8 +57,8 @@ public class WorkflowModel extends AbstractModel {
 		WorkflowModel.requirementsList = new ArrayList<String>();
 		
 	    overrideDate = new Date();
-	    startDate = new Date(1970,1,1);
-	    endDate = new Date (2100,12,31);
+	    startDate = new Date(2014,1,1);
+	    endDate = new Date (2015,12,31);
 	    overrideString = overrideDate.toString();
 	    startString = startDate.toString();
 	    endString = endDate.toString();
@@ -79,14 +79,14 @@ public class WorkflowModel extends AbstractModel {
 	    
 	    
 	    try {
-			startDate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+			startDate = new SimpleDateFormat("yyyy-MM-dd").parse("2014-01-01");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
 	    try {
-			endDate = new SimpleDateFormat("yyyy-MM-dd").parse("2100-12-31");
+			endDate = new SimpleDateFormat("yyyy-MM-dd").parse("2015-12-31");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
