@@ -76,7 +76,7 @@ public class ToolbarView extends JPanel {
 	private JCheckBox yellowBox;
 	private JCheckBox blueBox;
 	private JCheckBox purpleBox;
-	private JCheckBox chckbxFilter;
+	private JButton deSelButton;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -265,6 +265,16 @@ public class ToolbarView extends JPanel {
         grayBox.addItemListener(searchController);
         catPanel.add(grayBox, "cell 4 1");
         
+        deSelButton = new JButton("Clear Filter");
+        deSelButton.setMargin(new Insets(0,0,0,0));
+        deSelButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unCheckAll();
+			}
+		});
+        add(deSelButton);
+        
         
     }
 
@@ -314,6 +324,22 @@ public class ToolbarView extends JPanel {
     	if(purpleBox.isSelected())
     		colors.add(purpleBox.getBackground());
     	return colors;
+    }
+    
+    /**
+     * deselects all of the catagory check boxes
+     */
+    public void unCheckAll(){
+    	grayBox.setSelected(false);
+    	whiteBox.setSelected(false);
+    	brownBox.setSelected(false);
+    	redBox.setSelected(false);
+    	pinkBox.setSelected(false);
+    	orangeBox.setSelected(false);
+    	yellowBox.setSelected(false);
+    	greenBox.setSelected(false);
+    	blueBox.setSelected(false);
+    	purpleBox.setSelected(false);
     }
     
 }
