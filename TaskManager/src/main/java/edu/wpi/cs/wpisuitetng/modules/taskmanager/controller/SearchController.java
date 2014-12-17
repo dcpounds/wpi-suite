@@ -83,7 +83,12 @@ public class SearchController implements ActionListener, KeyListener {
 		boolean foundResult = false;
 		searchBox = toolbarView.getSearchBox();
 		WorkflowView workflowView = TabController.getTabView().getWorkflowView();
-		String searchText = searchBox.getText().toLowerCase();
+		String searchText = searchBox.getText();
+		boolean caseSensitive = toolbarView.getCaseSensitive();
+		
+		if (!caseSensitive) {
+			searchText = searchText.toLowerCase();
+		}
 
 		for (StageModel stage : workflowModel.getStageModelList().values()) {
 			for(TaskModel task : stage.getTaskModelList().values()){
@@ -96,7 +101,7 @@ public class SearchController implements ActionListener, KeyListener {
 				if (searchText.isEmpty() && shouldShow) {
 					taskView.setVisible(true);
 				}
-				else if (task.getTitle().toLowerCase().contains(searchText) && shouldShow) {
+				else if (((!caseSensitive && task.getTitle().toLowerCase().contains(searchText)) || (caseSensitive && task.getTitle().contains(searchText))) && shouldShow) {
 					taskView.setVisible(true);
 					foundResult = true;
 				} else {

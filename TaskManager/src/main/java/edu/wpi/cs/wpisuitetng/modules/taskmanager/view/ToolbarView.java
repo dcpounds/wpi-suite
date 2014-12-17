@@ -24,6 +24,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -60,6 +61,8 @@ public class ToolbarView extends JPanel {
     private final WorkflowModel workflowModel;
     private JTextField searchBox;
 	private JButton gitButton;
+	private JCheckBox caseSensitivityToggle;
+	private boolean caseSensitive = false;
 	private JPanel catPanel;
 	private JCheckBox greenBox;
 	private JCheckBox whiteBox;
@@ -154,7 +157,7 @@ public class ToolbarView extends JPanel {
         
         add(Box.createHorizontalStrut(20));
         
-        gitButton = new JButton("Link to GitHub");
+        gitButton = new JButton("Import from GitHub");
         gitButton.setIcon(gitIcon);
         gitButton.setMargin(new Insets(0,0,0,0));
         gitButton.addActionListener( new ActionListener(){
@@ -183,6 +186,16 @@ public class ToolbarView extends JPanel {
         add(searchBox);
         
         searchBox.addKeyListener(new SearchController(this));
+        
+                caseSensitivityToggle = new JCheckBox("Case Sensitive");
+        caseSensitivityToggle.setSelected(false);
+        caseSensitivityToggle.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		caseSensitive = !caseSensitive;
+        		SearchController.search();
+        	}
+        });
+        add(caseSensitivityToggle);
         
         add(Box.createHorizontalStrut(20));
         
@@ -263,6 +276,14 @@ public class ToolbarView extends JPanel {
      */
     public JTextField getSearchBox(){
     	return searchBox;
+    }
+    
+    /**
+     * Retrieve the case sensitivity status
+     * @return caseSensitive
+     */
+    public boolean getCaseSensitive() {
+    	return caseSensitive;
     }
     
     /**
