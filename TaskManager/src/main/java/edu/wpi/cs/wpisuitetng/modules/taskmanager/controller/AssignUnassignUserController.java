@@ -62,7 +62,13 @@ public class AssignUnassignUserController implements ActionListener {
 				break;
 		}
 	}
-	
+	/**
+	 * Assigns Users based on selected Index and selected name(string)
+	 * remove Users from unassigned list and move to assigned list.
+	 * @param selectedIndex
+	 * @param selectedName
+	 * 
+	 */
 	public void assignUser(int selectedIndex, String selectedName){	
 		this.unassignedListModel = view.getUnassignedListModel();
 		this.assignedListModel = view.getAssignedListModel();
@@ -75,7 +81,13 @@ public class AssignUnassignUserController implements ActionListener {
 			assignedListModel.addElement(selectedName);
 		}
 	}
-	
+	/**
+	 * Unassigns Users based on selected Index and selected name(string)
+	 * remove Users from assigned list and move to unassigned list.
+	 * @param selectedIndex
+	 * @param selectedName
+	 * 
+	 */
 	public void unassignUser(int selectedIndex, String selectedName){
 		this.unassignedListModel = view.getUnassignedListModel();
 		this.assignedListModel = view.getAssignedListModel();

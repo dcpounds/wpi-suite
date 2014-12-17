@@ -33,7 +33,7 @@ public class CoreUserController implements ActionListener {
 	}
 
 	/**
-	 * Request all users from the db
+	 * Request all users from the Database
 	 */
 	public void requestUserList() {
 		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // PUT == create

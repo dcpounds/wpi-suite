@@ -5,12 +5,16 @@ import static org.junit.Assert.assertEquals;
 
 
 
+
 import java.util.Date;
 
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.ActivityModel;
-
+/**
+ * @author Kwan Yeong Kim
+ *
+ */
 public class ActivityModelTest {
 
 	String comment = "comment";

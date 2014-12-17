@@ -13,15 +13,11 @@
 package edu.wpi.cs.wpisuitetng.modules.taskmanager.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,17 +32,10 @@ import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.WorkflowController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.stage.StageController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.controller.task.ArchiveController;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.DummyTabModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.IDisplayModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.WorkflowModel;
-import edu.wpi.cs.wpisuitetng.modules.taskmanager.model.task.TaskModel;
 import edu.wpi.cs.wpisuitetng.modules.taskmanager.view.tab.TabType;
-
 import java.awt.Component;
-
 import net.miginfocom.swing.MigLayout;
-
-import javax.swing.JCheckBox;
-
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -76,7 +65,8 @@ public class ToolbarView extends JPanel {
 	private JCheckBox yellowBox;
 	private JCheckBox blueBox;
 	private JCheckBox purpleBox;
-	private JCheckBox chckbxFilter;
+	private JButton deSelButton;
+	private JPanel searchPanel;
    
     /**
      * Creates a new tool bar based off the main workflow model
@@ -85,7 +75,6 @@ public class ToolbarView extends JPanel {
      */
     public ToolbarView() {
         this.workflowModel = WorkflowController.getWorkflowModel();
-        
         ImageIcon taskIcon = new ImageIcon(this.getClass().getResource("new_itt.png"));
         ImageIcon archiveIcon = new ImageIcon(this.getClass().getResource("recycle_bin.png"));
         ImageIcon stageIcon = new ImageIcon(this.getClass().getResource("new_req.png"));
@@ -93,9 +82,6 @@ public class ToolbarView extends JPanel {
         ImageIcon categoryIcon = new ImageIcon(this.getClass().getResource("Colors.png"));
         ImageIcon searchIcon = new ImageIcon(this.getClass().getResource("search.png"));
         ImageIcon gitIcon = new ImageIcon(this.getClass().getResource("github.png"));
-        
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
         newStageButton = new JButton("New Stage", stageIcon);
         newStageButton.addActionListener( new ActionListener(){
         	@Override
@@ -138,7 +124,7 @@ public class ToolbarView extends JPanel {
         Component horizontalStrut = Box.createHorizontalStrut(20);
         add(horizontalStrut);
         
-        JButton toggleColor = new JButton("Toggle Category Coloring");
+        JButton toggleColor = new JButton("Toggle Colors");
         toggleColor.setIcon(categoryIcon);
         toggleColor.setMargin(new Insets(0, 0, 0, 0));
         toggleColor.addActionListener(new ActionListener(){
@@ -150,7 +136,7 @@ public class ToolbarView extends JPanel {
         });
         add(toggleColor);
         
-        archiveButton = new JToggleButton("View Archives");
+        archiveButton = new JToggleButton("Archives");
         archiveButton.setIcon(archiveIcon);
         archiveButton.addChangeListener(ArchiveController.getInstance());
         archiveButton.setMargin(new Insets(0,0,0,0));
@@ -173,22 +159,10 @@ public class ToolbarView extends JPanel {
         
         Component horizontalStrut2 = Box.createHorizontalStrut(20);
         add(horizontalStrut2);
-        JLabel searchLabel = new JLabel();
-        searchLabel.setIcon(searchIcon);
-        
-        add(searchLabel);
-        
-        searchBox = new JTextField();
-        searchBox.setMaximumSize(new Dimension(300, 38));
-        searchBox.setOpaque(true);
         
         Font searchFont = new Font("Tahoma",Font.PLAIN,17);
         
-        searchBox.setFont(searchFont);
-        add(searchBox);
-        
         SearchController searchController = new SearchController(this);
-        searchBox.addKeyListener(searchController);
         
                 caseSensitivityToggle = new JCheckBox("Case Sensitive");
         caseSensitivityToggle.setSelected(false);
@@ -198,15 +172,29 @@ public class ToolbarView extends JPanel {
         		SearchController.search();
         	}
         });
+        
+        searchPanel = new JPanel();
+        add(searchPanel);
+        JLabel searchLabel = new JLabel();
+        searchPanel.add(searchLabel);
+        searchLabel.setIcon(searchIcon);
+        
+        searchBox = new JTextField();
+        searchPanel.add(searchBox);
+        searchBox.setPreferredSize(new Dimension(150,38));
+        searchBox.setMaximumSize(new Dimension(300, 38));
+        searchBox.setOpaque(true);
+        
+        searchBox.setFont(searchFont);
+        searchBox.addKeyListener(searchController);
         add(caseSensitivityToggle);
         
         add(Box.createHorizontalStrut(20));
         
         catPanel = new JPanel();
-        catPanel.setAlignmentY(0.45f);
         catPanel.setMaximumSize(new Dimension(135, 60));
         add(catPanel);
-        catPanel.setLayout(new MigLayout("", "[][][][][]", "[][][]"));
+        catPanel.setLayout(new MigLayout("", "[][][][][][]", "[][]"));
         
         greenBox = new JCheckBox("");
         greenBox.setToolTipText("GREEN");
@@ -242,6 +230,16 @@ public class ToolbarView extends JPanel {
         whiteBox.setBackground(Color.WHITE);
         whiteBox.setToolTipText("WHITE");
         whiteBox.addItemListener(searchController);
+        
+        deSelButton = new JButton("Clear Filter");
+        deSelButton.setMargin(new Insets(0,0,0,0));
+        deSelButton.addActionListener( new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unCheckAll();
+			}
+		});
+        catPanel.add(deSelButton, "cell 5 0 1 2,aligny center");
         catPanel.add(whiteBox, "cell 0 1");
         
         yellowBox = new JCheckBox("");
@@ -317,6 +315,22 @@ public class ToolbarView extends JPanel {
     	if(purpleBox.isSelected())
     		colors.add(purpleBox.getBackground());
     	return colors;
+    }
+    
+    /**
+     * deselects all of the catagory check boxes
+     */
+    public void unCheckAll(){
+    	grayBox.setSelected(false);
+    	whiteBox.setSelected(false);
+    	brownBox.setSelected(false);
+    	redBox.setSelected(false);
+    	pinkBox.setSelected(false);
+    	orangeBox.setSelected(false);
+    	yellowBox.setSelected(false);
+    	greenBox.setSelected(false);
+    	blueBox.setSelected(false);
+    	purpleBox.setSelected(false);
     }
     
 }
