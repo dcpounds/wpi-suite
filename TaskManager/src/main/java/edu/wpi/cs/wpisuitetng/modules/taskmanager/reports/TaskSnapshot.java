@@ -58,7 +58,7 @@ public class TaskSnapshot {
 		this.stageID = task.getStageID();
 		this.isArchived = task.getIsArchived();
 		this.activities = task.getActivities();
-		this.color = task.getColor();
+		this.color = task.getCatColor();
 		this.CatColor = task.getCatColor();
 	}
 	

@@ -42,7 +42,7 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	private JTextField stageTitleField;
 	private JButton sbmtStageButton;
     private final WorkflowModel workflowModel;
-    private boolean validTitle = false;
+    private boolean isValidTitle = false;
     private JLabel stageTitleError;
     private StageModel model;
     private ActionType action;
@@ -91,7 +91,7 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 		sbmtStageButton.setEnabled(false);
 		add(sbmtStageButton, "cell 0 2,alignx left, aligny top");
 		
-		stageTitleError = new JLabel("Must enter a title for the stage");
+		stageTitleError = new JLabel("Must enter a valid, non-duplicate title for the stage");
 		stageTitleError.setForeground(Color.red);
 		add(stageTitleError, "cell 0 1,alignx left,aligny top");
 	}
@@ -107,7 +107,7 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 	 * @return the stage title the user entered
 	 */
 	public String getStageTitle(){
-		return stageTitleField.getText();
+		return stageTitleField.getText().trim();
 	}
 	
 	
@@ -127,9 +127,15 @@ public class NewStageTab extends JPanel implements KeyListener, IHashableTab{
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		validTitle = stageTitleField.getText().length() > 0 && stageTitleField.getText() != null  ? true : false;
-		sbmtStageButton.setEnabled(validTitle);
-		stageTitleError.setVisible(!validTitle);
+		String currentTitle = stageTitleField.getText().trim();
+		isValidTitle = currentTitle.length() > 0 && currentTitle != null  ? true : false;
+		for(StageModel stage: WorkflowController.getWorkflowModel().getStageModelList().values()){
+			if(stage.getTitle().trim().equals(currentTitle)){
+				isValidTitle = false;
+			}
+		}
+		sbmtStageButton.setEnabled(isValidTitle);
+		stageTitleError.setVisible(!isValidTitle);
 		hasBeenModified();
 	}
 
